@@ -1,0 +1,10 @@
+<p>
+  users works! <br />
+  auth users can visit
+</p>
+
+<div *ngFor="let user of users">
+  <p>{{ user.id }}</p>
+  <p>{{ user.first_name }} {{ user.last_name }}</p>
+  <p>{{ user.email }}</p>
+</div>
