@@ -42,9 +42,7 @@ export class ResponseInterceptor implements HttpInterceptor {
           error instanceof HttpErrorResponse &&
           (error.status === 401 || error.status === 422)
         ) {
-          localStorage.removeItem('user');
-
-          this.router.navigate(['login']);
+          authservice.logout();
         }
 
         return throwError(() => error);

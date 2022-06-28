@@ -20,23 +20,6 @@ export class LoginComponent implements OnInit {
       .login({
         email: this.email,
         password: this.password,
-      })
-      .subscribe({
-        next: (response: any) => {
-          localStorage.setItem(
-            'user',
-            JSON.stringify({
-              user_id: response.data.user_id,
-              user_role: response.data.user_role,
-              user_role_id: response.data.user_role_id,
-            })
-          );
-
-          this.router.navigate(['users']);
-        },
-        error: () => {
-          alert('failed');
-        },
       });
   }
 }
