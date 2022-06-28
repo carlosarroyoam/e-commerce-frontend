@@ -28,7 +28,7 @@ export class AuthService {
             })
           );
 
-          this.router.navigate(['users']);
+          this.router.navigate(['']);
         },
         error: () => {
           alert('failed');
