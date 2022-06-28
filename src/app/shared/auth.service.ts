@@ -24,4 +24,10 @@ export class AuthService {
       { withCredentials: true }
     );
   }
+
+  isAuthenticated() {
+    const authUser = localStorage.getItem('user');
+
+    return !!authUser;
+  }
 }
