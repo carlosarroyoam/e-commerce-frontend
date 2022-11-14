@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  device_fingerprint: string = '88352bae-1d51-49f0-a1b2-59d54ee4414f';
-
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(user: any) {
     return this.httpClient
       .post(
         'http://localhost:3000/api/v1/auth/login',
-        { ...user, device_fingerprint: this.device_fingerprint },
+        { ...user, device_fingerprint: this.getDeviceFingerprint() },
         { withCredentials: true }
       )
       .subscribe({
@@ -59,7 +58,7 @@ export class AuthService {
   refreshToken() {
     return this.httpClient.post(
       'http://localhost:3000/api/v1/auth/refresh-token',
-      { device_fingerprint: this.device_fingerprint },
+      { device_fingerprint: this.getDeviceFingerprint() },
       { withCredentials: true }
     );
   }
@@ -68,5 +67,13 @@ export class AuthService {
     const authUser = localStorage.getItem('user');
 
     return !!authUser;
+  }
+
+  getDeviceFingerprint() {
+    if (!localStorage.getItem('device_fingerprint')) {
+      localStorage.setItem('device_fingerprint', uuid());
+    }
+
+    return localStorage.getItem('device_fingerprint');
   }
 }
