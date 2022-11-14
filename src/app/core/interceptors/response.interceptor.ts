@@ -7,8 +7,8 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 
-import { catchError, EMPTY, Observable, switchMap, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
@@ -21,7 +21,11 @@ export class ResponseInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401 && !error.url?.includes('auth/refresh-token')) {
+        if (
+          error instanceof HttpErrorResponse &&
+          error.status === 401 &&
+          !error.url?.includes('auth/refresh-token')
+        ) {
           return this.handleRefrehToken(request, next);
         } else {
           return throwError(() => error);

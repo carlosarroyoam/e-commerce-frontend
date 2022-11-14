@@ -30,8 +30,10 @@ export class AuthService {
 
           this.router.navigate(['']);
         },
-        error: () => {
-          alert('failed');
+        error: (e) => {
+          console.log(e);
+
+          alert('error: ' + e);
         },
       });
   }
@@ -42,7 +44,7 @@ export class AuthService {
         withCredentials: true,
       })
       .subscribe({
-        next: (response: any) => {
+        next: () => {
           localStorage.removeItem('user');
 
           this.router.navigate(['login']);

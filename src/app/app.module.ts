@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './features/login/login.component';
 import { AppRoutingModule } from './routing.module';
-import { ResponseInterceptor } from './shared/response.interceptor';
-import { UsersComponent } from './users/users.component';
+import { ResponseInterceptor } from './core/interceptors/response.interceptor';
+import { UsersComponent } from './features/users/users.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, UsersComponent],
