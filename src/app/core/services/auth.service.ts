@@ -28,7 +28,7 @@ export class AuthService {
             })
           );
 
-          this.router.navigate(['']);
+          this.router.navigate(['/']);
         },
         error: (e) => {
           console.log(e);
@@ -40,9 +40,13 @@ export class AuthService {
 
   logout() {
     this.httpClient
-      .post('http://localhost:3000/api/v1/auth/logout', {
-        withCredentials: true,
-      })
+      .post(
+        'http://localhost:3000/api/v1/auth/logout',
+        {},
+        {
+          withCredentials: true,
+        }
+      )
       .subscribe({
         next: () => {
           localStorage.removeItem('user');
