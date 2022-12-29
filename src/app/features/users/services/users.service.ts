@@ -8,9 +8,8 @@ export class UsersService {
   constructor(private httpClient: HttpClient) {}
 
   getAll() {
-    return this.httpClient.get(
-      'http://localhost:3000/api/v1/users',
-      { withCredentials: true }
-    );
+    return this.httpClient.get('http://localhost:3000/api/v1/users', {
+      withCredentials: true,
+    });
   }
 }
