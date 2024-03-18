@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  private userKey: string = 'user';
+  private deviceFingerprintKey: string = 'device_fingerprint';
 
-  login(user: any) {
-    return this.httpClient
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly router: Router
+  ) {}
+
+  login(user: any): void {
+    this.httpClient
       .post(
         'http://localhost:3000/api/v1/auth/login',
         { ...user, device_fingerprint: this.getDeviceFingerprint() },
@@ -19,11 +26,11 @@ export class AuthService {
       .subscribe({
         next: (response: any) => {
           localStorage.setItem(
-            'user',
+            this.userKey,
             JSON.stringify({
-              user_id: response.data.user_id,
-              user_role: response.data.user_role,
-              user_role_id: response.data.user_role_id,
+              user_id: response.user.user_id,
+              user_role: response.user.user_role,
+              user_role_id: response.user.user_role_id,
             })
           );
 
@@ -31,31 +38,23 @@ export class AuthService {
         },
         error: (e) => {
           console.log(e);
-
           alert('error: ' + e);
         },
       });
   }
 
-  logout() {
+  logout(): void {
     this.httpClient
-      .post(
-        'http://localhost:3000/api/v1/auth/logout',
-        {},
-        {
-          withCredentials: true,
-        }
-      )
-      .subscribe({
-        next: () => {
-          localStorage.removeItem('user');
-
-          this.router.navigate(['login']);
-        },
+      .post('http://localhost:3000/api/v1/auth/logout', null, {
+        withCredentials: true,
+      })
+      .subscribe(() => {
+        localStorage.removeItem(this.userKey);
+        this.router.navigate(['login']);
       });
   }
 
-  refreshToken() {
+  refreshToken(): Observable<any> {
     return this.httpClient.post(
       'http://localhost:3000/api/v1/auth/refresh-token',
       { device_fingerprint: this.getDeviceFingerprint() },
@@ -63,17 +62,16 @@ export class AuthService {
     );
   }
 
-  isAuthenticated() {
-    const authUser = localStorage.getItem('user');
-
+  isAuthenticated(): boolean {
+    const authUser = localStorage.getItem(this.userKey);
     return !!authUser;
   }
 
-  getDeviceFingerprint() {
-    if (!localStorage.getItem('device_fingerprint')) {
-      localStorage.setItem('device_fingerprint', uuid());
+  private getDeviceFingerprint(): string | null {
+    if (!localStorage.getItem(this.deviceFingerprintKey)) {
+      localStorage.setItem(this.deviceFingerprintKey, uuid());
     }
 
-    return localStorage.getItem('device_fingerprint');
+    return localStorage.getItem(this.deviceFingerprintKey);
   }
 }

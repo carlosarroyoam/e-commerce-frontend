@@ -10,11 +10,26 @@ import { ResponseInterceptor } from './core/interceptors/response.interceptor';
 import { UsersComponent } from './features/users/users.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, UsersComponent],
-  imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    UsersComponent
   ],
-  bootstrap: [AppComponent],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true
+    },
+  ],
+  bootstrap: [
+    AppComponent
+  ],
 })
 export class AppModule {}

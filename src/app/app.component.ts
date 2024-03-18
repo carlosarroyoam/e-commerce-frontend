@@ -7,11 +7,11 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'angular-auth';
+  title: string = 'angular-auth';
 
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 }

@@ -7,15 +7,13 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   email: string = 'carlos.arroyo@e-commerce.com';
   password: string = 'secret123';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private readonly authService: AuthService) {}
 
-  ngOnInit(): void {}
-
-  login() {
+  login(): void {
     this.authService.login({
       email: this.email,
       password: this.password,

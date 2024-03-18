@@ -9,13 +9,11 @@ import { UsersService } from './services/users.service';
 export class UsersComponent implements OnInit {
   users: any[] = [];
 
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   ngOnInit(): void {
-    this.usersService.getAll().subscribe({
-      next: (response: any) => {
-        this.users = response.data;
-      },
+    this.usersService.getAll().subscribe((users) => {
+      this.users = users;
     });
   }
 }

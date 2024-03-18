@@ -9,11 +9,10 @@ import {
 
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class ResponseInterceptor implements HttpInterceptor {
-  constructor(private inject: Injector, private router: Router) {}
+  constructor(private readonly inject: Injector) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -34,13 +33,14 @@ export class ResponseInterceptor implements HttpInterceptor {
     );
   }
 
-  handleRefrehToken(request: HttpRequest<any>, next: HttpHandler) {
-    let authservice = this.inject.get(AuthService);
+  handleRefrehToken(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const authservice = this.inject.get(AuthService);
 
     return authservice.refreshToken().pipe(
-      switchMap(() => {
-        return next.handle(request);
-      }),
+      switchMap(() => next.handle(request)),
       catchError((error) => {
         if (
           error instanceof HttpErrorResponse &&
