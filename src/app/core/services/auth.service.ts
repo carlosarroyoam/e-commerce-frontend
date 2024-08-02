@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { v4 as uuid } from 'uuid';
+
+type UserDetails = { user_id: string; user_role: string; user_role_id: string };
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userKey: string = 'user';
-  private deviceFingerprintKey: string = 'device_fingerprint';
+  private USER_LOCAL_STORAGE_KEY_NAME = 'user';
+  private deviceFingerprintKey = 'device_fingerprint';
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -19,14 +22,14 @@ export class AuthService {
   login(user: any): void {
     this.httpClient
       .post(
-        'http://localhost:3000/api/v1/auth/login',
+        `${environment.apiUrl}/auth/login`,
         { ...user, device_fingerprint: this.getDeviceFingerprint() },
         { withCredentials: true }
       )
       .subscribe({
         next: (response: any) => {
           localStorage.setItem(
-            this.userKey,
+            this.USER_LOCAL_STORAGE_KEY_NAME,
             JSON.stringify({
               user_id: response.user.user_id,
               user_role: response.user.user_role,
@@ -45,25 +48,35 @@ export class AuthService {
 
   logout(): void {
     this.httpClient
-      .post('http://localhost:3000/api/v1/auth/logout', null, {
+      .post(`${environment.apiUrl}/auth/logout`, null, {
         withCredentials: true,
       })
       .subscribe(() => {
-        localStorage.removeItem(this.userKey);
+        localStorage.removeItem(this.USER_LOCAL_STORAGE_KEY_NAME);
         this.router.navigate(['login']);
       });
   }
 
   refreshToken(): Observable<any> {
     return this.httpClient.post(
-      'http://localhost:3000/api/v1/auth/refresh-token',
+      `${environment.apiUrl}/auth/refresh-token`,
       { device_fingerprint: this.getDeviceFingerprint() },
       { withCredentials: true }
     );
   }
 
+  getUser(): UserDetails | null {
+    const user = localStorage.getItem(this.USER_LOCAL_STORAGE_KEY_NAME);
+
+    if (!user) {
+      return null;
+    }
+
+    return JSON.parse(user);
+  }
+
   isAuthenticated(): boolean {
-    const authUser = localStorage.getItem(this.userKey);
+    const authUser = localStorage.getItem(this.USER_LOCAL_STORAGE_KEY_NAME);
     return !!authUser;
   }
 
