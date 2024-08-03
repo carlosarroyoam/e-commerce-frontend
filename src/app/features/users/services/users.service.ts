@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 import { User } from '../interfaces/user.interface';
 import { UsersResponse } from '../interfaces/users-response.interface';
@@ -16,6 +16,9 @@ export class UserService {
       .get<UsersResponse>('http://localhost:3000/api/v1/users', {
         withCredentials: true,
       })
-      .pipe(map((response) => response.users));
+      .pipe(
+        map((response) => response.users),
+        catchError((err) => of([]))
+      );
   }
 }
