@@ -1,18 +1,18 @@
-import { Injectable, Injector } from '@angular/core';
 import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
   HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
-
+import { Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
+
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ResponseInterceptor implements HttpInterceptor {
-  constructor(private readonly inject: Injector) {}
+  constructor(private readonly authService: AuthService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -37,16 +37,14 @@ export class ResponseInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const authservice = this.inject.get(AuthService);
-
-    return authservice.refreshToken().pipe(
+    return this.authService.refreshToken().pipe(
       switchMap(() => next.handle(request)),
       catchError((error) => {
         if (
           error instanceof HttpErrorResponse &&
           (error.status === 401 || error.status === 422)
         ) {
-          authservice.logout();
+          this.authService.logout();
         }
 
         return throwError(() => error);

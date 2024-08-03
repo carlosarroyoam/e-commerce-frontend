@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { v4 as uuid } from 'uuid';
+
+import { environment } from 'src/environments/environment';
 
 type UserDetails = { user_id: string; user_role: string; user_role_id: string };
 
@@ -51,9 +52,15 @@ export class AuthService {
       .post(`${environment.apiUrl}/auth/logout`, null, {
         withCredentials: true,
       })
-      .subscribe(() => {
-        localStorage.removeItem(this.USER_LOCAL_STORAGE_KEY_NAME);
-        this.router.navigate(['login']);
+      .subscribe({
+        next: () => {
+          localStorage.removeItem(this.USER_LOCAL_STORAGE_KEY_NAME);
+          this.router.navigate(['login']);
+        },
+        error: (e) => {
+          console.log(e);
+          alert('error: ' + e);
+        },
       });
   }
 

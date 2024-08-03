@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { UsersResponse } from '../interfaces/users-response.interface';
+
 import { User } from '../interfaces/user.interface';
+import { UsersResponse } from '../interfaces/users-response.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class UserService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getAll(): Observable<User[]> {
