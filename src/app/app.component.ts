@@ -7,7 +7,7 @@ import { AuthService } from './core/services/auth.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'angular-auth';
+  title = 'Angular JWT/Auth';
 
   constructor(private readonly authService: AuthService) {}
 
