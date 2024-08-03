@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -40,9 +40,10 @@ export class AuthService {
 
           this.router.navigate(['/']);
         },
-        error: (e) => {
-          console.log(e);
-          alert('error: ' + e);
+        error: (err) => {
+          if (err instanceof HttpErrorResponse) {
+            alert('Error: ' + err.message);
+          }
         },
       });
   }
@@ -57,9 +58,11 @@ export class AuthService {
           localStorage.removeItem(this.USER_LOCAL_STORAGE_KEY_NAME);
           this.router.navigate(['login']);
         },
-        error: (e) => {
-          console.log(e);
-          alert('error: ' + e);
+        error: (err) => {
+          if (err instanceof HttpErrorResponse) {
+            alert('Error: ' + err.message);
+            this.router.navigate(['login']);
+          }
         },
       });
   }
