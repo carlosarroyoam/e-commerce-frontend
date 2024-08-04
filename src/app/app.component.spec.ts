@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -14,10 +15,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'angular-auth'`, () => {
+  it(`should have as title 'Angular JWT/Auth'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-auth');
+    expect(app.title).toEqual('Angular JWT/Auth');
   });
 
   it('should render title', () => {
@@ -25,7 +26,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.content span')?.textContent).toContain(
-      'angular-auth app is running!'
+      'Angular JWT/Auth app is running!'
     );
   });
 });

@@ -6,10 +6,12 @@
     <li>
       <a routerLink="/" routerLinkActive="active">Home</a>
     </li>
-    <li>
+    <li *ngIf="!isAuthenticated()">
       <a routerLink="/login" routerLinkActive="active">Login</a>
     </li>
-    <li><button type="button" (click)="logout()">Logout</button></li>
+    <li *ngIf="isAuthenticated()">
+      <button type="button" (click)="logout()">Logout</button>
+    </li>
   </ul>
 </nav>
 
