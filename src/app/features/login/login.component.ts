@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class LoginComponent {
   email: string = 'carlos.arroyo@e-commerce.com';
-  password: string = 'secret123';
+  password: string = 'admin123';
 
   constructor(private readonly authService: AuthService) {}
 
