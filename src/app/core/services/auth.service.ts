@@ -6,14 +6,14 @@ import { v4 as uuid } from 'uuid';
 
 import { environment } from 'src/environments/environment';
 
-type UserDetails = { user_id: string; user_role: string; user_role_id: string };
+type SessionData = { user_id: string; user_role: string; user_role_id: string };
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private USER_LOCAL_STORAGE_KEY_NAME = 'user';
-  private deviceFingerprintKey = 'device_fingerprint';
+  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME = 'angular-auth-session';
+  private readonly DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY = 'device-fingerprint';
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -22,15 +22,14 @@ export class AuthService {
 
   login(user: any): void {
     this.httpClient
-      .post(
-        `${environment.apiUrl}/auth/login`,
-        { ...user, device_fingerprint: this.getDeviceFingerprint() },
-        { withCredentials: true }
-      )
+      .post(`${environment.apiUrl}/auth/login`, {
+        ...user,
+        device_fingerprint: this.getDeviceFingerprint(),
+      })
       .subscribe({
         next: (response: any) => {
           localStorage.setItem(
-            this.USER_LOCAL_STORAGE_KEY_NAME,
+            this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
             JSON.stringify({
               user_id: response.user.user_id,
               user_role: response.user.user_role,
@@ -49,52 +48,50 @@ export class AuthService {
   }
 
   logout(): void {
-    this.httpClient
-      .post(`${environment.apiUrl}/auth/logout`, null, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: () => {
-          localStorage.removeItem(this.USER_LOCAL_STORAGE_KEY_NAME);
+    this.httpClient.post(`${environment.apiUrl}/auth/logout`, null).subscribe({
+      next: () => {
+        localStorage.removeItem(this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME);
+        this.router.navigate(['login']);
+      },
+      error: (err) => {
+        if (err instanceof HttpErrorResponse) {
+          alert('Error: ' + err.message);
           this.router.navigate(['login']);
-        },
-        error: (err) => {
-          if (err instanceof HttpErrorResponse) {
-            alert('Error: ' + err.message);
-            this.router.navigate(['login']);
-          }
-        },
-      });
+        }
+      },
+    });
   }
 
   refreshToken(): Observable<any> {
-    return this.httpClient.post(
-      `${environment.apiUrl}/auth/refresh-token`,
-      { device_fingerprint: this.getDeviceFingerprint() },
-      { withCredentials: true }
-    );
-  }
-
-  getUser(): UserDetails | null {
-    const user = localStorage.getItem(this.USER_LOCAL_STORAGE_KEY_NAME);
-
-    if (!user) {
-      return null;
-    }
-
-    return JSON.parse(user);
+    return this.httpClient.post(`${environment.apiUrl}/auth/refresh-token`, {
+      device_fingerprint: this.getDeviceFingerprint(),
+    });
   }
 
   isAuthenticated(): boolean {
-    const authUser = localStorage.getItem(this.USER_LOCAL_STORAGE_KEY_NAME);
-    return !!authUser;
+    const session = localStorage.getItem(
+      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME
+    );
+    return !!session;
+  }
+
+  getUser(): SessionData | null {
+    const session = localStorage.getItem(
+      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME
+    );
+
+    if (!session) {
+      return null;
+    }
+
+    return JSON.parse(session);
   }
 
   private getDeviceFingerprint(): string | null {
-    if (!localStorage.getItem(this.deviceFingerprintKey)) {
-      localStorage.setItem(this.deviceFingerprintKey, uuid());
+    if (!localStorage.getItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY)) {
+      localStorage.setItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY, uuid());
     }
 
-    return localStorage.getItem(this.deviceFingerprintKey);
+    return localStorage.getItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY);
   }
 }

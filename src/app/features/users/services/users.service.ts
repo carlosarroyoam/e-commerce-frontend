@@ -13,12 +13,10 @@ export class UserService {
 
   getAll(): Observable<User[]> {
     return this.httpClient
-      .get<UsersResponse>('http://localhost:3000/api/v1/users', {
-        withCredentials: true,
-      })
+      .get<UsersResponse>('http://localhost:3000/api/v1/users')
       .pipe(
         map((response) => response.users),
-        catchError((err) => of([]))
+        catchError(() => of([]))
       );
   }
 }

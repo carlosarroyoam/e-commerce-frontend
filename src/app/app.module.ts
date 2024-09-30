@@ -1,14 +1,13 @@
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { ResponseInterceptor } from './core/interceptors/response.interceptor';
+import {
+  responseErrorInterceptor,
+  withCredentialsInterceptor,
+} from './core/interceptors/http.interceptor';
 import { LoginComponent } from './features/login/login.component';
 import { UsersComponent } from './features/users/users.component';
 import { AppRoutingModule } from './routing.module';
@@ -18,12 +17,9 @@ import { AppRoutingModule } from './routing.module';
   bootstrap: [AppComponent],
   imports: [AppRoutingModule, BrowserModule, FormsModule],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ResponseInterceptor,
-      multi: true,
-    },
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptors([withCredentialsInterceptor, responseErrorInterceptor])
+    ),
   ],
 })
 export class AppModule {}
