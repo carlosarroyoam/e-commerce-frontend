@@ -1,4 +1,8 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,26 +14,16 @@ import { UsersComponent } from './features/users/users.component';
 import { AppRoutingModule } from './routing.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    UsersComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule
-  ],
+  declarations: [AppComponent, LoginComponent, UsersComponent],
+  bootstrap: [AppComponent],
+  imports: [AppRoutingModule, BrowserModule, FormsModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ResponseInterceptor,
-      multi: true
+      multi: true,
     },
-  ],
-  bootstrap: [
-    AppComponent
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class AppModule {}
