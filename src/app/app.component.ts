@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
-import { AuthService } from './core/services/auth.service';
+import { AuthService } from '@/app/core/services/auth.service';
 
 @Component({
   standalone: true,

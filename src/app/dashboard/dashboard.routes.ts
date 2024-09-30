@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { UsersPageComponent } from './pages/users/users-page.component';
+import { UsersPageComponent } from '@/app/dashboard/pages/users/users-page.component';
 
 export const routes: Routes = [
   {

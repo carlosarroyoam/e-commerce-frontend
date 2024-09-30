@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '../../../core/models/user.model';
-import { UserService } from '../../../core/services/users.service';
+import { User } from '@/app/core/models/user.model';
+import { UserService } from '@/app/core/services/users.service';
 
 @Component({
   standalone: true,

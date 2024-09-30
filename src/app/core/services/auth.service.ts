@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '@/environments/environment';
 
 type SessionData = { user_id: string; user_role: string; user_role_id: string };
 
