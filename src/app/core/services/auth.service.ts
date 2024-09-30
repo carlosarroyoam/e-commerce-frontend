@@ -37,7 +37,7 @@ export class AuthService {
             }),
           );
 
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           if (err instanceof HttpErrorResponse) {
@@ -51,12 +51,11 @@ export class AuthService {
     this.httpClient.post(`${environment.apiUrl}/auth/logout`, null).subscribe({
       next: () => {
         localStorage.removeItem(this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME);
-        this.router.navigate(['login']);
+        this.router.navigate(['auth/login']);
       },
       error: (err) => {
         if (err instanceof HttpErrorResponse) {
           alert('Error: ' + err.message);
-          this.router.navigate(['login']);
         }
       },
     });

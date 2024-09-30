@@ -1,0 +1,14 @@
+<section>
+  <h2 class="text-2xl font-bold tracking-tight">Users</h2>
+  <p class="text-muted-foreground mt-1 text-sm">
+    A list of all the users registered including their name, email, and role.
+  </p>
+
+  <div class="mt-6">
+    @for (user of users; track user.id) {
+      <p>{{ user.id }}</p>
+      <p>{{ user.first_name }} {{ user.last_name }}</p>
+      <p>{{ user.email }}</p>
+    }
+  </div>
+</section>

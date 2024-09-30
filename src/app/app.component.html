@@ -1,19 +1,33 @@
-<h1>{{ title }}</h1>
-
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in AppRoutingModule) -->
-<nav>
-  <ul>
-    <li>
-      <a routerLink="/" routerLinkActive="active">Home</a>
-    </li>
-    <li *ngIf="!isAuthenticated()">
-      <a routerLink="/login" routerLinkActive="active">Login</a>
-    </li>
-    <li *ngIf="isAuthenticated()">
-      <button type="button" (click)="logout()">Logout</button>
-    </li>
-  </ul>
-</nav>
+<header class="bg-gray-200">
+  <div class="container py-4">
+    <nav>
+      <ul class="flex items-center justify-between">
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            class="text-xl font-semibold tracking-tight"
+            >Home</a
+          >
+        </li>
+        <li>
+          @if (isAuthenticated()) {
+            <button
+              type="button"
+              (click)="logout()"
+              class="rounded-md bg-gray-300 px-4 py-1.5 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
+            >
+              Logout
+            </button>
+          }
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
 <!-- The routed views render in the <router-outlet>-->
-<router-outlet></router-outlet>
+<main class="container py-4">
+  <router-outlet></router-outlet>
+</main>

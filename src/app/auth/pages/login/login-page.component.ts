@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+  standalone: true,
+  templateUrl: './login-page.component.html',
+  imports: [FormsModule],
 })
-export class LoginComponent {
+export class LoginPageComponent {
   email: string = 'carlos.arroyo@e-commerce.com';
   password: string = 'admin123';
 
