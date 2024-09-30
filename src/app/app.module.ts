@@ -18,7 +18,7 @@ import { AppRoutingModule } from './routing.module';
   imports: [AppRoutingModule, BrowserModule, FormsModule],
   providers: [
     provideHttpClient(
-      withInterceptors([withCredentialsInterceptor, responseErrorInterceptor])
+      withInterceptors([withCredentialsInterceptor, responseErrorInterceptor]),
     ),
   ],
 })

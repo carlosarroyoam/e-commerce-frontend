@@ -16,7 +16,7 @@ export class UserService {
       .get<UsersResponse>('http://localhost:3000/api/v1/users')
       .pipe(
         map((response) => response.users),
-        catchError(() => of([]))
+        catchError(() => of([])),
       );
   }
 }

@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 
 export function withCredentialsInterceptor(
   req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
   const reqWithCreds = req.clone({
     withCredentials: true,
@@ -22,7 +22,7 @@ export function withCredentialsInterceptor(
 
 export function responseErrorInterceptor(
   req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
   const authService = inject(AuthService);
 
@@ -48,8 +48,8 @@ export function responseErrorInterceptor(
           }
 
           return throwError(() => err);
-        })
+        }),
       );
-    })
+    }),
   );
 }

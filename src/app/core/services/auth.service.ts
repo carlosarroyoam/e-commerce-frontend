@@ -17,7 +17,7 @@ export class AuthService {
 
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   login(user: any): void {
@@ -34,7 +34,7 @@ export class AuthService {
               user_id: response.user.user_id,
               user_role: response.user.user_role,
               user_role_id: response.user.user_role_id,
-            })
+            }),
           );
 
           this.router.navigate(['/']);
@@ -70,14 +70,14 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const session = localStorage.getItem(
-      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME
+      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
     );
     return !!session;
   }
 
   getUser(): SessionData | null {
     const session = localStorage.getItem(
-      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME
+      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
     );
 
     if (!session) {
