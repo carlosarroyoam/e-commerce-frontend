@@ -1,20 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class GuestGuard {
-  constructor(private authService: AuthService, private router: Router) {}
+export const guestGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/']);
-      return false;
-    }
-
-    return true;
+  if (authService.isAuthenticated()) {
+    router.navigate(['/']);
+    return false;
   }
-}
+
+  return true;
+};
