@@ -1,23 +1,25 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthService } from '@/app/core/services/auth.service';
 
 @Component({
   standalone: true,
   templateUrl: './login-page.component.html',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
 })
 export class LoginPageComponent {
-  email: string = 'carlos.arroyo@e-commerce.com';
-  password: string = 'admin123';
+  loginForm = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl(''),
+  });
 
   constructor(private readonly authService: AuthService) {}
 
   login(): void {
     this.authService.login({
-      email: this.email,
-      password: this.password,
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
     });
   }
 }
