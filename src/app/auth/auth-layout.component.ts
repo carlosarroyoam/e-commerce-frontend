@@ -3,8 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './auth-layout.component.html',
   imports: [RouterOutlet],
 })
-export class AppComponent {}
+export class AuthLayoutComponent {}

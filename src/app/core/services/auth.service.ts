@@ -37,7 +37,7 @@ export class AuthService {
             }),
           );
 
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['dashboard']);
         },
         error: (err) => {
           if (err instanceof HttpErrorResponse) {
