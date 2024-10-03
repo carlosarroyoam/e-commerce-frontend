@@ -1,22 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
-import { AuthService } from '@/app/core/services/auth.service';
+import { HeaderComponent } from '@/app/shared/components/header/header.component';
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent],
 })
-export class AppComponent {
-  constructor(private readonly authService: AuthService) {}
-
-  logout(): void {
-    this.authService.logout();
-  }
-
-  isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
-}
+export class AppComponent {}
