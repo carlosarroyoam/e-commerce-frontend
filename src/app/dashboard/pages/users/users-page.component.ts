@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { User } from '@/app/core/models/user.model';
@@ -6,6 +7,7 @@ import { UserService } from '@/app/core/services/users.service';
 @Component({
   standalone: true,
   templateUrl: './users-page.component.html',
+  imports: [CommonModule],
 })
 export class UsersPageComponent implements OnInit {
   users: User[] = [];

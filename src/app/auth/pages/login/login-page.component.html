@@ -8,11 +8,7 @@
 
   <form method="post" [formGroup]="loginForm" class="mt-6 space-y-4">
     <div class="space-y-2">
-      <label
-        for="email"
-        class="block text-sm font-medium leading-6 text-gray-900"
-        >Email</label
-      >
+      <label for="email" class="label">Email</label>
       <input
         type="text"
         id="email"
@@ -21,10 +17,10 @@
         autocomplete="email"
         formControlName="email"
         required
-        class="w-full rounded-md px-4 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-control"
       />
       @if (email?.invalid && (email?.dirty || email?.touched)) {
-        <div class="text-sm text-red-500">
+        <div class="invalid">
           @if (email?.hasError("required")) {
             <span>The email field is required.</span>
           }
@@ -36,11 +32,7 @@
     </div>
 
     <div class="space-y-2">
-      <label
-        for="password"
-        class="block text-sm font-medium leading-6 text-gray-900"
-        >Password</label
-      >
+      <label for="password" class="label">Password</label>
       <input
         type="password"
         id="password"
@@ -48,10 +40,10 @@
         placeholder="Enter your password"
         formControlName="password"
         required
-        class="w-full rounded-md px-4 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-control"
       />
       @if (password?.invalid && (password?.dirty || password?.touched)) {
-        <div class="text-sm text-red-500">
+        <div class="invalid">
           @if (password?.hasError("required")) {
             <span>The password field is required.</span>
           }

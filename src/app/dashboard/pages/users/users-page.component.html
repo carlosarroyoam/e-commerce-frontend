@@ -73,13 +73,17 @@
               {{ user.user_role }}
             </td>
             <td class="px-6 py-2.5 text-sm text-gray-900">
-              {{ user.created_at }}
+              {{ user.created_at | date: "short" }}
             </td>
             <td class="px-6 py-2.5 text-sm text-gray-900">
-              {{ user.updated_at }}
+              {{ user.updated_at | date: "short" }}
             </td>
             <td class="px-6 py-2.5 text-sm text-gray-900">
-              {{ user.deleted_at }}
+              @if (user.deleted_at) {
+                Inactive
+              } @else {
+                Active
+              }
             </td>
           </tr>
         }

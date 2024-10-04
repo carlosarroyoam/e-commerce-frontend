@@ -30,3 +30,15 @@
 .btn-link {
   @apply text-gray-900 underline-offset-4 hover:underline;
 }
+
+.label {
+  @apply block text-sm font-medium leading-6 text-gray-900;
+}
+
+.form-control {
+  @apply w-full rounded-md px-4 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.invalid {
+  @apply text-sm text-red-500;
+}
