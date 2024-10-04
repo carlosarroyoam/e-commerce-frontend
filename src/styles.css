@@ -10,3 +10,23 @@
     @apply antialiased;
   }
 }
+
+.btn {
+  @apply inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white shadow-sm hover:bg-blue-600/90;
+}
+
+.btn-secondary {
+  @apply bg-gray-300 text-gray-900 shadow-sm hover:bg-gray-300/80;
+}
+
+.btn-destructive {
+  @apply bg-red-600 text-white shadow-sm hover:bg-red-600/90;
+}
+
+.btn-link {
+  @apply text-gray-900 underline-offset-4 hover:underline;
+}
