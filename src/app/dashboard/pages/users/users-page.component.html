@@ -1,10 +1,10 @@
 <section>
   <div class="flex gap-4">
     <div class="flex-auto">
-      <h2 class="text-2xl font-bold leading-7 tracking-tight text-gray-900">
+      <h2 class="text-lg font-semibold leading-7 tracking-tight text-gray-900">
         Users
       </h2>
-      <p class="mt-1 text-sm font-medium leading-6 text-gray-500">
+      <p class="mt-1 text-sm leading-6 text-gray-500">
         A list of all the users registered including their name, email, and
         role.
       </p>
@@ -12,17 +12,83 @@
 
     <button
       type="submit"
-      class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-600/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed"
+      class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-600/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed"
     >
       Add user
     </button>
   </div>
 
-  <div class="mt-6">
-    @for (user of users; track user.id) {
-      <p>{{ user.id }}</p>
-      <p>{{ user.first_name }} {{ user.last_name }}</p>
-      <p>{{ user.email }}</p>
-    }
+  <div class="mt-6 overflow-hidden rounded-md border shadow-sm">
+    <table class="w-full">
+      <thead class="bg-gray-100">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            ID
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Name
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Email
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Role
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Registered at
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Updated at
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
+          >
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        @for (user of users; track user.id) {
+          <tr>
+            <td class="px-6 py-2.5 text-sm text-gray-900">{{ user.id }}</td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">
+              {{ user.first_name }} {{ user.last_name }}
+            </td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">{{ user.email }}</td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">
+              {{ user.user_role }}
+            </td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">
+              {{ user.created_at }}
+            </td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">
+              {{ user.updated_at }}
+            </td>
+            <td class="px-6 py-2.5 text-sm text-gray-900">
+              {{ user.deleted_at }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </section>
