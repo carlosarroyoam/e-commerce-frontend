@@ -1,88 +1,48 @@
 <section>
   <div class="flex gap-4">
     <div class="flex-auto">
-      <h2 class="text-lg font-semibold leading-7 tracking-tight text-gray-900">
-        Users
-      </h2>
-      <p class="mt-1 text-sm leading-6 text-gray-500">
+      <h2 class="heading">Users</h2>
+      <p class="text mt-1">
         A list of all the users registered including their name, email, and
         role.
       </p>
     </div>
-
     <button type="submit" class="btn btn-primary">Add user</button>
   </div>
 
   <div class="mt-6 overflow-hidden rounded-md border shadow-sm">
-    <table class="w-full">
-      <thead class="bg-gray-100">
+    <table class="table">
+      <thead class="table-header">
         <tr>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            ID
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Name
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Email
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Role
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Registered at
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Updated at
-          </th>
-          <th
-            scope="col"
-            class="px-6 py-2.5 text-start text-sm font-medium text-gray-700"
-          >
-            Status
-          </th>
+          <th scope="col" class="table-header-cell">Name</th>
+          <th scope="col" class="table-header-cell">Email</th>
+          <th scope="col" class="table-header-cell">Role</th>
+          <th scope="col" class="table-header-cell">Registered at</th>
+          <th scope="col" class="table-header-cell">Updated at</th>
+          <th scope="col" class="table-header-cell">Status</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="table-body">
         @for (user of users; track user.id) {
           <tr>
-            <td class="px-6 py-2.5 text-sm text-gray-900">{{ user.id }}</td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">
+            <td class="table-cell">
               {{ user.first_name }} {{ user.last_name }}
             </td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">{{ user.email }}</td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">
+            <td class="table-cell">{{ user.email }}</td>
+            <td class="table-cell">
               {{ user.user_role }}
             </td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">
+            <td class="table-cell">
               {{ user.created_at | date: "short" }}
             </td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">
+            <td class="table-cell">
               {{ user.updated_at | date: "short" }}
             </td>
-            <td class="px-6 py-2.5 text-sm text-gray-900">
+            <td class="table-cell">
               @if (user.deleted_at) {
-                Inactive
+                <span class="badge badge-red">Inactive</span>
               } @else {
-                Active
+                <span class="badge badge-green">Active</span>
               }
             </td>
           </tr>
