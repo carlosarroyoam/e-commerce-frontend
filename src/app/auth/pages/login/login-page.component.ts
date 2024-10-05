@@ -5,13 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
 
 @Component({
   standalone: true,
   templateUrl: './login-page.component.html',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class LoginPageComponent {
   loginForm = new FormGroup({
