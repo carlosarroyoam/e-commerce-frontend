@@ -21,6 +21,14 @@ export class UserNavComponent {
     return this.authService.getUser();
   }
 
+  get fullname(): string | null {
+    if (!this.user) {
+      return null;
+    }
+
+    return `${this.user.first_name} ${this.user.last_name}`;
+  }
+
   logout(): void {
     this.authService.logout();
   }

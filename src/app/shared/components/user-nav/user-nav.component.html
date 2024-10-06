@@ -9,21 +9,21 @@
   <span class="sr-only">Open user menu</span>
   <img
     class="size-10 rounded-full"
-    src="https://ui-avatars.com/api/?name={{ user?.first_name }}"
+    src="https://ui-avatars.com/api/?name={{ fullname }}&format=svg"
     alt="{{ user?.first_name }}'s profile picture"
   />
 </button>
 
 @if (isOpen) {
   <div
-    class="absolute right-0 z-10 mt-2 origin-top-right overflow-hidden rounded-md bg-gray-50 shadow-sm"
+    class="absolute right-0 z-10 mt-2 origin-top-right overflow-hidden rounded-md bg-gray-50 shadow-md"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="user-menu-button"
   >
     <div class="flex flex-col px-4 py-2.5">
       <p class="text-nowrap text-sm text-gray-900">
-        {{ user?.first_name }} {{ user?.last_name }}
+        {{ fullname }}
       </p>
       <p class="text-nowrap text-sm text-gray-700">{{ user?.email }}</p>
     </div>
@@ -32,6 +32,7 @@
 
     <a
       routerLink="/account"
+      role="menuitem"
       class="block px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-100"
     >
       Account
