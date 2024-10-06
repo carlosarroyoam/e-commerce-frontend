@@ -6,7 +6,14 @@ import { v4 as uuid } from 'uuid';
 
 import { environment } from '@/environments/environment';
 
-type SessionData = { user_id: string; user_role: string; user_role_id: string };
+type SessionData = {
+  user_id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  user_role: string;
+  user_role_id: string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +39,9 @@ export class AuthService {
             this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
             JSON.stringify({
               user_id: response.user.user_id,
+              email: response.user.email,
+              first_name: response.user.first_name,
+              last_name: response.user.last_name,
               user_role: response.user.user_role,
               user_role_id: response.user.user_role_id,
             }),
