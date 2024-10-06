@@ -2,15 +2,13 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
+import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.directive';
 
 @Component({
   standalone: true,
   selector: 'app-user-nav',
   templateUrl: './user-nav.component.html',
-  host: {
-    class: 'relative',
-  },
-  imports: [RouterLink],
+  imports: [RouterLink, ClickOutsideDirective],
 })
 export class UserNavComponent {
   isOpen: boolean = false;
@@ -35,5 +33,9 @@ export class UserNavComponent {
 
   toggleIsOpen(): void {
     this.isOpen = !this.isOpen;
+  }
+
+  onClickOutside(): void {
+    this.isOpen = false;
   }
 }
