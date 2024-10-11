@@ -7,16 +7,12 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 antialiased;
+    @apply bg-gray-50 text-gray-500 antialiased;
   }
 }
 
 .heading {
   @apply text-2xl font-semibold tracking-tight text-gray-900;
-}
-
-.text {
-  @apply text-sm text-gray-600;
 }
 
 .btn {
@@ -36,7 +32,7 @@
 }
 
 .link {
-  @apply inline-flex cursor-pointer items-center justify-center whitespace-nowrap text-gray-600 text-sm underline-offset-4 hover:underline;
+  @apply inline-flex cursor-pointer items-center justify-center whitespace-nowrap text-sm text-gray-900 underline-offset-4 hover:underline;
 }
 
 .label {
@@ -80,5 +76,5 @@
 }
 
 .table-cell {
-  @apply px-6 py-2.5 text-sm text-gray-600;
+  @apply px-6 py-2.5 text-sm;
 }

@@ -1,7 +1,7 @@
 <div clickOutside (clickOutside)="onClickOutside()" class="relative">
   <button
     type="button"
-    class="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+    class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
     id="user-menu-button"
     aria-expanded="false"
     aria-haspopup="true"
@@ -34,18 +34,18 @@
       <a
         routerLink="/account"
         role="menuitem"
-        class="block px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-100"
+        class="block px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-100"
       >
-        Account
+        Account settings
       </a>
-      <a
+      <button
         href="#"
         role="menuitem"
         (click)="logout()"
-        class="block px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-100"
+        class="block w-full px-4 py-2.5 text-left text-sm text-gray-900 hover:bg-gray-100"
       >
         Log out
-      </a>
+      </button>
     </div>
   }
 </div>

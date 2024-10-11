@@ -2,7 +2,7 @@
   <div class="flex gap-4">
     <div class="flex-auto">
       <h2 class="heading">Users</h2>
-      <p class="text mt-1">
+      <p class="mt-1.5 text-sm">
         A list of all the users registered including their name, email, and
         role.
       </p>
@@ -23,6 +23,7 @@
           <th scope="col" class="table-header-cell">Registered at</th>
           <th scope="col" class="table-header-cell">Updated at</th>
           <th scope="col" class="table-header-cell">Status</th>
+          <th scope="col" class="table-header-cell">Actions</th>
         </tr>
       </thead>
       <tbody class="table-body">
@@ -52,11 +53,22 @@
             </td>
             <td class="table-cell">
               @if (user.deleted_at) {
-                <span class="badge badge-red">Inactive</span>
+                <span class="badge badge-red inline-flex items-center">
+                  <span
+                    class="mr-1.5 inline-flex size-2 rounded-full bg-red-500"
+                  ></span>
+                  Inactive</span
+                >
               } @else {
-                <span class="badge badge-green">Active</span>
+                <span class="badge badge-green inline-flex items-center"
+                  ><span
+                    class="mr-1.5 inline-flex size-2 rounded-full bg-green-500"
+                  ></span
+                  >Active</span
+                >
               }
             </td>
+            <td class="table-cell"></td>
           </tr>
         }
       </tbody>
