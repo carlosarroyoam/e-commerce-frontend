@@ -7,12 +7,12 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-500 antialiased;
+    @apply bg-gray-50 text-gray-600 antialiased;
   }
 }
 
 .heading {
-  @apply text-2xl font-semibold tracking-tight text-gray-900;
+  @apply text-2xl font-medium tracking-tight text-gray-900;
 }
 
 .btn {
@@ -52,7 +52,7 @@
 }
 
 .form-control {
-  @apply w-full rounded-md px-4 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply w-full rounded-md border-gray-200 text-sm text-gray-900 shadow-sm;
 }
 
 .invalid {
@@ -72,7 +72,7 @@
 }
 
 .table-header-cell {
-  @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight text-gray-700;
+  @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight;
 }
 
 .table-cell {

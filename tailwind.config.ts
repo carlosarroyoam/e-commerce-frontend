@@ -1,3 +1,4 @@
+import tailwindFormsPlugin from '@tailwindcss/forms';
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
@@ -14,7 +15,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindFormsPlugin],
 };
 
 export default config;
