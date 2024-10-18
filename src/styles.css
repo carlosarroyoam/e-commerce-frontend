@@ -7,12 +7,12 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-600 antialiased;
+    @apply bg-zinc-50 text-zinc-500 antialiased;
   }
 }
 
 .heading {
-  @apply text-2xl font-medium tracking-tight text-gray-900;
+  @apply text-xl font-semibold tracking-tight text-zinc-900;
 }
 
 .btn {
@@ -24,7 +24,7 @@
 }
 
 .btn-secondary {
-  @apply bg-gray-300 text-gray-900 shadow-sm hover:bg-gray-300/80;
+  @apply bg-zinc-300 text-zinc-900 shadow-sm hover:bg-zinc-300/80;
 }
 
 .btn-destructive {
@@ -32,15 +32,15 @@
 }
 
 .link {
-  @apply inline-flex cursor-pointer items-center justify-center whitespace-nowrap text-sm text-gray-900 underline-offset-4 hover:underline;
+  @apply inline-flex cursor-pointer items-center justify-center whitespace-nowrap text-sm text-zinc-900 underline-offset-4 hover:underline;
 }
 
 .label {
-  @apply block text-sm font-medium leading-6 text-gray-900;
+  @apply block text-sm font-medium leading-6 text-zinc-900;
 }
 
 .badge {
-  @apply rounded-md bg-gray-200 px-2.5 py-1 text-xs font-semibold;
+  @apply rounded-md bg-zinc-200 px-2.5 py-1 text-xs font-semibold;
 }
 
 .badge-green {
@@ -52,7 +52,7 @@
 }
 
 .form-control {
-  @apply w-full rounded-md border-gray-200 text-sm text-gray-900 shadow-sm;
+  @apply w-full rounded-md border-zinc-200 text-sm text-zinc-900 shadow-sm;
 }
 
 .invalid {
@@ -60,15 +60,15 @@
 }
 
 .table {
-  @apply w-full table-auto divide-y divide-gray-200;
+  @apply w-full table-auto divide-y divide-zinc-200;
 }
 
 .table-header {
-  @apply bg-gray-100;
+  @apply bg-zinc-100;
 }
 
 .table-body {
-  @apply divide-y divide-gray-200;
+  @apply divide-y divide-zinc-200;
 }
 
 .table-header-cell {

@@ -17,16 +17,16 @@
 
   @if (isOpen) {
     <div
-      class="absolute right-0 z-10 mt-2 origin-top-right overflow-hidden rounded-md bg-gray-50 shadow-md"
+      class="absolute right-0 z-10 mt-2 origin-top-right overflow-hidden rounded-md bg-zinc-50 shadow-md"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="user-menu-button"
     >
       <div class="flex flex-col px-4 py-2.5">
-        <p class="text-nowrap text-sm text-gray-900">
+        <p class="text-nowrap text-sm text-zinc-900">
           {{ fullname }}
         </p>
-        <p class="text-nowrap text-sm text-gray-700">{{ user?.email }}</p>
+        <p class="text-nowrap text-sm text-zinc-700">{{ user?.email }}</p>
       </div>
 
       <hr class="my-1" />
@@ -34,7 +34,7 @@
       <a
         routerLink="/account"
         role="menuitem"
-        class="block px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-100"
+        class="block px-4 py-2.5 text-sm text-zinc-900 hover:bg-zinc-100"
       >
         Account settings
       </a>
@@ -42,7 +42,7 @@
         href="#"
         role="menuitem"
         (click)="logout()"
-        class="block w-full px-4 py-2.5 text-left text-sm text-gray-900 hover:bg-gray-100"
+        class="block w-full px-4 py-2.5 text-left text-sm text-zinc-900 hover:bg-zinc-100"
       >
         Log out
       </button>
