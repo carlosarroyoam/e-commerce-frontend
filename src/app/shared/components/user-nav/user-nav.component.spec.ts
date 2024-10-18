@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserNavComponent } from '@/app/shared/components/user-nav/user-nav.component';
+import { UserNavComponent } from './user-nav.component';
 
 describe('UserNavComponent', () => {
   let component: UserNavComponent;
