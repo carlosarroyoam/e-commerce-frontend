@@ -1,3 +1,4 @@
 {
+  "tailwindFunctions": ["cva", "twMerge"],
   "plugins": ["prettier-plugin-tailwindcss"]
 }

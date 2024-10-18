@@ -15,26 +15,6 @@
   @apply text-xl font-semibold tracking-tight text-zinc-900;
 }
 
-.btn {
-  @apply inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-80;
-}
-
-.btn-primary {
-  @apply bg-zinc-900 text-white shadow-sm hover:bg-zinc-900/90;
-}
-
-.btn-secondary {
-  @apply bg-zinc-300 text-zinc-900 shadow-sm hover:bg-zinc-300/90;
-}
-
-.btn-destructive {
-  @apply bg-red-600 text-white shadow-sm hover:bg-red-600/90;
-}
-
-.link {
-  @apply inline-flex cursor-pointer items-center justify-center whitespace-nowrap text-sm text-zinc-900 underline-offset-4 hover:underline;
-}
-
 .label {
   @apply block text-sm font-medium leading-6 text-zinc-900;
 }

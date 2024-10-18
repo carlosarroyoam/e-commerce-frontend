@@ -8,11 +8,12 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
+import { ButtonDirective } from '@/app/shared/components/ui/button.directive';
 
 @Component({
   standalone: true,
   templateUrl: './login-page.component.html',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ButtonDirective],
 })
 export class LoginPageComponent {
   loginForm = new FormGroup({

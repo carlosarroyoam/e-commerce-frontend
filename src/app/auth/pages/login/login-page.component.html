@@ -55,16 +55,19 @@
     </div>
 
     <button
+      appButton
       type="submit"
       [disabled]="loginForm.invalid"
       (click)="login()"
-      class="btn btn-primary w-full"
+      class="w-full"
     >
       Log in
     </button>
   </form>
 
   <div class="mt-6 flex justify-center">
-    <a routerLink="/auth/forgot-password" class="link">Forgot your password?</a>
+    <a appButton variant="link" routerLink="/auth/forgot-password"
+      >Forgot your password?</a
+    >
   </div>
 </section>
