@@ -1,6 +1,6 @@
 <header class="border-b border-zinc-200 bg-zinc-100">
   <div class="container flex items-center justify-between py-4">
-    <nav>
+    <nav class="flex items-center">
       <ul class="flex items-center justify-between">
         <li>
           <a
@@ -11,8 +11,35 @@
           >
         </li>
       </ul>
+
+      <ul class="ml-16 flex items-center gap-8">
+        <li>
+          <a
+            routerLink="/dashboard/products"
+            routerLinkActive="active"
+            class="text-sm font-medium tracking-tight hover:text-zinc-700"
+            >Products</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/dashboard/categories"
+            routerLinkActive="active"
+            class="text-sm font-medium tracking-tight hover:text-zinc-700"
+            >Categories</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/dashboard/users"
+            routerLinkActive="active"
+            class="text-sm font-medium tracking-tight hover:text-zinc-700"
+            >Users</a
+          >
+        </li>
+      </ul>
     </nav>
 
-    <app-user-nav></app-user-nav>
+    <app-user-nav />
   </div>
 </header>

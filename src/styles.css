@@ -16,15 +16,15 @@
 }
 
 .btn {
-  @apply inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70;
+  @apply inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-80;
 }
 
 .btn-primary {
-  @apply bg-blue-600 text-white shadow-sm hover:bg-blue-600/90;
+  @apply bg-zinc-900 text-white shadow-sm hover:bg-zinc-900/90;
 }
 
 .btn-secondary {
-  @apply bg-zinc-300 text-zinc-900 shadow-sm hover:bg-zinc-300/80;
+  @apply bg-zinc-300 text-zinc-900 shadow-sm hover:bg-zinc-300/90;
 }
 
 .btn-destructive {

@@ -1,7 +1,7 @@
 <div clickOutside (clickOutside)="onClickOutside()" class="relative">
   <button
     type="button"
-    class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+    class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-600"
     id="user-menu-button"
     aria-expanded="false"
     aria-haspopup="true"
@@ -22,19 +22,19 @@
       aria-orientation="vertical"
       aria-labelledby="user-menu-button"
     >
-      <div class="flex flex-col px-4 py-2.5">
-        <p class="text-nowrap text-sm text-zinc-900">
+      <div class="flex flex-col px-4 py-2">
+        <p class="text-nowrap text-sm font-medium text-zinc-700">
           {{ fullname }}
         </p>
-        <p class="text-nowrap text-sm text-zinc-700">{{ user?.email }}</p>
+        <p class="text-nowrap text-sm">{{ user?.email }}</p>
       </div>
 
-      <hr class="my-1" />
+      <hr class="mx-2 h-px bg-zinc-300" />
 
       <a
         routerLink="/account"
         role="menuitem"
-        class="block px-4 py-2.5 text-sm text-zinc-900 hover:bg-zinc-100"
+        class="block px-4 py-2 text-sm font-medium hover:bg-zinc-100"
       >
         Account settings
       </a>
@@ -42,7 +42,7 @@
         href="#"
         role="menuitem"
         (click)="logout()"
-        class="block w-full px-4 py-2.5 text-left text-sm text-zinc-900 hover:bg-zinc-100"
+        class="block w-full px-4 py-2 text-left text-sm font-medium hover:bg-zinc-100"
       >
         Log out
       </button>
