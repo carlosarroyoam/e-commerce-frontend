@@ -19,7 +19,7 @@ type SessionData = {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME = 'angular-auth-session';
+  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME = 'e-commerce-angular-frontend-session';
   private readonly DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY = 'device-fingerprint';
 
   constructor(

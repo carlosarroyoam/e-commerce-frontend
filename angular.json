@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-auth": {
+    "e-commerce-angular-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -17,7 +17,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/angular-auth"
+              "base": "dist/e-commerce-angular-frontend"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-auth:build:production"
+              "buildTarget": "e-commerce-angular-frontend:build:production"
             },
             "development": {
-              "buildTarget": "angular-auth:build:development"
+              "buildTarget": "e-commerce-angular-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "angular-auth:build"
+            "buildTarget": "e-commerce-angular-frontend:build"
           }
         },
         "test": {
