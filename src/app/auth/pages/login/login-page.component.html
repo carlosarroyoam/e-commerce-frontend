@@ -6,8 +6,9 @@
 
   <form method="post" [formGroup]="loginForm" class="mt-6 space-y-4">
     <div class="space-y-2">
-      <label for="email" class="label">Email</label>
+      <label appLabel for="email">Email</label>
       <input
+        appInput
         type="text"
         id="email"
         name="email"
@@ -15,42 +16,37 @@
         autocomplete="email"
         formControlName="email"
         required
-        class="form-control"
       />
       @if (email?.invalid && (email?.dirty || email?.touched)) {
-        <div class="invalid">
-          @if (email?.hasError("required")) {
-            <span>The email field is required.</span>
-          }
-          @if (email?.hasError("minlength")) {
-            <span>The email field should be at least 8 characters long.</span>
-          }
-        </div>
+        @if (email?.hasError("required")) {
+          <p appError>The email field is required.</p>
+        }
+        @if (email?.hasError("minlength")) {
+          <p appError>The email field should be at least 8 characters long.</p>
+        }
       }
     </div>
 
     <div class="space-y-2">
-      <label for="password" class="label">Password</label>
+      <label appLabel for="password">Password</label>
       <input
+        appInput
         type="password"
         id="password"
         name="password"
         placeholder="Enter your password"
         formControlName="password"
         required
-        class="form-control"
       />
       @if (password?.invalid && (password?.dirty || password?.touched)) {
-        <div class="invalid">
-          @if (password?.hasError("required")) {
-            <span>The password field is required.</span>
-          }
-          @if (password?.hasError("minlength")) {
-            <span
-              >The password field should be at least 8 characters long.</span
-            >
-          }
-        </div>
+        @if (password?.hasError("required")) {
+          <p appError>The password field is required.</p>
+        }
+        @if (password?.hasError("minlength")) {
+          <p appError>
+            The password field should be at least 8 characters long.
+          </p>
+        }
       }
     </div>
 
