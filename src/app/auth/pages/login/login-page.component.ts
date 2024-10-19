@@ -8,7 +8,7 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
-import { ButtonDirective } from '@/app/shared/components/ui/button.directive';
+import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 
 @Component({
   standalone: true,

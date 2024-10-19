@@ -19,18 +19,6 @@
   @apply block text-sm font-medium leading-6 text-zinc-900;
 }
 
-.badge {
-  @apply rounded-md bg-zinc-200 px-2.5 py-1 text-xs font-semibold;
-}
-
-.badge-green {
-  @apply bg-green-50 text-green-600;
-}
-
-.badge-red {
-  @apply bg-red-50 text-red-600;
-}
-
 .form-control {
   @apply w-full rounded-md border-zinc-200 text-sm text-zinc-900 shadow-sm;
 }
