@@ -27,55 +27,61 @@
         </tr>
       </thead>
       <tbody class="table-body">
-        @for (user of users; track user.id) {
-          <tr>
-            <td class="table-cell">
-              <img
-                class="size-8 rounded-full"
-                src="https://ui-avatars.com/api/?name={{
-                  user?.first_name
-                }}%20{{ user?.last_name }}&format=svg"
-                alt="{{ user?.first_name }}'s profile picture"
-              />
-            </td>
-            <td class="table-cell">
-              {{ user.first_name }} {{ user.last_name }}
-            </td>
-            <td class="table-cell">{{ user.email }}</td>
-            <td class="table-cell">
-              {{ user.user_role }}
-            </td>
-            <td class="table-cell">
-              {{ user.created_at | date: "short" }}
-            </td>
-            <td class="table-cell">
-              {{ user.updated_at | date: "short" }}
-            </td>
-            <td class="table-cell">
-              @if (user.deleted_at) {
-                <span
-                  appBadge
-                  variant="danger"
-                  class="inline-flex items-center"
-                >
+        @if (users.length > 0) {
+          @for (user of users; track user.id) {
+            <tr>
+              <td class="table-cell">
+                <img
+                  class="size-8 rounded-full"
+                  src="https://ui-avatars.com/api/?name={{
+                    user?.first_name
+                  }}%20{{ user?.last_name }}&format=svg"
+                  alt="{{ user?.first_name }}'s profile picture"
+                />
+              </td>
+              <td class="table-cell">
+                {{ user.first_name }} {{ user.last_name }}
+              </td>
+              <td class="table-cell">{{ user.email }}</td>
+              <td class="table-cell">
+                {{ user.user_role }}
+              </td>
+              <td class="table-cell">
+                {{ user.created_at | date: "short" }}
+              </td>
+              <td class="table-cell">
+                {{ user.updated_at | date: "short" }}
+              </td>
+              <td class="table-cell">
+                @if (user.deleted_at) {
                   <span
-                    class="mr-1.5 inline-flex size-2 rounded-full bg-red-500"
-                  ></span>
-                  Inactive</span
-                >
-              } @else {
-                <span
-                  appBadge
-                  variant="success"
-                  class="inline-flex items-center"
-                  ><span
-                    class="mr-1.5 inline-flex size-2 rounded-full bg-green-500"
-                  ></span
-                  >Active</span
-                >
-              }
-            </td>
-            <td class="table-cell"></td>
+                    appBadge
+                    variant="danger"
+                    class="inline-flex items-center"
+                  >
+                    <span
+                      class="mr-1.5 inline-flex size-2 rounded-full bg-red-500"
+                    ></span>
+                    Inactive</span
+                  >
+                } @else {
+                  <span
+                    appBadge
+                    variant="success"
+                    class="inline-flex items-center"
+                    ><span
+                      class="mr-1.5 inline-flex size-2 rounded-full bg-green-500"
+                    ></span
+                    >Active</span
+                  >
+                }
+              </td>
+              <td class="table-cell"></td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="8" class="h-24 text-center">No results.</td>
           </tr>
         }
       </tbody>
