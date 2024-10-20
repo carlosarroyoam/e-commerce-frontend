@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { environment } from '@/environments/environment';
+import { LoginResponse } from '../models/login-response.model';
 
 type SessionData = {
   user_id: string;
@@ -19,7 +20,8 @@ type SessionData = {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME = 'e-commerce-angular-frontend-session';
+  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME =
+    'e-commerce-angular-frontend-session';
   private readonly DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY = 'device-fingerprint';
 
   constructor(
@@ -27,23 +29,23 @@ export class AuthService {
     private readonly router: Router,
   ) {}
 
-  login(user: any): void {
+  login(credentials: { email: string; password: string }): void {
     this.httpClient
-      .post(`${environment.apiUrl}/auth/login`, {
-        ...user,
+      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, {
+        ...credentials,
         device_fingerprint: this.getDeviceFingerprint(),
       })
       .subscribe({
-        next: (response: any) => {
+        next: ({ user }) => {
           localStorage.setItem(
             this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
             JSON.stringify({
-              user_id: response.user.user_id,
-              email: response.user.email,
-              first_name: response.user.first_name,
-              last_name: response.user.last_name,
-              user_role: response.user.user_role,
-              user_role_id: response.user.user_role_id,
+              user_id: user.id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              user_role: user.user_role,
+              user_role_id: user.user_role_id,
             }),
           );
 
@@ -58,23 +60,28 @@ export class AuthService {
   }
 
   logout(): void {
-    this.httpClient.post(`${environment.apiUrl}/auth/logout`, null).subscribe({
-      next: () => {
-        localStorage.removeItem(this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME);
-        this.router.navigate(['auth/login']);
-      },
-      error: (err) => {
-        if (err instanceof HttpErrorResponse) {
-          alert('Error: ' + err.message);
-        }
-      },
-    });
+    this.httpClient
+      .post<void>(`${environment.apiUrl}/auth/logout`, null)
+      .subscribe({
+        next: () => {
+          localStorage.removeItem(this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME);
+          this.router.navigate(['auth/login']);
+        },
+        error: (err) => {
+          if (err instanceof HttpErrorResponse) {
+            alert('Error: ' + err.message);
+          }
+        },
+      });
   }
 
   refreshToken(): Observable<any> {
-    return this.httpClient.post(`${environment.apiUrl}/auth/refresh-token`, {
-      device_fingerprint: this.getDeviceFingerprint(),
-    });
+    return this.httpClient.post<void>(
+      `${environment.apiUrl}/auth/refresh-token`,
+      {
+        device_fingerprint: this.getDeviceFingerprint(),
+      },
+    );
   }
 
   isAuthenticated(): boolean {
