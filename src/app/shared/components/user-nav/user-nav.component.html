@@ -17,32 +17,38 @@
 
   @if (isOpen) {
     <div
-      class="absolute right-0 z-10 mt-2 origin-top-right overflow-hidden rounded-md bg-zinc-50 shadow-md"
+      class="absolute right-0 z-10 mt-1.5 origin-top-right overflow-hidden rounded-md bg-zinc-50 p-2.5 shadow-md"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="user-menu-button"
     >
-      <div class="flex flex-col px-4 py-2">
-        <p class="text-nowrap text-sm font-medium text-zinc-700">
+      <div class="px-2 py-1.5">
+        <p class="text-nowrap text-sm font-semibold leading-none text-zinc-900">
           {{ fullname }}
         </p>
-        <p class="text-nowrap text-sm">{{ user?.email }}</p>
+        <p class="mt-1 text-nowrap text-sm leading-none">{{ user?.email }}</p>
       </div>
 
-      <hr class="mx-2 h-px bg-zinc-300" />
+      <hr class="my-1 h-px bg-zinc-300" />
 
       <a
         routerLink="/account"
         role="menuitem"
-        class="block px-4 py-2 text-sm font-medium hover:bg-zinc-100"
+        class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
       >
-        Account settings
+        Account
+      </a>
+      <a
+        routerLink="/settings"
+        role="menuitem"
+        class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+      >
+        Settings
       </a>
       <button
-        href="#"
         role="menuitem"
         (click)="logout()"
-        class="block w-full px-4 py-2 text-left text-sm font-medium hover:bg-zinc-100"
+        class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
       >
         Log out
       </button>

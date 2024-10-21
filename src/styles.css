@@ -7,7 +7,7 @@
 
 @layer base {
   body {
-    @apply bg-zinc-50 text-zinc-500 antialiased;
+    @apply bg-zinc-50 font-sans text-zinc-500 antialiased;
   }
 }
 
