@@ -7,30 +7,32 @@
 
 @layer base {
   body {
-    @apply bg-zinc-50 font-sans text-zinc-500 antialiased;
+    @apply bg-zinc-50 text-zinc-500 antialiased;
   }
 }
 
-.heading {
-  @apply text-xl font-semibold tracking-tight text-zinc-900;
-}
+@layer components {
+  .heading {
+    @apply text-xl font-semibold tracking-tight text-zinc-900;
+  }
 
-.table {
-  @apply w-full table-auto divide-y divide-zinc-200;
-}
+  .table {
+    @apply w-full table-auto divide-y divide-zinc-200;
+  }
 
-.table-header {
-  @apply bg-zinc-100;
-}
+  .table-header {
+    @apply bg-zinc-100;
+  }
 
-.table-body {
-  @apply divide-y divide-zinc-200;
-}
+  .table-body {
+    @apply divide-y divide-zinc-200;
+  }
 
-.table-header-cell {
-  @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight;
-}
+  .table-header-cell {
+    @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight;
+  }
 
-.table-cell {
-  @apply px-6 py-2.5 text-sm;
+  .table-cell {
+    @apply px-6 py-2.5 text-sm;
+  }
 }
