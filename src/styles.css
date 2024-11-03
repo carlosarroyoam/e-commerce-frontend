@@ -7,7 +7,7 @@
 
 @layer base {
   body {
-    @apply bg-zinc-50 text-zinc-500 antialiased;
+    @apply bg-white text-zinc-500 antialiased;
   }
 }
 
@@ -21,7 +21,7 @@
   }
 
   .table-header {
-    @apply bg-zinc-100;
+    @apply bg-zinc-50;
   }
 
   .table-body {
