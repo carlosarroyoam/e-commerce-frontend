@@ -5,24 +5,23 @@ import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { environment } from '@/environments/environment';
-import { LoginResponse } from '../models/login-response.model';
+import { LoginResponse } from '@/app/core/models/login-response.model';
 
-type SessionData = {
+interface SessionData {
   user_id: string;
   email: string;
   first_name: string;
   last_name: string;
   user_role: string;
   user_role_id: string;
-};
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly SESSION_DATA_LOCAL_STORAGE_KEY_NAME =
-    'e-commerce-angular-frontend-session';
-  private readonly DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY = 'device-fingerprint';
+  private readonly SESSION_DATA_KEY = 'e-commerce-angular-frontend-session';
+  private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -38,7 +37,7 @@ export class AuthService {
       .subscribe({
         next: ({ user }) => {
           localStorage.setItem(
-            this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
+            this.SESSION_DATA_KEY,
             JSON.stringify({
               user_id: user.id,
               email: user.email,
@@ -64,7 +63,7 @@ export class AuthService {
       .post<void>(`${environment.apiUrl}/auth/logout`, null)
       .subscribe({
         next: () => {
-          localStorage.removeItem(this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME);
+          localStorage.removeItem(this.SESSION_DATA_KEY);
           this.router.navigate(['auth/login']);
         },
         error: (err) => {
@@ -85,16 +84,12 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const session = localStorage.getItem(
-      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
-    );
+    const session = localStorage.getItem(this.SESSION_DATA_KEY);
     return !!session;
   }
 
   getUser(): SessionData | null {
-    const session = localStorage.getItem(
-      this.SESSION_DATA_LOCAL_STORAGE_KEY_NAME,
-    );
+    const session = localStorage.getItem(this.SESSION_DATA_KEY);
 
     if (!session) {
       return null;
@@ -104,10 +99,10 @@ export class AuthService {
   }
 
   private getDeviceFingerprint(): string | null {
-    if (!localStorage.getItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY)) {
-      localStorage.setItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY, uuid());
+    if (!localStorage.getItem(this.DEVICE_FINGERPRINT_KEY)) {
+      localStorage.setItem(this.DEVICE_FINGERPRINT_KEY, uuid());
     }
 
-    return localStorage.getItem(this.DEVICE_FINGERPRINT_LOCAL_STORAGE_KEY);
+    return localStorage.getItem(this.DEVICE_FINGERPRINT_KEY);
   }
 }
