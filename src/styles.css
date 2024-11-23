@@ -17,7 +17,7 @@
   }
 
   .table {
-    @apply w-full table-auto divide-y divide-zinc-200;
+    @apply w-full min-w-max table-auto divide-y divide-zinc-200;
   }
 
   .table-header {

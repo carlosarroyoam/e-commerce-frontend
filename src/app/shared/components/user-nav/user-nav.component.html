@@ -31,27 +31,37 @@
 
       <hr class="my-1 h-px bg-zinc-300" />
 
-      <a
-        routerLink="/account"
-        role="menuitem"
-        class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-      >
-        Account
-      </a>
-      <a
-        routerLink="/settings"
-        role="menuitem"
-        class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-      >
-        Settings
-      </a>
-      <button
-        role="menuitem"
-        (click)="logout()"
-        class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-      >
-        Log out
-      </button>
+      <nav>
+        <ul>
+          <li>
+            <a
+              routerLink="/account"
+              role="menuitem"
+              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            >
+              Account
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/settings"
+              role="menuitem"
+              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            >
+              Settings
+            </a>
+          </li>
+          <li>
+            <button
+              role="menuitem"
+              (click)="logout()"
+              class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            >
+              Log out
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   }
 </div>

@@ -1,16 +1,17 @@
 <section>
-  <div class="flex gap-4">
+  <div class="flex flex-col gap-4 md:flex-row">
     <div class="flex-auto">
       <h2 class="heading">Users</h2>
-      <p class="mt-1.5 text-sm">
+      <p class="mt-1 text-sm">
         A list of all the users registered including their name, email, and
         role.
       </p>
     </div>
+
     <button appButton type="submit" class="btn btn-primary">Add user</button>
   </div>
 
-  <div class="mt-6 overflow-hidden rounded-md border shadow-sm">
+  <div class="mt-6 overflow-auto rounded-md border shadow-sm">
     <table class="table">
       <thead class="table-header">
         <tr>
@@ -26,6 +27,7 @@
           <th scope="col" class="table-header-cell">Actions</th>
         </tr>
       </thead>
+
       <tbody class="table-body">
         @if (users.length > 0) {
           @for (user of users; track user.id) {
@@ -62,18 +64,19 @@
                     <span
                       class="mr-1.5 inline-flex size-2 rounded-full bg-red-500"
                     ></span>
-                    Inactive</span
-                  >
+                    Inactive
+                  </span>
                 } @else {
                   <span
                     appBadge
                     variant="success"
                     class="inline-flex items-center"
-                    ><span
-                      class="mr-1.5 inline-flex size-2 rounded-full bg-green-500"
-                    ></span
-                    >Active</span
                   >
+                    <span
+                      class="mr-1.5 inline-flex size-2 rounded-full bg-green-500"
+                    ></span>
+                    Active
+                  </span>
                 }
               </td>
               <td class="table-cell"></td>
