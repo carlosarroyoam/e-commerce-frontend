@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
@@ -12,6 +12,7 @@ import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.dir
 })
 export class UserNavComponent {
   isOpen: boolean = false;
+  menuItems = input.required<{ href: string; title: string }[]>();
 
   constructor(private readonly authService: AuthService) {}
 

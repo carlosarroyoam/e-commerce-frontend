@@ -1,4 +1,8 @@
-<header class="border-b border-zinc-200 bg-zinc-50">
+<header
+  clickOutside
+  (clickOutside)="onClickOutside()"
+  class="border-b border-zinc-200 bg-zinc-50"
+>
   <div class="container flex items-center justify-between py-4">
     <nav class="flex items-center">
       <a
@@ -24,7 +28,7 @@
     </nav>
 
     <!-- User navigation. -->
-    <app-user-nav class="hidden md:block" />
+    <app-user-nav [menuItems]="userNavMenuItems" class="hidden md:block" />
 
     <!-- Mobile menu trigger. -->
     <div class="flex md:hidden">
@@ -63,7 +67,7 @@
               <a
                 [routerLink]="menuItem.href"
                 routerLinkActive="text-zinc-900"
-                class="text-sm font-medium tracking-tight hover:text-zinc-700"
+                class="block text-sm font-medium tracking-tight hover:text-zinc-700"
               >
                 {{ menuItem.title }}
               </a>
@@ -74,24 +78,17 @@
         <hr class="my-4 h-px bg-zinc-300" />
 
         <ul class="mb-4 flex flex-col gap-4">
-          <li (click)="toggleMobileMenu()">
-            <a
-              routerLink="/account"
-              routerLinkActive="text-zinc-900"
-              class="text-sm font-medium tracking-tight hover:text-zinc-700"
-            >
-              Account
-            </a>
-          </li>
-          <li (click)="toggleMobileMenu()">
-            <a
-              routerLink="/settings"
-              routerLinkActive="text-zinc-900"
-              class="text-sm font-medium tracking-tight hover:text-zinc-700"
-            >
-              Settings
-            </a>
-          </li>
+          @for (menuItem of userNavMenuItems; track $index) {
+            <li (click)="toggleMobileMenu()">
+              <a
+                [routerLink]="menuItem.href"
+                routerLinkActive="text-zinc-900"
+                class="block text-sm font-medium tracking-tight hover:text-zinc-700"
+              >
+                {{ menuItem.title }}
+              </a>
+            </li>
+          }
 
           <li (click)="logout()">
             <button

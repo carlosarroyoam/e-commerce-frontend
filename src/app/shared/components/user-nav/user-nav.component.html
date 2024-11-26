@@ -33,24 +33,18 @@
 
       <nav>
         <ul>
-          <li>
-            <a
-              routerLink="/account"
-              role="menuitem"
-              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-            >
-              Account
-            </a>
-          </li>
-          <li>
-            <a
-              routerLink="/settings"
-              role="menuitem"
-              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-            >
-              Settings
-            </a>
-          </li>
+          @for (item of menuItems(); track $index) {
+            <li>
+              <a
+                [routerLink]="item.href"
+                role="menuitem"
+                class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+              >
+                {{ item.title }}
+              </a>
+            </li>
+          }
+
           <li>
             <button
               role="menuitem"
