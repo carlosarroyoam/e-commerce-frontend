@@ -8,12 +8,14 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-zinc-900 text-white shadow-sm hover:bg-zinc-900/90 focus:ring-gray-800',
+          'bg-zinc-900 text-white shadow-sm hover:bg-zinc-900/90 focus:ring-zinc-800',
         secondary:
-          'bg-gray-300 text-gray-900 hover:bg-gray-300/90 focus:ring-gray-300',
+          'bg-zinc-300 text-zinc-900 hover:bg-zinc-300/90 focus:ring-zinc-300',
         danger:
           'bg-red-600 text-white shadow-sm hover:bg-red-600/90 focus:ring-red-500',
-        link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-gray-800',
+        outline:
+          'border border-zinc-300 text-zinc-900 hover:bg-zinc-100 focus:ring-zinc-200',
+        link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
         default: 'h-10 px-4 py-2',
