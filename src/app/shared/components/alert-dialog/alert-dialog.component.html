@@ -1,0 +1,67 @@
+<div
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+  class="relative z-10"
+>
+  <!-- Background backdrop -->
+  <div
+    aria-hidden="true"
+    class="fixed inset-0 bg-black/40 transition-opacity"
+  ></div>
+
+  <!-- Modal panel -->
+  <div
+    class="fixed inset-0 flex items-end justify-center p-4 sm:items-center sm:p-0"
+  >
+    <div
+      (clickOutside)="closeDialog()"
+      class="relative w-full overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm sm:max-w-xl"
+    >
+      <!-- Dismiss button -->
+      <div
+        class="absolute right-3 top-1 hidden p-1.5 hover:cursor-pointer sm:block"
+      >
+        <span class="sr-only">Close dialog</span>
+        <button (click)="closeDialog()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+            data-slot="icon"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal header   -->
+      <h3
+        id="modal-title"
+        class="text-center font-semibold text-zinc-900 sm:text-left"
+      >
+        {{ title() }}
+      </h3>
+
+      <!-- Modal content -->
+      <div class="mt-2">
+        <p class="text-center text-sm sm:text-left">
+          {{ message() }}
+        </p>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="mt-8 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <button appButton type="button" (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

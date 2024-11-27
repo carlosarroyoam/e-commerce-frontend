@@ -10,15 +10,16 @@ export const buttonVariants = cva(
         default:
           'bg-zinc-900 text-white shadow-sm hover:bg-zinc-900/90 focus:ring-zinc-800',
         secondary:
-          'bg-zinc-300 text-zinc-900 hover:bg-zinc-300/90 focus:ring-zinc-300',
+          'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/90 focus:ring-zinc-100',
         danger:
-          'bg-red-600 text-white shadow-sm hover:bg-red-600/90 focus:ring-red-500',
+          'bg-red-500 text-white shadow-sm hover:bg-red-500/90 focus:ring-red-500',
         outline:
           'border border-zinc-300 text-zinc-900 hover:bg-zinc-100 focus:ring-zinc-200',
         link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
         default: 'h-10 px-4 py-2',
+        icon: 'size-8',
       },
     },
     defaultVariants: {

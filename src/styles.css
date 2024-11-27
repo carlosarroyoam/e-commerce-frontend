@@ -32,7 +32,7 @@
     @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight;
   }
 
-  .table-cell {
+  .table-data-cell {
     @apply px-6 py-2.5 text-sm;
   }
 }

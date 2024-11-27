@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { environment } from '@/environments/environment';
 import { LoginResponse } from '@/app/core/models/login-response.model';
+import { DialogService } from '@/app/core/services/dialog.service';
+import { environment } from '@/environments/environment';
 
 interface SessionData {
   user_id: string;
@@ -24,6 +25,7 @@ export class AuthService {
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
   constructor(
+    private readonly dialogService: DialogService,
     private readonly httpClient: HttpClient,
     private readonly router: Router,
   ) {}
@@ -52,7 +54,17 @@ export class AuthService {
         },
         error: (err) => {
           if (err instanceof HttpErrorResponse) {
-            alert('Error: ' + err.message);
+            console.error(err.message);
+
+            if ('status' in err.error && err.error['status'] !== 500) {
+              this.dialogService.create({
+                title: err.error.error,
+                message: err.error.message,
+              });
+              return;
+            }
+
+            this.dialogService.create();
           }
         },
       });
@@ -68,7 +80,9 @@ export class AuthService {
         },
         error: (err) => {
           if (err instanceof HttpErrorResponse) {
-            alert('Error: ' + err.message);
+            console.error(err.message);
+            localStorage.removeItem(this.SESSION_DATA_KEY);
+            this.router.navigate(['auth/login']);
           }
         },
       });
