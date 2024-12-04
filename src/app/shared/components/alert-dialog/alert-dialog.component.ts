@@ -13,9 +13,9 @@ import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.dir
   imports: [ButtonDirective, ClickOutsideDirective],
 })
 export class AlertDialogComponent {
-  dialogClosed = output<void>();
   title = input.required<string>();
   message = input.required<string>();
+  dialogClosed = output<void>();
 
   closeDialog(): void {
     this.dialogClosed.emit();

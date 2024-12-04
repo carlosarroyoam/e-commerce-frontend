@@ -32,18 +32,12 @@ export class DialogService {
 
     componentRef.setInput('title', options.title);
     componentRef.setInput('message', options.message);
-    componentRef.instance.dialogClosed.subscribe(() =>
-      this.closeDialog(componentRef),
-    );
+    componentRef.instance.dialogClosed.subscribe(() => componentRef.destroy());
 
     if (dialogContainer) {
       dialogContainer.appendChild(componentRef.location.nativeElement);
     }
 
     this.appRef.attachView(componentRef.hostView);
-  }
-
-  private closeDialog(componentRef: ComponentRef<AlertDialogComponent>): void {
-    componentRef.destroy();
   }
 }

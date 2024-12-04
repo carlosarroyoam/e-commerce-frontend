@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Inject,
   OnDestroy,
+  output,
   Output,
 } from '@angular/core';
 import { filter, fromEvent, Subscription } from 'rxjs';
@@ -15,8 +16,7 @@ import { filter, fromEvent, Subscription } from 'rxjs';
   standalone: true,
 })
 export class ClickOutsideDirective implements AfterViewInit, OnDestroy {
-  @Output() clickOutside = new EventEmitter<void>();
-
+  clickOutside = output<void>();
   documentClickSubscription: Subscription | undefined;
 
   constructor(
