@@ -1,7 +1,8 @@
 <div
-  aria-labelledby="modal-title"
-  role="dialog"
   aria-modal="true"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-description"
+  role="dialog"
   class="relative z-10"
 >
   <!-- Background backdrop -->
@@ -15,12 +16,13 @@
     class="fixed inset-0 flex items-end justify-center p-4 sm:items-center sm:p-0"
   >
     <div
-      (clickOutside)="closeDialog()"
-      class="relative w-full overflow-hidden rounded-md bg-white px-8 py-6 shadow-sm sm:max-w-xl"
+      clickOutside
+      (clickOutside)="onClickOutside()"
+      class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:max-w-xl"
     >
       <!-- Dismiss button -->
       <div
-        class="absolute right-3 top-1 hidden p-1.5 hover:cursor-pointer sm:block"
+        class="absolute right-3 top-3 hidden p-1.5 hover:cursor-pointer sm:block"
       >
         <span class="sr-only">Close dialog</span>
         <button (click)="closeDialog()">
@@ -43,7 +45,7 @@
         </button>
       </div>
 
-      <div class="flex gap-4">
+      <div class="flex flex-col gap-4 sm:flex-row">
         <div
           class="mx-auto flex size-12 items-center justify-center rounded-full bg-red-100 sm:mx-0"
         >
@@ -67,14 +69,17 @@
         <div class="flex-1">
           <!-- Modal header   -->
           <h3
-            id="modal-title"
+            id="dialog-title"
             class="text-center font-semibold text-zinc-900 sm:text-left"
           >
             {{ title() }}
           </h3>
 
           <!-- Modal content -->
-          <p class="mt-1 text-center text-sm sm:text-left">
+          <p
+            id="dialog-description"
+            class="mt-1 text-center text-sm sm:text-left"
+          >
             {{ message() }}
           </p>
         </div>

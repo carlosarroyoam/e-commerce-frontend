@@ -19,19 +19,23 @@ export class DialogService {
   ) {}
 
   create(
-    options: { title?: string; message?: string } = {
-      title: 'Whoops! something went wrong',
-      message:
-        'There was a problem processing the request. Please try again later.',
-    },
+    options: { title?: string; message?: string; isStatic?: boolean } = {},
   ): void {
     const dialogContainer = this.document.body;
     const componentRef = createComponent(AlertDialogComponent, {
       environmentInjector: this.appRef.injector,
     });
 
-    componentRef.setInput('title', options.title);
-    componentRef.setInput('message', options.message);
+    componentRef.setInput(
+      'title',
+      options.title ?? 'Whoops! something went wrong',
+    );
+    componentRef.setInput(
+      'message',
+      options.message ??
+        'There was a problem processing the request. Please try again later.',
+    );
+    componentRef.setInput('isStatic', options.isStatic ?? false);
     componentRef.instance.dialogClosed.subscribe(() => componentRef.destroy());
 
     if (dialogContainer) {

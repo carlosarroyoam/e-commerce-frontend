@@ -15,7 +15,12 @@ import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.dir
 export class AlertDialogComponent {
   title = input.required<string>();
   message = input.required<string>();
+  isStatic = input.required<boolean>();
   dialogClosed = output<void>();
+
+  onClickOutside(): void {
+    if (!this.isStatic()) this.dialogClosed.emit();
+  }
 
   closeDialog(): void {
     this.dialogClosed.emit();
