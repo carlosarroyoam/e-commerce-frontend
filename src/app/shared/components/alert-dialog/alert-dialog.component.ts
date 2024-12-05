@@ -1,28 +1,34 @@
-import { Component, input, output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
-import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.directive';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+
+interface AlertDialogData {
+  title: string;
+  description: string;
+}
 
 @Component({
   standalone: true,
   selector: 'app-alert-dialog',
   templateUrl: './alert-dialog.component.html',
-  host: {
-    '(document:keydown.escape)': 'closeDialog()',
-  },
-  imports: [ButtonDirective, ClickOutsideDirective],
+  imports: [ButtonDirective],
 })
 export class AlertDialogComponent {
-  title = input.required<string>();
-  message = input.required<string>();
-  isStatic = input.required<boolean>();
-  dialogClosed = output<void>();
+  public constructor(
+    private readonly dialogRef: DialogRef<void>,
+    @Inject(DIALOG_DATA) private readonly data: AlertDialogData,
+  ) {}
 
-  onClickOutside(): void {
-    if (!this.isStatic()) this.dialogClosed.emit();
+  get title(): string {
+    return this.data.title;
+  }
+
+  get description(): string {
+    return this.data.description;
   }
 
   closeDialog(): void {
-    this.dialogClosed.emit();
+    this.dialogRef.close();
   }
 }

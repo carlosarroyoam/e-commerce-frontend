@@ -1,11 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import {
-  ApplicationRef,
-  ComponentRef,
-  createComponent,
-  Inject,
-  Injectable,
-} from '@angular/core';
+import { Dialog } from '@angular/cdk/dialog';
+import { Injectable } from '@angular/core';
 
 import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert-dialog.component';
 
@@ -13,35 +7,24 @@ import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert
   providedIn: 'root',
 })
 export class DialogService {
-  constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly appRef: ApplicationRef,
-  ) {}
+  constructor(private readonly dialog: Dialog) {}
 
-  create(
-    options: { title?: string; message?: string; isStatic?: boolean } = {},
+  open(
+    options: { title?: string; description?: string; isStatic?: boolean } = {},
   ): void {
-    const dialogContainer = this.document.body;
-    const componentRef = createComponent(AlertDialogComponent, {
-      environmentInjector: this.appRef.injector,
+    const title = options.title ?? 'Whoops! something went wrong';
+    const description =
+      options.description ??
+      'There was a problem processing the request. Please try again later.';
+
+    this.dialog.open<void>(AlertDialogComponent, {
+      ariaModal: true,
+      ariaLabelledBy: 'dialog-title',
+      ariaDescribedBy: 'dialog-description',
+      data: {
+        title,
+        description,
+      },
     });
-
-    componentRef.setInput(
-      'title',
-      options.title ?? 'Whoops! something went wrong',
-    );
-    componentRef.setInput(
-      'message',
-      options.message ??
-        'There was a problem processing the request. Please try again later.',
-    );
-    componentRef.setInput('isStatic', options.isStatic ?? false);
-    componentRef.instance.dialogClosed.subscribe(() => componentRef.destroy());
-
-    if (dialogContainer) {
-      dialogContainer.appendChild(componentRef.location.nativeElement);
-    }
-
-    this.appRef.attachView(componentRef.hostView);
   }
 }

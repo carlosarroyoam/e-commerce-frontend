@@ -57,14 +57,14 @@ export class AuthService {
             console.error(err.message);
 
             if ('status' in err.error && err.error['status'] !== 500) {
-              this.dialogService.create({
+              this.dialogService.open({
                 title: err.error.error,
-                message: err.error.message,
+                description: err.error.message,
               });
               return;
             }
 
-            this.dialogService.create();
+            this.dialogService.open();
           }
         },
       });
