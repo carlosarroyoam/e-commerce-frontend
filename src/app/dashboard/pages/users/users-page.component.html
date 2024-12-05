@@ -15,7 +15,7 @@
     <table class="table">
       <thead class="table-header">
         <tr>
-          <th scope="col" class="table-header-cell w-20">
+          <th scope="col" class="table-header-cell">
             <span class="sr-only">Profile picture</span>
           </th>
           <th scope="col" class="table-header-cell">Name</th>
@@ -46,7 +46,7 @@
               </td>
               <td class="table-data-cell">{{ user.email }}</td>
               <td class="table-data-cell">
-                {{ user.user_role }}
+                {{ user.user_role.replace("App/", "") }}
               </td>
               <td class="table-data-cell">
                 {{ user.created_at | date: "short" }}
@@ -80,7 +80,7 @@
                 }
               </td>
               <td class="table-data-cell flex gap-2">
-                <button appButton variant="secondary" size="icon">
+                <button appButton variant="outline" size="icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -96,7 +96,7 @@
                     <path d="m9 18 6-6-6-6"></path>
                   </svg>
                 </button>
-                <button appButton variant="danger" size="icon">
+                <button appButton variant="outline" size="icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
