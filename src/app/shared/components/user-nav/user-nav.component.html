@@ -1,61 +1,78 @@
-<div clickOutside (clickOutside)="onClickOutside()" class="relative">
-  <button
-    type="button"
-    class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-600"
-    id="user-menu-button"
-    aria-expanded="false"
-    aria-haspopup="true"
-    (click)="toggleIsOpen()"
+<button
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  id="user-menu-button"
+  type="button"
+  aria-haspopup="true"
+  (click)="toggleIsOpen()"
+  class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+>
+  <span class="sr-only">Open user menu</span>
+  <img
+    src="https://ui-avatars.com/api/?name={{
+      fullname
+    }}&format=svg&background=d4d4d8"
+    alt="{{ user?.first_name }}'s profile picture"
+    class="size-10 rounded-full"
+  />
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayPositions]="[
+    {
+      offsetY: 8,
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+    },
+  ]"
+  [cdkConnectedOverlayHasBackdrop]="isOpen"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop-cs"
+  (backdropClick)="toggleIsOpen()"
+>
+  <div
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="user-menu-button"
+    class="overflow-hidden rounded-md bg-white p-2.5 shadow-md"
   >
-    <span class="sr-only">Open user menu</span>
-    <img
-      class="size-10 rounded-full"
-      src="https://ui-avatars.com/api/?name={{ fullname }}&format=svg&background=d4d4d8"
-      alt="{{ user?.first_name }}'s profile picture"
-    />
-  </button>
-
-  @if (isOpen) {
-    <div
-      class="absolute right-0 z-10 mt-1.5 origin-top-right overflow-hidden rounded-md bg-white p-2.5 shadow-md"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="user-menu-button"
-    >
-      <div class="px-2 py-1.5">
-        <p class="text-nowrap text-sm font-semibold leading-none text-zinc-900">
-          {{ fullname }}
-        </p>
-        <p class="mt-1 text-nowrap text-sm leading-none">{{ user?.email }}</p>
-      </div>
-
-      <hr class="my-1 h-px bg-zinc-300" />
-
-      <nav>
-        <ul>
-          @for (item of menuItems(); track $index) {
-            <li>
-              <a
-                [routerLink]="item.href"
-                role="menuitem"
-                class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-              >
-                {{ item.title }}
-              </a>
-            </li>
-          }
-
-          <li>
-            <button
-              role="menuitem"
-              (click)="logout()"
-              class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-            >
-              Log out
-            </button>
-          </li>
-        </ul>
-      </nav>
+    <div class="px-2 py-1.5">
+      <p class="text-nowrap text-sm font-semibold leading-none text-zinc-900">
+        {{ fullname }}
+      </p>
+      <p class="mt-1 text-nowrap text-sm leading-none">{{ user?.email }}</p>
     </div>
-  }
-</div>
+
+    <hr class="my-1 h-px bg-zinc-300" />
+
+    <nav>
+      <ul>
+        @for (item of menuItems(); track $index) {
+          <li>
+            <a
+              [routerLink]="item.href"
+              role="menuitem"
+              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            >
+              {{ item.title }}
+            </a>
+          </li>
+        }
+
+        <li>
+          <button
+            role="menuitem"
+            (click)="logout()"
+            class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+          >
+            Log out
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</ng-template>

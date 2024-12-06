@@ -1,14 +1,14 @@
+import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
-import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.directive';
 
 @Component({
   standalone: true,
   selector: 'app-user-nav',
   templateUrl: './user-nav.component.html',
-  imports: [RouterLink, ClickOutsideDirective],
+  imports: [RouterLink, OverlayModule],
 })
 export class UserNavComponent {
   isOpen: boolean = false;
@@ -21,11 +21,7 @@ export class UserNavComponent {
   }
 
   get fullname(): string | null {
-    if (!this.user) {
-      return null;
-    }
-
-    return `${this.user.first_name} ${this.user.last_name}`;
+    return `${this.user?.first_name} ${this.user?.last_name}`;
   }
 
   logout(): void {
@@ -34,9 +30,5 @@ export class UserNavComponent {
 
   toggleIsOpen(): void {
     this.isOpen = !this.isOpen;
-  }
-
-  onClickOutside(): void {
-    this.isOpen = false;
   }
 }
