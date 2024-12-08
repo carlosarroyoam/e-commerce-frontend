@@ -1,33 +1,8 @@
 <!-- Modal panel -->
 <div class="absolute inset-x-0 bottom-0 p-4 sm:relative sm:p-0">
   <div
-    class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:max-w-xl"
+    class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:min-w-[448px] sm:max-w-xl"
   >
-    <!-- Dismiss button -->
-    <div
-      class="absolute right-3 top-3 hidden p-1.5 hover:cursor-pointer sm:block"
-    >
-      <span class="sr-only">Close dialog</span>
-      <button (click)="closeDialog()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-          data-slot="icon"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          ></path>
-        </svg>
-      </button>
-    </div>
-
     <div class="flex flex-col gap-4 sm:flex-row">
       <div
         class="mx-auto flex size-12 items-center justify-center rounded-full bg-red-100 sm:mx-0"
@@ -65,6 +40,29 @@
         >
           {{ description }}
         </p>
+      </div>
+
+      <!-- Dismiss button -->
+      <div class="hidden hover:cursor-pointer sm:block">
+        <span class="sr-only">Close dialog</span>
+        <button (click)="closeDialog()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+            data-slot="icon"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
       </div>
     </div>
 
