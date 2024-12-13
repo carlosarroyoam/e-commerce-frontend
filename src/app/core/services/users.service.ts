@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -13,13 +13,37 @@ import { UserResponse } from '../models/user.response';
 export class UserService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  getAll(): Observable<User[]> {
-    return this.httpClient
-      .get<UsersResponse>(`${environment.apiUrl}/users`)
-      .pipe(
-        map((response) => response.users),
-        catchError(() => of([])),
-      );
+  getAll({
+    page,
+    size,
+    sort,
+    search,
+    status,
+  }: {
+    page?: number;
+    size?: number;
+    sort?:
+      | 'id'
+      | '-id'
+      | 'first_name'
+      | '-first_name'
+      | 'last_name'
+      | '-last_name'
+      | 'email'
+      | '-email';
+    search?: string;
+    status?: 'active' | 'inactive';
+  } = {}): Observable<UsersResponse> {
+    let params = new HttpParams();
+    params = params.append('page', page ?? 1);
+    params = params.append('size', size ?? 20);
+    if (sort) params = params.append('sort', sort);
+    if (search) params = params.append('search', search);
+    if (status) params = params.append('status', status);
+
+    return this.httpClient.get<UsersResponse>(`${environment.apiUrl}/users`, {
+      params,
+    });
   }
 
   getById(userId: number): Observable<User | null> {

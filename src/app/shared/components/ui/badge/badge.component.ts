@@ -1,4 +1,4 @@
-import { computed, Directive, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
@@ -20,15 +20,35 @@ export const badgeVariants = cva(
 
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
-@Directive({
+const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
+  variants: {
+    variant: {
+      default: 'bg-blue-600',
+      success: 'bg-green-600',
+      danger: 'bg-red-600',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+@Component({
   standalone: true,
-  selector: '[appBadge]',
+  selector: 'app-badge',
+  templateUrl: './badge.component.html',
+  imports: [],
   host: {
     '[class]': 'computedClass()',
   },
 })
-export class BadgeDirective {
+export class BadgeComponent {
   variant = input<BadgeVariants['variant']>();
+  label = input.required<string>();
+
+  iconClass = computed(() => {
+    return twMerge(iconVariants({ variant: this.variant() }));
+  });
 
   computedClass = computed(() => {
     return twMerge(badgeVariants({ variant: this.variant() }));

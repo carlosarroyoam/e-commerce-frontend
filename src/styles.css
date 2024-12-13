@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,100..900&display=swap");
-@import '@angular/cdk/overlay-prebuilt.css';
+@import "@angular/cdk/overlay-prebuilt.css";
 
 @tailwind base;
 @tailwind components;
@@ -15,25 +15,5 @@
 @layer components {
   .heading {
     @apply text-xl font-semibold tracking-tight text-zinc-900;
-  }
-
-  .table {
-    @apply w-full min-w-max divide-y divide-zinc-200;
-  }
-
-  .table-header {
-    @apply bg-zinc-50;
-  }
-
-  .table-body {
-    @apply divide-y divide-zinc-200;
-  }
-
-  .table-header-cell {
-    @apply px-6 py-2.5 text-start text-sm font-semibold tracking-tight;
-  }
-
-  .table-data-cell {
-    @apply px-6 py-2.5 text-sm;
   }
 }

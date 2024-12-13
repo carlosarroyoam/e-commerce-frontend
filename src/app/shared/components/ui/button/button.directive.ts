@@ -14,7 +14,7 @@ export const buttonVariants = cva(
         danger:
           'bg-red-500 text-white shadow-sm hover:bg-red-500/90 focus:ring-red-500',
         outline:
-          'border border-zinc-300 text-zinc-900 hover:bg-zinc-100 focus:ring-zinc-200',
+          'border border-zinc-300 text-zinc-900 hover:bg-zinc-50 focus:ring-zinc-100',
         link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
