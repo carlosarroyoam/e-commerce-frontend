@@ -120,11 +120,15 @@ export class UsersPageComponent implements OnInit {
   }
 
   searchUser(): void {
+    if (this.search() === undefined) return;
+
     this.page.set(1);
     this.fetchData();
   }
 
   clearSearch(): void {
+    if (this.search() === undefined) return;
+
     this.page.set(1);
     this.search.set(undefined);
     this.fetchData();

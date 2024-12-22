@@ -9,23 +9,48 @@
     </div>
   </div>
 
-  <div class="mt-8">
-    <input
-      appInput
-      type="text"
-      name="search"
-      placeholder="Filter users..."
-      autocomplete="off"
-      [(ngModel)]="search"
-      (keydown.enter)="searchUser()"
-      class="max-w-72"
-    />
-    <button appButton variant="secondary" (click)="clearSearch()" class="ml-4">
+  <div class="mt-8 flex gap-4">
+    <div class="relative inline-block max-w-64">
+      <input
+        appInput
+        type="text"
+        name="search"
+        placeholder="Filter users..."
+        autocomplete="off"
+        [(ngModel)]="search"
+        (keydown.enter)="searchUser()"
+        class="w-full pr-9"
+      />
+      <div
+        (click)="searchUser()"
+        class="absolute inset-y-0 right-0 mr-3 flex cursor-pointer items-center hover:text-zinc-700"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="relative inline-block">
+      <button appButton variant="secondary" (click)="clearSearch()">
+        Status
+      </button>
+    </div>
+
+    <button appButton variant="secondary" (click)="clearSearch()">
       Clear filters
     </button>
   </div>
 
-  <div class="mt-4 overflow-auto rounded-md border shadow-sm">
+  <div class="relative mt-4 overflow-x-auto rounded-md border shadow-sm">
     <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
       <thead class="bg-zinc-50">
         @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
@@ -84,7 +109,7 @@
     </table>
   </div>
 
-  <div class="mx-2 mt-4 flex items-center">
+  <div class="mx-2 mt-4 flex flex-col sm:flex-row sm:items-center">
     <div class="flex-1">
       @if (table.getRowCount() > 0) {
         <p class="text-sm">
@@ -94,7 +119,7 @@
       }
     </div>
 
-    <div class="flex items-center gap-8">
+    <div class="mt-2 flex items-center justify-between gap-8 sm:mt-0">
       <div>
         <p class="text-sm">
           Page {{ page() }} of
