@@ -1,4 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
+
+import { User } from '@/app/core/models/user.model';
 
 @Component({
   standalone: true,
@@ -6,11 +9,10 @@ import { Component, computed, input } from '@angular/core';
   templateUrl: './avatar.component.html',
 })
 export class AvatarComponent {
-  firstName = input.required<string>();
-  lastName = input.required<string>();
-  src = computed(
-    () =>
-      `https://ui-avatars.com/api/?name=${this.firstName()}%20${this.lastName()}&format=svg&background=d4d4d8`,
+  readonly context = injectFlexRenderContext<CellContext<User, unknown>>();
+
+  src = signal(
+    `https://ui-avatars.com/api/?name=${this.context.row.original.first_name}%20${this.context.row.original.last_name}&format=svg&background=d4d4d8`,
   );
-  alt = computed(() => `${this.firstName()}'s profile picture`);
+  alt = signal(`${this.context.row.original.first_name}'s profile picture`);
 }

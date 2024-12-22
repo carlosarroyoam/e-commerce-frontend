@@ -37,7 +37,6 @@ const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   standalone: true,
   selector: 'app-badge',
   templateUrl: './badge.component.html',
-  imports: [],
   host: {
     '[class]': 'computedClass()',
   },

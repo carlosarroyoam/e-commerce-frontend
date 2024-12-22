@@ -1,39 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   ColumnDef,
   createAngularTable,
   FlexRenderComponent,
   FlexRenderDirective,
   getCoreRowModel,
-  PaginationState,
 } from '@tanstack/angular-table';
 
+import { Pagination } from '@/app/core/models/pagination.model';
 import { User } from '@/app/core/models/user.model';
-import { UsersResponse } from '@/app/core/models/users-response.model';
 import { UserService } from '@/app/core/services/users.service';
 import { AvatarComponent } from '@/app/shared/components/ui/avatar/avatar.component';
 import { BadgeComponent } from '@/app/shared/components/ui/badge/badge.component';
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 import { InputDirective } from '@/app/shared/components/ui/input/input.directive';
+import { UsersTableButtonsComponent } from '@/app/shared/components/users-table-buttons/users-table-buttons.component';
 import Utils from '@/app/shared/utils';
-import { Pagination } from '@/app/core/models/pagination.model';
-import { single } from 'rxjs';
 
 @Component({
   standalone: true,
   templateUrl: './users-page.component.html',
-  imports: [CommonModule, FlexRenderDirective, ButtonDirective, InputDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FlexRenderDirective,
+    ButtonDirective,
+    InputDirective,
+  ],
 })
 export class UsersPageComponent implements OnInit {
   columns: ColumnDef<User>[] = [
     {
       id: 'profile_picture',
-      cell: (info) =>
-        new FlexRenderComponent(AvatarComponent, {
-          firstName: info.row.original.first_name,
-          lastName: info.row.original.last_name,
-        }),
+      cell: () => new FlexRenderComponent(AvatarComponent),
     },
     {
       accessorFn: (row) => `${row.first_name} ${row.last_name}`,
@@ -74,12 +75,15 @@ export class UsersPageComponent implements OnInit {
     {
       id: 'actions',
       header: 'Actions',
-      cell: (info) => info,
+      cell: () => new FlexRenderComponent(UsersTableButtonsComponent),
     },
   ];
 
   page = signal<number>(1);
   size = signal<number>(20);
+  search = signal<string | undefined>(undefined);
+  status = signal<'active' | 'inactive' | undefined>(undefined);
+
   data = signal<User[]>([]);
   pagination = signal<Pagination | undefined>(undefined);
 
@@ -106,11 +110,24 @@ export class UsersPageComponent implements OnInit {
       .getAll({
         page: this.page(),
         size: this.size(),
+        search: this.search(),
+        status: this.status(),
       })
       .subscribe((response) => {
         this.data.set(response.users);
         this.pagination.set(response.pagination);
       });
+  }
+
+  searchUser(): void {
+    this.page.set(1);
+    this.fetchData();
+  }
+
+  clearSearch(): void {
+    this.page.set(1);
+    this.search.set(undefined);
+    this.fetchData();
   }
 
   hasNextPage(): boolean {
@@ -123,6 +140,7 @@ export class UsersPageComponent implements OnInit {
 
   firstPage(): void {
     this.page.set(1);
+    this.fetchData();
   }
 
   previousPage(): void {
