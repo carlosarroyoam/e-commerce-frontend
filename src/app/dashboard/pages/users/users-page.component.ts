@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ColumnDef,
   createAngularTable,
   FlexRenderComponent,
-  FlexRenderDirective,
   getCoreRowModel,
 } from '@tanstack/angular-table';
 
 import { Pagination } from '@/app/core/models/pagination.model';
 import { User } from '@/app/core/models/user.model';
 import { UserService } from '@/app/core/services/users.service';
+import { PaginationComponent } from '@/app/shared/components/pagination/pagination.component';
+import { TableComponent } from '@/app/shared/components/table/table.component';
 import { AvatarComponent } from '@/app/shared/components/ui/avatar/avatar.component';
 import { BadgeComponent } from '@/app/shared/components/ui/badge/badge.component';
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
@@ -25,9 +26,10 @@ import Utils from '@/app/shared/utils';
   imports: [
     CommonModule,
     FormsModule,
-    FlexRenderDirective,
     ButtonDirective,
     InputDirective,
+    TableComponent,
+    PaginationComponent,
   ],
 })
 export class UsersPageComponent implements OnInit {
@@ -87,12 +89,6 @@ export class UsersPageComponent implements OnInit {
   data = signal<User[]>([]);
   pagination = signal<Pagination | undefined>(undefined);
 
-  entries = computed(() => ({
-    from: (this.page() - 1) * this.size() + 1,
-    to: (this.page() - 1) * this.size() + this.data().length,
-    totalEntries: this.pagination()?.totalElements ?? 0,
-  }));
-
   table = createAngularTable(() => ({
     data: this.data(),
     columns: this.columns,
@@ -132,14 +128,6 @@ export class UsersPageComponent implements OnInit {
     this.page.set(1);
     this.search.set(undefined);
     this.fetchData();
-  }
-
-  hasNextPage(): boolean {
-    return this.page() + 1 <= (this.pagination()?.totalPages ?? 0);
-  }
-
-  hasPreviousPage(): boolean {
-    return this.page() - 1 >= 1;
   }
 
   firstPage(): void {
