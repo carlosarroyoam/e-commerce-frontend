@@ -11,7 +11,10 @@ import {
 import { Pagination } from '@/app/core/models/pagination.model';
 import { User } from '@/app/core/models/user.model';
 import { UserService } from '@/app/core/services/users.service';
-import { PaginationComponent } from '@/app/shared/components/pagination/pagination.component';
+import {
+  PageType,
+  PaginationComponent,
+} from '@/app/shared/components/pagination/pagination.component';
 import { TableComponent } from '@/app/shared/components/table/table.component';
 import { AvatarComponent } from '@/app/shared/components/ui/avatar/avatar.component';
 import { BadgeComponent } from '@/app/shared/components/ui/badge/badge.component';
@@ -19,6 +22,54 @@ import { ButtonDirective } from '@/app/shared/components/ui/button/button.direct
 import { InputDirective } from '@/app/shared/components/ui/input/input.directive';
 import { UsersTableButtonsComponent } from '@/app/shared/components/users-table-buttons/users-table-buttons.component';
 import Utils from '@/app/shared/utils';
+
+const columns: ColumnDef<User>[] = [
+  {
+    id: 'profile_picture',
+    cell: () => new FlexRenderComponent(AvatarComponent),
+  },
+  {
+    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+    header: 'Name',
+    cell: (info) => info.getValue(),
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+    cell: (info) => info.getValue(),
+  },
+  {
+    accessorKey: 'user_role',
+    header: 'Role',
+    cell: (info) => (info.getValue() as string).replace('App/', ''),
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Created at',
+    cell: (info) => Utils.formatDate(info.getValue() as string),
+  },
+  {
+    accessorKey: 'updated_at',
+    header: 'Updated at',
+    cell: (info) => Utils.formatDate(info.getValue() as string),
+  },
+  {
+    accessorKey: 'deleted_at',
+    header: 'Status',
+    cell: (info) => {
+      const deletedAt = info.getValue() as string;
+      return new FlexRenderComponent(BadgeComponent, {
+        variant: deletedAt ? 'danger' : 'success',
+        label: deletedAt ? 'Inactive' : 'Active',
+      });
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: () => new FlexRenderComponent(UsersTableButtonsComponent),
+  },
+];
 
 @Component({
   standalone: true,
@@ -33,54 +84,6 @@ import Utils from '@/app/shared/utils';
   ],
 })
 export class UsersPageComponent implements OnInit {
-  columns: ColumnDef<User>[] = [
-    {
-      id: 'profile_picture',
-      cell: () => new FlexRenderComponent(AvatarComponent),
-    },
-    {
-      accessorFn: (row) => `${row.first_name} ${row.last_name}`,
-      header: 'Name',
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: 'user_role',
-      header: 'Role',
-      cell: (info) => (info.getValue() as string).replace('App/', ''),
-    },
-    {
-      accessorKey: 'created_at',
-      header: 'Created at',
-      cell: (info) => Utils.formatDate(info.getValue() as string),
-    },
-    {
-      accessorKey: 'updated_at',
-      header: 'Updated at',
-      cell: (info) => Utils.formatDate(info.getValue() as string),
-    },
-    {
-      accessorKey: 'deleted_at',
-      header: 'Status',
-      cell: (info) => {
-        const deletedAt = info.getValue() as string;
-        return new FlexRenderComponent(BadgeComponent, {
-          variant: deletedAt ? 'danger' : 'success',
-          label: deletedAt ? 'Inactive' : 'Active',
-        });
-      },
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: () => new FlexRenderComponent(UsersTableButtonsComponent),
-    },
-  ];
-
   page = signal<number>(1);
   size = signal<number>(20);
   search = signal<string | undefined>(undefined);
@@ -91,7 +94,7 @@ export class UsersPageComponent implements OnInit {
 
   table = createAngularTable(() => ({
     data: this.data(),
-    columns: this.columns,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
   }));
 
@@ -130,23 +133,24 @@ export class UsersPageComponent implements OnInit {
     this.fetchData();
   }
 
-  firstPage(): void {
-    this.page.set(1);
-    this.fetchData();
-  }
+  onPageChanged(pageType: PageType): void {
+    switch (pageType) {
+      case PageType.FIRST_PAGE:
+        this.page.set(1);
+        break;
+      case PageType.PREVIOUS_PAGE:
+        this.page.update((currentPage) => currentPage - 1);
+        break;
+      case PageType.NEXT_PAGE:
+        this.page.update((currentPage) => currentPage + 1);
+        break;
+      case PageType.LAST_PAGE:
+        this.page.set(this.pagination()?.totalPages ?? 0);
+        break;
+      default:
+        console.error('Invalid PageType: ' + pageType);
+    }
 
-  previousPage(): void {
-    this.page.update((currentPage) => currentPage - 1);
-    this.fetchData();
-  }
-
-  nextPage(): void {
-    this.page.update((currentPage) => currentPage + 1);
-    this.fetchData();
-  }
-
-  lastPage(): void {
-    this.page.set(this.pagination()?.totalPages ?? 0);
     this.fetchData();
   }
 }

@@ -3,6 +3,13 @@ import { Component, computed, input, output } from '@angular/core';
 import { Pagination } from '@/app/core/models/pagination.model';
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 
+export enum PageType {
+  FIRST_PAGE = 'FIRST_PAGE',
+  PREVIOUS_PAGE = 'PREVIOUS_PAGE',
+  NEXT_PAGE = 'NEXT_PAGE',
+  LAST_PAGE = 'LAST_PAGE',
+}
+
 @Component({
   standalone: true,
   selector: 'app-pagination',
@@ -14,10 +21,9 @@ export class PaginationComponent {
   page = input.required<number>();
   size = input.required<number>();
 
-  firstPage = output<void>();
-  previousPage = output<void>();
-  nextPage = output<void>();
-  lastPage = output<void>();
+  pageChanged = output<PageType>();
+
+  pageType = PageType;
 
   entries = computed(() => ({
     from: (this.page() - 1) * this.size() + 1,
@@ -33,19 +39,7 @@ export class PaginationComponent {
     return this.page() - 1 >= 1;
   }
 
-  onClickFirstPage(): void {
-    this.firstPage.emit();
-  }
-
-  onClickPreviousPage(): void {
-    this.previousPage.emit();
-  }
-
-  onClickNextPage(): void {
-    this.nextPage.emit();
-  }
-
-  onClickLastPage(): void {
-    this.lastPage.emit();
+  onPageChanged(pageChanged: PageType): void {
+    this.pageChanged.emit(pageChanged);
   }
 }

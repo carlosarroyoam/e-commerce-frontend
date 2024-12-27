@@ -56,9 +56,6 @@
     [page]="page()"
     [size]="size()"
     [pagination]="pagination()"
-    (firstPage)="firstPage()"
-    (previousPage)="previousPage()"
-    (nextPage)="nextPage()"
-    (lastPage)="lastPage()"
+    (pageChanged)="onPageChanged($event)"
   />
 </section>
