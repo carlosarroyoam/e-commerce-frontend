@@ -14,7 +14,7 @@ FROM nginx:1.27.2-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=build /home/node/app/dist/e-commerce-angular-frontend/browser .
+COPY --from=build /home/node/app/dist/e-commerce-frontend/browser .
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

@@ -21,7 +21,7 @@ interface SessionData {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly SESSION_DATA_KEY = 'e-commerce-angular-frontend-session';
+  private readonly SESSION_DATA_KEY = 'e-commerce-frontend-session';
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
   constructor(

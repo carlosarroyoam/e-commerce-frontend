@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "e-commerce-angular-frontend": {
+    "e-commerce-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -17,7 +17,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/e-commerce-angular-frontend"
+              "base": "dist/e-commerce-frontend"
             },
             "index": "src/index.html",
             "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "e-commerce-angular-frontend:build:production"
+              "buildTarget": "e-commerce-frontend:build:production"
             },
             "development": {
-              "buildTarget": "e-commerce-angular-frontend:build:development"
+              "buildTarget": "e-commerce-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "e-commerce-angular-frontend:build"
+            "buildTarget": "e-commerce-frontend:build"
           }
         },
         "test": {
