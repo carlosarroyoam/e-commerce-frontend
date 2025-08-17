@@ -4,7 +4,6 @@ import { Pagination } from '@/app/core/models/pagination.model';
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 
 @Component({
-  standalone: true,
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   imports: [ButtonDirective],

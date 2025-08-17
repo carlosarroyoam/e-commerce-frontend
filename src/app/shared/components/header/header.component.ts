@@ -6,7 +6,6 @@ import { UserNavComponent } from '@/app/shared/components/user-nav/user-nav.comp
 import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.directive';
 
 @Component({
-  standalone: true,
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [RouterLink, UserNavComponent, ClickOutsideDirective],

@@ -14,7 +14,6 @@ import { InputDirective } from '@/app/shared/components/ui/input/input.directive
 import { LabelDirective } from '@/app/shared/components/ui/label/label.directive';
 
 @Component({
-  standalone: true,
   templateUrl: './login-page.component.html',
   imports: [
     ReactiveFormsModule,

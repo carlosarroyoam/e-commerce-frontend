@@ -21,7 +21,6 @@ import { UsersTableButtonsComponent } from '@/app/shared/components/users-table-
 import Utils from '@/app/shared/utils';
 
 @Component({
-  standalone: true,
   templateUrl: './users-page.component.html',
   imports: [
     CommonModule,

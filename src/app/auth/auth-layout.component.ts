@@ -4,7 +4,6 @@ import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '@/app/shared/components/footer/footer.component';
 
 @Component({
-  standalone: true,
   templateUrl: './auth-layout.component.html',
   imports: [RouterOutlet, FooterComponent],
   host: {
