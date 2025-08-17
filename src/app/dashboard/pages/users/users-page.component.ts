@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -23,7 +22,6 @@ import Utils from '@/app/shared/utils';
 @Component({
   templateUrl: './users-page.component.html',
   imports: [
-    CommonModule,
     FormsModule,
     ButtonDirective,
     InputDirective,
