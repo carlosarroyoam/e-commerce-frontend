@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '@/app/core/services/auth.service';
 
 @Component({
-  standalone: true,
   selector: 'app-user-nav',
   templateUrl: './user-nav.component.html',
   imports: [RouterLink, OverlayModule],

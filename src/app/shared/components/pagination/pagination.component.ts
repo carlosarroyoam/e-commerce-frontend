@@ -11,7 +11,6 @@ export enum PageType {
 }
 
 @Component({
-  standalone: true,
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   imports: [ButtonDirective],

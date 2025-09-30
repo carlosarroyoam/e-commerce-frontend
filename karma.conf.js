@@ -27,7 +27,7 @@ module.exports = function (config) {
     coverageReporter: {
       dir: require("path").join(
         __dirname,
-        "./coverage/e-commerce-angular-frontend",
+        "./coverage/e-commerce-frontend",
       ),
       subdir: ".",
       reporters: [{ type: "html" }, { type: "text-summary" }],

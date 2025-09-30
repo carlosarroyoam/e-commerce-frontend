@@ -5,7 +5,6 @@ import { User } from '@/app/core/models/user.model';
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 
 @Component({
-  standalone: true,
   selector: 'app-users-table-buttons',
   templateUrl: './users-table-buttons.component.html',
   imports: [ButtonDirective],

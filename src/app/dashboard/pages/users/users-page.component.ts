@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -72,10 +71,8 @@ const columns: ColumnDef<User>[] = [
 ];
 
 @Component({
-  standalone: true,
   templateUrl: './users-page.component.html',
   imports: [
-    CommonModule,
     FormsModule,
     ButtonDirective,
     InputDirective,

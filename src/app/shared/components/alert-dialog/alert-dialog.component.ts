@@ -9,7 +9,6 @@ interface AlertDialogData {
 }
 
 @Component({
-  standalone: true,
   selector: 'app-alert-dialog',
   templateUrl: './alert-dialog.component.html',
   imports: [ButtonDirective],
