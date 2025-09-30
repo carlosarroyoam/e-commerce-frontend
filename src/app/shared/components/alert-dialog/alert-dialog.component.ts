@@ -1,7 +1,7 @@
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject } from '@angular/core';
 
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 interface AlertDialogData {
   title: string;
@@ -17,16 +17,8 @@ interface AlertDialogData {
 export class AlertDialogComponent {
   public constructor(
     private readonly dialogRef: DialogRef<void>,
-    @Inject(DIALOG_DATA) private readonly data: AlertDialogData,
+    @Inject(DIALOG_DATA) readonly data: AlertDialogData,
   ) {}
-
-  get title(): string {
-    return this.data.title;
-  }
-
-  get description(): string {
-    return this.data.description;
-  }
 
   closeDialog(): void {
     this.dialogRef.close();
