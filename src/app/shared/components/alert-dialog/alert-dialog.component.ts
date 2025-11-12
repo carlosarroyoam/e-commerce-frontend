@@ -3,11 +3,6 @@ import { Component, Inject } from '@angular/core';
 
 import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
 
-interface AlertDialogData {
-  title: string;
-  description: string;
-}
-
 @Component({
   selector: 'app-alert-dialog',
   templateUrl: './alert-dialog.component.html',
@@ -16,7 +11,11 @@ interface AlertDialogData {
 export class AlertDialogComponent {
   public constructor(
     private readonly dialogRef: DialogRef<void>,
-    @Inject(DIALOG_DATA) readonly data: AlertDialogData,
+    @Inject(DIALOG_DATA)
+    readonly data: {
+      title: string;
+      description: string;
+    },
   ) {}
 
   closeDialog(): void {
