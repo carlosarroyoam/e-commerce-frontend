@@ -58,8 +58,10 @@ export class AuthService {
 
             if ('status' in err.error && err.error['status'] !== 500) {
               this.dialogService.open({
-                title: err.error.error,
-                description: err.error.message,
+                data: {
+                  title: err.error.error,
+                  description: err.error.message,
+                },
               });
               return;
             }

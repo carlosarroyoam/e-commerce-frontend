@@ -1,4 +1,4 @@
-<!-- Modal panel -->
+<!-- Dialog panel -->
 <div class="absolute inset-x-0 bottom-0 p-4 sm:relative sm:p-0">
   <div
     class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:min-w-[448px] sm:max-w-xl"
@@ -25,20 +25,23 @@
       </div>
 
       <div class="flex-1">
-        <!-- Modal header   -->
-        <h3
+        <!-- Dialog header   -->
+        <h2
           id="dialog-title"
           class="text-center font-semibold text-zinc-900 sm:text-left"
         >
-          {{ data.title }}
-        </h3>
+          {{ data.title || "Whoops! something went wrong" }}
+        </h2>
 
-        <!-- Modal content -->
+        <!-- Dialog content -->
         <p
           id="dialog-description"
           class="mt-1 text-center text-sm sm:text-left"
         >
-          {{ data.description }}
+          {{
+            data.description ||
+              "There was a problem processing the request. Please try again later."
+          }}
         </p>
       </div>
 
@@ -66,7 +69,7 @@
       </div>
     </div>
 
-    <!-- Modal footer -->
+    <!-- Dialog footer -->
     <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
       <button appButton type="button" (click)="closeDialog()">Dismiss</button>
     </div>

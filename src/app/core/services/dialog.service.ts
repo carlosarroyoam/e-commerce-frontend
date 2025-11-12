@@ -1,4 +1,9 @@
-import { Dialog } from '@angular/cdk/dialog';
+import {
+  Dialog,
+  DialogConfig,
+  DialogContainer,
+  DialogRef,
+} from '@angular/cdk/dialog';
 import { Injectable } from '@angular/core';
 
 import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert-dialog.component';
@@ -9,22 +14,23 @@ import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert
 export class DialogService {
   constructor(private readonly dialog: Dialog) {}
 
-  open(
-    options: { title?: string; description?: string; isStatic?: boolean } = {},
-  ): void {
-    const title = options.title ?? 'Whoops! something went wrong';
-    const description =
-      options.description ??
-      'There was a problem processing the request. Please try again later.';
-
-    this.dialog.open<void>(AlertDialogComponent, {
-      ariaModal: true,
-      ariaLabelledBy: 'dialog-title',
-      ariaDescribedBy: 'dialog-description',
-      data: {
-        title,
-        description,
+  open<TData = unknown, TResult = unknown>(
+    config?: Partial<
+      DialogConfig<
+        TData,
+        DialogRef<TResult, AlertDialogComponent>,
+        DialogContainer
+      >
+    >,
+  ): DialogRef<TResult, AlertDialogComponent> {
+    return this.dialog.open<TResult, TData, AlertDialogComponent>(
+      AlertDialogComponent,
+      {
+        ariaModal: true,
+        ariaLabelledBy: 'dialog-title',
+        ariaDescribedBy: 'dialog-description',
+        ...config,
       },
-    });
+    );
   }
 }
