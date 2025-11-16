@@ -8,13 +8,7 @@
   class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
 >
   <span class="sr-only">Open user menu</span>
-  <img
-    src="https://ui-avatars.com/api/?name={{
-      fullname
-    }}&format=svg&background=d4d4d8"
-    alt="{{ user?.first_name }}'s profile picture"
-    class="size-10 rounded-full"
-  />
+  <img [src]="src" [alt]="alt" class="size-10 rounded-full" />
 </button>
 
 <ng-template

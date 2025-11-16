@@ -19,8 +19,16 @@ export class UserNavComponent {
     return this.authService.getUser();
   }
 
-  get fullname(): string | null {
+  get fullname(): string {
     return `${this.user?.first_name} ${this.user?.last_name}`;
+  }
+
+  get src(): string {
+    return `https://ui-avatars.com/api/?name=${this.fullname}&format=svg&background=d4d4d8`;
+  }
+
+  get alt(): string {
+    return `${this.user?.first_name}'s profile picture`;
   }
 
   protected toggleIsOpen(): void {
