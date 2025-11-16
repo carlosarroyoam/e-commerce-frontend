@@ -18,7 +18,7 @@ export const buttonVariants = cva(
         link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
-        default: 'h-10 px-4 py-2',
+        default: 'h-10 px-5 py-2',
         icon: 'size-8',
       },
     },
