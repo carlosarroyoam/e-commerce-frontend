@@ -15,7 +15,7 @@ export interface DialogData {
 })
 export class AlertDialogComponent {
   private readonly dialogRef = inject(DialogRef<void>);
-  protected readonly data: DialogData = inject(DIALOG_DATA);
+  protected readonly data?: DialogData = inject(DIALOG_DATA);
 
   protected closeDialog(): void {
     this.dialogRef.close();

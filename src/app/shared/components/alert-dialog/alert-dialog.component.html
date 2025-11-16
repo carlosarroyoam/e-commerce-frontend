@@ -30,7 +30,7 @@
           id="dialog-title"
           class="text-center font-semibold text-zinc-900 sm:text-left"
         >
-          {{ data.title || "Whoops! something went wrong" }}
+          {{ data?.title || "Whoops! something went wrong" }}
         </h2>
 
         <!-- Dialog content -->
@@ -39,7 +39,7 @@
           class="mt-1 text-center text-sm sm:text-left"
         >
           {{
-            data.description ||
+            data?.description ||
               "There was a problem processing the request. Please try again later."
           }}
         </p>
