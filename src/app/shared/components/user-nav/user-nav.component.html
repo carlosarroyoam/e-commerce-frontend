@@ -19,7 +19,7 @@
 
 <ng-template
   cdkConnectedOverlay
-  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayOpen]="isOpen()"
   [cdkConnectedOverlayOrigin]="trigger"
   [cdkConnectedOverlayPositions]="[
     {
@@ -30,7 +30,7 @@
       overlayY: 'top',
     },
   ]"
-  [cdkConnectedOverlayHasBackdrop]="isOpen"
+  [cdkConnectedOverlayHasBackdrop]="isOpen()"
   cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop-cs"
   (backdropClick)="toggleIsOpen()"
 >

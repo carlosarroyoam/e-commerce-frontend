@@ -87,6 +87,7 @@ export class UsersPageComponent implements OnInit {
   protected size = signal<number>(20);
   protected search = signal<string | undefined>(undefined);
   protected status = signal<'active' | 'inactive' | undefined>(undefined);
+
   protected data = signal<User[]>([]);
   protected pagination = signal<Pagination | undefined>(undefined);
 

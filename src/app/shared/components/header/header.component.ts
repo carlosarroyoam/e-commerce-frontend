@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth.service';
@@ -13,7 +13,7 @@ import { ClickOutsideDirective } from '@/shared/directives/click-outside.directi
 export class HeaderComponent {
   private readonly authService = inject(AuthService);
 
-  protected isMobileMenuOpen = false;
+  protected isMobileMenuOpen = signal(false);
 
   protected menuItems = [
     { href: '/dashboard', title: 'Dashboard' },
@@ -29,11 +29,11 @@ export class HeaderComponent {
   ];
 
   protected toggleMobileMenu(): void {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    this.isMobileMenuOpen.update((isMobileMenuOpen) => !isMobileMenuOpen);
   }
 
   protected closeMobileMenu(): void {
-    this.isMobileMenuOpen = false;
+    this.isMobileMenuOpen.set(false);
   }
 
   protected logout(): void {

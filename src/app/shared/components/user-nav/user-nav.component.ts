@@ -1,5 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth.service';
@@ -13,7 +13,7 @@ export class UserNavComponent {
   private readonly authService = inject(AuthService);
 
   public menuItems = input.required<{ href: string; title: string }[]>();
-  protected isOpen = false;
+  protected isOpen = signal(false);
 
   get user() {
     return this.authService.getUser();
@@ -23,11 +23,11 @@ export class UserNavComponent {
     return `${this.user?.first_name} ${this.user?.last_name}`;
   }
 
-  protected logout(): void {
-    this.authService.logout();
+  protected toggleIsOpen(): void {
+    this.isOpen.update((isOpen) => !isOpen);
   }
 
-  protected toggleIsOpen(): void {
-    this.isOpen = !this.isOpen;
+  protected logout(): void {
+    this.authService.logout();
   }
 }

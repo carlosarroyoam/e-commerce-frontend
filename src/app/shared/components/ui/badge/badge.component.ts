@@ -18,8 +18,6 @@ export const badgeVariants = cva(
   },
 );
 
-export type BadgeVariants = VariantProps<typeof badgeVariants>;
-
 const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   variants: {
     variant: {
@@ -32,6 +30,8 @@ const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
     variant: 'default',
   },
 });
+
+export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 @Component({
   standalone: true,

@@ -21,9 +21,9 @@ interface SessionData {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly dialogService = inject(DialogService);
   private readonly httpClient = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly dialogService = inject(DialogService);
 
   private readonly SESSION_DATA_KEY = 'e-commerce-frontend-session';
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';

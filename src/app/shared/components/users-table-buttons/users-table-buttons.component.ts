@@ -15,12 +15,13 @@ import { ButtonDirective } from '@/shared/components/ui/button/button.directive'
 export class UsersTableButtonsComponent {
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
+  private user = this.context.row.original;
 
   protected edit(): void {
-    console.log('Edit: ' + this.context.row.original.id);
+    console.log('Edit: ' + this.user.id);
   }
 
   protected delete(): void {
-    console.log('Delete: ' + this.context.row.original.id);
+    console.log('Delete: ' + this.user.id);
   }
 }
