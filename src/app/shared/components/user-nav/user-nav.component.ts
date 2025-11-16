@@ -13,7 +13,7 @@ export class UserNavComponent {
   private readonly authService = inject(AuthService);
 
   public menuItems = input.required<{ href: string; title: string }[]>();
-  protected isOpen: boolean = false;
+  protected isOpen = false;
 
   get user() {
     return this.authService.getUser();

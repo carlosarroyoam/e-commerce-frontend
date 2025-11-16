@@ -88,7 +88,7 @@ export class AuthService {
       });
   }
 
-  public refreshToken(): Observable<any> {
+  public refreshToken(): Observable<void> {
     return this.httpClient.post<void>(
       `${environment.apiUrl}/auth/refresh-token`,
       {

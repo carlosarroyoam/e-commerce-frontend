@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -25,6 +25,8 @@ import { LabelDirective } from '@/shared/components/ui/label/label.directive';
   ],
 })
 export class LoginPageComponent {
+  private readonly authService = inject(AuthService);
+
   protected loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.minLength(8)]),
     password: new FormControl('', [
@@ -32,8 +34,6 @@ export class LoginPageComponent {
       Validators.minLength(8),
     ]),
   });
-
-  constructor(private readonly authService: AuthService) {}
 
   get email() {
     return this.loginForm.get('email');

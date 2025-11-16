@@ -1,6 +1,6 @@
 <header
-  clickOutside
-  (clickOutside)="onClickOutside()"
+  appClickOutside
+  (appClickOutside)="onClickOutside()"
   class="border-b border-zinc-200 bg-zinc-50"
 >
   <div class="container flex items-center justify-between py-4">
@@ -63,7 +63,12 @@
       <nav class="container">
         <ul class="flex flex-col gap-4">
           @for (menuItem of menuItems; track $index) {
-            <li (click)="toggleMobileMenu()">
+            <li
+              tabindex="0"
+              role="menuitem"
+              (keyup.enter)="toggleMobileMenu()"
+              (click)="toggleMobileMenu()"
+            >
               <a
                 [routerLink]="menuItem.href"
                 routerLinkActive="text-zinc-900"
@@ -79,7 +84,12 @@
 
         <ul class="mb-4 flex flex-col gap-4">
           @for (menuItem of userNavMenuItems; track $index) {
-            <li (click)="toggleMobileMenu()">
+            <li
+              tabindex="0"
+              role="menuitem"
+              (keyup.enter)="toggleMobileMenu()"
+              (click)="toggleMobileMenu()"
+            >
               <a
                 [routerLink]="menuItem.href"
                 routerLinkActive="text-zinc-900"
@@ -90,7 +100,12 @@
             </li>
           }
 
-          <li (click)="logout()">
+          <li
+            tabindex="0"
+            role="menuitem"
+            (keyup.enter)="logout()"
+            (click)="logout()"
+          >
             <button
               class="text-sm font-medium tracking-tight hover:text-zinc-700"
             >

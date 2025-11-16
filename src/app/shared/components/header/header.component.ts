@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth.service';
@@ -11,6 +11,8 @@ import { ClickOutsideDirective } from '@/shared/directives/click-outside.directi
   imports: [RouterLink, UserNavComponent, ClickOutsideDirective],
 })
 export class HeaderComponent {
+  private readonly authService = inject(AuthService);
+
   protected isMobileMenuOpen = false;
 
   protected menuItems = [
@@ -25,8 +27,6 @@ export class HeaderComponent {
     { href: '/account', title: 'Account' },
     { href: '/settings', title: 'Settings' },
   ];
-
-  constructor(private readonly authService: AuthService) {}
 
   protected toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
