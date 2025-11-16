@@ -1,19 +1,19 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, of } from 'rxjs';
 
 import { User } from '@/app/core/models/user.model';
+import { UserResponse } from '@/app/core/models/user.response';
 import { UsersResponse } from '@/app/core/models/users-response.model';
 import { environment } from '@/environments/environment';
-import { UserResponse } from '../models/user.response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private readonly httpClient: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
 
-  getAll({
+  public getAll({
     page,
     size,
     sort,
@@ -46,7 +46,7 @@ export class UserService {
     });
   }
 
-  getById(userId: number): Observable<User | null> {
+  public getById(userId: number): Observable<User | null> {
     return this.httpClient
       .get<UserResponse>(`${environment.apiUrl}/users/${userId}`)
       .pipe(

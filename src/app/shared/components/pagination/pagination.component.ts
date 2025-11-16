@@ -16,29 +16,27 @@ export enum PageType {
   imports: [ButtonDirective],
 })
 export class PaginationComponent {
-  pagination = input<Pagination | undefined>();
-  page = input.required<number>();
-  size = input.required<number>();
+  public pagination = input<Pagination | undefined>();
+  public page = input.required<number>();
+  public size = input.required<number>();
+  protected pageChanged = output<PageType>();
+  protected pageType = PageType;
 
-  pageChanged = output<PageType>();
-
-  pageType = PageType;
-
-  entries = computed(() => ({
+  protected entries = computed(() => ({
     from: (this.page() - 1) * this.size() + 1,
     to: (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0),
     totalEntries: this.pagination()?.totalElements ?? 0,
   }));
 
-  hasNextPage(): boolean {
+  protected hasNextPage(): boolean {
     return this.page() + 1 <= (this.pagination()?.totalPages ?? 0);
   }
 
-  hasPreviousPage(): boolean {
+  protected hasPreviousPage(): boolean {
     return this.page() - 1 >= 1;
   }
 
-  onPageChanged(pageChanged: PageType): void {
+  protected onPageChanged(pageChanged: PageType): void {
     this.pageChanged.emit(pageChanged);
   }
 }

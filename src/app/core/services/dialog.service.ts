@@ -4,7 +4,7 @@ import {
   DialogContainer,
   DialogRef,
 } from '@angular/cdk/dialog';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert-dialog.component';
 
@@ -12,9 +12,9 @@ import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert
   providedIn: 'root',
 })
 export class DialogService {
-  constructor(private readonly dialog: Dialog) {}
+  private readonly dialog = inject(Dialog);
 
-  open<TData = unknown, TResult = unknown>(
+  public open<TData = unknown, TResult = unknown>(
     config?: Partial<
       DialogConfig<
         TData,

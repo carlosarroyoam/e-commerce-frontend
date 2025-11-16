@@ -11,30 +11,32 @@ import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.dir
   imports: [RouterLink, UserNavComponent, ClickOutsideDirective],
 })
 export class HeaderComponent {
-  isMobileMenuOpen = false;
-  menuItems = [
+  protected isMobileMenuOpen = false;
+
+  protected menuItems = [
     { href: '/dashboard', title: 'Dashboard' },
     { href: '/dashboard/orders', title: 'Orders' },
     { href: '/dashboard/products', title: 'Products' },
     { href: '/dashboard/categories', title: 'Categories' },
     { href: '/dashboard/users', title: 'Users' },
   ];
-  userNavMenuItems = [
+
+  protected userNavMenuItems = [
     { href: '/account', title: 'Account' },
     { href: '/settings', title: 'Settings' },
   ];
 
   constructor(private readonly authService: AuthService) {}
 
-  toggleMobileMenu(): void {
+  protected toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  onClickOutside(): void {
+  protected onClickOutside(): void {
     this.isMobileMenuOpen = false;
   }
 
-  logout(): void {
+  protected logout(): void {
     this.authService.logout();
   }
 }

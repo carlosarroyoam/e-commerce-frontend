@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
   },
 })
 export class LabelDirective {
-  computedClass = computed(() => {
+  protected computedClass = computed(() => {
     return twMerge('block text-sm font-medium leading-6 text-zinc-900');
   });
 }

@@ -1,4 +1,4 @@
-import { User } from './user.model';
+import { User } from '@/app/core/models/user.model';
 
 export interface UserResponse {
   message: string;

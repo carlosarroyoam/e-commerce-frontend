@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
@@ -21,16 +21,14 @@ interface SessionData {
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly dialogService = inject(DialogService);
+  private readonly httpClient = inject(HttpClient);
+  private readonly router = inject(Router);
+
   private readonly SESSION_DATA_KEY = 'e-commerce-frontend-session';
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
-  constructor(
-    private readonly dialogService: DialogService,
-    private readonly httpClient: HttpClient,
-    private readonly router: Router,
-  ) {}
-
-  login(credentials: { email: string; password: string }): void {
+  public login(credentials: { email: string; password: string }): void {
     this.httpClient
       .post<LoginResponse>(`${environment.apiUrl}/auth/login`, {
         ...credentials,
@@ -72,7 +70,7 @@ export class AuthService {
       });
   }
 
-  logout(): void {
+  public logout(): void {
     this.httpClient
       .post<void>(`${environment.apiUrl}/auth/logout`, null)
       .subscribe({
@@ -90,7 +88,7 @@ export class AuthService {
       });
   }
 
-  refreshToken(): Observable<any> {
+  public refreshToken(): Observable<any> {
     return this.httpClient.post<void>(
       `${environment.apiUrl}/auth/refresh-token`,
       {
@@ -99,12 +97,12 @@ export class AuthService {
     );
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     const session = localStorage.getItem(this.SESSION_DATA_KEY);
     return !!session;
   }
 
-  getUser(): SessionData | null {
+  public getUser(): SessionData | null {
     const session = localStorage.getItem(this.SESSION_DATA_KEY);
 
     if (!session) {

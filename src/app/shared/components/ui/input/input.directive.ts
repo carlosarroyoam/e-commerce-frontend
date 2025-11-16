@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
   },
 })
 export class InputDirective {
-  computedClass = computed(() => {
+  protected computedClass = computed(() => {
     return twMerge(
       'w-full rounded-md border-zinc-200 text-sm text-zinc-900 shadow-sm',
     );

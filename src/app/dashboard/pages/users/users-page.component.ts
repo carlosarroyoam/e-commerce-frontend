@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ColumnDef,
@@ -81,27 +81,26 @@ const columns: ColumnDef<User>[] = [
   ],
 })
 export class UsersPageComponent implements OnInit {
-  page = signal<number>(1);
-  size = signal<number>(20);
-  search = signal<string | undefined>(undefined);
-  status = signal<'active' | 'inactive' | undefined>(undefined);
+  private readonly userService = inject(UserService);
 
-  data = signal<User[]>([]);
-  pagination = signal<Pagination | undefined>(undefined);
+  protected page = signal<number>(1);
+  protected size = signal<number>(20);
+  protected search = signal<string | undefined>(undefined);
+  protected status = signal<'active' | 'inactive' | undefined>(undefined);
+  protected data = signal<User[]>([]);
+  protected pagination = signal<Pagination | undefined>(undefined);
 
-  table = createAngularTable(() => ({
+  protected table = createAngularTable(() => ({
     data: this.data(),
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
   }));
 
-  constructor(private readonly userService: UserService) {}
-
   ngOnInit(): void {
     this.fetchData();
   }
 
-  fetchData(): void {
+  private fetchData(): void {
     this.userService
       .getAll({
         page: this.page(),
@@ -115,14 +114,14 @@ export class UsersPageComponent implements OnInit {
       });
   }
 
-  searchUser(): void {
+  protected searchUser(): void {
     if (this.search() === undefined) return;
 
     this.page.set(1);
     this.fetchData();
   }
 
-  clearSearch(): void {
+  protected clearSearch(): void {
     if (this.search() === undefined) return;
 
     this.page.set(1);
@@ -130,7 +129,7 @@ export class UsersPageComponent implements OnInit {
     this.fetchData();
   }
 
-  onPageChanged(pageType: PageType): void {
+  protected onPageChanged(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
         this.page.set(1);

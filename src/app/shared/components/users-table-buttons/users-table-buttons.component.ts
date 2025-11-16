@@ -13,13 +13,14 @@ import { ButtonDirective } from '@/app/shared/components/ui/button/button.direct
   },
 })
 export class UsersTableButtonsComponent {
-  readonly context = injectFlexRenderContext<CellContext<User, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<User, unknown>>();
 
-  edit(): void {
+  protected edit(): void {
     console.log('Edit: ' + this.context.row.original.id);
   }
 
-  delete(): void {
+  protected delete(): void {
     console.log('Delete: ' + this.context.row.original.id);
   }
 }

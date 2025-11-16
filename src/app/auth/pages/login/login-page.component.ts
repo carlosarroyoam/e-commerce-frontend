@@ -25,7 +25,7 @@ import { LabelDirective } from '@/app/shared/components/ui/label/label.directive
   ],
 })
 export class LoginPageComponent {
-  loginForm = new FormGroup({
+  protected loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.minLength(8)]),
     password: new FormControl('', [
       Validators.required,
@@ -43,7 +43,7 @@ export class LoginPageComponent {
     return this.loginForm.get('password');
   }
 
-  login(): void {
+  protected login(): void {
     this.authService.login({
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!,

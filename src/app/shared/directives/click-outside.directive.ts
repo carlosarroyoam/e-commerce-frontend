@@ -1,11 +1,11 @@
 import {
   AfterViewInit,
   Directive,
+  DOCUMENT,
   ElementRef,
   Inject,
   OnDestroy,
   output,
-  DOCUMENT,
 } from '@angular/core';
 import { filter, fromEvent, Subscription } from 'rxjs';
 
@@ -14,8 +14,8 @@ import { filter, fromEvent, Subscription } from 'rxjs';
   standalone: true,
 })
 export class ClickOutsideDirective implements AfterViewInit, OnDestroy {
-  clickOutside = output<void>();
-  documentClickSubscription: Subscription | undefined;
+  public clickOutside = output<void>();
+  private documentClickSubscription?: Subscription;
 
   constructor(
     private readonly _elementRef: ElementRef,
@@ -32,7 +32,7 @@ export class ClickOutsideDirective implements AfterViewInit, OnDestroy {
     this.documentClickSubscription?.unsubscribe();
   }
 
-  isClickInside(element: HTMLElement): boolean {
+  protected isClickInside(element: HTMLElement): boolean {
     return (
       element === this._elementRef.nativeElement ||
       this._elementRef.nativeElement.contains(element)

@@ -7,5 +7,5 @@ import { FlexRenderDirective, Table } from '@tanstack/angular-table';
   imports: [FlexRenderDirective],
 })
 export class TableComponent<T> {
-  table = input.required<Table<T>>();
+  public table = input.required<Table<T>>();
 }

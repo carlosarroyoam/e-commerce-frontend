@@ -42,14 +42,14 @@ const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   },
 })
 export class BadgeComponent {
-  variant = input<BadgeVariants['variant']>();
-  label = input.required<string>();
+  public variant = input<BadgeVariants['variant']>();
+  public label = input.required<string>();
 
-  iconClass = computed(() => {
+  protected iconClass = computed(() => {
     return twMerge(iconVariants({ variant: this.variant() }));
   });
 
-  computedClass = computed(() => {
+  protected computedClass = computed(() => {
     return twMerge(badgeVariants({ variant: this.variant() }));
   });
 }

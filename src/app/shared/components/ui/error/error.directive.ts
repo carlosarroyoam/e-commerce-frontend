@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
   },
 })
 export class ErrorDirective {
-  computedClass = computed(() => {
+  protected computedClass = computed(() => {
     return twMerge('text-sm text-red-500');
   });
 }

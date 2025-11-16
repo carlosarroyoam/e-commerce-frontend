@@ -39,10 +39,10 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>;
   },
 })
 export class ButtonDirective {
-  variant = input<ButtonVariants['variant']>();
-  size = input<ButtonVariants['size']>();
+  public variant = input<ButtonVariants['variant']>();
+  public size = input<ButtonVariants['size']>();
 
-  computedClass = computed(() => {
+  protected computedClass = computed(() => {
     return twMerge(
       buttonVariants({ variant: this.variant(), size: this.size() }),
     );

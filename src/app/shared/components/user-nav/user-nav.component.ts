@@ -1,5 +1,5 @@
-import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
-import { Component, input } from '@angular/core';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/app/core/services/auth.service';
@@ -10,10 +10,10 @@ import { AuthService } from '@/app/core/services/auth.service';
   imports: [RouterLink, OverlayModule],
 })
 export class UserNavComponent {
-  isOpen: boolean = false;
-  menuItems = input.required<{ href: string; title: string }[]>();
+  private readonly authService = inject(AuthService);
 
-  constructor(private readonly authService: AuthService) {}
+  public menuItems = input.required<{ href: string; title: string }[]>();
+  protected isOpen: boolean = false;
 
   get user() {
     return this.authService.getUser();
@@ -23,11 +23,11 @@ export class UserNavComponent {
     return `${this.user?.first_name} ${this.user?.last_name}`;
   }
 
-  logout(): void {
+  protected logout(): void {
     this.authService.logout();
   }
 
-  toggleIsOpen(): void {
+  protected toggleIsOpen(): void {
     this.isOpen = !this.isOpen;
   }
 }

@@ -4,15 +4,15 @@ import {
   DialogContainer,
   DialogRef,
 } from '@angular/cdk/dialog';
-import { Injectable, Type } from '@angular/core';
+import { inject, Injectable, Type } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-  constructor(private readonly dialog: Dialog) {}
+  private readonly dialog = inject(Dialog);
 
-  open<TComponent, TData = unknown, TResult = unknown>(
+  public open<TComponent, TData = unknown, TResult = unknown>(
     component: Type<TComponent>,
     config?: Partial<
       DialogConfig<TData, DialogRef<TResult, TComponent>, DialogContainer>
