@@ -32,7 +32,7 @@ export class HeaderComponent {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  protected onClickOutside(): void {
+  protected closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
   }
 
