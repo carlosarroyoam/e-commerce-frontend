@@ -6,7 +6,7 @@ import {
 } from '@angular/cdk/dialog';
 import { inject, Injectable } from '@angular/core';
 
-import { AlertDialogComponent } from '@/app/shared/components/alert-dialog/alert-dialog.component';
+import { AlertDialogComponent } from '@/shared/components/alert-dialog/alert-dialog.component';
 
 @Injectable({
   providedIn: 'root',

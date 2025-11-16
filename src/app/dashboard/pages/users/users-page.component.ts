@@ -7,20 +7,20 @@ import {
   getCoreRowModel,
 } from '@tanstack/angular-table';
 
-import { Pagination } from '@/app/core/models/pagination.model';
-import { User } from '@/app/core/models/user.model';
-import { UserService } from '@/app/core/services/users.service';
+import { Pagination } from '@/core/models/pagination.model';
+import { User } from '@/core/models/user.model';
+import { UserService } from '@/core/services/users.service';
 import {
   PageType,
   PaginationComponent,
-} from '@/app/shared/components/pagination/pagination.component';
-import { TableComponent } from '@/app/shared/components/table/table.component';
-import { AvatarComponent } from '@/app/shared/components/ui/avatar/avatar.component';
-import { BadgeComponent } from '@/app/shared/components/ui/badge/badge.component';
-import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
-import { InputDirective } from '@/app/shared/components/ui/input/input.directive';
-import { UsersTableButtonsComponent } from '@/app/shared/components/users-table-buttons/users-table-buttons.component';
-import Utils from '@/app/shared/utils';
+} from '@/shared/components/pagination/pagination.component';
+import { TableComponent } from '@/shared/components/table/table.component';
+import { AvatarComponent } from '@/shared/components/ui/avatar/avatar.component';
+import { BadgeComponent } from '@/shared/components/ui/badge/badge.component';
+import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
+import { InputDirective } from '@/shared/components/ui/input/input.directive';
+import { UsersTableButtonsComponent } from '@/shared/components/users-table-buttons/users-table-buttons.component';
+import Utils from '@/shared/utils';
 
 const columns: ColumnDef<User>[] = [
   {

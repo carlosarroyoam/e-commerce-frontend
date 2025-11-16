@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/app/core/services/auth.service';
-import { UserNavComponent } from '@/app/shared/components/user-nav/user-nav.component';
-import { ClickOutsideDirective } from '@/app/shared/directives/click-outside.directive';
+import { AuthService } from '@/core/services/auth.service';
+import { UserNavComponent } from '@/shared/components/user-nav/user-nav.component';
+import { ClickOutsideDirective } from '@/shared/directives/click-outside.directive';
 
 @Component({
   selector: 'app-header',

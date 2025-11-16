@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 
-import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
+import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
 
 export interface DialogData {
   title: string;

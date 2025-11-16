@@ -2,7 +2,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/app/core/services/auth.service';
+import { AuthService } from '@/core/services/auth.service';
 
 @Component({
   selector: 'app-user-nav',

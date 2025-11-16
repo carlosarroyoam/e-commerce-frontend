@@ -7,11 +7,11 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/app/core/services/auth.service';
-import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
-import { ErrorDirective } from '@/app/shared/components/ui/error/error.directive';
-import { InputDirective } from '@/app/shared/components/ui/input/input.directive';
-import { LabelDirective } from '@/app/shared/components/ui/label/label.directive';
+import { AuthService } from '@/core/services/auth.service';
+import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
+import { ErrorDirective } from '@/shared/components/ui/error/error.directive';
+import { InputDirective } from '@/shared/components/ui/input/input.directive';
+import { LabelDirective } from '@/shared/components/ui/label/label.directive';
 
 @Component({
   templateUrl: './login-page.component.html',

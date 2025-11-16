@@ -21,7 +21,8 @@
     "lib": ["es2020", "dom"],
     "useDefineForClassFields": false,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/app/*"],
+      "@/environments/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {

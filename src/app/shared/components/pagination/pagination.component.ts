@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 
-import { Pagination } from '@/app/core/models/pagination.model';
-import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
+import { Pagination } from '@/core/models/pagination.model';
+import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
 
 export enum PageType {
   FIRST_PAGE = 'FIRST_PAGE',

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
-import { User } from '@/app/core/models/user.model';
-import { ButtonDirective } from '@/app/shared/components/ui/button/button.directive';
+import { User } from '@/core/models/user.model';
+import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
 
 @Component({
   selector: 'app-users-table-buttons',
