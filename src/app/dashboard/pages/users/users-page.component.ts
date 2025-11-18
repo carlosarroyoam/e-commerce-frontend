@@ -83,7 +83,7 @@ const columns: ColumnDef<User>[] = [
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);
 
-  protected page = signal<number>(1);
+  protected currentPage = signal<number>(1);
   protected size = signal<number>(20);
   protected search = signal<string | undefined>(undefined);
   protected status = signal<'active' | 'inactive' | undefined>(undefined);
@@ -104,7 +104,7 @@ export class UsersPageComponent implements OnInit {
   private fetchData(): void {
     this.userService
       .getAll({
-        page: this.page(),
+        page: this.currentPage(),
         size: this.size(),
         search: this.search(),
         status: this.status(),
@@ -118,14 +118,14 @@ export class UsersPageComponent implements OnInit {
   protected searchUser(): void {
     if (this.search() === undefined) return;
 
-    this.page.set(1);
+    this.currentPage.set(1);
     this.fetchData();
   }
 
   protected clearSearch(): void {
     if (this.search() === undefined) return;
 
-    this.page.set(1);
+    this.currentPage.set(1);
     this.search.set(undefined);
     this.fetchData();
   }
@@ -133,16 +133,16 @@ export class UsersPageComponent implements OnInit {
   protected onPageChanged(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
-        this.page.set(1);
+        this.currentPage.set(1);
         break;
       case PageType.PREVIOUS_PAGE:
-        this.page.update((currentPage) => currentPage - 1);
+        this.currentPage.update((currentPage) => currentPage - 1);
         break;
       case PageType.NEXT_PAGE:
-        this.page.update((currentPage) => currentPage + 1);
+        this.currentPage.update((currentPage) => currentPage + 1);
         break;
       case PageType.LAST_PAGE:
-        this.page.set(this.pagination()?.totalPages ?? 0);
+        this.currentPage.set(this.pagination()?.totalPages ?? 0);
         break;
       default:
         console.error('Invalid PageType: ' + pageType);

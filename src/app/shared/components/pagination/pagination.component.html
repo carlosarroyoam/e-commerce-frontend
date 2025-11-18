@@ -11,7 +11,7 @@
   <div class="mt-2 flex items-center justify-between gap-8 sm:mt-0">
     <div>
       <p class="text-sm">
-        Page {{ entries().totalEntries > 0 ? page() : 0 }} of
+        Page {{ entries().totalEntries > 0 ? currentPage() : 0 }} of
         {{ pagination()?.totalPages ?? 0 }}
       </p>
     </div>

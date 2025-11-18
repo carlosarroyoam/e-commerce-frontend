@@ -17,23 +17,23 @@ export enum PageType {
 })
 export class PaginationComponent {
   public pagination = input<Pagination | undefined>();
-  public page = input.required<number>();
+  public currentPage = input.required<number>();
   public size = input.required<number>();
   protected pageChanged = output<PageType>();
   protected pageType = PageType;
 
   protected entries = computed(() => ({
-    from: (this.page() - 1) * this.size() + 1,
-    to: (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0),
+    from: (this.currentPage() - 1) * this.size() + 1,
+    to: (this.currentPage() - 1) * this.size() + (this.pagination()?.size ?? 0),
     totalEntries: this.pagination()?.totalElements ?? 0,
   }));
 
   protected hasNextPage(): boolean {
-    return this.page() + 1 <= (this.pagination()?.totalPages ?? 0);
+    return this.currentPage() + 1 <= (this.pagination()?.totalPages ?? 0);
   }
 
   protected hasPreviousPage(): boolean {
-    return this.page() - 1 >= 1;
+    return this.currentPage() - 1 >= 1;
   }
 
   protected onPageChanged(pageChanged: PageType): void {
