@@ -56,7 +56,7 @@
   <app-table [table]="table" />
 
   <app-pagination
-    [currentPage]="currentPage()"
+    [page]="page()"
     [size]="size()"
     [pagination]="pagination()"
     (pageChanged)="onPageChanged($event)"
