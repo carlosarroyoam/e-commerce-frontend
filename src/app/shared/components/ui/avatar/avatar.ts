@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
-import { User } from '@/core/models/user.model';
+import { User } from '@/core/interfaces/user';
 
 @Component({
   standalone: true,

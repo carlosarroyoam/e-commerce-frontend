@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { LoginResponse } from '@/core/models/login-response.model';
+import { LoginResponse } from '@/core/interfaces/login-response';
 import { DialogService } from '@/core/services/dialog-service';
 import { environment } from '@/environments/environment';
 

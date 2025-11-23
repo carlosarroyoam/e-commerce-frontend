@@ -6,7 +6,7 @@ import { routes } from '@/app.routes';
 import {
   responseErrorInterceptor,
   withCredentialsInterceptor,
-} from '@/core/interceptors/http.interceptor';
+} from '@/core/interceptors/http-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,6 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
 
-import { Pagination } from '@/core/models/pagination.model';
+import { Pagination } from '@/core/interfaces/pagination';
 import { Button } from '@/shared/components/ui/button/button';
 
 export enum PageType {

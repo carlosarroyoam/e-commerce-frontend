@@ -1,4 +1,4 @@
-import { User } from '@/core/models/user.model';
+import { User } from '@/core/interfaces/user';
 
 export interface LoginResponse {
   message: string;

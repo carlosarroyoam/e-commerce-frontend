@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 
-import { User } from '@/core/models/user.model';
-import { UserResponse } from '@/core/models/user.response';
-import { UsersResponse } from '@/core/models/users-response.model';
+import { User } from '@/core/interfaces/user';
+import { UserResponse } from '@/core/interfaces/user.response';
+import { UsersResponse } from '@/core/interfaces/users-response';
 import { environment } from '@/environments/environment';
 
 @Injectable({

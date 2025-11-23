@@ -7,8 +7,8 @@ import {
   getCoreRowModel,
 } from '@tanstack/angular-table';
 
-import { Pagination } from '@/core/models/pagination.model';
-import { User } from '@/core/models/user.model';
+import { Pagination } from '@/core/interfaces/pagination';
+import { User } from '@/core/interfaces/user';
 import { UserService } from '@/core/services/users-service';
 import {
   PageType,
