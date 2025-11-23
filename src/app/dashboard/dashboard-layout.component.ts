@@ -5,8 +5,8 @@ import { HeaderComponent } from '@/shared/components/header/header.component';
 import { FooterComponent } from '@/shared/components/footer/footer.component';
 
 @Component({
-  templateUrl: './dashboard-layout.component.html',
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  templateUrl: './dashboard-layout.component.html',
   host: {
     class: 'flex min-h-[100dvh] flex-col',
   },

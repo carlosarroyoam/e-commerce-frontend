@@ -7,8 +7,8 @@ import { ClickOutsideDirective } from '@/shared/directives/click-outside.directi
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html',
   imports: [RouterLink, UserNavComponent, ClickOutsideDirective],
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent {
   private readonly authService = inject(AuthService);

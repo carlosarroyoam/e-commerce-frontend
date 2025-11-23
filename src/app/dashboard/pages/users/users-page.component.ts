@@ -71,7 +71,6 @@ const columns: ColumnDef<User>[] = [
 ];
 
 @Component({
-  templateUrl: './users-page.component.html',
   imports: [
     FormsModule,
     ButtonDirective,
@@ -79,6 +78,7 @@ const columns: ColumnDef<User>[] = [
     TableComponent,
     PaginationComponent,
   ],
+  templateUrl: './users-page.component.html',
 })
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);

@@ -6,8 +6,8 @@ import { AuthService } from '@/core/services/auth.service';
 
 @Component({
   selector: 'app-user-nav',
-  templateUrl: './user-nav.component.html',
   imports: [RouterLink, OverlayModule],
+  templateUrl: './user-nav.component.html',
 })
 export class UserNavComponent {
   private readonly authService = inject(AuthService);

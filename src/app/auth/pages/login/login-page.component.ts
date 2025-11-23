@@ -14,7 +14,6 @@ import { InputDirective } from '@/shared/components/ui/input/input.directive';
 import { LabelDirective } from '@/shared/components/ui/label/label.directive';
 
 @Component({
-  templateUrl: './login-page.component.html',
   imports: [
     ReactiveFormsModule,
     RouterLink,
@@ -23,6 +22,7 @@ import { LabelDirective } from '@/shared/components/ui/label/label.directive';
     InputDirective,
     ErrorDirective,
   ],
+  templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent {
   private readonly authService = inject(AuthService);

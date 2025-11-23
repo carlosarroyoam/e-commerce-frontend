@@ -6,8 +6,8 @@ import { ButtonDirective } from '@/shared/components/ui/button/button.directive'
 
 @Component({
   selector: 'app-users-table-buttons',
-  templateUrl: './users-table-buttons.component.html',
   imports: [ButtonDirective],
+  templateUrl: './users-table-buttons.component.html',
   host: {
     class: 'flex gap-2',
   },

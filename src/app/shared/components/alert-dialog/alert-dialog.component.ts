@@ -10,8 +10,8 @@ export interface DialogData {
 
 @Component({
   selector: 'app-alert-dialog',
-  templateUrl: './alert-dialog.component.html',
   imports: [ButtonDirective],
+  templateUrl: './alert-dialog.component.html',
 })
 export class AlertDialogComponent {
   private readonly dialogRef = inject(DialogRef<void>);
