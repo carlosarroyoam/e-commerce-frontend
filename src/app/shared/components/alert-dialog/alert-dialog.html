@@ -1,5 +1,6 @@
-<!-- Dialog panel -->
+<!-- Dialog wrapper -->
 <div class="absolute inset-x-0 bottom-0 p-4 sm:relative sm:p-0">
+  <!-- Dialog -->
   <div
     class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:min-w-[448px] sm:max-w-xl"
   >
@@ -25,7 +26,7 @@
       </div>
 
       <div class="flex-1">
-        <!-- Dialog header   -->
+        <!-- Dialog header -->
         <h2
           id="dialog-title"
           class="text-center font-semibold text-zinc-900 sm:text-left"
@@ -38,10 +39,8 @@
           id="dialog-description"
           class="mt-1 text-center text-sm sm:text-left"
         >
-          {{
-            data?.description ||
-              "There was a problem processing the request. Please try again later."
-          }}
+          {{ data?.description || `There was a problem processing the request.
+          Please try again later.` }}
         </p>
       </div>
 
