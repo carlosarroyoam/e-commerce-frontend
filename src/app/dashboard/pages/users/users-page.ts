@@ -18,7 +18,7 @@ import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Badge } from '@/shared/components/ui/badge/badge';
 import { Button } from '@/shared/components/ui/button/button';
-import { Input } from '@/shared/components/ui/input/input';
+import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
 import Utils from '@/shared/utils';
 
@@ -74,7 +74,7 @@ const columns: ColumnDef<User>[] = [
   imports: [
     FormsModule,
     Button,
-    Input,
+    AppInput,
     TableComponent,
     Paginator,
   ],

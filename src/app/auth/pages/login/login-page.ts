@@ -11,14 +11,14 @@ import { AuthService } from '@/core/services/auth-service';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
-import { Input } from '@/shared/components/ui/input/input';
+import { AppInput } from '@/shared/components/ui/input/input';
 
 @Component({
   imports: [
     ReactiveFormsModule,
     RouterLink,
     Button,
-    Input,
+    AppInput,
     InputLabel,
     InputError,
   ],
