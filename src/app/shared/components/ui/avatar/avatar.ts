@@ -6,9 +6,9 @@ import { User } from '@/core/models/user.model';
 @Component({
   standalone: true,
   selector: 'app-avatar',
-  templateUrl: './avatar.component.html',
+  templateUrl: './avatar.html',
 })
-export class AvatarComponent {
+export class Avatar {
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
   private user = this.context.row.original;

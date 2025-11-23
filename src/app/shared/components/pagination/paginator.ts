@@ -11,11 +11,11 @@ export enum PageType {
 }
 
 @Component({
-  selector: 'app-pagination',
+  selector: 'app-paginator',
   imports: [ButtonDirective],
-  templateUrl: './pagination.component.html',
+  templateUrl: './paginator.html',
 })
-export class PaginationComponent {
+export class Paginator {
   public pagination = input<Pagination | undefined>();
   public page = input.required<number>();
   public size = input.required<number>();

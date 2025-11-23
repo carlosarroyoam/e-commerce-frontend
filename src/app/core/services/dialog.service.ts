@@ -6,7 +6,7 @@ import {
 } from '@angular/cdk/dialog';
 import { inject, Injectable } from '@angular/core';
 
-import { AlertDialogComponent } from '@/shared/components/alert-dialog/alert-dialog.component';
+import { AlertDialog } from '@/shared/components/alert-dialog/alert-dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -18,13 +18,13 @@ export class DialogService {
     config?: Partial<
       DialogConfig<
         TData,
-        DialogRef<TResult, AlertDialogComponent>,
+        DialogRef<TResult, AlertDialog>,
         DialogContainer
       >
     >,
-  ): DialogRef<TResult, AlertDialogComponent> {
-    return this.dialog.open<TResult, TData, AlertDialogComponent>(
-      AlertDialogComponent,
+  ): DialogRef<TResult, AlertDialog> {
+    return this.dialog.open<TResult, TData, AlertDialog>(
+      AlertDialog,
       {
         ariaModal: true,
         ariaLabelledBy: 'dialog-title',

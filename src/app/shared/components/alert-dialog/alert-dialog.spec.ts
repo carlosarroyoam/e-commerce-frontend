@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BadgeComponent } from './badge.component';
+import { AlertDialog } from './alert-dialog';
 
-describe('BadgeComponent', () => {
-  let component: BadgeComponent;
-  let fixture: ComponentFixture<BadgeComponent>;
+describe('AlertDialogComponent', () => {
+  let component: AlertDialog;
+  let fixture: ComponentFixture<AlertDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BadgeComponent],
+      imports: [AlertDialog],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BadgeComponent);
+    fixture = TestBed.createComponent(AlertDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

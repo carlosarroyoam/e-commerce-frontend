@@ -22,9 +22,9 @@ import { LabelDirective } from '@/shared/components/ui/label/label.directive';
     InputDirective,
     ErrorDirective,
   ],
-  templateUrl: './login-page.component.html',
+  templateUrl: './login-page.html',
 })
-export class LoginPageComponent {
+export class LoginPage {
   private readonly authService = inject(AuthService);
 
   protected loginForm = new FormGroup({

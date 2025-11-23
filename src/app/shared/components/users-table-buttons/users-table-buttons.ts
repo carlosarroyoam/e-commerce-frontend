@@ -7,12 +7,12 @@ import { ButtonDirective } from '@/shared/components/ui/button/button.directive'
 @Component({
   selector: 'app-users-table-buttons',
   imports: [ButtonDirective],
-  templateUrl: './users-table-buttons.component.html',
+  templateUrl: './users-table-buttons.html',
   host: {
     class: 'flex gap-2',
   },
 })
-export class UsersTableButtonsComponent {
+export class UsersTableButtons {
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
   private user = this.context.row.original;

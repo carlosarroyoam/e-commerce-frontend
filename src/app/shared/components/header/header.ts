@@ -2,15 +2,15 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth.service';
-import { UserNavComponent } from '@/shared/components/user-nav/user-nav.component';
+import { UserNav } from '@/shared/components/user-nav/user-nav';
 import { ClickOutsideDirective } from '@/shared/directives/click-outside.directive';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, UserNavComponent, ClickOutsideDirective],
-  templateUrl: './header.component.html',
+  imports: [RouterLink, UserNav, ClickOutsideDirective],
+  templateUrl: './header.html',
 })
-export class HeaderComponent {
+export class Header {
   private readonly authService = inject(AuthService);
 
   protected isMobileMenuOpen = signal(false);

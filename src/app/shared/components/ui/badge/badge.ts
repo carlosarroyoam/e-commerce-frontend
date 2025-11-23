@@ -36,12 +36,12 @@ export type BadgeVariants = VariantProps<typeof badgeVariants>;
 @Component({
   standalone: true,
   selector: 'app-badge',
-  templateUrl: './badge.component.html',
+  templateUrl: './badge.html',
   host: {
     '[class]': 'computedClass()',
   },
 })
-export class BadgeComponent {
+export class Badge {
   public variant = input<BadgeVariants['variant']>();
   public label = input.required<string>();
 

@@ -12,20 +12,20 @@ import { User } from '@/core/models/user.model';
 import { UserService } from '@/core/services/users.service';
 import {
   PageType,
-  PaginationComponent,
-} from '@/shared/components/pagination/pagination.component';
-import { TableComponent } from '@/shared/components/table/table.component';
-import { AvatarComponent } from '@/shared/components/ui/avatar/avatar.component';
-import { BadgeComponent } from '@/shared/components/ui/badge/badge.component';
+  Paginator,
+} from '@/shared/components/pagination/paginator';
+import { TableComponent } from '@/shared/components/table/table';
+import { Avatar } from '@/shared/components/ui/avatar/avatar';
+import { Badge } from '@/shared/components/ui/badge/badge';
 import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
 import { InputDirective } from '@/shared/components/ui/input/input.directive';
-import { UsersTableButtonsComponent } from '@/shared/components/users-table-buttons/users-table-buttons.component';
+import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
 import Utils from '@/shared/utils';
 
 const columns: ColumnDef<User>[] = [
   {
     id: 'profile_picture',
-    cell: () => new FlexRenderComponent(AvatarComponent),
+    cell: () => new FlexRenderComponent(Avatar),
   },
   {
     accessorFn: (row) => `${row.first_name} ${row.last_name}`,
@@ -57,7 +57,7 @@ const columns: ColumnDef<User>[] = [
     header: 'Status',
     cell: (info) => {
       const deletedAt = info.getValue() as string;
-      return new FlexRenderComponent(BadgeComponent, {
+      return new FlexRenderComponent(Badge, {
         variant: deletedAt ? 'danger' : 'success',
         label: deletedAt ? 'Inactive' : 'Active',
       });
@@ -66,7 +66,7 @@ const columns: ColumnDef<User>[] = [
   {
     id: 'actions',
     header: 'Actions',
-    cell: () => new FlexRenderComponent(UsersTableButtonsComponent),
+    cell: () => new FlexRenderComponent(UsersTableButtons),
   },
 ];
 
@@ -76,9 +76,9 @@ const columns: ColumnDef<User>[] = [
     ButtonDirective,
     InputDirective,
     TableComponent,
-    PaginationComponent,
+    Paginator,
   ],
-  templateUrl: './users-page.component.html',
+  templateUrl: './users-page.html',
 })
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);

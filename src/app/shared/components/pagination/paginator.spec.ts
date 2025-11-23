@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalContainerComponent } from './modal-container.component';
+import { Paginator } from './paginator';
 
-describe('ModalComponent', () => {
-  let component: ModalContainerComponent;
-  let fixture: ComponentFixture<ModalContainerComponent>;
+describe('PaginationComponent', () => {
+  let component: Paginator;
+  let fixture: ComponentFixture<Paginator>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalContainerComponent],
+      imports: [Paginator],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ModalContainerComponent);
+    fixture = TestBed.createComponent(Paginator);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

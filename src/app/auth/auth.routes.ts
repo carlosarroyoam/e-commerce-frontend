@@ -1,16 +1,16 @@
 import { Routes } from '@angular/router';
 
-import { AuthLayoutComponent } from '@/auth/auth-layout.component';
-import { LoginPageComponent } from '@/auth/pages/login/login-page.component';
+import { AuthLayout } from '@/auth/auth-layout';
+import { LoginPage } from '@/auth/pages/login/login-page';
 
 export const routes: Routes = [
   {
     path: '',
-    component: AuthLayoutComponent,
+    component: AuthLayout,
     children: [
       {
         path: 'login',
-        component: LoginPageComponent,
+        component: LoginPage,
       },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],

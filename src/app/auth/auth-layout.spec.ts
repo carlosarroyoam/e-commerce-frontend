@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AvatarComponent } from './avatar.component';
+import { AuthLayout } from './auth-layout';
 
-describe('AvatarComponent', () => {
-  let component: AvatarComponent;
-  let fixture: ComponentFixture<AvatarComponent>;
+describe('AuthLayoutComponent', () => {
+  let component: AuthLayout;
+  let fixture: ComponentFixture<AuthLayout>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AvatarComponent],
+      imports: [AuthLayout],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AvatarComponent);
+    fixture = TestBed.createComponent(AuthLayout);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
