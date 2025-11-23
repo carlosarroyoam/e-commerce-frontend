@@ -1,13 +1,8 @@
 <section>
-  <div class="flex flex-col gap-4 md:flex-row">
-    <div class="flex-auto">
-      <h2 class="heading">Users</h2>
-      <p class="mt-1 text-sm">
-        A list of all the users registered including their name, email, and
-        role.
-      </p>
-    </div>
-  </div>
+  <h2 class="heading">Users</h2>
+  <p class="mt-1 text-sm">
+    A list of all the users registered including their name, email, and role.
+  </p>
 
   <div class="mt-8 flex gap-4">
     <div class="relative inline-block max-w-64">
@@ -21,12 +16,12 @@
         (keydown.enter)="searchUser()"
         class="w-full pr-9"
       />
-      <div
-        tabindex="0"
-        role="button"
+
+      <button
+        type="button"
         (click)="searchUser()"
         (keyup.enter)="searchUser()"
-        class="absolute inset-y-0 right-0 mr-3 flex cursor-pointer items-center hover:text-zinc-700"
+        class="absolute inset-y-0 right-0 mr-3 flex cursor-pointer items-center outline-none hover:text-zinc-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -39,16 +34,14 @@
             d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
           />
         </svg>
-      </div>
-    </div>
-
-    <div class="relative inline-block">
-      <button appButton variant="secondary" (click)="clearSearch()">
-        Status
       </button>
     </div>
 
-    <button appButton variant="secondary" (click)="clearSearch()">
+    <button appButton type="button" variant="secondary" (click)="clearSearch()">
+      Status
+    </button>
+
+    <button appButton type="button" variant="secondary" (click)="clearSearch()">
       Clear filters
     </button>
   </div>
