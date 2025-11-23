@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { User } from '@/core/models/user.model';
-import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
+import { Button } from '@/shared/components/ui/button/button';
 
 @Component({
   selector: 'app-users-table-buttons',
-  imports: [ButtonDirective],
+  imports: [Button],
   templateUrl: './users-table-buttons.html',
   host: {
     class: 'flex gap-2',

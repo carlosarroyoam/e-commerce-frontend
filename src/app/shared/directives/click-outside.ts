@@ -13,7 +13,7 @@ import { filter, fromEvent, Subscription } from 'rxjs';
   selector: '[appClickOutside]',
   standalone: true,
 })
-export class ClickOutsideDirective implements AfterViewInit, OnDestroy {
+export class ClickOutside implements AfterViewInit, OnDestroy {
   private readonly _elementRef = inject(ElementRef);
   private readonly document = inject(DOCUMENT);
 

@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/core/services/auth.service';
+import { AuthService } from '@/core/services/auth-service';
 import { UserNav } from '@/shared/components/user-nav/user-nav';
-import { ClickOutsideDirective } from '@/shared/directives/click-outside.directive';
+import { ClickOutside } from '@/shared/directives/click-outside';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, UserNav, ClickOutsideDirective],
+  imports: [RouterLink, UserNav, ClickOutside],
   templateUrl: './header.html',
 })
 export class Header {

@@ -6,7 +6,7 @@
 
   <form method="post" [formGroup]="loginForm" class="mt-6 space-y-4">
     <div class="space-y-2">
-      <label appLabel for="email">Email</label>
+      <label appInputLabel for="email">Email</label>
       <input
         appInput
         type="text"
@@ -19,16 +19,16 @@
       />
       @if (email?.invalid && (email?.dirty || email?.touched)) {
         @if (email?.hasError("required")) {
-          <p appError>The email field is required.</p>
+          <p appInputError>The email field is required.</p>
         }
         @if (email?.hasError("minlength")) {
-          <p appError>The email field should be at least 8 characters long.</p>
+          <p appInputError>The email field should be at least 8 characters long.</p>
         }
       }
     </div>
 
     <div class="space-y-2">
-      <label appLabel for="password">Password</label>
+      <label appInputLabel for="password">Password</label>
       <input
         appInput
         type="password"
@@ -40,10 +40,10 @@
       />
       @if (password?.invalid && (password?.dirty || password?.touched)) {
         @if (password?.hasError("required")) {
-          <p appError>The password field is required.</p>
+          <p appInputError>The password field is required.</p>
         }
         @if (password?.hasError("minlength")) {
-          <p appError>
+          <p appInputError>
             The password field should be at least 8 characters long.
           </p>
         }

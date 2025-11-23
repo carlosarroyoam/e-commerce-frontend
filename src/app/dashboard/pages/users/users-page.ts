@@ -9,7 +9,7 @@ import {
 
 import { Pagination } from '@/core/models/pagination.model';
 import { User } from '@/core/models/user.model';
-import { UserService } from '@/core/services/users.service';
+import { UserService } from '@/core/services/users-service';
 import {
   PageType,
   Paginator,
@@ -17,8 +17,8 @@ import {
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Badge } from '@/shared/components/ui/badge/badge';
-import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
-import { InputDirective } from '@/shared/components/ui/input/input.directive';
+import { Button } from '@/shared/components/ui/button/button';
+import { Input } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
 import Utils from '@/shared/utils';
 
@@ -73,8 +73,8 @@ const columns: ColumnDef<User>[] = [
 @Component({
   imports: [
     FormsModule,
-    ButtonDirective,
-    InputDirective,
+    Button,
+    Input,
     TableComponent,
     Paginator,
   ],

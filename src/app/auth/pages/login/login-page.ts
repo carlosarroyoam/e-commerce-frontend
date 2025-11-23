@@ -7,20 +7,20 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/core/services/auth.service';
-import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
-import { ErrorDirective } from '@/shared/components/ui/error/error.directive';
-import { InputDirective } from '@/shared/components/ui/input/input.directive';
-import { LabelDirective } from '@/shared/components/ui/label/label.directive';
+import { AuthService } from '@/core/services/auth-service';
+import { Button } from '@/shared/components/ui/button/button';
+import { InputError } from '@/shared/components/ui/input-error/input-error';
+import { InputLabel } from '@/shared/components/ui/input-label/input-label';
+import { Input } from '@/shared/components/ui/input/input';
 
 @Component({
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    ButtonDirective,
-    LabelDirective,
-    InputDirective,
-    ErrorDirective,
+    Button,
+    Input,
+    InputLabel,
+    InputError,
   ],
   templateUrl: './login-page.html',
 })

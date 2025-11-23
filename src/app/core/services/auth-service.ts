@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { LoginResponse } from '@/core/models/login-response.model';
-import { DialogService } from '@/core/services/dialog.service';
+import { DialogService } from '@/core/services/dialog-service';
 import { environment } from '@/environments/environment';
 
 interface SessionData {

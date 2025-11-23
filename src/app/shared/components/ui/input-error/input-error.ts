@@ -3,13 +3,13 @@ import { twMerge } from 'tailwind-merge';
 
 @Directive({
   standalone: true,
-  selector: 'label[appLabel]',
+  selector: '[appInputError]',
   host: {
     '[class]': 'computedClass()',
   },
 })
-export class LabelDirective {
+export class InputError {
   protected computedClass = computed(() => {
-    return twMerge('block text-sm font-medium leading-6 text-zinc-900');
+    return twMerge('text-sm text-red-500');
   });
 }

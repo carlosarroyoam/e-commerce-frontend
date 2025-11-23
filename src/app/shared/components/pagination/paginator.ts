@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 
 import { Pagination } from '@/core/models/pagination.model';
-import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
+import { Button } from '@/shared/components/ui/button/button';
 
 export enum PageType {
   FIRST_PAGE = 'FIRST_PAGE',
@@ -12,7 +12,7 @@ export enum PageType {
 
 @Component({
   selector: 'app-paginator',
-  imports: [ButtonDirective],
+  imports: [Button],
   templateUrl: './paginator.html',
 })
 export class Paginator {

@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 
-import { ButtonDirective } from '@/shared/components/ui/button/button.directive';
+import { Button } from '@/shared/components/ui/button/button';
 
 export interface DialogData {
   title: string;
@@ -10,7 +10,7 @@ export interface DialogData {
 
 @Component({
   selector: 'app-alert-dialog',
-  imports: [ButtonDirective],
+  imports: [Button],
   templateUrl: './alert-dialog.html',
 })
 export class AlertDialog {

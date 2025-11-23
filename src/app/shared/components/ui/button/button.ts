@@ -38,7 +38,7 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>;
     '[class]': 'computedClass()',
   },
 })
-export class ButtonDirective {
+export class Button {
   public variant = input<ButtonVariants['variant']>();
   public size = input<ButtonVariants['size']>();
 

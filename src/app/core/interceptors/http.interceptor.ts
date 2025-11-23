@@ -7,7 +7,7 @@ import {
 import { inject } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth.service';
+import { AuthService } from '@/core/services/auth-service';
 
 export function withCredentialsInterceptor(
   req: HttpRequest<unknown>,
