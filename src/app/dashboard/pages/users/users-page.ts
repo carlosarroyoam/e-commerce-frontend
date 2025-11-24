@@ -13,7 +13,7 @@ import { UserService } from '@/core/services/users-service';
 import { PageType, Paginator } from '@/shared/components/pagination/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
-import { Badge } from '@/shared/components/ui/badge/badge';
+import { Chip } from '@/shared/components/ui/chip/chip';
 import { Button } from '@/shared/components/ui/button/button';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
@@ -54,7 +54,7 @@ const columns: ColumnDef<User>[] = [
     header: 'Status',
     cell: (info) => {
       const deletedAt = info.getValue() as string;
-      return new FlexRenderComponent(Badge, {
+      return new FlexRenderComponent(Chip, {
         variant: deletedAt ? 'danger' : 'success',
         label: deletedAt ? 'Inactive' : 'Active',
       });

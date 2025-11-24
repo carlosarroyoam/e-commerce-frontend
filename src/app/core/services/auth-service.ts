@@ -104,12 +104,7 @@ export class AuthService {
 
   public getUser(): SessionData | null {
     const session = localStorage.getItem(this.SESSION_DATA_KEY);
-
-    if (!session) {
-      return null;
-    }
-
-    return JSON.parse(session);
+    return session && JSON.parse(session);
   }
 
   private getDeviceFingerprint(): string | null {

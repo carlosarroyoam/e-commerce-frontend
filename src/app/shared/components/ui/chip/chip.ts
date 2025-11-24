@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
-export const badgeVariants = cva(
+export const chipVariants = cva(
   'rounded-md bg-zinc-200 px-2.5 py-1 text-xs font-semibold',
   {
     variants: {
@@ -31,18 +31,18 @@ const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   },
 });
 
-export type BadgeVariants = VariantProps<typeof badgeVariants>;
+export type ChipVariants = VariantProps<typeof chipVariants>;
 
 @Component({
   standalone: true,
-  selector: 'app-badge',
-  templateUrl: './badge.html',
+  selector: 'app-chip',
+  templateUrl: './chip.html',
   host: {
     '[class]': 'computedClass()',
   },
 })
-export class Badge {
-  public variant = input<BadgeVariants['variant']>();
+export class Chip {
+  public variant = input<ChipVariants['variant']>();
   public label = input.required<string>();
 
   protected iconClass = computed(() => {
@@ -50,6 +50,6 @@ export class Badge {
   });
 
   protected computedClass = computed(() => {
-    return twMerge(badgeVariants({ variant: this.variant() }));
+    return twMerge(chipVariants({ variant: this.variant() }));
   });
 }
