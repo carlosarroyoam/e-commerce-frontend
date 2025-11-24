@@ -1,17 +1,14 @@
-import { computed, Directive } from '@angular/core';
+import { Directive } from '@angular/core';
 import { twMerge } from 'tailwind-merge';
 
 @Directive({
-  standalone: true,
-  selector: '[appInput]',
+  selector: 'input[appInput]',
   host: {
-    '[class]': 'computedClass()',
+    '[class]': 'hostClass',
   },
 })
 export class AppInput {
-  protected computedClass = computed(() => {
-    return twMerge(
-      'w-full rounded-md border-zinc-200 text-sm text-zinc-900 shadow-sm',
-    );
-  });
+  protected hostClass = twMerge(
+    'w-full rounded-md border-zinc-200 text-sm text-zinc-900 shadow-sm',
+  );
 }

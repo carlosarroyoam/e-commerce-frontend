@@ -18,7 +18,7 @@ export const chipVariants = cva(
   },
 );
 
-const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
+const chipBadgeVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   variants: {
     variant: {
       default: 'bg-blue-600',
@@ -34,22 +34,21 @@ const iconVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
 export type ChipVariants = VariantProps<typeof chipVariants>;
 
 @Component({
-  standalone: true,
   selector: 'app-chip',
   templateUrl: './chip.html',
   host: {
-    '[class]': 'computedClass()',
+    '[class]': 'hostClass()',
   },
 })
 export class Chip {
   public variant = input<ChipVariants['variant']>();
   public label = input.required<string>();
 
-  protected iconClass = computed(() => {
-    return twMerge(iconVariants({ variant: this.variant() }));
+  protected chipBadgeClass = computed(() => {
+    return twMerge(chipBadgeVariants({ variant: this.variant() }));
   });
 
-  protected computedClass = computed(() => {
+  protected hostClass = computed(() => {
     return twMerge(chipVariants({ variant: this.variant() }));
   });
 }

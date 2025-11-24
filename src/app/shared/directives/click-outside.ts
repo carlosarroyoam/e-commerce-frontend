@@ -11,7 +11,6 @@ import { filter, fromEvent, Subscription } from 'rxjs';
 
 @Directive({
   selector: '[appClickOutside]',
-  standalone: true,
 })
 export class ClickOutside implements AfterViewInit, OnDestroy {
   private readonly _elementRef = inject(ElementRef);

@@ -32,17 +32,16 @@ export const buttonVariants = cva(
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 @Directive({
-  standalone: true,
   selector: 'button[appButton],a[appButton]',
   host: {
-    '[class]': 'computedClass()',
+    '[class]': 'hostClass()',
   },
 })
 export class Button {
   public variant = input<ButtonVariants['variant']>();
   public size = input<ButtonVariants['size']>();
 
-  protected computedClass = computed(() => {
+  protected hostClass = computed(() => {
     return twMerge(
       buttonVariants({ variant: this.variant(), size: this.size() }),
     );

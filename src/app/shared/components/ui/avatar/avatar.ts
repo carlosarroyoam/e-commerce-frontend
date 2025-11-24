@@ -4,7 +4,6 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 import { User } from '@/core/interfaces/user';
 
 @Component({
-  standalone: true,
   selector: 'app-avatar',
   templateUrl: './avatar.html',
 })
