@@ -2,56 +2,54 @@
   <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
     <thead class="bg-zinc-50">
       @for (headerGroup of table().getHeaderGroups(); track headerGroup.id) {
-        <tr>
-          @for (header of headerGroup.headers; track header.id) {
-            @if (!header.isPlaceholder) {
-              <th
-                scope="col"
-                class="px-4 py-2 text-start text-sm font-medium capitalize tracking-tight"
-              >
-                <ng-container
-                  *flexRender="
+      <tr>
+        @for (header of headerGroup.headers; track header.id) { @if
+        (!header.isPlaceholder) {
+        <th
+          scope="col"
+          class="px-4 py-2 text-start text-sm font-medium capitalize tracking-tight"
+        >
+          <ng-container
+            *flexRender="
                     header.column.columnDef.header;
                     props: header.getContext();
                     let header
                   "
-                >
-                  <div [innerHTML]="header"></div>
-                </ng-container>
-              </th>
-            }
-          }
-        </tr>
+          >
+            <div [innerHTML]="header"></div>
+          </ng-container>
+        </th>
+        } }
+      </tr>
       }
     </thead>
     <tbody class="divide-y divide-zinc-200">
-      @if (table().getRowCount() > 0) {
-        @for (row of table().getRowModel().rows; track row.id) {
-          <tr class="hover:bg-zinc-50">
-            @for (cell of row.getVisibleCells(); track cell.id) {
-              <td class="px-4 py-2 text-sm">
-                <ng-container
-                  *flexRender="
+      @if (table().getRowCount() > 0) { @for (row of table().getRowModel().rows;
+      track row.id) {
+      <tr class="hover:bg-zinc-50">
+        @for (cell of row.getVisibleCells(); track cell.id) {
+        <td class="px-4 py-2 text-sm">
+          <ng-container
+            *flexRender="
                     cell.column.columnDef.cell;
                     props: cell.getContext();
                     let cell
                   "
-                >
-                  <div [innerHTML]="cell"></div>
-                </ng-container>
-              </td>
-            }
-          </tr>
-        }
-      } @else {
-        <tr>
-          <td
-            [attr.colspan]="table().getFlatHeaders().length"
-            class="h-24 text-center"
           >
-            No results.
-          </td>
-        </tr>
+            <div [innerHTML]="cell"></div>
+          </ng-container>
+        </td>
+        }
+      </tr>
+      } } @else {
+      <tr>
+        <td
+          [attr.colspan]="table().getFlatHeaders().length"
+          class="h-24 text-center"
+        >
+          No results.
+        </td>
+      </tr>
       }
     </tbody>
   </table>

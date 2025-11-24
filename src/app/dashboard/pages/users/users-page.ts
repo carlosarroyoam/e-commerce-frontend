@@ -10,10 +10,7 @@ import {
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { UserService } from '@/core/services/users-service';
-import {
-  PageType,
-  Paginator,
-} from '@/shared/components/pagination/paginator';
+import { PageType, Paginator } from '@/shared/components/pagination/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Badge } from '@/shared/components/ui/badge/badge';
@@ -71,13 +68,7 @@ const columns: ColumnDef<User>[] = [
 ];
 
 @Component({
-  imports: [
-    FormsModule,
-    Button,
-    AppInput,
-    TableComponent,
-    Paginator,
-  ],
+  imports: [FormsModule, Button, AppInput, TableComponent, Paginator],
   templateUrl: './users-page.html',
 })
 export class UsersPageComponent implements OnInit {

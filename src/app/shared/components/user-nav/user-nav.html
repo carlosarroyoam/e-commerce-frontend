@@ -46,16 +46,16 @@
     <nav>
       <ul>
         @for (item of menuItems(); track $index) {
-          <li>
-            <a
-              [routerLink]="item.href"
-              role="menuitem"
-              (click)="toggleIsOpen()"
-              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
-            >
-              {{ item.title }}
-            </a>
-          </li>
+        <li>
+          <a
+            [routerLink]="item.href"
+            role="menuitem"
+            (click)="toggleIsOpen()"
+            class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+          >
+            {{ item.title }}
+          </a>
+        </li>
         }
 
         <li>
