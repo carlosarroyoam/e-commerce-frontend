@@ -10,7 +10,7 @@ import {
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { UserService } from '@/core/services/users-service';
-import { PageType, Paginator } from '@/shared/components/pagination/paginator';
+import { PageType, Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
