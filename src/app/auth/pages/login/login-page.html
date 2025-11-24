@@ -17,12 +17,16 @@
         formControlName="email"
         required
       />
-      @if (email?.invalid && (email?.dirty || email?.touched)) { @if
-      (email?.hasError("required")) {
-      <p appInputError>The email field is required.</p>
-      } @if (email?.hasError("minlength")) {
-      <p appInputError>The email field should be at least 8 characters long.</p>
-      } }
+      @if (email?.invalid && (email?.dirty || email?.touched)) {
+        @if (email?.hasError("required")) {
+          <p appInputError>The email field is required.</p>
+        }
+        @if (email?.hasError("minlength")) {
+          <p appInputError>
+            The email field should be at least 8 characters long.
+          </p>
+        }
+      }
     </div>
 
     <div class="space-y-2">
@@ -36,14 +40,16 @@
         formControlName="password"
         required
       />
-      @if (password?.invalid && (password?.dirty || password?.touched)) { @if
-      (password?.hasError("required")) {
-      <p appInputError>The password field is required.</p>
-      } @if (password?.hasError("minlength")) {
-      <p appInputError>
-        The password field should be at least 8 characters long.
-      </p>
-      } }
+      @if (password?.invalid && (password?.dirty || password?.touched)) {
+        @if (password?.hasError("required")) {
+          <p appInputError>The password field is required.</p>
+        }
+        @if (password?.hasError("minlength")) {
+          <p appInputError>
+            The password field should be at least 8 characters long.
+          </p>
+        }
+      }
     </div>
 
     <button

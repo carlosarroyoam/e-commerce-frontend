@@ -1,18 +1,18 @@
 <div class="mx-2 mt-4 flex flex-col sm:flex-row sm:items-center">
   <div class="flex-1">
     @if (entries().totalEntries > 0) {
-    <p class="text-sm">
-      Showing {{ entries().from }} to {{ entries().to }} of {{
-      entries().totalEntries }} entries.
-    </p>
+      <p class="text-sm">
+        Showing {{ entries().from }} to {{ entries().to }} of
+        {{ entries().totalEntries }} entries.
+      </p>
     }
   </div>
 
   <div class="mt-2 flex items-center justify-between gap-8 sm:mt-0">
     <div>
       <p class="text-sm">
-        Page {{ entries().totalEntries > 0 ? page() : 0 }} of {{
-        pagination()?.totalPages ?? 0 }}
+        Page {{ entries().totalEntries > 0 ? page() : 0 }} of
+        {{ pagination()?.totalPages ?? 0 }}
       </p>
     </div>
 

@@ -39,8 +39,11 @@
           id="dialog-description"
           class="mt-1 text-center text-sm sm:text-left"
         >
-          {{ data?.description || `There was a problem processing the request.
-          Please try again later.` }}
+          {{
+            data?.description ||
+              `There was a problem processing the request.
+          Please try again later.`
+          }}
         </p>
       </div>
 

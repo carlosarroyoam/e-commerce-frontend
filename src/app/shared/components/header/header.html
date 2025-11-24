@@ -14,15 +14,15 @@
 
       <ul class="hidden md:ml-12 md:flex md:flex-row md:items-center md:gap-8">
         @for (menuItem of menuItems; track $index) {
-        <li>
-          <a
-            [routerLink]="menuItem.href"
-            routerLinkActive="text-zinc-900"
-            class="text-sm font-medium tracking-tight hover:text-zinc-700"
-          >
-            {{ menuItem.title }}
-          </a>
-        </li>
+          <li>
+            <a
+              [routerLink]="menuItem.href"
+              routerLinkActive="text-zinc-900"
+              class="text-sm font-medium tracking-tight hover:text-zinc-700"
+            >
+              {{ menuItem.title }}
+            </a>
+          </li>
         }
       </ul>
     </nav>
@@ -59,61 +59,61 @@
 
   <!-- Mobile menu, show/hide based on menu open state. -->
   @if (isMobileMenuOpen()) {
-  <div class="md:hidden">
-    <nav class="container">
-      <ul class="flex flex-col gap-4">
-        @for (menuItem of menuItems; track $index) {
-        <li
-          tabindex="0"
-          role="menuitem"
-          (keyup.enter)="toggleMobileMenu()"
-          (click)="toggleMobileMenu()"
-        >
-          <a
-            [routerLink]="menuItem.href"
-            routerLinkActive="text-zinc-900"
-            class="block text-sm font-medium tracking-tight hover:text-zinc-700"
-          >
-            {{ menuItem.title }}
-          </a>
-        </li>
-        }
-      </ul>
+    <div class="md:hidden">
+      <nav class="container">
+        <ul class="flex flex-col gap-4">
+          @for (menuItem of menuItems; track $index) {
+            <li
+              tabindex="0"
+              role="menuitem"
+              (keyup.enter)="toggleMobileMenu()"
+              (click)="toggleMobileMenu()"
+            >
+              <a
+                [routerLink]="menuItem.href"
+                routerLinkActive="text-zinc-900"
+                class="block text-sm font-medium tracking-tight hover:text-zinc-700"
+              >
+                {{ menuItem.title }}
+              </a>
+            </li>
+          }
+        </ul>
 
-      <hr class="my-4 h-px bg-zinc-300" />
+        <hr class="my-4 h-px bg-zinc-300" />
 
-      <ul class="mb-4 flex flex-col gap-4">
-        @for (menuItem of userNavMenuItems; track $index) {
-        <li
-          tabindex="0"
-          role="menuitem"
-          (keyup.enter)="toggleMobileMenu()"
-          (click)="toggleMobileMenu()"
-        >
-          <a
-            [routerLink]="menuItem.href"
-            routerLinkActive="text-zinc-900"
-            class="block text-sm font-medium tracking-tight hover:text-zinc-700"
-          >
-            {{ menuItem.title }}
-          </a>
-        </li>
-        }
+        <ul class="mb-4 flex flex-col gap-4">
+          @for (menuItem of userNavMenuItems; track $index) {
+            <li
+              tabindex="0"
+              role="menuitem"
+              (keyup.enter)="toggleMobileMenu()"
+              (click)="toggleMobileMenu()"
+            >
+              <a
+                [routerLink]="menuItem.href"
+                routerLinkActive="text-zinc-900"
+                class="block text-sm font-medium tracking-tight hover:text-zinc-700"
+              >
+                {{ menuItem.title }}
+              </a>
+            </li>
+          }
 
-        <li
-          tabindex="0"
-          role="menuitem"
-          (keyup.enter)="logout()"
-          (click)="logout()"
-        >
-          <button
-            class="text-sm font-medium tracking-tight hover:text-zinc-700"
+          <li
+            tabindex="0"
+            role="menuitem"
+            (keyup.enter)="logout()"
+            (click)="logout()"
           >
-            Log out
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </div>
+            <button
+              class="text-sm font-medium tracking-tight hover:text-zinc-700"
+            >
+              Log out
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
   }
 </header>
