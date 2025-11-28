@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -13,11 +14,10 @@ import { UserService } from '@/core/services/users-service';
 import { PageType, Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
-import { Chip } from '@/shared/components/ui/chip/chip';
 import { Button } from '@/shared/components/ui/button/button';
+import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
-import Utils from '@/shared/utils';
 
 const columns: ColumnDef<User>[] = [
   {
@@ -42,12 +42,14 @@ const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'created_at',
     header: 'Created at',
-    cell: (info) => Utils.formatDate(info.getValue() as string),
+    cell: (info) =>
+      formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
   },
   {
     accessorKey: 'updated_at',
     header: 'Updated at',
-    cell: (info) => Utils.formatDate(info.getValue() as string),
+    cell: (info) =>
+      formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
   },
   {
     accessorKey: 'deleted_at',
