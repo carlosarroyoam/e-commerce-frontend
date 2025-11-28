@@ -35,14 +35,6 @@ export class LoginPage {
     ]),
   });
 
-  get email() {
-    return this.loginForm.get('email');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
-
   protected login(): void {
     this.authService.login({
       email: this.loginForm.value.email!,

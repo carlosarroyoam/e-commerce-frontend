@@ -6,6 +6,8 @@
 
   <form method="post" [formGroup]="loginForm" class="mt-6 space-y-4">
     <div class="space-y-2">
+      @let email = loginForm.get("email");
+
       <label appInputLabel for="email">Email</label>
       <input
         appInput
@@ -17,6 +19,7 @@
         formControlName="email"
         required
       />
+
       @if (email?.invalid && (email?.dirty || email?.touched)) {
         @if (email?.hasError("required")) {
           <p appInputError>The email field is required.</p>
@@ -30,6 +33,8 @@
     </div>
 
     <div class="space-y-2">
+      @let password = loginForm.get("password");
+
       <label appInputLabel for="password">Password</label>
       <input
         appInput
@@ -40,6 +45,7 @@
         formControlName="password"
         required
       />
+
       @if (password?.invalid && (password?.dirty || password?.touched)) {
         @if (password?.hasError("required")) {
           <p appInputError>The password field is required.</p>
