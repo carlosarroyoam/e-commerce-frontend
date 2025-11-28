@@ -1,10 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth-service';
@@ -25,14 +20,12 @@ import { AppInput } from '@/shared/components/ui/input/input';
   templateUrl: './login-page.html',
 })
 export class LoginPage {
+  private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
 
-  protected loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
+  protected loginForm = this.formBuilder.group({
+    email: [null, [Validators.required, Validators.email]],
+    password: [null, [Validators.required, Validators.minLength(8)]],
   });
 
   protected login(): void {

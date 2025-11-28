@@ -24,10 +24,8 @@
         @if (email?.hasError("required")) {
           <p appInputError>The email field is required.</p>
         }
-        @if (email?.hasError("minlength")) {
-          <p appInputError>
-            The email field should be at least 8 characters long.
-          </p>
+        @if (email?.hasError("email")) {
+          <p appInputError>The email field should be a valid email address.</p>
         }
       }
     </div>
