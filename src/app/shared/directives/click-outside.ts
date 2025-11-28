@@ -1,38 +1,43 @@
 import {
   AfterViewInit,
   Directive,
-  DOCUMENT,
   ElementRef,
   inject,
   OnDestroy,
   output,
+  Renderer2,
 } from '@angular/core';
-import { filter, fromEvent, Subscription } from 'rxjs';
 
 @Directive({
   selector: '[appClickOutside]',
 })
 export class ClickOutside implements AfterViewInit, OnDestroy {
-  private readonly _elementRef = inject(ElementRef);
-  private readonly document = inject(DOCUMENT);
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
 
   public clickOutside = output<void>();
-  private documentClickSubscription?: Subscription;
+  private listener?: (() => void) | null;
 
   ngAfterViewInit(): void {
-    this.documentClickSubscription = fromEvent(this.document, 'click')
-      .pipe(filter((event) => !this.isClickInside(event.target as HTMLElement)))
-      .subscribe(() => this.clickOutside.emit());
+    this.listener = this.renderer.listen(
+      'document',
+      'click',
+      (event: Event) => {
+        if (this.isClickOutside(event.target as HTMLElement)) {
+          this.clickOutside.emit();
+        }
+      },
+    );
   }
 
   ngOnDestroy(): void {
-    this.documentClickSubscription?.unsubscribe();
+    this.listener?.();
   }
 
-  protected isClickInside(element: HTMLElement): boolean {
+  private isClickOutside(element: HTMLElement): boolean {
     return (
-      element === this._elementRef.nativeElement ||
-      this._elementRef.nativeElement.contains(element)
+      element !== this.elementRef.nativeElement &&
+      !this.elementRef.nativeElement.contains(element)
     );
   }
 }
