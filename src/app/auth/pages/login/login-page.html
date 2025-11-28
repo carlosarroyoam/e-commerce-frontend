@@ -4,14 +4,19 @@
     Enter your email and password to start managing your e-commerce.
   </p>
 
-  <form method="post" [formGroup]="loginForm" class="mt-6 space-y-4">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="login()"
+    class="mt-6 space-y-4"
+    novalidate
+  >
     <div class="space-y-2">
       @let email = loginForm.get("email");
 
       <label appInputLabel for="email">Email</label>
       <input
         appInput
-        type="text"
+        type="email"
         id="email"
         name="email"
         placeholder="Enter your email"
@@ -59,9 +64,8 @@
     <button
       appButton
       type="submit"
-      [disabled]="loginForm.invalid"
-      (click)="login()"
       class="w-full"
+      [disabled]="loginForm.invalid"
     >
       Log in
     </button>
