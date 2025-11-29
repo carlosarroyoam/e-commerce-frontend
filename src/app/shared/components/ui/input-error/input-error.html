@@ -1,0 +1,13 @@
+@if (control()?.invalid && (control()?.dirty || control()?.touched)) {
+  @if (control()?.hasError("required")) {
+    <p>The field is required.</p>
+  }
+
+  @if (control()?.hasError("minlength")) {
+    <p>The field should be at least 8 characters long.</p>
+  }
+
+  @if (control()?.hasError("email")) {
+    <p>The field should be a valid email address.</p>
+  }
+}

@@ -16,23 +16,14 @@
       <label appInputLabel for="email">Email</label>
       <input
         appInput
-        type="email"
         id="email"
-        name="email"
+        type="email"
         placeholder="Enter your email"
         autocomplete="email"
         formControlName="email"
         required
       />
-
-      @if (email?.invalid && (email?.dirty || email?.touched)) {
-        @if (email?.hasError("required")) {
-          <p appInputError>The email field is required.</p>
-        }
-        @if (email?.hasError("email")) {
-          <p appInputError>The email field should be a valid email address.</p>
-        }
-      }
+      <app-input-error [control]="email" />
     </div>
 
     <div class="space-y-2">
@@ -41,24 +32,13 @@
       <label appInputLabel for="password">Password</label>
       <input
         appInput
-        type="password"
         id="password"
-        name="password"
+        type="password"
         placeholder="Enter your password"
         formControlName="password"
         required
       />
-
-      @if (password?.invalid && (password?.dirty || password?.touched)) {
-        @if (password?.hasError("required")) {
-          <p appInputError>The password field is required.</p>
-        }
-        @if (password?.hasError("minlength")) {
-          <p appInputError>
-            The password field should be at least 8 characters long.
-          </p>
-        }
-      }
+      <app-input-error [control]="password" />
     </div>
 
     <button

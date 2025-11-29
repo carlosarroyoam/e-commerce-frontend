@@ -1,12 +1,14 @@
-import { Directive } from '@angular/core';
-import { twMerge } from 'tailwind-merge';
+import { Component, input } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 
-@Directive({
-  selector: 'p[appInputError], span[appInputError]',
+@Component({
+  selector: 'app-input-error',
+  imports: [],
+  templateUrl: './input-error.html',
   host: {
-    '[class]': 'hostClass',
+    class: 'block text-sm text-red-500',
   },
 })
 export class InputError {
-  protected hostClass = twMerge('text-sm text-red-500');
+  public control = input.required<AbstractControl | null>();
 }
