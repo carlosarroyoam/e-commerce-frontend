@@ -37,7 +37,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
     if (!this.control) return;
 
     this.changesSubscription.add(
-      this.control.valueChanges.subscribe(() => this.isInvalid()),
+      this.control.valueChanges.subscribe(() => this.checkIfInvalid()),
     );
 
     this.changesSubscription.add(
@@ -46,7 +46,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
           event instanceof TouchedChangeEvent ||
           event instanceof PristineChangeEvent
         ) {
-          this.isInvalid();
+          this.checkIfInvalid();
         }
       }),
     );
@@ -56,7 +56,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
     this.changesSubscription.unsubscribe();
   }
 
-  protected isInvalid(): void {
+  protected checkIfInvalid(): void {
     if (!this.control) return;
 
     this.invalid.set(

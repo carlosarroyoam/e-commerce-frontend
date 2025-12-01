@@ -17,9 +17,7 @@
         id="email"
         type="email"
         placeholder="Enter your email"
-        autocomplete="email"
         formControlName="email"
-        required
       />
       <app-input-error [control]="loginForm.get('email')" />
     </div>
@@ -32,7 +30,6 @@
         type="password"
         placeholder="Enter your password"
         formControlName="password"
-        required
       />
       <app-input-error [control]="loginForm.get('password')" />
     </div>
