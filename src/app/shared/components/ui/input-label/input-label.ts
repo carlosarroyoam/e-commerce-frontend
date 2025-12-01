@@ -9,8 +9,8 @@ import { twMerge } from 'tailwind-merge';
   },
 })
 export class InputLabel implements OnInit {
-  private readonly formGroup = inject(FormGroupDirective);
   private readonly elementRef = inject(ElementRef);
+  private readonly formGroup = inject(FormGroupDirective);
 
   public for = input.required<string>();
 

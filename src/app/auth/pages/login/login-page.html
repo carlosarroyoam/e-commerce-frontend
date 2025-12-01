@@ -11,8 +11,6 @@
     novalidate
   >
     <div class="space-y-2">
-      @let email = loginForm.get("email");
-
       <label appInputLabel for="email">Email</label>
       <input
         appInput
@@ -23,12 +21,10 @@
         formControlName="email"
         required
       />
-      <app-input-error [control]="email" />
+      <app-input-error [control]="loginForm.get('email')" />
     </div>
 
     <div class="space-y-2">
-      @let password = loginForm.get("password");
-
       <label appInputLabel for="password">Password</label>
       <input
         appInput
@@ -38,7 +34,7 @@
         formControlName="password"
         required
       />
-      <app-input-error [control]="password" />
+      <app-input-error [control]="loginForm.get('password')" />
     </div>
 
     <button
