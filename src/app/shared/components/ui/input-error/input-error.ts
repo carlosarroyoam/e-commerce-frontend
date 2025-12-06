@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,7 @@ import { AbstractControl } from '@angular/forms';
   host: {
     class: 'block text-sm text-red-500',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputError {
   public control = input.required<AbstractControl | null>();

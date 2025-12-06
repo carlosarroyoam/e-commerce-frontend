@@ -1,5 +1,11 @@
 import { formatDate } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ColumnDef,
@@ -72,6 +78,7 @@ const columns: ColumnDef<User>[] = [
 @Component({
   imports: [FormsModule, Button, AppInput, TableComponent, Paginator],
   templateUrl: './users-page.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);

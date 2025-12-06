@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { Footer } from '@/shared/components/footer/footer';
@@ -9,5 +9,6 @@ import { Footer } from '@/shared/components/footer/footer';
   host: {
     class: 'flex min-h-[100dvh] flex-col',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthLayout {}

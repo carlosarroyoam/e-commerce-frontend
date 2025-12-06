@@ -1,4 +1,10 @@
-import { Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+} from '@angular/core';
 
 import { Pagination } from '@/core/interfaces/pagination';
 import { Button } from '@/shared/components/ui/button/button';
@@ -14,6 +20,7 @@ export enum PageType {
   selector: 'app-paginator',
   imports: [Button],
   templateUrl: './paginator.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Paginator {
   public pagination = input<Pagination | undefined>();

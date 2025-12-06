@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { Button } from '@/shared/components/ui/button/button';
 
@@ -12,6 +12,7 @@ export interface DialogData {
   selector: 'app-alert-dialog',
   imports: [Button],
   templateUrl: './alert-dialog.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertDialog {
   private readonly dialogRef = inject(DialogRef<void>);

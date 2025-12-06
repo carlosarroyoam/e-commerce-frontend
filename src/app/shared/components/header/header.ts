@@ -1,4 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth-service';
@@ -9,6 +14,7 @@ import { ClickOutside } from '@/shared/directives/click-outside';
   selector: 'app-header',
   imports: [RouterLink, UserNav, ClickOutside],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   private readonly authService = inject(AuthService);

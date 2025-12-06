@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { User } from '@/core/interfaces/user';
@@ -11,6 +11,7 @@ import { Button } from '@/shared/components/ui/button/button';
   host: {
     class: 'flex gap-2',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersTableButtons {
   private readonly context =

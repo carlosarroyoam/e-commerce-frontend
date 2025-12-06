@@ -1,5 +1,11 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { AuthService } from '@/core/services/auth-service';
@@ -8,6 +14,7 @@ import { AuthService } from '@/core/services/auth-service';
   selector: 'app-user-nav',
   imports: [RouterLink, OverlayModule],
   templateUrl: './user-nav.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
   private readonly authService = inject(AuthService);

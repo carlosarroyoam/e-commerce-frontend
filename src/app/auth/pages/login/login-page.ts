@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -18,6 +18,7 @@ import { AppInput } from '@/shared/components/ui/input/input';
     InputError,
   ],
   templateUrl: './login-page.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
   private readonly formBuilder = inject(FormBuilder);
