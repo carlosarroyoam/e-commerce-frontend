@@ -16,6 +16,7 @@ import {
 
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
+import { DialogService } from '@/core/services/dialog-service';
 import { UserService } from '@/core/services/users-service';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -25,55 +26,64 @@ import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
 
-const columns: ColumnDef<User>[] = [
-  {
-    id: 'profile_picture',
-    cell: () => new FlexRenderComponent(Avatar),
-  },
-  {
-    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
-    header: 'Name',
-    cell: (info) => info.getValue(),
-  },
-  {
-    accessorKey: 'email',
-    header: 'Email',
-    cell: (info) => info.getValue(),
-  },
-  {
-    accessorKey: 'user_role',
-    header: 'Role',
-    cell: (info) => (info.getValue() as string).replace('App/', ''),
-  },
-  {
-    accessorKey: 'created_at',
-    header: 'Created at',
-    cell: (info) =>
-      formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
-  },
-  {
-    accessorKey: 'updated_at',
-    header: 'Updated at',
-    cell: (info) =>
-      formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
-  },
-  {
-    accessorKey: 'deleted_at',
-    header: 'Status',
-    cell: (info) => {
-      const deletedAt = info.getValue() as string;
-      return new FlexRenderComponent(Chip, {
-        variant: deletedAt ? 'danger' : 'success',
-        label: deletedAt ? 'Inactive' : 'Active',
-      });
+export function buildTableColumns(opts: {
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
+}): ColumnDef<User>[] {
+  return [
+    {
+      id: 'profile_picture',
+      cell: () => new FlexRenderComponent(Avatar),
     },
-  },
-  {
-    id: 'actions',
-    header: 'Actions',
-    cell: () => new FlexRenderComponent(UsersTableButtons),
-  },
-];
+    {
+      accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+      header: 'Name',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'user_role',
+      header: 'Role',
+      cell: (info) => (info.getValue() as string).replace('App/', ''),
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Created at',
+      cell: (info) =>
+        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+    },
+    {
+      accessorKey: 'updated_at',
+      header: 'Updated at',
+      cell: (info) =>
+        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+    },
+    {
+      accessorKey: 'deleted_at',
+      header: 'Status',
+      cell: (info) => {
+        const deletedAt = info.getValue() as string;
+        return new FlexRenderComponent(Chip, {
+          variant: deletedAt ? 'danger' : 'success',
+          label: deletedAt ? 'Inactive' : 'Active',
+        });
+      },
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: () =>
+        new FlexRenderComponent(UsersTableButtons, {
+          onEdit: opts.onEdit,
+          onDelete: opts.onDelete,
+        }),
+    },
+  ];
+}
 
 @Component({
   imports: [FormsModule, Button, AppInput, TableComponent, Paginator],
@@ -82,6 +92,7 @@ const columns: ColumnDef<User>[] = [
 })
 export class UsersPageComponent implements OnInit {
   private readonly userService = inject(UserService);
+  private readonly dialogService = inject(DialogService);
 
   protected page = signal<number>(1);
   protected size = signal<number>(20);
@@ -93,7 +104,10 @@ export class UsersPageComponent implements OnInit {
 
   protected table = createAngularTable(() => ({
     data: this.data(),
-    columns: columns,
+    columns: buildTableColumns({
+      onEdit: (user) => this.onEditUser(user),
+      onDelete: (user) => this.onDeleteUser(user),
+    }),
     getCoreRowModel: getCoreRowModel(),
   }));
 
@@ -118,6 +132,29 @@ export class UsersPageComponent implements OnInit {
 
   protected onPageChanged(): void {
     this.fetchData();
+  }
+
+  protected onEditUser(user: User): void {
+    console.log('Edit user:', user.id);
+  }
+
+  protected onDeleteUser(user: User): void {
+    console.log('Delete user:', user.id);
+
+    this.dialogService
+      .open({
+        data: {
+          title: `Delete user with id: ${user.id}?`,
+          description: `Are you sure you want to delete the user ${user.first_name}?`,
+          primaryButtonLabel: 'Delete',
+          showSecondaryButton: true,
+        },
+      })
+      .closed.subscribe((result) => {
+        if (result?.accepted) {
+          console.log('Confirmed deletion of user with id: ', user.id);
+        }
+      });
   }
 
   private fetchData(): void {

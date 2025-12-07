@@ -14,17 +14,17 @@ import { Button } from '@/shared/components/ui/button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersTableButtons {
-  public onEdit = input<(id: number) => void>();
-  public onDelete = input<(id: number) => void>();
+  public onEdit = input<(user: User) => void>();
+  public onDelete = input<(user: User) => void>();
 
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
 
   protected onEditClicked() {
-    this.onEdit()?.(this.context.row.original.id);
+    this.onEdit()?.(this.context.row.original);
   }
 
   protected onDeleteClicked() {
-    this.onDelete()?.(this.context.row.original.id);
+    this.onDelete()?.(this.context.row.original);
   }
 }
