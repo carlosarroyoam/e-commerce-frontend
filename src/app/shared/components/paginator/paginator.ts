@@ -67,7 +67,7 @@ export class Paginator {
         this.page.update((currentPage) => currentPage + 1);
         break;
       case PageType.LAST_PAGE:
-        this.page.set(this.pagination()?.totalPages ?? 0);
+        this.page.set(this.totalPages());
         break;
       default:
         console.error('Invalid PageType: ' + pageType);
