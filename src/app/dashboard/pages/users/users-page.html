@@ -49,9 +49,9 @@
   <app-table [table]="table" />
 
   <app-paginator
-    [page]="page()"
-    [size]="size()"
+    [(page)]="page"
+    [(size)]="size"
     [pagination]="pagination()"
-    (pageChanged)="onPageChanged($event)"
+    (pageChanged)="onPageChanged()"
   />
 </section>

@@ -17,7 +17,7 @@ import {
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { UserService } from '@/core/services/users-service';
-import { PageType, Paginator } from '@/shared/components/paginator/paginator';
+import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Button } from '@/shared/components/ui/button/button';
@@ -101,53 +101,36 @@ export class UsersPageComponent implements OnInit {
     this.fetchData();
   }
 
-  private fetchData(): void {
-    this.userService
-      .getAll({
-        page: this.page(),
-        size: this.size(),
-        search: this.search(),
-        status: this.status(),
-      })
-      .subscribe((response) => {
-        this.data.set(response.users);
-        this.pagination.set(response.pagination);
-      });
-  }
-
   protected searchUser(): void {
-    if (this.search() === undefined) return;
+    if (!this.search() || this.search()?.trim() === '') return;
 
     this.page.set(1);
     this.fetchData();
   }
 
   protected clearSearch(): void {
-    if (this.search() === undefined) return;
+    if (!this.search() || this.search()?.trim() === '') return;
 
     this.page.set(1);
     this.search.set(undefined);
     this.fetchData();
   }
 
-  protected onPageChanged(pageType: PageType): void {
-    switch (pageType) {
-      case PageType.FIRST_PAGE:
-        this.page.set(1);
-        break;
-      case PageType.PREVIOUS_PAGE:
-        this.page.update((currentPage) => currentPage - 1);
-        break;
-      case PageType.NEXT_PAGE:
-        this.page.update((currentPage) => currentPage + 1);
-        break;
-      case PageType.LAST_PAGE:
-        this.page.set(this.pagination()?.totalPages ?? 0);
-        break;
-      default:
-        console.error('Invalid PageType: ' + pageType);
-    }
-
+  protected onPageChanged(): void {
     this.fetchData();
+  }
+
+  private fetchData(): void {
+    this.userService
+      .getAll({
+        page: this.page(),
+        size: this.size(),
+        search: this.search()?.trim(),
+        status: this.status(),
+      })
+      .subscribe((response) => {
+        this.data.set(response.users);
+        this.pagination.set(response.pagination);
+      });
   }
 }
