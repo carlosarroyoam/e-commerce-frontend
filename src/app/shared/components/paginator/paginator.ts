@@ -27,24 +27,35 @@ export class Paginator {
   public pagination = input<Pagination | undefined>();
   public page = model.required<number>();
   public size = model.required<number>();
-  public pageChanged = output();
+  public pageChanged = output<void>();
+
   protected pageType = PageType;
 
-  protected entries = computed(() => ({
-    from: (this.page() - 1) * this.size() + 1,
-    to: (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0),
-    totalEntries: this.pagination()?.totalElements ?? 0,
-  }));
+  protected from = computed(() => {
+    return (this.page() - 1) * this.size() + 1;
+  });
 
-  protected hasNextPage(): boolean {
-    return this.page() + 1 <= (this.pagination()?.totalPages ?? 0);
-  }
+  protected to = computed(() => {
+    return (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0);
+  });
+
+  protected totalPages = computed(() => {
+    return this.pagination()?.totalPages ?? 0;
+  });
+
+  protected totalItems = computed(() => {
+    return this.pagination()?.totalItems ?? 0;
+  });
 
   protected hasPreviousPage(): boolean {
     return this.page() - 1 >= 1;
   }
 
-  protected onPageChanged(pageType: PageType): void {
+  protected hasNextPage(): boolean {
+    return this.page() + 1 <= this.totalPages();
+  }
+
+  protected changePage(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
         this.page.set(1);
