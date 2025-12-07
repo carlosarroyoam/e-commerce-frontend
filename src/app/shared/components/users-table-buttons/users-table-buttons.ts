@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { User } from '@/core/interfaces/user';
@@ -14,15 +14,17 @@ import { Button } from '@/shared/components/ui/button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersTableButtons {
+  public onEdit = input<(id: number) => void>();
+  public onDelete = input<(id: number) => void>();
+
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
-  private user = this.context.row.original;
 
-  protected edit(): void {
-    console.log('Edit: ' + this.user.id);
+  protected onEditClicked() {
+    this.onEdit()?.(this.context.row.original.id);
   }
 
-  protected delete(): void {
-    console.log('Delete: ' + this.user.id);
+  protected onDeleteClicked() {
+    this.onDelete()?.(this.context.row.original.id);
   }
 }
