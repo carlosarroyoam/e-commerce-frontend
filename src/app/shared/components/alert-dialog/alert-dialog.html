@@ -4,78 +4,65 @@
   <div
     class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:min-w-[448px] sm:max-w-xl"
   >
-    <div class="flex flex-col gap-4 sm:flex-row">
-      <div
-        class="mx-auto flex size-12 items-center justify-center rounded-full bg-red-100 sm:mx-0"
+    <div class="flex flex-col">
+      <!-- Dialog title -->
+      <h2
+        id="dialog-title"
+        class="text-center font-semibold text-zinc-900 sm:text-left"
       >
+        {{ data?.title }}
+      </h2>
+
+      @if (data?.description) {
+        <!-- Dialog description -->
+        <p
+          id="dialog-description"
+          class="mt-1 text-center text-sm sm:text-left"
+        >
+          {{ data?.description }}
+        </p>
+      }
+    </div>
+
+    <!-- Dismiss button -->
+    <div class="absolute right-5 top-5 hidden hover:cursor-pointer sm:block">
+      <span class="sr-only">Close dialog</span>
+      <button (click)="closeDialog()">
         <svg
+          xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
           aria-hidden="true"
           data-slot="icon"
-          class="size-8 text-red-500"
+          class="size-6"
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+            d="M6 18 18 6M6 6l12 12"
           />
         </svg>
-      </div>
-
-      <div class="flex-1">
-        <!-- Dialog header -->
-        <h2
-          id="dialog-title"
-          class="text-center font-semibold text-zinc-900 sm:text-left"
-        >
-          {{ data?.title || "Whoops! something went wrong" }}
-        </h2>
-
-        <!-- Dialog content -->
-        <p
-          id="dialog-description"
-          class="mt-1 text-center text-sm sm:text-left"
-        >
-          {{
-            data?.description ||
-              `There was a problem processing the request.
-          Please try again later.`
-          }}
-        </p>
-      </div>
-
-      <!-- Dismiss button -->
-      <div class="hidden hover:cursor-pointer sm:block">
-        <span class="sr-only">Close dialog</span>
-        <button (click)="closeDialog()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            aria-hidden="true"
-            data-slot="icon"
-            class="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 18 18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
+      </button>
     </div>
 
     <!-- Dialog footer -->
-    <div
-      class="mt-6 flex flex-col-reverse gap-2 sm:mt-4 sm:flex-row sm:justify-end"
-    >
-      <button appButton type="button" (click)="closeDialog()">Dismiss</button>
+    <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+      @if (data?.showSecondaryButton) {
+        <button
+          appButton
+          type="button"
+          [variant]="'secondary'"
+          (click)="cancel()"
+        >
+          {{ data?.secondaryButtonLabel ?? "Cancel" }}
+        </button>
+      }
+
+      <button appButton type="button" (click)="accept()">
+        {{ data?.primaryButtonLabel ?? "Accept" }}
+      </button>
     </div>
   </div>
 </div>

@@ -59,12 +59,20 @@ export class AuthService {
                 data: {
                   title: err.error.error,
                   description: err.error.message,
+                  primaryButtonLabel: 'Dismiss',
                 },
               });
               return;
             }
 
-            this.dialogService.open();
+            this.dialogService.open({
+              data: {
+                title: 'Whoops! something went wrong',
+                description:
+                  'There was a problem processing the request. Please try again later.',
+                primaryButtonLabel: 'Dismiss',
+              },
+            });
           }
         },
       });
