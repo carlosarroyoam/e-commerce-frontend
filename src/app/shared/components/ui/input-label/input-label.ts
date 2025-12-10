@@ -23,6 +23,6 @@ export class InputLabel implements OnInit {
   }
 
   protected hostClass = twMerge(
-    'block text-sm font-medium leading-6 text-zinc-900',
+    'block text-sm leading-6 font-medium text-zinc-900',
   );
 }

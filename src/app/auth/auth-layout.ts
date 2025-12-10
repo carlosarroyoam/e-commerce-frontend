@@ -7,7 +7,7 @@ import { Footer } from '@/shared/components/footer/footer';
   imports: [RouterOutlet, Footer],
   templateUrl: './auth-layout.html',
   host: {
-    class: 'flex min-h-[100dvh] flex-col',
+    class: 'flex min-h-dvh flex-col',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

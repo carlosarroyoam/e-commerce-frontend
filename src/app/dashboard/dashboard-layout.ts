@@ -8,7 +8,7 @@ import { Header } from '@/shared/components/header/header';
   imports: [RouterOutlet, Header, Footer],
   templateUrl: './dashboard-layout.html',
   host: {
-    class: 'flex min-h-[100dvh] flex-col',
+    class: 'flex min-h-dvh flex-col',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

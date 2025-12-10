@@ -2,7 +2,7 @@
 <div class="absolute inset-x-0 bottom-0 p-4 sm:relative sm:p-0">
   <!-- Dialog -->
   <div
-    class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-sm sm:min-w-[448px] sm:max-w-xl"
+    class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-xs sm:max-w-xl sm:min-w-[448px]"
   >
     <div class="flex flex-col">
       <!-- Dialog title -->
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Dismiss button -->
-    <div class="absolute right-5 top-5 hidden hover:cursor-pointer sm:block">
+    <div class="absolute top-5 right-5 hidden hover:cursor-pointer sm:block">
       <span class="sr-only">Close dialog</span>
       <button (click)="closeDialog()">
         <svg

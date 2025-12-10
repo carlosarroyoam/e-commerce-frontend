@@ -5,7 +5,7 @@
   type="button"
   aria-haspopup="true"
   (click)="toggleIsOpen()"
-  class="relative flex rounded-full text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+  class="relative flex rounded-full text-sm shadow-xs focus:ring-2 focus:ring-zinc-500 focus:outline-hidden"
 >
   <span class="sr-only">Open user menu</span>
   <img [src]="src" [alt]="alt" class="size-10 rounded-full" />
@@ -35,13 +35,13 @@
     class="overflow-hidden rounded-md bg-white p-2.5 shadow-md"
   >
     <div class="px-2 py-1.5">
-      <p class="text-nowrap text-sm font-semibold leading-none text-zinc-900">
+      <p class="text-sm leading-none font-semibold text-nowrap text-zinc-900">
         {{ fullname }}
       </p>
-      <p class="mt-1 text-nowrap text-sm leading-none">{{ user?.email }}</p>
+      <p class="mt-1 text-sm leading-none text-nowrap">{{ user?.email }}</p>
     </div>
 
-    <hr class="my-1 h-px bg-zinc-300" />
+    <hr class="my-1 border-zinc-200" />
 
     <nav>
       <ul>
@@ -51,7 +51,7 @@
               [routerLink]="item.href"
               role="menuitem"
               (click)="toggleIsOpen()"
-              class="inline-flex w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+              class="inline-flex w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
             >
               {{ item.title }}
             </a>
@@ -62,7 +62,7 @@
           <button
             role="menuitem"
             (click)="logout()"
-            class="w-full rounded-sm px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            class="w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
           >
             Log out
           </button>
