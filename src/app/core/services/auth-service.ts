@@ -30,7 +30,7 @@ export class AuthService {
 
   public logout(): Observable<void> {
     return this.httpClient
-      .post<void>(`${environment.apiUrl}/auth/logouts`, null)
+      .post<void>(`${environment.apiUrl}/auth/logout`, undefined)
       .pipe(finalize(() => this.sessionService.clearSession()));
   }
 
