@@ -8,8 +8,6 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((err) => {
-      console.error(err.message);
-
       if (err instanceof HttpErrorResponse) {
         dialogService.open({
           data: {
