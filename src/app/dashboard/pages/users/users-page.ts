@@ -127,8 +127,8 @@ export class UsersPageComponent {
 
   constructor() {
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
-      this.page.set(params['page'] ? Number(params['page']) : 1);
-      this.size.set(params['size'] ? Number(params['size']) : 20);
+      this.page.set(Number(params['page'] ?? 1));
+      this.size.set(Number(params['size'] ?? 20));
       this.search.set(params['search'] ?? undefined);
       this.status.set(params['status'] ?? undefined);
 
@@ -158,8 +158,8 @@ export class UsersPageComponent {
   }
 
   protected clearSearch(): void {
-    this.page.set(1);
     this.searchControl.setValue(undefined);
+    this.page.set(1);
   }
 
   protected onEditUser(user: User): void {
@@ -167,8 +167,6 @@ export class UsersPageComponent {
   }
 
   protected onDeleteUser(user: User): void {
-    console.log('Delete user:', user.id);
-
     this.dialogService
       .open({
         data: {
@@ -191,8 +189,8 @@ export class UsersPageComponent {
       queryParams: {
         page: this.page(),
         size: this.size(),
-        search: this.search() || null,
-        status: this.status() || null,
+        search: this.search() || undefined,
+        status: this.status() || undefined,
       },
       queryParamsHandling: 'merge',
       replaceUrl: true,
