@@ -6,13 +6,16 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ColumnDef,
   createAngularTable,
   FlexRenderComponent,
   getCoreRowModel,
 } from '@tanstack/angular-table';
+import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
@@ -25,9 +28,6 @@ import { Button } from '@/shared/components/ui/button/button';
 import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, switchMap, tap } from 'rxjs';
 
 export function buildTableColumns(opts: {
   onEdit: (user: User) => void;
@@ -146,15 +146,14 @@ export class UsersPageComponent {
 
     toObservable(this.params)
       .pipe(
-        takeUntilDestroyed(),
         tap(() => this.updateQueryParams()),
         switchMap((params) => this.userService.getAll(params)),
-        tap((response) => {
-          this.data.set(response.users);
-          this.pagination.set(response.pagination);
-        }),
+        takeUntilDestroyed(),
       )
-      .subscribe();
+      .subscribe((response) => {
+        this.data.set(response.users);
+        this.pagination.set(response.pagination);
+      });
   }
 
   protected clearSearch(): void {
@@ -176,10 +175,12 @@ export class UsersPageComponent {
           showSecondaryButton: true,
         },
       })
-      .closed.subscribe((result) => {
-        if (result?.accepted) {
-          console.log('Confirmed deletion of user with id: ', user.id);
-        }
+      .closed.pipe(
+        filter((result) => result !== undefined),
+        filter((result) => result.accepted === true),
+      )
+      .subscribe(() => {
+        console.log('Confirmed deletion of user with id: ', user.id);
       });
   }
 

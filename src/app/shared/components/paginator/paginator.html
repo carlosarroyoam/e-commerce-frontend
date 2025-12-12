@@ -9,9 +9,7 @@
 
   <div class="mt-2 flex items-center justify-between gap-8 sm:mt-0">
     @if (totalPages()) {
-      <div>
-        <p class="text-sm">Page {{ page() }} of {{ totalPages() }}</p>
-      </div>
+      <p class="text-sm">Page {{ page() }} of {{ totalPages() }}</p>
     }
 
     <div class="flex items-center gap-2">

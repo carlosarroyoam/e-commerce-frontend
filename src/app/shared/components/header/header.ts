@@ -4,9 +4,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '@/core/services/auth-service';
+import { SessionService } from '@/core/services/session-service';
 import { UserNav } from '@/shared/components/user-nav/user-nav';
 import { ClickOutside } from '@/shared/directives/click-outside';
 
@@ -17,7 +19,9 @@ import { ClickOutside } from '@/shared/directives/click-outside';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly sessionService = inject(SessionService);
 
   protected isMobileMenuOpen = signal(false);
 
@@ -43,6 +47,14 @@ export class Header {
   }
 
   protected logout(): void {
-    this.authService.logout();
+    this.authService
+      .logout()
+      .pipe(
+        finalize(() => {
+          this.sessionService.clearSession();
+          this.router.navigate(['/auth/login']);
+        }),
+      )
+      .subscribe();
   }
 }

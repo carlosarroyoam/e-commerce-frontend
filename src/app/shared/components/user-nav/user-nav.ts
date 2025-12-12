@@ -6,9 +6,11 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '@/core/services/auth-service';
+import { SessionService } from '@/core/services/session-service';
 
 @Component({
   selector: 'app-user-nav',
@@ -17,13 +19,15 @@ import { AuthService } from '@/core/services/auth-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly sessionService = inject(SessionService);
 
   public menuItems = input.required<{ href: string; title: string }[]>();
   protected isOpen = signal(false);
 
   get user() {
-    return this.authService.getUser();
+    return this.sessionService.getSession();
   }
 
   get fullname(): string {
@@ -43,6 +47,14 @@ export class UserNav {
   }
 
   protected logout(): void {
-    this.authService.logout();
+    this.authService
+      .logout()
+      .pipe(
+        finalize(() => {
+          this.sessionService.clearSession();
+          this.router.navigate(['/auth/login']);
+        }),
+      )
+      .subscribe();
   }
 }
