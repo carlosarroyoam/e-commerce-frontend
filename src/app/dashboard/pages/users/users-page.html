@@ -12,15 +12,12 @@
         name="search"
         placeholder="Filter users..."
         autocomplete="off"
-        [(ngModel)]="search"
-        (keydown.enter)="searchUser()"
         class="w-full pr-9"
+        [formControl]="searchControl"
       />
 
       <button
         type="button"
-        (click)="searchUser()"
-        (keyup.enter)="searchUser()"
         class="absolute inset-y-0 right-0 mr-3 flex cursor-pointer items-center outline-hidden hover:text-zinc-700"
       >
         <svg
@@ -48,10 +45,5 @@
 
   <app-table [table]="table" />
 
-  <app-paginator
-    [(page)]="page"
-    [(size)]="size"
-    [pagination]="pagination()"
-    (pageChanged)="onPageChanged()"
-  />
+  <app-paginator [(page)]="page" [(size)]="size" [pagination]="pagination()" />
 </section>

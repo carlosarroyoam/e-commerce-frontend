@@ -2,11 +2,11 @@ import { formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
-  OnInit,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   ColumnDef,
   createAngularTable,
@@ -25,6 +25,9 @@ import { Button } from '@/shared/components/ui/button/button';
 import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, switchMap, tap } from 'rxjs';
 
 export function buildTableColumns(opts: {
   onEdit: (user: User) => void;
@@ -86,11 +89,13 @@ export function buildTableColumns(opts: {
 }
 
 @Component({
-  imports: [FormsModule, Button, AppInput, TableComponent, Paginator],
+  imports: [ReactiveFormsModule, Button, AppInput, TableComponent, Paginator],
   templateUrl: './users-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersPageComponent implements OnInit {
+export class UsersPageComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
 
@@ -98,6 +103,15 @@ export class UsersPageComponent implements OnInit {
   protected size = signal<number>(20);
   protected search = signal<string | undefined>(undefined);
   protected status = signal<'active' | 'inactive' | undefined>(undefined);
+
+  protected searchControl = new FormControl();
+
+  private readonly params = computed(() => ({
+    page: this.page(),
+    size: this.size(),
+    search: this.search(),
+    status: this.status(),
+  }));
 
   protected data = signal<User[]>([]);
   protected pagination = signal<Pagination | undefined>(undefined);
@@ -111,27 +125,40 @@ export class UsersPageComponent implements OnInit {
     getCoreRowModel: getCoreRowModel(),
   }));
 
-  ngOnInit(): void {
-    this.fetchData();
-  }
+  constructor() {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
+      this.page.set(params['page'] ? Number(params['page']) : 1);
+      this.size.set(params['size'] ? Number(params['size']) : 20);
+      this.search.set(params['search'] ?? undefined);
+      this.status.set(params['status'] ?? undefined);
+      this.searchControl.setValue(params['search'] ?? undefined, {
+        emitEvent: false,
+      });
+    });
 
-  protected searchUser(): void {
-    if (!this.search() || this.search()?.trim() === '') return;
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value) => {
+        this.search.set(value?.trim() || undefined);
+        this.page.set(1);
+      });
 
-    this.page.set(1);
-    this.fetchData();
+    toObservable(this.params)
+      .pipe(
+        takeUntilDestroyed(),
+        tap(() => this.updateQueryParams()),
+        switchMap((params) => this.userService.getAll(params)),
+        tap((response) => {
+          this.data.set(response.users);
+          this.pagination.set(response.pagination);
+        }),
+      )
+      .subscribe();
   }
 
   protected clearSearch(): void {
-    if (!this.search() || this.search()?.trim() === '') return;
-
     this.page.set(1);
-    this.search.set(undefined);
-    this.fetchData();
-  }
-
-  protected onPageChanged(): void {
-    this.fetchData();
+    this.searchControl.setValue(undefined);
   }
 
   protected onEditUser(user: User): void {
@@ -157,17 +184,17 @@ export class UsersPageComponent implements OnInit {
       });
   }
 
-  private fetchData(): void {
-    this.userService
-      .getAll({
+  private updateQueryParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
         page: this.page(),
         size: this.size(),
-        search: this.search()?.trim(),
-        status: this.status(),
-      })
-      .subscribe((response) => {
-        this.data.set(response.users);
-        this.pagination.set(response.pagination);
-      });
+        search: this.search() || null,
+        status: this.status() || null,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 }
