@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 import { catchError, finalize, switchMap, throwError } from 'rxjs';
 
 import { AuthService } from '@/core/services/auth-service';
-import { SessionService } from '@/core/services/session-service';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const sessionService = inject(SessionService);
 
   return next(req).pipe(
     catchError((err) => {
@@ -31,12 +29,7 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
           ) {
             authService
               .logout()
-              .pipe(
-                finalize(() => {
-                  sessionService.clearSession();
-                  router.navigate(['/auth/login']);
-                }),
-              )
+              .pipe(finalize(() => router.navigate(['/auth/login'])))
               .subscribe();
           }
 

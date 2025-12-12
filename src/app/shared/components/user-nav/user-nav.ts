@@ -49,12 +49,7 @@ export class UserNav {
   protected logout(): void {
     this.authService
       .logout()
-      .pipe(
-        finalize(() => {
-          this.sessionService.clearSession();
-          this.router.navigate(['/auth/login']);
-        }),
-      )
+      .pipe(finalize(() => this.router.navigate(['/auth/login'])))
       .subscribe();
   }
 }

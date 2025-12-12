@@ -13,12 +13,7 @@ export const authGuard: CanActivateFn = () => {
   if (!sessionService.isUserAuth()) {
     authService
       .logout()
-      .pipe(
-        finalize(() => {
-          sessionService.clearSession();
-          router.navigate(['/auth/login']);
-        }),
-      )
+      .pipe(finalize(() => router.navigate(['/auth/login'])))
       .subscribe();
 
     return false;

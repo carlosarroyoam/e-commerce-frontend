@@ -4,7 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { tap } from 'rxjs';
 
 import { AuthService } from '@/core/services/auth-service';
-import { SessionService } from '@/core/services/session-service';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -26,7 +25,6 @@ export class LoginPage {
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
-  private readonly sessionService = inject(SessionService);
 
   protected loginForm = this.formBuilder.group({
     email: [null, [Validators.required, Validators.email]],
@@ -39,12 +37,7 @@ export class LoginPage {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
       })
-      .pipe(
-        tap((response) => {
-          this.sessionService.saveSession(response.user);
-        }),
-        tap(() => this.router.navigate(['/dashboard'])),
-      )
+      .pipe(tap(() => this.router.navigate(['/dashboard'])))
       .subscribe();
   }
 }
