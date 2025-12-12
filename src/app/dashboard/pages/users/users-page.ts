@@ -131,13 +131,14 @@ export class UsersPageComponent {
       this.size.set(params['size'] ? Number(params['size']) : 20);
       this.search.set(params['search'] ?? undefined);
       this.status.set(params['status'] ?? undefined);
-      this.searchControl.setValue(params['search'] ?? undefined, {
+
+      this.searchControl.setValue(this.search(), {
         emitEvent: false,
       });
     });
 
     this.searchControl.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(350))
       .subscribe((value) => {
         this.search.set(value?.trim() || undefined);
         this.page.set(1);

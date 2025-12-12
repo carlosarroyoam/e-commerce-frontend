@@ -41,9 +41,24 @@ export class UserService {
     if (search) params = params.append('search', search);
     if (status) params = params.append('status', status);
 
-    return this.httpClient.get<UsersResponse>(`${environment.apiUrl}/users`, {
-      params,
-    });
+    return this.httpClient
+      .get<UsersResponse>(`${environment.apiUrl}/users`, {
+        params,
+      })
+      .pipe(
+        catchError(() =>
+          of({
+            message: 'UserService fallback response',
+            users: [],
+            pagination: {
+              page: 0,
+              size: 0,
+              totalItems: 0,
+              totalPages: 0,
+            },
+          }),
+        ),
+      );
   }
 
   public getById(userId: number): Observable<User | null> {
