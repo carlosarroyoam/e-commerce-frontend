@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,84 +8,18 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ColumnDef,
-  createAngularTable,
-  FlexRenderComponent,
-  getCoreRowModel,
-} from '@tanstack/angular-table';
+import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
 import { UserService } from '@/core/services/users-service/users-service';
+import { buildUsersTableColumns } from '@/features/dashboard/pages/users/users-table';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
-import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Button } from '@/shared/components/ui/button/button';
-import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppInput } from '@/shared/components/ui/input/input';
-import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
-
-export function buildTableColumns(opts: {
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
-}): ColumnDef<User>[] {
-  return [
-    {
-      id: 'profile_picture',
-      cell: () => new FlexRenderComponent(Avatar),
-    },
-    {
-      accessorFn: (row) => `${row.first_name} ${row.last_name}`,
-      header: 'Name',
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: 'user_role',
-      header: 'Role',
-      cell: (info) => (info.getValue() as string).replace('App/', ''),
-    },
-    {
-      accessorKey: 'created_at',
-      header: 'Created at',
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
-    },
-    {
-      accessorKey: 'updated_at',
-      header: 'Updated at',
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
-    },
-    {
-      accessorKey: 'deleted_at',
-      header: 'Status',
-      cell: (info) => {
-        const deletedAt = info.getValue() as string;
-        return new FlexRenderComponent(Chip, {
-          variant: deletedAt ? 'danger' : 'success',
-          label: deletedAt ? 'Inactive' : 'Active',
-        });
-      },
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: () =>
-        new FlexRenderComponent(UsersTableButtons, {
-          onEdit: opts.onEdit,
-          onDelete: opts.onDelete,
-        }),
-    },
-  ];
-}
 
 @Component({
   imports: [ReactiveFormsModule, Button, AppInput, TableComponent, Paginator],
@@ -118,7 +51,7 @@ export class UsersPageComponent {
 
   protected table = createAngularTable(() => ({
     data: this.data(),
-    columns: buildTableColumns({
+    columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
     }),
