@@ -4,28 +4,30 @@ import { Router } from '@angular/router';
 import { catchError, finalize, switchMap, throwError } from 'rxjs';
 
 import { AuthService } from '@/core/services/auth-service';
+import { AUTH_ROUTES } from '@/core/constants/auth.constants';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);
+  const isAuthRequest = AUTH_ROUTES.some((route) => req.url.includes(route));
 
   return next(req).pipe(
     catchError((err) => {
+      // If error status not equals to 401 and route in AUTH_ROUTES throw to send it to httpErrorInterceptor
       if (
-        err instanceof HttpErrorResponse &&
-        (err.status !== 401 ||
-          err.url?.includes('auth/login') ||
-          err.url?.includes('auth/refresh-token'))
+        !(err instanceof HttpErrorResponse) ||
+        err.status !== 401 ||
+        isAuthRequest
       ) {
         return throwError(() => err);
       }
 
       return authService.refreshToken().pipe(
         switchMap(() => next(req)),
-        catchError((err) => {
+        catchError((refreshError) => {
           if (
-            err instanceof HttpErrorResponse &&
-            (err.status === 401 || err.status === 422)
+            refreshError instanceof HttpErrorResponse &&
+            (refreshError.status === 401 || refreshError.status === 422)
           ) {
             authService
               .logout()
@@ -33,7 +35,7 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
               .subscribe();
           }
 
-          return throwError(() => err);
+          return throwError(() => refreshError);
         }),
       );
     }),
