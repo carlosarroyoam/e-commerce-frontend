@@ -4,6 +4,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 
 import { User } from '@/core/interfaces/user';
 import { UserResponse } from '@/core/interfaces/user.response';
+import { UsersRequestParams } from '@/core/interfaces/users-request';
 import { UsersResponse } from '@/core/interfaces/users-response';
 import { environment } from '@/environments/environment';
 
@@ -19,21 +20,7 @@ export class UserService {
     sort,
     search,
     status,
-  }: {
-    page?: number;
-    size?: number;
-    sort?:
-      | 'id'
-      | '-id'
-      | 'first_name'
-      | '-first_name'
-      | 'last_name'
-      | '-last_name'
-      | 'email'
-      | '-email';
-    search?: string;
-    status?: 'active' | 'inactive';
-  } = {}): Observable<UsersResponse> {
+  }: UsersRequestParams): Observable<UsersResponse> {
     let params = new HttpParams();
     params = params.append('page', page ?? 1);
     params = params.append('size', size ?? 20);
