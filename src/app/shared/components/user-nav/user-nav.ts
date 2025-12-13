@@ -9,8 +9,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth-service';
-import { SessionService } from '@/core/services/session-service';
+import { AuthService } from '@/core/services/auth-service/auth-service';
+import { SessionService } from '@/core/services/session-service/session-service';
 
 @Component({
   selector: 'app-user-nav',

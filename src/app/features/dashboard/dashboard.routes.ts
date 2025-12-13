@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { DashboardLayout } from '@/dashboard/dashboard-layout';
-import { UsersPageComponent } from '@/dashboard/pages/users/users-page';
+import { DashboardLayout } from '@/features/dashboard/dashboard-layout';
+import { UsersPageComponent } from '@/features/dashboard/pages/users/users-page';
 
 export const routes: Routes = [
   {

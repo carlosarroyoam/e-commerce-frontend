@@ -19,8 +19,8 @@ import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
-import { DialogService } from '@/core/services/dialog-service';
-import { UserService } from '@/core/services/users-service';
+import { DialogService } from '@/core/services/dialog-service/dialog-service';
+import { UserService } from '@/core/services/users-service/users-service';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';

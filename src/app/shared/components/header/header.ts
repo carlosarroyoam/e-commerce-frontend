@@ -7,9 +7,9 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth-service';
+import { AuthService } from '@/core/services/auth-service/auth-service';
 import { UserNav } from '@/shared/components/user-nav/user-nav';
-import { ClickOutside } from '@/shared/directives/click-outside';
+import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
 
 @Component({
   selector: 'app-header',

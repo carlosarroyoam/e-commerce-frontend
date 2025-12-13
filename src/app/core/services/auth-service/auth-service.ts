@@ -4,7 +4,7 @@ import { finalize, Observable, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { LoginResponse } from '@/core/interfaces/login-response';
-import { SessionService } from '@/core/services/session-service';
+import { SessionService } from '@/core/services/session-service/session-service';
 import { environment } from '@/environments/environment';
 
 @Injectable({
