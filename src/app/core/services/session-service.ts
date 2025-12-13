@@ -1,5 +1,7 @@
-import { User } from '@/core/interfaces/user';
 import { Injectable } from '@angular/core';
+
+import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
+import { User } from '@/core/interfaces/user';
 
 interface SessionData {
   user_id: string;
@@ -14,16 +16,14 @@ interface SessionData {
   providedIn: 'root',
 })
 export class SessionService {
-  private readonly SESSION_DATA_KEY = 'e-commerce-frontend-session';
-
   public getSession(): SessionData | null {
-    const session = localStorage.getItem(this.SESSION_DATA_KEY);
+    const session = localStorage.getItem(SESSION_KEY);
     return session && JSON.parse(session);
   }
 
   public saveSession(user: Partial<User>): void {
     localStorage.setItem(
-      this.SESSION_DATA_KEY,
+      SESSION_KEY,
       JSON.stringify({
         user_id: user.id,
         email: user.email,
@@ -36,11 +36,11 @@ export class SessionService {
   }
 
   public clearSession(): void {
-    localStorage.removeItem(this.SESSION_DATA_KEY);
+    localStorage.removeItem(SESSION_KEY);
   }
 
   public isUserAuth(): boolean {
-    const session = localStorage.getItem(this.SESSION_DATA_KEY);
+    const session = localStorage.getItem(SESSION_KEY);
     return !!session;
   }
 }
