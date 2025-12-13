@@ -38,7 +38,7 @@
       <p class="text-sm leading-none font-semibold text-nowrap text-zinc-900">
         {{ fullname }}
       </p>
-      <p class="mt-1 text-sm leading-none text-nowrap">{{ user?.email }}</p>
+      <p class="mt-1 text-sm leading-none text-nowrap">{{ session?.email }}</p>
     </div>
 
     <hr class="my-1 border-zinc-200" />
@@ -61,7 +61,7 @@
         <li>
           <button
             role="menuitem"
-            (click)="logout()"
+            (click)="logout.emit()"
             class="w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
           >
             Log out

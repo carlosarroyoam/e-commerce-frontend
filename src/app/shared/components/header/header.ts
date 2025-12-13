@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
+  input,
+  output,
   signal,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
+import { SessionData } from '@/core/interfaces/session-data';
 import { UserNav } from '@/shared/components/user-nav/user-nav';
 import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
 
@@ -18,8 +18,8 @@ import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
+  public sessionData = input.required<SessionData | null>();
+  public logout = output<void>();
 
   protected isMobileMenuOpen = signal(false);
 
@@ -42,12 +42,5 @@ export class Header {
 
   protected closeMobileMenu(): void {
     this.isMobileMenuOpen.set(false);
-  }
-
-  protected logout(): void {
-    this.authService
-      .logout()
-      .pipe(finalize(() => this.router.navigate(['/auth/login'])))
-      .subscribe();
   }
 }

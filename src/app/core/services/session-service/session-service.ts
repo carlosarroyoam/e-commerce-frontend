@@ -1,16 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
+import { SessionData } from '@/core/interfaces/session-data';
 import { User } from '@/core/interfaces/user';
-
-interface SessionData {
-  user_id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  user_role: string;
-  user_role_id: string;
-}
 
 @Injectable({
   providedIn: 'root',

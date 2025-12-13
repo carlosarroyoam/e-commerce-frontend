@@ -2,15 +2,13 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
   input,
+  output,
   signal,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
-import { SessionService } from '@/core/services/session-service/session-service';
+import { SessionData } from '@/core/interfaces/session-data';
 
 @Component({
   selector: 'app-user-nav',
@@ -19,19 +17,18 @@ import { SessionService } from '@/core/services/session-service/session-service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
-  private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
-  private readonly sessionService = inject(SessionService);
-
+  public sessionData = input.required<SessionData | null>();
   public menuItems = input.required<{ href: string; title: string }[]>();
+  public logout = output<void>();
+
   protected isOpen = signal(false);
 
-  get user() {
-    return this.sessionService.getSession();
+  get session() {
+    return this.sessionData();
   }
 
   get fullname(): string {
-    return `${this.user?.first_name} ${this.user?.last_name}`;
+    return `${this.session?.first_name} ${this.session?.last_name}`;
   }
 
   get src(): string {
@@ -39,17 +36,10 @@ export class UserNav {
   }
 
   get alt(): string {
-    return `${this.user?.first_name}'s profile picture`;
+    return `${this.session?.first_name}'s profile picture`;
   }
 
   protected toggleIsOpen(): void {
     this.isOpen.update((isOpen) => !isOpen);
-  }
-
-  protected logout(): void {
-    this.authService
-      .logout()
-      .pipe(finalize(() => this.router.navigate(['/auth/login'])))
-      .subscribe();
   }
 }

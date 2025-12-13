@@ -1,4 +1,4 @@
-<app-header />
+<app-header (logout)="logout()" [sessionData]="sessionData" />
 
 <main class="container py-6">
   <router-outlet />

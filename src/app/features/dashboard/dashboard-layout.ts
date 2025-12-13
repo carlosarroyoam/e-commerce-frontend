@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { finalize } from 'rxjs';
 
+import { AuthService } from '@/core/services/auth-service/auth-service';
+import { SessionService } from '@/core/services/session-service/session-service';
 import { Footer } from '@/shared/components/footer/footer';
 import { Header } from '@/shared/components/header/header';
 
@@ -12,4 +15,19 @@ import { Header } from '@/shared/components/header/header';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardLayout {}
+export class DashboardLayout {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly sessionService = inject(SessionService);
+
+  get sessionData() {
+    return this.sessionService.getSession();
+  }
+
+  protected logout(): void {
+    this.authService
+      .logout()
+      .pipe(finalize(() => this.router.navigate(['/auth/login'])))
+      .subscribe();
+  }
+}
