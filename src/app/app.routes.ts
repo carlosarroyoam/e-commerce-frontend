@@ -11,10 +11,9 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
-    path: 'dashboard',
+    path: '',
     loadChildren: () =>
-      import('@/features/dashboard/dashboard.routes').then((m) => m.routes),
+      import('@/features/main/main.routes').then((m) => m.routes),
     canActivate: [authGuard],
   },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

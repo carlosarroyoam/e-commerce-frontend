@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardLayout } from './dashboard-layout';
+import { DashboardLayout } from './main-layout';
 
 describe('DashboardLayoutComponent', () => {
   let component: DashboardLayout;

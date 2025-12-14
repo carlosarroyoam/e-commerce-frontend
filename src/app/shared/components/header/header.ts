@@ -25,10 +25,10 @@ export class Header {
 
   protected menuItems = [
     { href: '/dashboard', title: 'Dashboard' },
-    { href: '/dashboard/orders', title: 'Orders' },
-    { href: '/dashboard/products', title: 'Products' },
-    { href: '/dashboard/categories', title: 'Categories' },
-    { href: '/dashboard/users', title: 'Users' },
+    { href: '/orders', title: 'Orders' },
+    { href: '/products', title: 'Products' },
+    { href: '/categories', title: 'Categories' },
+    { href: '/users', title: 'Users' },
   ];
 
   protected userNavMenuItems = [

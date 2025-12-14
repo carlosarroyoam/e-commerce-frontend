@@ -37,7 +37,7 @@ export class LoginPage {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
       })
-      .pipe(tap(() => this.router.navigate(['/dashboard'])))
+      .pipe(tap(() => this.router.navigate(['/'])))
       .subscribe();
   }
 }

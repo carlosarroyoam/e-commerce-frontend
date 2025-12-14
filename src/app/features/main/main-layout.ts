@@ -9,13 +9,13 @@ import { Header } from '@/shared/components/header/header';
 
 @Component({
   imports: [RouterOutlet, Header, Footer],
-  templateUrl: './dashboard-layout.html',
+  templateUrl: './main-layout.html',
   host: {
     class: 'grid min-h-dvh grid-rows-[auto_1fr_auto]',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardLayout {
+export class MainLayout {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly sessionService = inject(SessionService);

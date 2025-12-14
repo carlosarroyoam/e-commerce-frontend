@@ -8,10 +8,7 @@ export const routes: Routes = [
     path: '',
     component: AuthLayout,
     children: [
-      {
-        path: 'login',
-        component: LoginPage,
-      },
+      { path: 'login', component: LoginPage },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],
   },
