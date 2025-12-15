@@ -2,9 +2,9 @@ import { formatDate } from '@angular/common';
 import { ColumnDef, FlexRenderComponent } from '@tanstack/angular-table';
 
 import { User } from '@/core/interfaces/user';
+import { UserTableButtons } from '@/features/user/components/user-table-buttons/user-table-buttons';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
-import { UsersTableButtons } from '@/shared/components/users-table-buttons/users-table-buttons';
 
 export function buildUsersTableColumns(opts: {
   onEdit: (user: User) => void;
@@ -57,7 +57,7 @@ export function buildUsersTableColumns(opts: {
       id: 'actions',
       header: 'Actions',
       cell: () =>
-        new FlexRenderComponent(UsersTableButtons, {
+        new FlexRenderComponent(UserTableButtons, {
           onEdit: opts.onEdit,
           onDelete: opts.onDelete,
         }),

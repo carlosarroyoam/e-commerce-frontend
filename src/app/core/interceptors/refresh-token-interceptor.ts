@@ -9,7 +9,9 @@ import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const isAuthRequest = API_AUTH_ROUTES.some((route) => req.url.includes(route));
+  const isAuthRequest = API_AUTH_ROUTES.some((route) =>
+    req.url.includes(route),
+  );
 
   return next(req).pipe(
     catchError((err) => {

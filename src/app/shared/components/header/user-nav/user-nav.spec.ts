@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserNav } from './user-nav';
 
-describe('UserNavComponent', () => {
+describe('UserNav', () => {
   let component: UserNav;
   let fixture: ComponentFixture<UserNav>;
 

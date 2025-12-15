@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AlertDialog } from './alert-dialog';
 
-describe('AlertDialogComponent', () => {
+describe('AlertDialog', () => {
   let component: AlertDialog;
   let fixture: ComponentFixture<AlertDialog>;
 

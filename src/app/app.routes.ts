@@ -11,9 +11,10 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
-    path: '',
+    path: 'users',
     loadChildren: () =>
-      import('@/features/main/main.routes').then((m) => m.routes),
+      import('@/features/user/user.routes').then((m) => m.routes),
     canActivate: [authGuard],
   },
+  { path: '', redirectTo: 'users', pathMatch: 'full' },
 ];

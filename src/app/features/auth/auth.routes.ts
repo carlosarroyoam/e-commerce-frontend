@@ -1,15 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { AuthLayout } from '@/features/auth/auth-layout';
 import { LoginPage } from '@/features/auth/pages/login/login-page';
+import { AuthLayout } from '@/shared/components/layout/auth-layout/auth-layout';
 
 export const routes: Routes = [
   {
     path: '',
     component: AuthLayout,
-    children: [
-      { path: 'login', component: LoginPage },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-    ],
+    children: [{ path: 'login', component: LoginPage }],
   },
 ];

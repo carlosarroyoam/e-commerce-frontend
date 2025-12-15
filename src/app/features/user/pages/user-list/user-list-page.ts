@@ -15,7 +15,7 @@ import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
 import { UserService } from '@/core/services/users-service/users-service';
-import { buildUsersTableColumns } from '@/features/main/pages/users/users-table';
+import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -23,10 +23,10 @@ import { AppInput } from '@/shared/components/ui/input/input';
 
 @Component({
   imports: [ReactiveFormsModule, Button, AppInput, TableComponent, Paginator],
-  templateUrl: './users-page.html',
+  templateUrl: './user-list-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersPage {
+export class UserListPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly userService = inject(UserService);

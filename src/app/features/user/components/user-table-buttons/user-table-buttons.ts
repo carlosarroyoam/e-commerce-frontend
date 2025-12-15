@@ -5,15 +5,15 @@ import { User } from '@/core/interfaces/user';
 import { Button } from '@/shared/components/ui/button/button';
 
 @Component({
-  selector: 'app-users-table-buttons',
+  selector: 'app-user-table-buttons',
   imports: [Button],
-  templateUrl: './users-table-buttons.html',
+  templateUrl: './user-table-buttons.html',
   host: {
     class: 'flex gap-2',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersTableButtons {
+export class UserTableButtons {
   public onEdit = input<(user: User) => void>();
   public onDelete = input<(user: User) => void>();
 

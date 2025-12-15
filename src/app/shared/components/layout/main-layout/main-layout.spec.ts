@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsersTableButtons } from './users-table-buttons';
+import { DashboardLayout } from './main-layout';
 
-describe('UsersTableButtonsComponent', () => {
-  let component: UsersTableButtons;
-  let fixture: ComponentFixture<UsersTableButtons>;
+describe('DashboardLayout', () => {
+  let component: DashboardLayout;
+  let fixture: ComponentFixture<DashboardLayout>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UsersTableButtons],
+      imports: [DashboardLayout],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UsersTableButtons);
+    fixture = TestBed.createComponent(DashboardLayout);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

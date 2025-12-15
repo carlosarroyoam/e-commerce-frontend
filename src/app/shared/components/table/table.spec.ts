@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table';
 
-describe('TableComponent', () => {
+describe('Table', () => {
   let component: TableComponent<void>;
   let fixture: ComponentFixture<TableComponent<void>>;
 

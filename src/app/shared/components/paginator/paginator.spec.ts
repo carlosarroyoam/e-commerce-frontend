@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Paginator } from './paginator';
 
-describe('PaginationComponent', () => {
+describe('Pagination', () => {
   let component: Paginator;
   let fixture: ComponentFixture<Paginator>;
 
