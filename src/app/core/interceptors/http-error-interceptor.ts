@@ -2,12 +2,12 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
-import { AUTH_ROUTES } from '@/core/constants/auth.constants';
+import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const dialogService = inject(DialogService);
-  const isAuthRequest = AUTH_ROUTES.some((route) => req.url.includes(route));
+  const isAuthRequest = API_AUTH_ROUTES.some((route) => req.url.includes(route));
 
   return next(req).pipe(
     catchError((err) => {

@@ -32,12 +32,12 @@ export class UsersPage {
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
 
+  protected searchControl = new FormControl();
+
   protected page = signal<number>(1);
   protected size = signal<number>(20);
   protected search = signal<string | undefined>(undefined);
   protected status = signal<'active' | 'inactive' | undefined>(undefined);
-
-  protected searchControl = new FormControl();
 
   private readonly params = computed(() => ({
     page: this.page(),
