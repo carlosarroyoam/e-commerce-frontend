@@ -7,7 +7,7 @@ import { Footer } from '@/shared/components/footer/footer';
   imports: [RouterOutlet, Footer],
   templateUrl: './auth-layout.html',
   host: {
-    class: 'grid min-h-dvh grid-rows-[1fr_auto]',
+    class: 'grid min-h-dvh grid-cols-1 grid-rows-[1fr_auto]',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

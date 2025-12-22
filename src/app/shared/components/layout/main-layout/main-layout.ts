@@ -11,7 +11,7 @@ import { Header } from '@/shared/components/header/header';
   imports: [RouterOutlet, Header, Footer],
   templateUrl: './main-layout.html',
   host: {
-    class: 'grid min-h-dvh grid-rows-[auto_1fr_auto]',
+    class: 'grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr_auto]',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
