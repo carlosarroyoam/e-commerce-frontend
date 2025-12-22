@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .ts,.html",
-    "lint:fix": "eslint . --ext .ts,.html --fix",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "test": "ng test"
   },
   "private": true,
@@ -40,8 +40,8 @@
     "@tailwindcss/postcss": "^4.1.17",
     "@types/jasmine": "~4.0.0",
     "@types/uuid": "^8.3.4",
-    "angular-eslint": "20.6.0",
-    "eslint": "^9.39.0",
+    "angular-eslint": "21.1.0",
+    "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jasmine-core": "~4.1.0",
@@ -56,6 +56,6 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
-    "typescript-eslint": "8.46.3"
+    "typescript-eslint": "8.47.0"
   }
 }
