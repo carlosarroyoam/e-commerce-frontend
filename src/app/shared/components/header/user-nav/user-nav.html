@@ -1,11 +1,13 @@
 <button
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
-  id="user-menu-button"
+  id="user-menu-trigger"
   type="button"
   aria-haspopup="true"
+  aria-controls="user-menu"
+  [attr.aria-expanded]="isOpen()"
   (click)="toggleIsOpen()"
-  class="relative flex rounded-full text-sm shadow-xs focus:ring-2 focus:ring-zinc-500 focus:outline-hidden"
+  class="flex rounded-full text-sm shadow-xs focus:ring-2 focus:ring-zinc-500 focus:outline-hidden"
 >
   <span class="sr-only">Open user menu</span>
   <img [src]="src" [alt]="alt" class="size-10 rounded-full" />
@@ -25,13 +27,14 @@
     },
   ]"
   [cdkConnectedOverlayHasBackdrop]="isOpen()"
-  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop-cs"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
   (backdropClick)="toggleIsOpen()"
 >
   <div
+    id="user-menu"
     role="menu"
     aria-orientation="vertical"
-    aria-labelledby="user-menu-button"
+    aria-labelledby="user-menu-trigger"
     class="overflow-hidden rounded-md bg-white p-2.5 shadow-md"
   >
     <div class="px-2 py-1.5">
@@ -48,8 +51,9 @@
         @for (item of menuItems(); track $index) {
           <li>
             <a
-              [routerLink]="item.href"
               role="menuitem"
+              tabindex="-1"
+              [routerLink]="item.href"
               (click)="toggleIsOpen()"
               class="inline-flex w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
             >
@@ -61,6 +65,7 @@
         <li>
           <button
             role="menuitem"
+            tabindex="-1"
             (click)="logout.emit()"
             class="w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
           >

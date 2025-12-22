@@ -71,7 +71,7 @@ export class UserListPage {
     });
 
     this.searchControl.valueChanges
-      .pipe(debounceTime(350))
+      .pipe(debounceTime(350), takeUntilDestroyed())
       .subscribe((value) => {
         this.search.set(value?.trim() || undefined);
         this.page.set(1);
