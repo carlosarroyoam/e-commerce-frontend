@@ -2,6 +2,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
   signal,
@@ -23,23 +24,23 @@ export class UserNav {
 
   protected isOpen = signal(false);
 
-  get session() {
-    return this.sessionData();
-  }
+  protected fullname = computed(() => {
+    return `${this.sessionData()?.first_name} ${this.sessionData()?.last_name}`;
+  });
 
-  get fullname(): string {
-    return `${this.session?.first_name} ${this.session?.last_name}`;
-  }
+  protected src = computed(() => {
+    return `https://ui-avatars.com/api/?name=${this.fullname()}&format=svg&background=d4d4d8`;
+  });
 
-  get src(): string {
-    return `https://ui-avatars.com/api/?name=${this.fullname}&format=svg&background=d4d4d8`;
-  }
-
-  get alt(): string {
-    return `${this.session?.first_name}'s profile picture`;
-  }
+  protected alt = computed(() => {
+    return `${this.sessionData()?.first_name}'s profile picture`;
+  });
 
   protected toggleIsOpen(): void {
     this.isOpen.update((isOpen) => !isOpen);
+  }
+
+  protected close(): void {
+    this.isOpen.set(false);
   }
 }

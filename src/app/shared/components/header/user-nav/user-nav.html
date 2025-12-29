@@ -10,13 +10,15 @@
   class="flex rounded-full text-sm shadow-xs focus:ring-2 focus:ring-zinc-500 focus:outline-hidden"
 >
   <span class="sr-only">Open user menu</span>
-  <img [src]="src" [alt]="alt" class="size-10 rounded-full" />
+  <img [src]="src()" [alt]="alt()" class="size-10 rounded-full" />
 </button>
 
 <ng-template
   cdkConnectedOverlay
-  [cdkConnectedOverlayOpen]="isOpen()"
   [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayHasBackdrop]="isOpen()"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
   [cdkConnectedOverlayPositions]="[
     {
       offsetY: 8,
@@ -26,9 +28,8 @@
       overlayY: 'top',
     },
   ]"
-  [cdkConnectedOverlayHasBackdrop]="isOpen()"
-  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
   (backdropClick)="toggleIsOpen()"
+  (detach)="close()"
 >
   <div
     id="user-menu"
@@ -39,9 +40,11 @@
   >
     <div class="px-2 py-1.5">
       <p class="text-sm leading-none font-semibold text-nowrap text-zinc-900">
-        {{ fullname }}
+        {{ fullname() }}
       </p>
-      <p class="mt-1 text-sm leading-none text-nowrap">{{ session?.email }}</p>
+      <p class="mt-1 text-sm leading-none text-nowrap">
+        {{ sessionData()?.email }}
+      </p>
     </div>
 
     <hr class="my-1 border-zinc-200" />
@@ -67,7 +70,7 @@
             role="menuitem"
             tabindex="-1"
             (click)="logout.emit()"
-            class="w-full rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
+            class="w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-sm font-medium hover:bg-zinc-100"
           >
             Log out
           </button>
