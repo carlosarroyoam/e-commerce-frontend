@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-semibold focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-90',
+  'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-semibold focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-90',
   {
     variants: {
       variant: {
@@ -15,7 +15,7 @@ export const buttonVariants = cva(
           'bg-red-500 text-white shadow-xs hover:bg-red-500/90 focus:ring-red-500',
         outline:
           'border border-zinc-300 text-zinc-900 hover:bg-zinc-50 focus:ring-zinc-100',
-        link: 'cursor-pointer whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
+        link: 'whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
         default: 'h-10 px-5 py-2',

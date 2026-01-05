@@ -10,7 +10,11 @@
   class="flex rounded-full text-sm shadow-xs focus:ring-2 focus:ring-zinc-500 focus:outline-hidden"
 >
   <span class="sr-only">Open user menu</span>
-  <img [src]="src()" [alt]="alt()" class="size-10 rounded-full" />
+  <img
+    [src]="src()"
+    [alt]="alt()"
+    class="size-10 cursor-pointer rounded-full"
+  />
 </button>
 
 <ng-template
