@@ -16,15 +16,22 @@ import { Button } from '@/shared/components/ui/button/button';
 export class UserTableButtons {
   public onEdit = input<(user: User) => void>();
   public onDelete = input<(user: User) => void>();
+  public onRestore = input<(user: User) => void>();
 
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
 
+  protected user = this.context.row.original;
+
   protected onEditClicked() {
-    this.onEdit()?.(this.context.row.original);
+    this.onEdit()?.(this.user);
   }
 
   protected onDeleteClicked() {
-    this.onDelete()?.(this.context.row.original);
+    this.onDelete()?.(this.user);
+  }
+
+  protected onRestoreClicked() {
+    this.onRestore()?.(this.user);
   }
 }

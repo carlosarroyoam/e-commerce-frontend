@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { ColumnDef, FlexRenderComponent } from '@tanstack/angular-table';
+import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
 import { User } from '@/core/interfaces/user';
 import { UserTableButtons } from '@/features/user/components/user-table-buttons/user-table-buttons';
@@ -9,11 +9,12 @@ import { Chip } from '@/shared/components/ui/chip/chip';
 export function buildUsersTableColumns(opts: {
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
+  onRestore: (user: User) => void;
 }): ColumnDef<User>[] {
   return [
     {
       id: 'profile_picture',
-      cell: () => new FlexRenderComponent(Avatar),
+      cell: () => flexRenderComponent(Avatar),
     },
     {
       accessorFn: (row) => `${row.first_name} ${row.last_name}`,
@@ -47,9 +48,12 @@ export function buildUsersTableColumns(opts: {
       header: 'Status',
       cell: (info) => {
         const deletedAt = info.getValue() as string;
-        return new FlexRenderComponent(Chip, {
-          variant: deletedAt ? 'danger' : 'success',
-          label: deletedAt ? 'Inactive' : 'Active',
+
+        return flexRenderComponent(Chip, {
+          inputs: {
+            variant: deletedAt ? 'danger' : 'success',
+            label: deletedAt ? 'Inactive' : 'Active',
+          },
         });
       },
     },
@@ -57,9 +61,12 @@ export function buildUsersTableColumns(opts: {
       id: 'actions',
       header: 'Actions',
       cell: () =>
-        new FlexRenderComponent(UserTableButtons, {
-          onEdit: opts.onEdit,
-          onDelete: opts.onDelete,
+        flexRenderComponent(UserTableButtons, {
+          inputs: {
+            onEdit: opts.onEdit,
+            onDelete: opts.onDelete,
+            onRestore: opts.onRestore,
+          },
         }),
     },
   ];

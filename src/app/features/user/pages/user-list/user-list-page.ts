@@ -38,12 +38,14 @@ export class UserListPage {
   protected size = signal<number>(20);
   protected search = signal<string | undefined>(undefined);
   protected status = signal<'active' | 'inactive' | undefined>(undefined);
+  protected refresh = signal(0);
 
-  private readonly params = computed(() => ({
+  private params = computed(() => ({
     page: this.page(),
     size: this.size(),
     search: this.search(),
     status: this.status(),
+    refresh: this.refresh(),
   }));
 
   protected data = signal<User[]>([]);
@@ -54,6 +56,7 @@ export class UserListPage {
     columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
+      onRestore: (user) => this.onRestoreUser(user),
     }),
     getCoreRowModel: getCoreRowModel(),
   }));
@@ -62,8 +65,8 @@ export class UserListPage {
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
       this.page.set(Number(params['page'] ?? 1));
       this.size.set(Number(params['size'] ?? 20));
-      this.search.set(params['search'] ?? undefined);
-      this.status.set(params['status'] ?? undefined);
+      this.search.set(params['search']);
+      this.status.set(params['status']);
 
       this.searchControl.setValue(this.search(), {
         emitEvent: false,
@@ -73,7 +76,7 @@ export class UserListPage {
     this.searchControl.valueChanges
       .pipe(debounceTime(350), takeUntilDestroyed())
       .subscribe((value) => {
-        this.search.set(value?.trim() || undefined);
+        this.search.set(value?.trim());
         this.page.set(1);
       });
 
@@ -84,12 +87,14 @@ export class UserListPage {
         takeUntilDestroyed(),
       )
       .subscribe((response) => {
-        this.data.set(response.users);
-        this.pagination.set(response.pagination);
+        if (response) {
+          this.data.set(response.users);
+          this.pagination.set(response.pagination);
+        }
       });
   }
 
-  protected clearSearch(): void {
+  protected clearFilters(): void {
     this.searchControl.setValue(undefined);
     this.page.set(1);
   }
@@ -102,18 +107,37 @@ export class UserListPage {
     this.dialogService
       .open({
         data: {
-          title: `Delete user with id: ${user.id}?`,
+          title: `Delete user`,
           description: `Are you sure you want to delete the user ${user.first_name}?`,
           primaryButtonLabel: 'Delete',
           showSecondaryButton: true,
         },
       })
       .closed.pipe(
-        filter((result) => result !== undefined),
-        filter((result) => result.accepted === true),
+        filter((result) => result?.accepted ?? false),
+        switchMap(() => this.userService.deleteById(user.id)),
       )
       .subscribe(() => {
-        console.log('Confirmed deletion of user with id: ', user.id);
+        this.refresh.update((v) => v + 1);
+      });
+  }
+
+  protected onRestoreUser(user: User): void {
+    this.dialogService
+      .open({
+        data: {
+          title: `Restore user`,
+          description: `Are you sure you want to restore the user ${user.first_name}?`,
+          primaryButtonLabel: 'Restore',
+          showSecondaryButton: true,
+        },
+      })
+      .closed.pipe(
+        filter((result) => result?.accepted ?? false),
+        switchMap(() => this.userService.restoreById(user.id)),
+      )
+      .subscribe(() => {
+        this.refresh.update((v) => v + 1);
       });
   }
 
@@ -123,8 +147,8 @@ export class UserListPage {
       queryParams: {
         page: this.page(),
         size: this.size(),
-        search: this.search() || undefined,
-        status: this.status() || undefined,
+        search: this.search(),
+        status: this.status(),
       },
       queryParamsHandling: 'merge',
       replaceUrl: true,

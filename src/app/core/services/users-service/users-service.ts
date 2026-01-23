@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
-import { User } from '@/core/interfaces/user';
 import { UserResponse } from '@/core/interfaces/user.response';
 import { UsersRequestParams } from '@/core/interfaces/users-request';
 import { UsersResponse } from '@/core/interfaces/users-response';
@@ -20,7 +19,7 @@ export class UserService {
     sort,
     search,
     status,
-  }: UsersRequestParams): Observable<UsersResponse> {
+  }: UsersRequestParams): Observable<UsersResponse | null> {
     let params = new HttpParams();
     params = params.append('page', page ?? 1);
     params = params.append('size', size ?? 20);
@@ -32,28 +31,25 @@ export class UserService {
       .get<UsersResponse>(`${environment.apiUrl}/users`, {
         params,
       })
-      .pipe(
-        catchError(() =>
-          of({
-            message: 'UserService fallback response',
-            users: [],
-            pagination: {
-              page: 0,
-              size: 0,
-              totalItems: 0,
-              totalPages: 0,
-            },
-          }),
-        ),
-      );
+      .pipe(catchError(() => of(null)));
   }
 
-  public getById(userId: number): Observable<User | null> {
+  public getById(userId: number): Observable<UserResponse | null> {
     return this.httpClient
       .get<UserResponse>(`${environment.apiUrl}/users/${userId}`)
-      .pipe(
-        map((response) => response.user),
-        catchError(() => of(null)),
-      );
+      .pipe(catchError(() => of(null)));
+  }
+
+  public deleteById(userId: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.apiUrl}/users/${userId}`,
+    );
+  }
+
+  public restoreById(userId: number): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.apiUrl}/users/${userId}/restore`,
+      null,
+    );
   }
 }
