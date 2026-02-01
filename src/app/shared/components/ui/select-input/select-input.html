@@ -1,0 +1,79 @@
+<button
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  id="select-input-trigger"
+  type="button"
+  aria-haspopup="true"
+  aria-controls="options"
+  [attr.aria-expanded]="isOpen()"
+  [disabled]="isDisabled()"
+  (click)="toggleIsOpen()"
+  class="flex w-full cursor-pointer items-center gap-4 rounded-md border border-zinc-200 px-3 py-2 text-sm text-zinc-700 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:text-zinc-500"
+>
+  @if (selectedOption()) {
+    <span>
+      {{ selectedOption()?.label }}
+    </span>
+  } @else {
+    <span [ngClass]="{ 'text-zinc-600': !isDisabled() }">
+      {{ placeholder() }}
+    </span>
+  }
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="ml-auto size-4"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+    />
+  </svg>
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayMatchWidth]="true"
+  [cdkConnectedOverlayHasBackdrop]="isOpen()"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayPositions]="[
+    {
+      offsetY: 8,
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+    },
+  ]"
+  (backdropClick)="toggleIsOpen()"
+  (detach)="close()"
+>
+  <div
+    id="options"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="select-input-trigger"
+    class="flex w-full flex-col space-y-2 overflow-hidden rounded-md border border-zinc-100 bg-white px-4 py-2 shadow-sm"
+  >
+    @for (option of options(); track $index) {
+      <button
+        type="button"
+        class="w-full cursor-pointer text-left text-sm text-zinc-600 hover:text-zinc-900"
+        [ngClass]="{
+          'font-medium': option.value === selectedOption()?.value,
+          'pointer-events-none opacity-50': option.disabled,
+        }"
+        (click)="selectOption(option)"
+      >
+        {{ option.label }}
+      </button>
+    }
+  </div>
+</ng-template>

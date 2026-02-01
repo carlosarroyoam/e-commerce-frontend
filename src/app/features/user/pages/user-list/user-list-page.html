@@ -4,12 +4,12 @@
     A list of all the users registered including their name, email, and role.
   </p>
 
-  <div class="mt-4 flex gap-4 md:mt-8">
-    <div class="relative inline-block max-w-64">
+  <div class="mt-4 flex gap-5 md:mt-8">
+    <div class="relative inline-block max-w-60">
       <input
         appInput
+        id="search"
         type="text"
-        name="search"
         placeholder="Search for users..."
         autocomplete="off"
         class="w-full pr-9"
@@ -36,6 +36,12 @@
         </svg>
       </button>
     </div>
+
+    <app-select-input
+      [options]="statuses"
+      placeholder="Select a status"
+      [formControl]="statusControl"
+    />
 
     <button
       appButton

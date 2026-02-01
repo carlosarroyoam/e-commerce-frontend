@@ -20,9 +20,20 @@ import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
 import { AppInput } from '@/shared/components/ui/input/input';
+import {
+  SelectInput,
+  SelectOption,
+} from '@/shared/components/ui/select-input/select-input';
 
 @Component({
-  imports: [ReactiveFormsModule, Button, AppInput, TableComponent, Paginator],
+  imports: [
+    ReactiveFormsModule,
+    Button,
+    AppInput,
+    SelectInput,
+    TableComponent,
+    Paginator,
+  ],
   templateUrl: './user-list-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,6 +44,7 @@ export class UserListPage {
   private readonly dialogService = inject(DialogService);
 
   protected searchControl = new FormControl();
+  protected statusControl = new FormControl();
 
   protected page = signal<number>(1);
   protected size = signal<number>(20);
@@ -68,7 +80,11 @@ export class UserListPage {
       this.search.set(params['search']);
       this.status.set(params['status']);
 
-      this.searchControl.setValue(this.search(), {
+      this.searchControl.patchValue(this.search(), {
+        emitEvent: false,
+      });
+
+      this.statusControl.patchValue(this.status(), {
         emitEvent: false,
       });
     });
@@ -77,6 +93,13 @@ export class UserListPage {
       .pipe(debounceTime(350), takeUntilDestroyed())
       .subscribe((value) => {
         this.search.set(value?.trim());
+        this.page.set(1);
+      });
+
+    this.statusControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        this.status.set(value);
         this.page.set(1);
       });
 
@@ -96,6 +119,7 @@ export class UserListPage {
 
   protected clearFilters(): void {
     this.searchControl.setValue(undefined);
+    this.statusControl.setValue(undefined);
     this.page.set(1);
   }
 
@@ -154,4 +178,15 @@ export class UserListPage {
       replaceUrl: true,
     });
   }
+
+  protected statuses: SelectOption[] = [
+    {
+      label: 'Active',
+      value: 'active',
+    },
+    {
+      label: 'Inactive',
+      value: 'inactive',
+    },
+  ];
 }

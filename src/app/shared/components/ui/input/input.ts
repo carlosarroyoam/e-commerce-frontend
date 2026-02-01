@@ -68,7 +68,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
     const invalid = this.invalid() && 'border-red-500 focus:border-red-500';
 
     return twMerge(
-      'w-full rounded-md border border-zinc-200 text-sm text-zinc-900 shadow-xs focus:border-blue-500 focus:ring-0 focus:outline-none',
+      'w-full rounded-md border border-zinc-200 text-sm text-zinc-700 placeholder:text-zinc-600 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:text-zinc-500 disabled:placeholder:text-zinc-500',
       invalid,
     );
   });
