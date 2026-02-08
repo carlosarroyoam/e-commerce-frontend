@@ -15,7 +15,7 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly renderer = inject(Renderer2);
 
-  public clickOutside = output<void>();
+  public readonly clickOutside = output<void>();
   private listener?: () => void;
 
   ngAfterViewInit(): void {

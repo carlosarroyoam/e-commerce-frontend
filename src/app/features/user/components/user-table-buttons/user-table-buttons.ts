@@ -14,14 +14,14 @@ import { Button } from '@/shared/components/ui/button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTableButtons {
-  public onEdit = input<(user: User) => void>();
-  public onDelete = input<(user: User) => void>();
-  public onRestore = input<(user: User) => void>();
+  public readonly onEdit = input<(user: User) => void>();
+  public readonly onDelete = input<(user: User) => void>();
+  public readonly onRestore = input<(user: User) => void>();
 
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
 
-  protected user = this.context.row.original;
+  protected readonly user = this.context.row.original;
 
   protected onEditClicked() {
     this.onEdit()?.(this.user);

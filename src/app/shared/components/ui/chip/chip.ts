@@ -47,8 +47,8 @@ export type ChipVariants = VariantProps<typeof chipVariants>;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Chip {
-  public variant = input<ChipVariants['variant']>();
-  public label = input.required<string>();
+  public readonly variant = input<ChipVariants['variant']>();
+  public readonly label = input.required<string>();
 
   protected chipBadgeClass = computed(() => {
     return twMerge(chipBadgeVariants({ variant: this.variant() }));

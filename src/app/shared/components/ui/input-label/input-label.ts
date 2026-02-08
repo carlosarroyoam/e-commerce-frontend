@@ -12,7 +12,7 @@ export class InputLabel implements OnInit {
   private readonly elementRef = inject(ElementRef);
   private readonly formGroup = inject(FormGroupDirective);
 
-  public for = input.required<string>();
+  public readonly for = input.required<string>();
 
   ngOnInit(): void {
     const control = this.formGroup.form.get(this.for());

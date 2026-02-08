@@ -5,10 +5,10 @@
   </p>
 
   <form
+    novalidate
     [formGroup]="loginForm"
     (ngSubmit)="login()"
     class="mt-6 space-y-4"
-    novalidate
   >
     <div class="space-y-2">
       <label appInputLabel for="email">Email</label>

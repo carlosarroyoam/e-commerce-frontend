@@ -18,8 +18,8 @@ import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  public sessionData = input.required<SessionData | null>();
-  public logout = output<void>();
+  public readonly sessionData = input.required<SessionData | null>();
+  public readonly logout = output<void>();
 
   protected isMobileMenuOpen = signal(false);
 

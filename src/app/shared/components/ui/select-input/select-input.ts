@@ -22,8 +22,8 @@ export interface SelectOption {
   ],
 })
 export class SelectInput implements ControlValueAccessor {
-  public placeholder = input('Select an option');
-  public options = input.required<SelectOption[]>();
+  public readonly placeholder = input('Select an option');
+  public readonly options = input.required<SelectOption[]>();
 
   protected isOpen = signal(false);
   protected isDisabled = signal(false);

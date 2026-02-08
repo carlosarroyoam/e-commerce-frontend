@@ -11,7 +11,7 @@ import { User } from '@/core/interfaces/user';
 export class Avatar {
   private readonly context =
     injectFlexRenderContext<CellContext<User, unknown>>();
-  private user = this.context.row.original;
+  private readonly user = this.context.row.original;
 
   get fullname(): string {
     return `${this.user.first_name} ${this.user.last_name}`;

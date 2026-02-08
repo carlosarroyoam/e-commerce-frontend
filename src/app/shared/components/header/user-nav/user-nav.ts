@@ -18,9 +18,10 @@ import { SessionData } from '@/core/interfaces/session-data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
-  public sessionData = input.required<SessionData | null>();
-  public menuItems = input.required<{ href: string; title: string }[]>();
-  public logout = output<void>();
+  public readonly sessionData = input.required<SessionData | null>();
+  public readonly menuItems =
+    input.required<{ href: string; title: string }[]>();
+  public readonly logout = output<void>();
 
   protected isOpen = signal(false);
 

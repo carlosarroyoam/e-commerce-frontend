@@ -23,12 +23,16 @@ import { AppInput } from '@/shared/components/ui/input/input';
 })
 export class LoginPage {
   private readonly router = inject(Router);
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
 
-  protected loginForm = this.formBuilder.group({
-    email: [null, [Validators.required, Validators.email]],
-    password: [null, [Validators.required, Validators.minLength(8)]],
+  protected readonly loginForm = this.fb.group({
+    email: this.fb.control(null, {
+      validators: [Validators.required, Validators.email],
+    }),
+    password: this.fb.control(null, {
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
   });
 
   protected login(): void {

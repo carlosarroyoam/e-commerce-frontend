@@ -24,8 +24,8 @@ import { twMerge } from 'tailwind-merge';
 })
 export class AppInput implements OnInit, AfterViewInit, OnDestroy {
   private readonly ngControl = inject(NgControl);
+  private readonly changesSubscription = new Subscription();
   private control?: AbstractControl | null;
-  private changesSubscription = new Subscription();
 
   private invalid = signal(false);
 

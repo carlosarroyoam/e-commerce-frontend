@@ -10,5 +10,5 @@ import { AbstractControl } from '@angular/forms';
   },
 })
 export class InputError {
-  public control = input.required<AbstractControl | null>();
+  public readonly control = input.required<AbstractControl | null>();
 }

@@ -37,8 +37,8 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>;
   },
 })
 export class Button {
-  public variant = input<ButtonVariants['variant']>();
-  public size = input<ButtonVariants['size']>();
+  public readonly variant = input<ButtonVariants['variant']>();
+  public readonly size = input<ButtonVariants['size']>();
 
   protected hostClass = computed(() => {
     return twMerge(

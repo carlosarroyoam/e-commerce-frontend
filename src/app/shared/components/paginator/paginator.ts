@@ -24,12 +24,12 @@ export enum PageType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Paginator {
-  public pagination = input<Pagination | undefined>();
-  public page = model.required<number>();
-  public size = model.required<number>();
-  public pageChanged = output<void>();
+  public readonly pagination = input<Pagination | undefined>();
+  public readonly page = model.required<number>();
+  public readonly size = model.required<number>();
+  public readonly pageChanged = output<void>();
 
-  protected pageType = PageType;
+  protected readonly pageType = PageType;
 
   protected from = computed(() => {
     return (this.page() - 1) * this.size() + 1;

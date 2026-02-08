@@ -8,5 +8,5 @@ import { FlexRenderDirective, Table } from '@tanstack/angular-table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent<T> {
-  public table = input.required<Table<T>>();
+  public readonly table = input.required<Table<T>>();
 }
