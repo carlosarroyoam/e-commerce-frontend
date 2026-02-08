@@ -13,6 +13,11 @@ describe('UserNav', () => {
 
     fixture = TestBed.createComponent(UserNav);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('sessionData', null);
+    fixture.componentRef.setInput('menuItems', [
+      { href: '/home', title: 'Home' },
+    ]);
+
     fixture.detectChanges();
   });
 

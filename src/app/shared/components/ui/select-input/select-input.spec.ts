@@ -8,9 +8,8 @@ describe('SelectInput', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectInput]
-    })
-    .compileComponents();
+      imports: [SelectInput],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SelectInput);
     component = fixture.componentInstance;

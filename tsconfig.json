@@ -22,7 +22,8 @@
     "paths": {
       "@/*": ["src/app/*"],
       "@/environments/*": ["src/environments/*"]
-    }
+    },
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Disposable"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

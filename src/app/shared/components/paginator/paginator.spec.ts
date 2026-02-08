@@ -13,6 +13,9 @@ describe('Pagination', () => {
 
     fixture = TestBed.createComponent(Paginator);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('page', 1);
+    fixture.componentRef.setInput('size', 20);
+
     fixture.detectChanges();
   });
 

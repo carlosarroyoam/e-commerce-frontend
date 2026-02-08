@@ -2,9 +2,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/spec",
-    "types": ["jasmine", "@angular/localize"]
+    "types": ["vitest/globals"],
+    "target": "ES2022",
+    "module": "ESNext"
   },
-  "files": ["src/test.ts", "src/polyfills.ts"],
+  "types": ["vitest/globals", "node"],
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

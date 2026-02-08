@@ -1,5 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
+
 import { Component, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -11,7 +11,7 @@ export interface SelectOption {
 
 @Component({
   selector: 'app-select-input',
-  imports: [CommonModule, OverlayModule],
+  imports: [OverlayModule],
   templateUrl: './select-input.html',
   providers: [
     {

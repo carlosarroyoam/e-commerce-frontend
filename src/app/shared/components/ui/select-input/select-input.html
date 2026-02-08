@@ -11,11 +11,9 @@
   class="flex w-full cursor-pointer items-center gap-4 rounded-md border border-zinc-200 px-3 py-2 text-sm text-zinc-700 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:text-zinc-500"
 >
   @if (selectedOption()) {
-    <span>
-      {{ selectedOption()?.label }}
-    </span>
+    <span>{{ selectedOption()?.label }}</span>
   } @else {
-    <span [ngClass]="{ 'text-zinc-600': !isDisabled() }">
+    <span [class]="{ 'text-zinc-600': !isDisabled() }">
       {{ placeholder() }}
     </span>
   }
@@ -66,7 +64,7 @@
       <button
         type="button"
         class="w-full cursor-pointer text-left text-sm text-zinc-600 hover:text-zinc-900"
-        [ngClass]="{
+        [class]="{
           'font-medium': option.value === selectedOption()?.value,
           'pointer-events-none opacity-50': option.disabled,
         }"

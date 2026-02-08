@@ -37,11 +37,13 @@
       </button>
     </div>
 
-    <app-select-input
-      [options]="statuses"
-      placeholder="Select a status"
-      [formControl]="statusControl"
-    />
+    <div class="w-56">
+      <app-select-input
+        [options]="statuses"
+        placeholder="Select a status"
+        [formControl]="statusControl"
+      />
+    </div>
 
     <button
       appButton
