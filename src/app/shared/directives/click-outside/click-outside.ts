@@ -21,9 +21,10 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.listener = this.renderer.listen(
       'document',
-      'click',
-      (event: Event) => {
-        if (this.isClickOutside(event.target as HTMLElement)) {
+      'mousedown',
+      (event: MouseEvent) => {
+        const path = event.composedPath?.() ?? [];
+        if (!path.includes(this.elementRef.nativeElement)) {
           this.clickOutside.emit();
         }
       },
@@ -32,12 +33,5 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.listener?.();
-  }
-
-  private isClickOutside(element: HTMLElement): boolean {
-    return (
-      element !== this.elementRef.nativeElement &&
-      !this.elementRef.nativeElement.contains(element)
-    );
   }
 }
