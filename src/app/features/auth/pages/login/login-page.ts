@@ -36,6 +36,8 @@ export class LoginPage {
   });
 
   protected login(): void {
+    if (this.form.invalid) return;
+
     const email = this.form.value.email;
     const password = this.form.value.password;
 

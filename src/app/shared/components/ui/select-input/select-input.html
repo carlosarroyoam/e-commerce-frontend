@@ -4,7 +4,7 @@
   id="select-input-trigger"
   type="button"
   aria-haspopup="true"
-  aria-controls="options"
+  aria-controls="select-input-dropdown"
   [attr.aria-expanded]="isOpen()"
   [disabled]="isDisabled()"
   (click)="toggleIsOpen()"
@@ -36,9 +36,9 @@
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="trigger"
   [cdkConnectedOverlayOpen]="isOpen()"
-  [cdkConnectedOverlayMatchWidth]="true"
   [cdkConnectedOverlayHasBackdrop]="isOpen()"
   cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayMatchWidth]="true"
   [cdkConnectedOverlayPositions]="[
     {
       offsetY: 8,
@@ -52,7 +52,7 @@
   (detach)="close()"
 >
   <div
-    id="options"
+    id="select-input-dropdown"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="select-input-trigger"
