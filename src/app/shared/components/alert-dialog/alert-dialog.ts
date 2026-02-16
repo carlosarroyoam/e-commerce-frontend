@@ -7,8 +7,8 @@ export interface DialogData {
   title: string;
   description?: string;
   primaryButtonLabel?: string;
-  secondaryButtonLabel?: string;
   showSecondaryButton?: boolean;
+  secondaryButtonLabel?: string;
 }
 
 export interface DialogResult {

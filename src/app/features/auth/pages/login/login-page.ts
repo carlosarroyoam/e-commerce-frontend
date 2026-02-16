@@ -26,20 +26,25 @@ export class LoginPage {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
 
-  protected readonly loginForm = this.fb.group({
-    email: this.fb.control(null, {
+  protected readonly form = this.fb.group({
+    email: this.fb.control<string | null>(null, {
       validators: [Validators.required, Validators.email],
     }),
-    password: this.fb.control(null, {
+    password: this.fb.control<string | null>(null, {
       validators: [Validators.required, Validators.minLength(8)],
     }),
   });
 
   protected login(): void {
+    const email = this.form.value.email;
+    const password = this.form.value.password;
+
+    if (!email || !password) return;
+
     this.authService
       .login({
-        email: this.loginForm.value.email!,
-        password: this.loginForm.value.password!,
+        email,
+        password,
       })
       .pipe(tap(() => this.router.navigate(['/'])))
       .subscribe();

@@ -6,7 +6,7 @@
 
   <form
     novalidate
-    [formGroup]="loginForm"
+    [formGroup]="form"
     (ngSubmit)="login()"
     class="mt-6 space-y-4"
   >
@@ -20,7 +20,7 @@
         autocomplete="email"
         formControlName="email"
       />
-      <app-input-error [control]="loginForm.get('email')" />
+      <app-input-error [control]="form.get('email')" />
     </div>
 
     <div class="space-y-2">
@@ -33,15 +33,10 @@
         autocomplete="off"
         formControlName="password"
       />
-      <app-input-error [control]="loginForm.get('password')" />
+      <app-input-error [control]="form.get('password')" />
     </div>
 
-    <button
-      appButton
-      type="submit"
-      class="w-full"
-      [disabled]="loginForm.invalid"
-    >
+    <button appButton type="submit" class="w-full" [disabled]="form.invalid">
       Log in
     </button>
   </form>

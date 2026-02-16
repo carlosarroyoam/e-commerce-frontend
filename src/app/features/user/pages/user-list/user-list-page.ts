@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
@@ -14,8 +14,8 @@ import { debounceTime, filter, switchMap, tap } from 'rxjs';
 import { Pagination } from '@/core/interfaces/pagination';
 import { User } from '@/core/interfaces/user';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
-import { UserService } from '@/core/services/users-service/users-service';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
+import { UserService } from '@/features/user/services/user-service';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -40,11 +40,14 @@ import {
 export class UserListPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
 
-  protected searchControl = new FormControl();
-  protected statusControl = new FormControl();
+  protected readonly form = this.fb.group({
+    search: this.fb.control<string | null>(null),
+    status: this.fb.control<'active' | 'inactive' | null>(null),
+  });
 
   protected page = signal<number>(1);
   protected size = signal<number>(20);
@@ -74,34 +77,30 @@ export class UserListPage {
   }));
 
   constructor() {
+    this.form.valueChanges
+      .pipe(debounceTime(250), takeUntilDestroyed())
+      .subscribe((value) => {
+        this.search.set(value.search?.trim());
+        this.status.set(value.status ?? undefined);
+        this.page.set(1);
+      });
+
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
       this.page.set(Number(params['page'] ?? 1));
       this.size.set(Number(params['size'] ?? 20));
       this.search.set(params['search']);
       this.status.set(params['status']);
 
-      this.searchControl.patchValue(this.search(), {
-        emitEvent: false,
-      });
-
-      this.statusControl.patchValue(this.status(), {
-        emitEvent: false,
-      });
+      this.form.patchValue(
+        {
+          search: this.search(),
+          status: this.status(),
+        },
+        {
+          emitEvent: false,
+        },
+      );
     });
-
-    this.searchControl.valueChanges
-      .pipe(debounceTime(350), takeUntilDestroyed())
-      .subscribe((value) => {
-        this.search.set(value?.trim());
-        this.page.set(1);
-      });
-
-    this.statusControl.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((value) => {
-        this.status.set(value);
-        this.page.set(1);
-      });
 
     toObservable(this.params)
       .pipe(
@@ -118,8 +117,7 @@ export class UserListPage {
   }
 
   protected clearFilters(): void {
-    this.searchControl.setValue(undefined);
-    this.statusControl.setValue(undefined);
+    this.form.reset();
     this.page.set(1);
   }
 

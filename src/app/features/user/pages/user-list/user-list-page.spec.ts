@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
-import { UserService } from '@/core/services/users-service/users-service';
+import { UserService } from '@/features/user/services/user-service';
 import { UserListPage } from './user-list-page';
 
 describe('UserListPage', () => {
