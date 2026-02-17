@@ -1,67 +1,59 @@
-<!-- Dialog wrapper -->
-<div class="absolute inset-x-0 bottom-0 p-4 sm:relative sm:p-0">
-  <!-- Dialog -->
-  <div
-    class="relative w-full overflow-hidden rounded-md bg-white p-6 shadow-xs sm:max-w-xl sm:min-w-md"
-  >
-    <div class="flex flex-col">
-      <!-- Dialog title -->
-      <h2
-        id="dialog-title"
-        class="text-center font-semibold text-zinc-900 sm:text-left"
-      >
-        {{ data?.title }}
-      </h2>
+<!-- Modal container -->
+<app-modal-container>
+  <div class="flex flex-col">
+    <!-- Dialog title -->
+    <h2
+      id="dialog-title"
+      class="text-center font-semibold text-zinc-900 sm:text-left"
+    >
+      {{ data?.title }}
+    </h2>
 
-      @if (data?.description) {
-        <!-- Dialog description -->
-        <p
-          id="dialog-description"
-          class="mt-1 text-center text-sm sm:text-left"
-        >
-          {{ data?.description }}
-        </p>
-      }
-    </div>
-
-    <!-- Dismiss button -->
-    <div class="absolute top-5 right-5 hidden hover:cursor-pointer sm:block">
-      <span class="sr-only">Close dialog</span>
-      <button (click)="closeDialog()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Dialog footer -->
-    <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-      @if (data?.showSecondaryButton) {
-        <button
-          appButton
-          type="button"
-          [variant]="'secondary'"
-          (click)="cancel()"
-        >
-          {{ data?.secondaryButtonLabel ?? "Cancel" }}
-        </button>
-      }
-
-      <button appButton type="button" (click)="accept()">
-        {{ data?.primaryButtonLabel ?? "Accept" }}
-      </button>
-    </div>
+    @if (data?.description) {
+      <!-- Dialog description -->
+      <p id="dialog-description" class="mt-1 text-center text-sm sm:text-left">
+        {{ data?.description }}
+      </p>
+    }
   </div>
-</div>
+
+  <!-- Dismiss button -->
+  <div class="absolute top-5 right-5 hidden hover:cursor-pointer sm:block">
+    <span class="sr-only">Close dialog</span>
+    <button (click)="closeDialog()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        aria-hidden="true"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Dialog footer -->
+  <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+    @if (data?.showSecondaryButton) {
+      <button
+        appButton
+        type="button"
+        [variant]="'secondary'"
+        (click)="cancel()"
+      >
+        {{ data?.secondaryButtonLabel ?? "Cancel" }}
+      </button>
+    }
+
+    <button appButton type="button" (click)="accept()">
+      {{ data?.primaryButtonLabel ?? "Accept" }}
+    </button>
+  </div>
+</app-modal-container>

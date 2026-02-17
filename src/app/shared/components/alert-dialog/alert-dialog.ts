@@ -1,6 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+import { ModalContainer } from '@/shared/components/modal-container/modal-container';
 import { Button } from '@/shared/components/ui/button/button';
 
 export interface DialogData {
@@ -17,7 +18,7 @@ export interface DialogResult {
 
 @Component({
   selector: 'app-alert-dialog',
-  imports: [Button],
+  imports: [Button, ModalContainer],
   templateUrl: './alert-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
