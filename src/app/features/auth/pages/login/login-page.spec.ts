@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
+import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
 import { LoginPage } from './login-page';
 
 describe('LoginPage', () => {

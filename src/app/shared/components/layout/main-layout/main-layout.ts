@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { finalize } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
 import { SessionService } from '@/core/services/session-service/session-service';
+import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
 import { Footer } from '@/shared/components/footer/footer';
 import { Header } from '@/shared/components/header/header';
 

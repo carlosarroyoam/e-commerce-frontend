@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { tap } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
+import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';

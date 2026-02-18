@@ -3,8 +3,8 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, switchMap, throwError } from 'rxjs';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
+import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);

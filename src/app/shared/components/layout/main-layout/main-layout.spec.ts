@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { AuthService } from '@/core/services/auth-service/auth-service';
 import { SessionService } from '@/core/services/session-service/session-service';
+import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
 import { MainLayout } from './main-layout';
 
 describe('MainLayout', () => {
