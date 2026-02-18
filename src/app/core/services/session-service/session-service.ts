@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
 import { SessionData } from '@/core/interfaces/session-data';
-import { User } from '@/core/interfaces/user';
+import { User } from '@/features/user/data-access/interfaces/user';
 
 @Injectable({
   providedIn: 'root',

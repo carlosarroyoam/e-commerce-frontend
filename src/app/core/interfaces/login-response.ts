@@ -1,4 +1,4 @@
-import { User } from '@/core/interfaces/user';
+import { User } from '@/features/user/data-access/interfaces/user';
 
 export interface LoginResponse {
   message: string;

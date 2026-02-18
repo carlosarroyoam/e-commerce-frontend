@@ -1,21 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
-import { debounceTime, filter, switchMap, tap } from 'rxjs';
+import { debounceTime, filter, switchMap } from 'rxjs';
 
-import { Pagination } from '@/core/interfaces/pagination';
-import { User } from '@/core/interfaces/user';
+import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
+import { User } from '@/features/user/data-access/interfaces/user';
+import { UserService } from '@/features/user/data-access/services/user-service';
+import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
-import { UserService } from '@/features/user/services/user-service';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -38,36 +33,19 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
+  protected readonly store = inject(UserStore);
 
   protected readonly form = this.fb.group({
     search: this.fb.control<string | null>(null),
     status: this.fb.control<'active' | 'inactive' | null>(null),
   });
 
-  protected page = signal<number>(1);
-  protected size = signal<number>(20);
-  protected search = signal<string | undefined>(undefined);
-  protected status = signal<'active' | 'inactive' | undefined>(undefined);
-  protected refresh = signal(0);
-
-  private params = computed(() => ({
-    page: this.page(),
-    size: this.size(),
-    search: this.search(),
-    status: this.status(),
-    refresh: this.refresh(),
-  }));
-
-  protected data = signal<User[]>([]);
-  protected pagination = signal<Pagination | undefined>(undefined);
-
   protected table = createAngularTable(() => ({
-    data: this.data(),
+    data: this.store.users(),
     columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
@@ -80,45 +58,29 @@ export class UserListPage {
     this.form.valueChanges
       .pipe(debounceTime(250), takeUntilDestroyed())
       .subscribe((value) => {
-        this.search.set(value.search?.trim());
-        this.status.set(value.status ?? undefined);
-        this.page.set(1);
+        this.store.navigate(
+          DEFAULT_FIRST_PAGE, // Reset page to 1
+          this.store.requestParams().size || DEFAULT_PAGE_SIZE,
+          value.search || undefined,
+          value.status || undefined,
+        );
       });
 
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
-      this.page.set(Number(params['page'] ?? 1));
-      this.size.set(Number(params['size'] ?? 20));
-      this.search.set(params['search']);
-      this.status.set(params['status']);
-
       this.form.patchValue(
         {
-          search: this.search(),
-          status: this.status(),
+          search: params['search'],
+          status: params['status'],
         },
         {
           emitEvent: false,
         },
       );
     });
-
-    toObservable(this.params)
-      .pipe(
-        tap(() => this.updateQueryParams()),
-        switchMap((params) => this.userService.getAll(params)),
-        takeUntilDestroyed(),
-      )
-      .subscribe((response) => {
-        if (response) {
-          this.data.set(response.users);
-          this.pagination.set(response.pagination);
-        }
-      });
   }
 
   protected clearFilters(): void {
-    this.form.reset();
-    this.page.set(1);
+    this.store.reset();
   }
 
   protected onEditUser(user: User): void {
@@ -140,7 +102,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
       )
       .subscribe(() => {
-        this.refresh.update((v) => v + 1);
+        this.store.loadAll({});
       });
   }
 
@@ -159,22 +121,8 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
       )
       .subscribe(() => {
-        this.refresh.update((v) => v + 1);
+        this.store.loadAll({});
       });
-  }
-
-  private updateQueryParams(): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page: this.page(),
-        size: this.size(),
-        search: this.search(),
-        status: this.status(),
-      },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
   }
 
   protected statuses: SelectOption[] = [

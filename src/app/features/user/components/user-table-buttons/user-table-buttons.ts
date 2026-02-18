@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
-import { User } from '@/core/interfaces/user';
+import { User } from '@/features/user/data-access/interfaces/user';
 import { Button } from '@/shared/components/ui/button/button';
 
 @Component({

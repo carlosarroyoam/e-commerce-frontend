@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   input,
-  model,
   output,
 } from '@angular/core';
 
@@ -25,9 +24,10 @@ export enum PageType {
 })
 export class Paginator {
   public readonly pagination = input<Pagination | undefined>();
-  public readonly page = model.required<number>();
-  public readonly size = model.required<number>();
-  public readonly pageChanged = output<void>();
+  public readonly page = input.required<number>();
+  public readonly size = input.required<number>();
+  public readonly pageChanged = output<number>();
+  public readonly sizeChanged = output<number>();
 
   protected readonly pageType = PageType;
 
@@ -58,21 +58,19 @@ export class Paginator {
   protected changePage(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
-        this.page.set(1);
+        this.pageChanged.emit(1);
         break;
       case PageType.PREVIOUS_PAGE:
-        this.page.update((currentPage) => currentPage - 1);
+        this.pageChanged.emit(this.page() - 1);
         break;
       case PageType.NEXT_PAGE:
-        this.page.update((currentPage) => currentPage + 1);
+        this.pageChanged.emit(this.page() + 1);
         break;
       case PageType.LAST_PAGE:
-        this.page.set(this.totalPages());
+        this.pageChanged.emit(this.totalPages());
         break;
       default:
         console.error('Invalid PageType: ' + pageType);
     }
-
-    this.pageChanged.emit();
   }
 }

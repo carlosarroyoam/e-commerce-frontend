@@ -57,5 +57,11 @@
 
   <app-table [table]="table" />
 
-  <app-paginator [(page)]="page" [(size)]="size" [pagination]="pagination()" />
+  <app-paginator
+    [page]="store.requestParams().page!"
+    [size]="store.requestParams().size!"
+    [pagination]="store.pagination()"
+    (pageChanged)="store.navigate($event, store.pagination().size)"
+    (sizeChanged)="store.changeSize($event)"
+  />
 </section>

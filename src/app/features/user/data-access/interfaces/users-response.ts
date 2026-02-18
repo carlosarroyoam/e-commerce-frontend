@@ -1,5 +1,5 @@
 import { Pagination } from '@/core/interfaces/pagination';
-import { User } from '@/core/interfaces/user';
+import { User } from '@/features/user/data-access/interfaces/user';
 
 export interface UsersResponse {
   message: string;
