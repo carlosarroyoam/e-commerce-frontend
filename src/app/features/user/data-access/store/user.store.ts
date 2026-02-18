@@ -103,10 +103,6 @@ export const UserStore = signalStore(
         });
       },
 
-      changeSize(size: number) {
-        this.navigate(1, size);
-      },
-
       reset() {
         router.navigate([], {
           relativeTo: route,

@@ -62,6 +62,6 @@
     [size]="store.requestParams().size!"
     [pagination]="store.pagination()"
     (pageChanged)="store.navigate($event, store.pagination().size)"
-    (sizeChanged)="store.changeSize($event)"
+    (sizeChanged)="store.navigate(1, $event)"
   />
 </section>
