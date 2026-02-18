@@ -1,4 +1,4 @@
-import { Pagination } from '@/core/interfaces/pagination';
+import { Pagination } from '@/core/data-access/interfaces/pagination';
 import { User } from '@/features/user/data-access/interfaces/user';
 
 export interface UsersResponse {

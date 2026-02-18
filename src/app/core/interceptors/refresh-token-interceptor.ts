@@ -1,14 +1,15 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, finalize, switchMap, throwError } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
-import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
+import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
+import { AuthStore } from '@/core/data-access/store/auth.store';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
   const authService = inject(AuthService);
+  const authStore = inject(AuthStore);
+
   const isAuthRequest = API_AUTH_ROUTES.some((route) =>
     req.url.includes(route),
   );
@@ -31,10 +32,7 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
             refreshError instanceof HttpErrorResponse &&
             (refreshError.status === 401 || refreshError.status === 422)
           ) {
-            authService
-              .logout()
-              .pipe(finalize(() => router.navigate(['/auth/login'])))
-              .subscribe();
+            authStore.logout();
           }
 
           return throwError(() => refreshError);

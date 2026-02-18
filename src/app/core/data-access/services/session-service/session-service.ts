@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
-import { SessionData } from '@/core/interfaces/session-data';
+import { SessionData } from '@/core/data-access/interfaces/session-data';
 import { User } from '@/features/user/data-access/interfaces/user';
 
 @Injectable({

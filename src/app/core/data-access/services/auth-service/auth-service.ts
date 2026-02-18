@@ -3,9 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { finalize, Observable, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { SessionService } from '@/core/services/session-service/session-service';
+import { LoginRequest } from '@/core/data-access/interfaces/login-request';
+import { LoginResponse } from '@/core/data-access/interfaces/login-response';
+import { SessionService } from '@/core/data-access/services/session-service/session-service';
 import { environment } from '@/environments/environment';
-import { LoginResponse } from '@/features/auth/data-access/interfaces/login-response';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +17,10 @@ export class AuthService {
 
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
-  public login(credentials: {
-    email: string;
-    password: string;
-  }): Observable<LoginResponse> {
+  public login(payload: LoginRequest): Observable<LoginResponse> {
     return this.httpClient
       .post<LoginResponse>(`${environment.apiUrl}/auth/login`, {
-        ...credentials,
+        ...payload,
         device_fingerprint: this.getDeviceFingerprint(),
       })
       .pipe(tap((response) => this.sessionService.saveSession(response.user)));

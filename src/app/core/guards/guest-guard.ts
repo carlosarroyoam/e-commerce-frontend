@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-import { SessionService } from '@/core/services/session-service/session-service';
+import { AuthStore } from '@/core/data-access/store/auth.store';
 
 export const guestGuard: CanActivateFn = () => {
   const router = inject(Router);
-  const sessionService = inject(SessionService);
+  const authStore = inject(AuthStore);
 
-  if (sessionService.isUserAuth()) {
+  if (authStore.isAuthenticated()) {
     router.navigate(['/']);
 
     return false;

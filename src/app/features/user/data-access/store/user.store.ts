@@ -15,36 +15,11 @@ import {
   DEFAULT_FIRST_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
-import { Pagination } from '@/core/interfaces/pagination';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { safeParsePositiveInt } from '@/core/utils/number.utils';
-import { User } from '@/features/user/data-access/interfaces/user';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
 import { UserService } from '@/features/user/data-access/services/user-service';
-
-export interface UserState {
-  users: User[];
-  pagination: Pagination;
-  requestParams: UsersRequestParams;
-  isLoading: boolean;
-  error: string | null;
-}
-
-const initialState: UserState = {
-  users: [],
-  pagination: {
-    page: 1,
-    size: 0,
-    totalItems: 0,
-    totalPages: 1,
-  },
-  requestParams: {
-    page: DEFAULT_FIRST_PAGE,
-    size: DEFAULT_PAGE_SIZE,
-  },
-  isLoading: false,
-  error: null,
-};
+import { initialState } from '@/features/user/data-access/store/user.state';
 
 export const UserStore = signalStore(
   { providedIn: 'root' },
@@ -58,6 +33,9 @@ export const UserStore = signalStore(
       router = inject(Router),
       route = inject(ActivatedRoute),
     ) => ({
+      /**
+       * Get all users
+       */
       getAll: rxMethod<UsersRequestParams>(
         pipe(
           tap(() => patchState(store, { isLoading: true, error: null })),
@@ -85,6 +63,9 @@ export const UserStore = signalStore(
         ),
       ),
 
+      /**
+       * Partial update request params
+       */
       updateRequestParams(partial: Partial<UsersRequestParams>): void {
         const current = store.requestParams();
         const next = { ...current, ...partial };
@@ -116,6 +97,9 @@ export const UserStore = signalStore(
   ),
 
   withHooks((store, route = inject(ActivatedRoute)) => ({
+    /**
+     * Initialize store and set effects
+     */
     onInit(): void {
       const queryParamMap = toSignal(route.queryParamMap);
 

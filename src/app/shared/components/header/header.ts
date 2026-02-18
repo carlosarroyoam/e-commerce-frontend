@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { SessionData } from '@/core/interfaces/session-data';
+import { SessionData } from '@/core/data-access/interfaces/session-data';
 import { UserNav } from '@/shared/components/header/user-nav/user-nav';
 import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
 

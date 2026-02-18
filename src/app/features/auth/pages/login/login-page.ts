@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { tap } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
-import { AuthService } from '@/features/auth/data-access/services/auth-service/auth-service';
+import { AuthStore } from '@/core/data-access/store/auth.store';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -22,9 +21,8 @@ import { AppInput } from '@/shared/components/ui/input/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
-  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
+  private readonly authStore = inject(AuthStore);
 
   protected readonly form = this.fb.group({
     email: this.fb.control<string | null>(null, {
@@ -43,12 +41,9 @@ export class LoginPage {
 
     if (!email || !password) return;
 
-    this.authService
-      .login({
-        email,
-        password,
-      })
-      .pipe(tap(() => this.router.navigate(['/'])))
-      .subscribe();
+    this.authStore.login({
+      email,
+      password,
+    });
   }
 }

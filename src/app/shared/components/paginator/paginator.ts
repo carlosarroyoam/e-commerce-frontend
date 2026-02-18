@@ -6,7 +6,7 @@ import {
   output,
 } from '@angular/core';
 
-import { Pagination } from '@/core/interfaces/pagination';
+import { Pagination } from '@/core/data-access/interfaces/pagination';
 import { Button } from '@/shared/components/ui/button/button';
 
 export enum PageType {
@@ -72,5 +72,9 @@ export class Paginator {
       default:
         console.error('Invalid PageType: ' + pageType);
     }
+  }
+
+  protected changeSize(size: number): void {
+    this.sizeChanged.emit(size);
   }
 }
