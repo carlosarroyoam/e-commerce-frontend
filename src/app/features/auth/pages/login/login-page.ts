@@ -9,6 +9,7 @@ import { InputLabel } from '@/shared/components/ui/input-label/input-label';
 import { AppInput } from '@/shared/components/ui/input/input';
 
 @Component({
+  selector: 'app-login',
   imports: [
     ReactiveFormsModule,
     RouterLink,

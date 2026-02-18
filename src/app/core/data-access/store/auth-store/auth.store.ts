@@ -1,9 +1,8 @@
-import { computed, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   patchState,
   signalStore,
-  withComputed,
   withHooks,
   withMethods,
   withState,
@@ -14,20 +13,12 @@ import { catchError, finalize, of, pipe, switchMap, tap } from 'rxjs';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { SessionService } from '@/core/data-access/services/session-service/session-service';
-import { initialState } from './auth.state';
+import { initialState } from '@/core/data-access/store/auth-store/auth.state';
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
 
   withState(initialState),
-
-  withComputed((store) => ({
-    fullName: computed(() =>
-      store.user()
-        ? `${store.user()!.first_name} ${store.user()!.last_name}`
-        : null,
-    ),
-  })),
 
   withMethods(
     (

@@ -11,10 +11,34 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('@/features/dashboard/dashboard.routes').then((m) => m.routes),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'orders',
+    loadChildren: () =>
+      import('@/features/order/order.routes').then((m) => m.routes),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'products',
+    loadChildren: () =>
+      import('@/features/product/product.routes').then((m) => m.routes),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'categories',
+    loadChildren: () =>
+      import('@/features/category/category.routes').then((m) => m.routes),
+    canActivate: [authGuard],
+  },
+  {
     path: 'users',
     loadChildren: () =>
       import('@/features/user/user.routes').then((m) => m.routes),
     canActivate: [authGuard],
   },
-  { path: '', redirectTo: 'users', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

@@ -10,10 +10,9 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        data: { reuse: false },
         loadComponent: () =>
-          import('@/features/user/pages/user-list/user-list-page').then(
-            (m) => m.UserListPage,
+          import('@/features/product/pages/product-list/product-list').then(
+            (m) => m.ProductListPage,
           ),
       },
     ],

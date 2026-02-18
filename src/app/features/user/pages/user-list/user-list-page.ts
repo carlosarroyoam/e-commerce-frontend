@@ -24,6 +24,7 @@ import {
 } from '@/shared/components/ui/select-input/select-input';
 
 @Component({
+  selector: 'app-user-list',
   imports: [
     ReactiveFormsModule,
     Button,
