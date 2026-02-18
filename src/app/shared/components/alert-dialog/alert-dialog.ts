@@ -13,7 +13,7 @@ export interface DialogData {
 }
 
 export interface DialogResult {
-  accepted?: boolean;
+  accepted: boolean;
 }
 
 @Component({

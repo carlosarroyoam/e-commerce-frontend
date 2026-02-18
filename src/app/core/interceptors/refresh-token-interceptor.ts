@@ -4,7 +4,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
 
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
-import { AuthStore } from '@/core/data-access/store/auth.store';
+import { AuthStore } from '@/core/data-access/store/auth-store/auth.store';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);

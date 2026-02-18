@@ -34,7 +34,7 @@ export const UserStore = signalStore(
       route = inject(ActivatedRoute),
     ) => ({
       /**
-       * Get all users
+       * Gets all users.
        */
       getAll: rxMethod<UsersRequestParams>(
         pipe(
@@ -64,7 +64,7 @@ export const UserStore = signalStore(
       ),
 
       /**
-       * Partial update request params
+       * Partial updates request params.
        */
       updateRequestParams(partial: Partial<UsersRequestParams>): void {
         const current = store.requestParams();
@@ -83,6 +83,9 @@ export const UserStore = signalStore(
         });
       },
 
+      /**
+       * Resets state to initial data.
+       */
       reset(): void {
         router.navigate([], {
           relativeTo: route,
@@ -98,7 +101,7 @@ export const UserStore = signalStore(
 
   withHooks((store, route = inject(ActivatedRoute)) => ({
     /**
-     * Initialize store and set effects
+     * Initializes store and set effects.
      */
     onInit(): void {
       const queryParamMap = toSignal(route.queryParamMap);

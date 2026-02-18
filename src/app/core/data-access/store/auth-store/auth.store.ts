@@ -38,7 +38,7 @@ export const AuthStore = signalStore(
       route = inject(ActivatedRoute),
     ) => ({
       /**
-       * Login
+       * Login.
        */
       login: rxMethod<LoginRequest>(
         pipe(
@@ -84,7 +84,7 @@ export const AuthStore = signalStore(
       ),
 
       /**
-       * Logout
+       * Logout.
        */
       logout: rxMethod<void>(
         pipe(
@@ -119,7 +119,7 @@ export const AuthStore = signalStore(
 
   withHooks({
     /**
-     * Initialize store from localStorage
+     * Initializes store from localStorage.
      */
     onInit(store, sessionService = inject(SessionService)) {
       const session = sessionService.getSession();
