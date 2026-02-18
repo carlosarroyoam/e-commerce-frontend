@@ -109,8 +109,6 @@ export const UserStore = signalStore(
           queryParams: {
             page: DEFAULT_FIRST_PAGE,
             size: DEFAULT_PAGE_SIZE,
-            search: undefined,
-            status: undefined,
           },
           replaceUrl: true,
         });
