@@ -5,7 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap } from 'rxjs';
 
-import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
+import {
+  DEFAULT_FIRST_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from '@/core/constants/pagination.constants';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
 import { User } from '@/features/user/data-access/interfaces/user';
 import { UserService } from '@/features/user/data-access/services/user-service';
@@ -37,7 +40,7 @@ export class UserListPage {
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
-  protected readonly store = inject(UserStore);
+  protected readonly userStore = inject(UserStore);
 
   protected readonly form = this.fb.group({
     search: this.fb.control<string | null>(null),
@@ -45,7 +48,7 @@ export class UserListPage {
   });
 
   protected table = createAngularTable(() => ({
-    data: this.store.users(),
+    data: this.userStore.users(),
     columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
@@ -58,12 +61,12 @@ export class UserListPage {
     this.form.valueChanges
       .pipe(debounceTime(250), takeUntilDestroyed())
       .subscribe((value) => {
-        this.store.navigate(
-          DEFAULT_FIRST_PAGE, // Reset page to 1
-          this.store.requestParams().size || DEFAULT_PAGE_SIZE,
-          value.search || undefined,
-          value.status || undefined,
-        );
+        this.userStore.updateRequestParams({
+          page: DEFAULT_FIRST_PAGE,
+          size: this.userStore.requestParams().size || DEFAULT_PAGE_SIZE,
+          search: value.search || undefined,
+          status: value.status || undefined,
+        });
       });
 
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
@@ -80,7 +83,7 @@ export class UserListPage {
   }
 
   protected clearFilters(): void {
-    this.store.reset();
+    this.userStore.reset();
   }
 
   protected onEditUser(user: User): void {
@@ -102,7 +105,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
       )
       .subscribe(() => {
-        this.store.loadAll({});
+        this.userStore.loadAll(this.userStore.requestParams);
       });
   }
 
@@ -121,7 +124,7 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
       )
       .subscribe(() => {
-        this.store.loadAll({});
+        this.userStore.loadAll(this.userStore.requestParams);
       });
   }
 
