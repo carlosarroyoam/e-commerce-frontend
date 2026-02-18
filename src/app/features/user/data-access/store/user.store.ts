@@ -58,7 +58,7 @@ export const UserStore = signalStore(
       router = inject(Router),
       route = inject(ActivatedRoute),
     ) => ({
-      loadAll: rxMethod<UsersRequestParams>(
+      getAll: rxMethod<UsersRequestParams>(
         pipe(
           tap(() => patchState(store, { isLoading: true, error: null })),
           switchMap((requestParams) =>
@@ -133,7 +133,7 @@ export const UserStore = signalStore(
 
       effect(() => {
         const requestParams = store.requestParams();
-        store.loadAll(requestParams);
+        store.getAll(requestParams);
       });
     },
   })),

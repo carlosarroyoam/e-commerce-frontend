@@ -105,7 +105,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
       )
       .subscribe(() => {
-        this.userStore.loadAll(this.userStore.requestParams);
+        this.userStore.getAll(this.userStore.requestParams);
       });
   }
 
@@ -124,7 +124,7 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
       )
       .subscribe(() => {
-        this.userStore.loadAll(this.userStore.requestParams);
+        this.userStore.getAll(this.userStore.requestParams);
       });
   }
 
