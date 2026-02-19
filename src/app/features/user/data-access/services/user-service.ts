@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import {
   DEFAULT_FIRST_PAGE,
@@ -23,7 +23,7 @@ export class UserService {
     sort,
     search,
     status,
-  }: UsersRequestParams): Observable<UsersResponse | null> {
+  }: UsersRequestParams): Observable<UsersResponse> {
     let params = new HttpParams();
     params = params.append('page', page);
     params = params.append('size', size);
@@ -37,9 +37,9 @@ export class UserService {
   }
 
   public getById(userId: number): Observable<UserResponse | null> {
-    return this.httpClient
-      .get<UserResponse>(`${environment.apiUrl}/users/${userId}`)
-      .pipe(catchError(() => of(null)));
+    return this.httpClient.get<UserResponse>(
+      `${environment.apiUrl}/users/${userId}`,
+    );
   }
 
   public deleteById(userId: number): Observable<void> {

@@ -5,7 +5,7 @@
   </p>
 
   <form [formGroup]="form" class="my-8">
-    <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+    <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
       <div class="relative inline-block">
         <input
           appInput
@@ -44,7 +44,13 @@
         formControlName="status"
       />
 
-      <button appButton type="button" variant="secondary" (click)="reset()">
+      <button
+        appButton
+        type="button"
+        variant="secondary"
+        (click)="reset()"
+        class="md:max-w-32"
+      >
         Clear
       </button>
     </div>

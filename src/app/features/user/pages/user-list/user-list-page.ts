@@ -76,9 +76,7 @@ export class UserListPage {
           search: params['search'],
           status: params['status'],
         },
-        {
-          emitEvent: false,
-        },
+        { emitEvent: false },
       );
     });
   }
@@ -115,12 +113,10 @@ export class UserListPage {
         },
       })
       .closed.pipe(
-        filter((result) => result?.accepted ?? false),
+        filter((result) => result?.accepted || false),
         switchMap(() => this.userService.deleteById(user.id)),
       )
-      .subscribe(() => {
-        this.store.getAll(this.store.requestParams());
-      });
+      .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
 
   protected onRestoreUser(user: User): void {
@@ -134,12 +130,10 @@ export class UserListPage {
         },
       })
       .closed.pipe(
-        filter((result) => result?.accepted ?? false),
+        filter((result) => result?.accepted || false),
         switchMap(() => this.userService.restoreById(user.id)),
       )
-      .subscribe(() => {
-        this.store.getAll(this.store.requestParams());
-      });
+      .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
 
   protected statuses: SelectOption[] = [

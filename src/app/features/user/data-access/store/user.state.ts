@@ -20,7 +20,7 @@ export const initialState: UserState = {
     page: DEFAULT_FIRST_PAGE,
     size: 0,
     totalItems: 0,
-    totalPages: 1,
+    totalPages: 0,
   },
   requestParams: {
     page: DEFAULT_FIRST_PAGE,
