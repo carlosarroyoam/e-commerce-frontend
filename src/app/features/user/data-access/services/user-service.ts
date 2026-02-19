@@ -18,15 +18,15 @@ export class UserService {
   private readonly httpClient = inject(HttpClient);
 
   public getAll({
-    page,
-    size,
+    page = DEFAULT_FIRST_PAGE,
+    size = DEFAULT_PAGE_SIZE,
     sort,
     search,
     status,
   }: UsersRequestParams): Observable<UsersResponse | null> {
     let params = new HttpParams();
-    params = params.append('page', page ?? DEFAULT_FIRST_PAGE);
-    params = params.append('size', size ?? DEFAULT_PAGE_SIZE);
+    params = params.append('page', page);
+    params = params.append('size', size);
     if (sort) params = params.append('sort', sort);
     if (search) params = params.append('search', search);
     if (status) params = params.append('status', status);

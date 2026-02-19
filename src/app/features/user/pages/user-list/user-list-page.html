@@ -45,12 +45,7 @@
       />
     </div>
 
-    <button
-      appButton
-      type="button"
-      variant="secondary"
-      (click)="clearFilters()"
-    >
+    <button appButton type="button" variant="secondary" (click)="reset()">
       Clear
     </button>
   </form>
@@ -58,18 +53,10 @@
   <app-table [table]="table" />
 
   <app-paginator
-    [page]="userStore.requestParams().page!"
-    [size]="userStore.requestParams().size!"
-    [pagination]="userStore.pagination()"
-    (pageChanged)="
-      userStore.updateRequestParams({
-        page: $event,
-      })
-    "
-    (sizeChanged)="
-      userStore.updateRequestParams({
-        size: $event,
-      })
-    "
+    [page]="store.requestParams().page!"
+    [size]="store.requestParams().size!"
+    [pagination]="store.pagination()"
+    (pageChanged)="onPageChanged($event)"
+    (sizeChanged)="onSizeChanged($event)"
   />
 </section>

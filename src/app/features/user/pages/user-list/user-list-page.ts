@@ -5,15 +5,13 @@ import { ActivatedRoute } from '@angular/router';
 import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap } from 'rxjs';
 
-import {
-  DEFAULT_FIRST_PAGE,
-  DEFAULT_PAGE_SIZE,
-} from '@/core/constants/pagination.constants';
+import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
 import { DialogService } from '@/core/services/dialog-service/dialog-service';
 import { User } from '@/features/user/data-access/interfaces/user';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
+import { UserQueryParamsService } from '@/features/user/routing/user-query-param.service';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -34,6 +32,7 @@ import {
     Paginator,
   ],
   templateUrl: './user-list-page.html',
+  providers: [UserQueryParamsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
@@ -41,7 +40,9 @@ export class UserListPage {
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
   private readonly dialogService = inject(DialogService);
-  protected readonly userStore = inject(UserStore);
+  private readonly queryParamsService = inject(UserQueryParamsService);
+
+  protected readonly store = inject(UserStore);
 
   protected readonly form = this.fb.group({
     search: this.fb.control<string | null>(null),
@@ -49,7 +50,7 @@ export class UserListPage {
   });
 
   protected table = createAngularTable(() => ({
-    data: this.userStore.users(),
+    data: this.store.users(),
     columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
@@ -62,9 +63,8 @@ export class UserListPage {
     this.form.valueChanges
       .pipe(debounceTime(250), takeUntilDestroyed())
       .subscribe((value) => {
-        this.userStore.updateRequestParams({
+        this.queryParamsService.updateQueryParams({
           page: DEFAULT_FIRST_PAGE,
-          size: this.userStore.requestParams().size || DEFAULT_PAGE_SIZE,
           search: value.search || undefined,
           status: value.status || undefined,
         });
@@ -83,8 +83,21 @@ export class UserListPage {
     });
   }
 
-  protected clearFilters(): void {
-    this.userStore.reset();
+  protected reset(): void {
+    this.queryParamsService.resetQueryParams();
+  }
+
+  protected onPageChanged(page: number): void {
+    this.queryParamsService.updateQueryParams({
+      page,
+    });
+  }
+
+  protected onSizeChanged(size: number): void {
+    this.queryParamsService.updateQueryParams({
+      page: DEFAULT_FIRST_PAGE,
+      size,
+    });
   }
 
   protected onEditUser(user: User): void {
@@ -106,7 +119,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
       )
       .subscribe(() => {
-        this.userStore.getAll(this.userStore.requestParams);
+        this.store.getAll(this.store.requestParams());
       });
   }
 
@@ -125,7 +138,7 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
       )
       .subscribe(() => {
-        this.userStore.getAll(this.userStore.requestParams);
+        this.store.getAll(this.store.requestParams());
       });
   }
 
