@@ -9,7 +9,7 @@ import { UserService } from '@/features/user/data-access/services/user-service';
 import { initialState } from '@/features/user/data-access/store/user.state';
 
 export const UserStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: undefined },
 
   withState(initialState),
 

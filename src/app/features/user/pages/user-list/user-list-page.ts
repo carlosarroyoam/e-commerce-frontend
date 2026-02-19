@@ -32,7 +32,7 @@ import {
     Paginator,
   ],
   templateUrl: './user-list-page.html',
-  providers: [UserQueryParamsService],
+  providers: [UserStore, UserQueryParamsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
