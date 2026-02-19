@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { AuthStore } from '@/core/data-access/store/auth-store/auth.store';
 import { Footer } from '@/shared/components/footer/footer';
@@ -14,6 +14,7 @@ import { Header } from '@/shared/components/header/header';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayout {
+  private readonly router = inject(Router);
   private readonly authStore = inject(AuthStore);
 
   get sessionData() {
@@ -22,5 +23,6 @@ export class MainLayout {
 
   protected logout(): void {
     this.authStore.logout();
+    this.router.navigate(['/auth/login']);
   }
 }

@@ -1,5 +1,4 @@
 import { inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   patchState,
   signalStore,
@@ -14,6 +13,7 @@ import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { SessionService } from '@/core/data-access/services/session-service/session-service';
 import { initialState } from '@/core/data-access/store/auth-store/auth.state';
+import { extractErrorMessage } from '@/core/utils/error.utils';
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
@@ -25,8 +25,6 @@ export const AuthStore = signalStore(
       store,
       authService = inject(AuthService),
       sessionService = inject(SessionService),
-      router = inject(Router),
-      route = inject(ActivatedRoute),
     ) => ({
       /**
        * Login.
@@ -39,36 +37,24 @@ export const AuthStore = signalStore(
               error: null,
             }),
           ),
-
           switchMap((loginRequest) =>
             authService.login(loginRequest).pipe(
-              tap(() => {
-                const session = sessionService.getSession();
+              tap((response) => {
+                sessionService.saveSession(response.user);
 
                 patchState(store, {
-                  user: session,
+                  user: sessionService.getSession(),
                   isAuthenticated: true,
                 });
-
-                const returnUrl =
-                  route.snapshot.queryParamMap.get('returnUrl') ?? '/';
-
-                router.navigateByUrl(returnUrl);
               }),
-
-              catchError((error) => {
+              catchError((err) => {
                 patchState(store, {
-                  error: error?.error?.message ?? 'Login failed',
+                  error: extractErrorMessage(err),
                 });
 
                 return of(null);
               }),
-
-              finalize(() =>
-                patchState(store, {
-                  isLoading: false,
-                }),
-              ),
+              finalize(() => patchState(store, { isLoading: false })),
             ),
           ),
         ),
@@ -77,34 +63,15 @@ export const AuthStore = signalStore(
       /**
        * Logout.
        */
-      logout: rxMethod<void>(
-        pipe(
-          tap(() =>
-            patchState(store, {
-              isLoading: true,
-            }),
-          ),
+      logout(): void {
+        authService.logout().subscribe();
+        sessionService.clearSession();
 
-          switchMap(() =>
-            authService.logout().pipe(
-              tap(() => {
-                patchState(store, {
-                  user: null,
-                  isAuthenticated: false,
-                });
-
-                router.navigate(['/auth/login']);
-              }),
-
-              finalize(() =>
-                patchState(store, {
-                  isLoading: false,
-                }),
-              ),
-            ),
-          ),
-        ),
-      ),
+        patchState(store, {
+          user: null,
+          isAuthenticated: false,
+        });
+      },
     }),
   ),
 

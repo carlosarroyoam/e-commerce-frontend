@@ -17,7 +17,7 @@ export interface UserState {
 export const initialState: UserState = {
   users: [],
   pagination: {
-    page: 1,
+    page: DEFAULT_FIRST_PAGE,
     size: 0,
     totalItems: 0,
     totalPages: 1,

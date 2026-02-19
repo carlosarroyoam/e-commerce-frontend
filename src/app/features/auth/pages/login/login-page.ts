@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { AuthStore } from '@/core/data-access/store/auth-store/auth.store';
 import { Button } from '@/shared/components/ui/button/button';
@@ -22,6 +27,8 @@ import { AppInput } from '@/shared/components/ui/input/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly authStore = inject(AuthStore);
 
@@ -33,6 +40,17 @@ export class LoginPage {
       validators: [Validators.required, Validators.minLength(8)],
     }),
   });
+
+  constructor() {
+    effect(() => {
+      if (this.authStore.isAuthenticated()) {
+        const returnUrl =
+          this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+
+        this.router.navigateByUrl(returnUrl);
+      }
+    });
+  }
 
   protected login(): void {
     if (this.form.invalid) return;

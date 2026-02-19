@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { finalize, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
-import { SessionService } from '@/core/data-access/services/session-service/session-service';
 import { environment } from '@/environments/environment';
 
 @Injectable({
@@ -13,23 +12,24 @@ import { environment } from '@/environments/environment';
 })
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
-  private readonly sessionService = inject(SessionService);
 
   private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
 
   public login(payload: LoginRequest): Observable<LoginResponse> {
-    return this.httpClient
-      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, {
+    return this.httpClient.post<LoginResponse>(
+      `${environment.apiUrl}/auth/login`,
+      {
         ...payload,
         device_fingerprint: this.getDeviceFingerprint(),
-      })
-      .pipe(tap((response) => this.sessionService.saveSession(response.user)));
+      },
+    );
   }
 
   public logout(): Observable<void> {
-    return this.httpClient
-      .post<void>(`${environment.apiUrl}/auth/logout`, undefined)
-      .pipe(finalize(() => this.sessionService.clearSession()));
+    return this.httpClient.post<void>(
+      `${environment.apiUrl}/auth/logout`,
+      undefined,
+    );
   }
 
   public refreshToken(): Observable<void> {
