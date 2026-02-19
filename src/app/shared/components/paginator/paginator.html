@@ -1,4 +1,4 @@
-<div class="mx-2 mt-4 flex flex-col sm:flex-row sm:items-center">
+<div class="mx-2 mt-4 flex flex-col sm:flex-row sm:items-center md:gap-8">
   <div class="flex-1">
     @if (totalItems() > 0) {
       <p class="text-sm">
@@ -7,7 +7,24 @@
     }
   </div>
 
-  <div class="mt-2 flex items-center justify-between gap-8 sm:mt-0">
+  <div class="mt-4 flex items-center gap-2 sm:mt-0">
+    <span class="text-sm">Items per page: </span>
+
+    <select
+      #sizeSelect
+      id="items-per-page"
+      (change)="changeSize(sizeSelect.value)"
+      class="block min-w-20 cursor-pointer items-center gap-4 rounded-md border border-zinc-200 px-3 py-1.5 text-sm text-nowrap text-zinc-700 focus:border-blue-500 focus:ring-0 focus:outline-none"
+    >
+      @for (option of [10, 20, 30, 40, 50]; track $index) {
+        <option [value]="option" [selected]="option === size()">
+          {{ option }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <div class="mt-4 flex items-center justify-between gap-4 sm:mt-0">
     @if (totalPages()) {
       <p class="text-sm">Page {{ page() }} of {{ totalPages() }}</p>
     }

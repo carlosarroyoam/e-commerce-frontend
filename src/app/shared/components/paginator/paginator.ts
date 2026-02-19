@@ -6,6 +6,7 @@ import {
   output,
 } from '@angular/core';
 
+import { DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { Pagination } from '@/core/data-access/interfaces/pagination';
 import { Button } from '@/shared/components/ui/button/button';
 
@@ -74,7 +75,9 @@ export class Paginator {
     }
   }
 
-  protected changeSize(size: number): void {
+  protected changeSize(value: string): void {
+    const parsed = Number(value);
+    const size = Number.isNaN(parsed) ? DEFAULT_PAGE_SIZE : parsed;
     this.sizeChanged.emit(size);
   }
 }
