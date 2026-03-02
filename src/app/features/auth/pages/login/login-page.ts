@@ -7,7 +7,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { AuthStore } from '@/core/data-access/store/auth-store/auth.store';
+import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';

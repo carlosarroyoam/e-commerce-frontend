@@ -13,7 +13,7 @@ import { finalize, pipe, switchMap, tap } from 'rxjs';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { SessionService } from '@/core/data-access/services/session-service/session-service';
-import { initialState } from '@/core/data-access/store/auth-store/auth.state';
+import { initialState } from '@/core/data-access/stores/auth-store/auth.state';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 
 export const AuthStore = signalStore(
