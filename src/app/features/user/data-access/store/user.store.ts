@@ -34,7 +34,7 @@ export const UserStore = signalStore(
               error: (err) =>
                 patchState(store, {
                   users: [],
-                  pagination: initialState.pagination,
+                  pagination: { ...initialState.pagination },
                   error: extractErrorMessage(err),
                 }),
             }),

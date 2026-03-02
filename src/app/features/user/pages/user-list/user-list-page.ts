@@ -86,9 +86,7 @@ export class UserListPage {
   }
 
   protected onPageChanged(page: number): void {
-    this.queryParamsService.updateQueryParams({
-      page,
-    });
+    this.queryParamsService.updateQueryParams({ page });
   }
 
   protected onSizeChanged(size: number): void {
