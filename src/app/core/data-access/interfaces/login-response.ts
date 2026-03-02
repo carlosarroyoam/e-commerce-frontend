@@ -4,6 +4,6 @@ export interface LoginResponse {
   message: string;
   user: Pick<
     User,
-    'id' | 'email' | 'first_name' | 'last_name' | 'user_role_id' | 'user_role'
+    'id' | 'first_name' | 'last_name' | 'email' | 'user_role' | 'user_role_id'
   >;
 }

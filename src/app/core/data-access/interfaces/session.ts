@@ -1,4 +1,4 @@
-export interface SessionData {
+export interface Session {
   user_id: string;
   email: string;
   first_name: string;

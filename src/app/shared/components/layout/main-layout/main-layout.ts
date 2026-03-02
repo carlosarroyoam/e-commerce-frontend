@@ -17,8 +17,8 @@ export class MainLayout {
   private readonly router = inject(Router);
   private readonly authStore = inject(AuthStore);
 
-  get sessionData() {
-    return this.authStore.user();
+  get session() {
+    return this.authStore.session();
   }
 
   protected logout(): void {

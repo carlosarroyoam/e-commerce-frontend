@@ -32,27 +32,20 @@ export const AuthStore = signalStore(
        */
       login: rxMethod<LoginRequest>(
         pipe(
-          tap(() =>
-            patchState(store, {
-              isLoading: true,
-              error: null,
-            }),
-          ),
+          tap(() => patchState(store, { isLoading: true, error: null })),
           switchMap((loginRequest) =>
             authService.login(loginRequest).pipe(
               tapResponse({
-                next: (response) => {
-                  sessionService.saveSession(response.user);
+                next: ({ user }) => {
+                  sessionService.saveSession(user);
 
                   patchState(store, {
-                    user: sessionService.getSession(),
+                    session: sessionService.getSession(),
                     isAuthenticated: true,
                   });
                 },
                 error: (err) =>
-                  patchState(store, {
-                    error: extractErrorMessage(err),
-                  }),
+                  patchState(store, { error: extractErrorMessage(err) }),
               }),
               finalize(() => patchState(store, { isLoading: false })),
             ),
@@ -65,10 +58,11 @@ export const AuthStore = signalStore(
        */
       logout(): void {
         authService.logout().subscribe();
+
         sessionService.clearSession();
 
         patchState(store, {
-          user: null,
+          session: null,
           isAuthenticated: false,
         });
       },
@@ -84,7 +78,7 @@ export const AuthStore = signalStore(
 
       if (session) {
         patchState(store, {
-          user: session,
+          session,
           isAuthenticated: true,
         });
       }

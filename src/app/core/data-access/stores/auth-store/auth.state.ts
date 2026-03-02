@@ -1,14 +1,14 @@
-import { SessionData } from '@/core/data-access/interfaces/session-data';
+import { Session } from '@/core/data-access/interfaces/session';
 
 export interface AuthState {
-  user: SessionData | null;
+  session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
 export const initialState: AuthState = {
-  user: null,
+  session: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,

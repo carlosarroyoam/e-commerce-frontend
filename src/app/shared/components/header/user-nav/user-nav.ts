@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { SessionData } from '@/core/data-access/interfaces/session-data';
+import { Session } from '@/core/data-access/interfaces/session';
+import { MenuItem } from '@/shared/components/header/header';
 
 @Component({
   selector: 'app-user-nav',
@@ -18,15 +19,14 @@ import { SessionData } from '@/core/data-access/interfaces/session-data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
-  public readonly sessionData = input.required<SessionData | null>();
-  public readonly menuItems =
-    input.required<{ href: string; title: string }[]>();
+  public readonly session = input.required<Session | null>();
+  public readonly menuItems = input.required<MenuItem[]>();
   public readonly logout = output<void>();
 
   protected isOpen = signal(false);
 
   protected fullname = computed(() => {
-    return `${this.sessionData()?.first_name} ${this.sessionData()?.last_name}`;
+    return `${this.session()?.first_name} ${this.session()?.last_name}`;
   });
 
   protected src = computed(() => {
@@ -34,7 +34,7 @@ export class UserNav {
   });
 
   protected alt = computed(() => {
-    return `${this.sessionData()?.first_name}'s profile picture`;
+    return `${this.session()?.first_name}'s profile picture`;
   });
 
   protected toggleIsOpen(): void {

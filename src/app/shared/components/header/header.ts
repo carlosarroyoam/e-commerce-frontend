@@ -7,9 +7,14 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { SessionData } from '@/core/data-access/interfaces/session-data';
+import { Session } from '@/core/data-access/interfaces/session';
 import { UserNav } from '@/shared/components/header/user-nav/user-nav';
 import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
+
+export interface MenuItem {
+  href: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-header',
@@ -18,12 +23,12 @@ import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  public readonly sessionData = input.required<SessionData | null>();
+  public readonly session = input.required<Session | null>();
   public readonly logout = output<void>();
 
   protected isMobileMenuOpen = signal(false);
 
-  protected menuItems = [
+  protected menuItems: MenuItem[] = [
     { href: '/dashboard', title: 'Dashboard' },
     { href: '/orders', title: 'Orders' },
     { href: '/products', title: 'Products' },
@@ -31,7 +36,7 @@ export class Header {
     { href: '/users', title: 'Users' },
   ];
 
-  protected userNavMenuItems = [
+  protected userNavMenuItems: MenuItem[] = [
     { href: '/account', title: 'Account' },
     { href: '/settings', title: 'Settings' },
   ];
