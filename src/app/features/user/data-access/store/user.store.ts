@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, finalize, of, pipe, switchMap, tap } from 'rxjs';
+import { finalize, pipe, switchMap, tap } from 'rxjs';
 
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
@@ -24,20 +25,18 @@ export const UserStore = signalStore(
         ),
         switchMap((requestParams) =>
           userService.getAll(requestParams).pipe(
-            tap((response) => {
-              patchState(store, {
-                users: response.users,
-                pagination: response.pagination,
-              });
-            }),
-            catchError((err) => {
-              patchState(store, {
-                users: [],
-                pagination: initialState.pagination,
-                error: extractErrorMessage(err),
-              });
-
-              return of(null);
+            tapResponse({
+              next: (response) =>
+                patchState(store, {
+                  users: response.users,
+                  pagination: response.pagination,
+                }),
+              error: (err) =>
+                patchState(store, {
+                  users: [],
+                  pagination: initialState.pagination,
+                  error: extractErrorMessage(err),
+                }),
             }),
             finalize(() => patchState(store, { isLoading: false })),
           ),

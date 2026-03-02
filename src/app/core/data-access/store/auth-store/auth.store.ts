@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
@@ -7,7 +8,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, finalize, of, pipe, switchMap, tap } from 'rxjs';
+import { finalize, pipe, switchMap, tap } from 'rxjs';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
@@ -39,20 +40,19 @@ export const AuthStore = signalStore(
           ),
           switchMap((loginRequest) =>
             authService.login(loginRequest).pipe(
-              tap((response) => {
-                sessionService.saveSession(response.user);
+              tapResponse({
+                next: (response) => {
+                  sessionService.saveSession(response.user);
 
-                patchState(store, {
-                  user: sessionService.getSession(),
-                  isAuthenticated: true,
-                });
-              }),
-              catchError((err) => {
-                patchState(store, {
-                  error: extractErrorMessage(err),
-                });
-
-                return of(null);
+                  patchState(store, {
+                    user: sessionService.getSession(),
+                    isAuthenticated: true,
+                  });
+                },
+                error: (err) =>
+                  patchState(store, {
+                    error: extractErrorMessage(err),
+                  }),
               }),
               finalize(() => patchState(store, { isLoading: false })),
             ),
