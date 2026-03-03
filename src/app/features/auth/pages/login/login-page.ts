@@ -53,12 +53,16 @@ export class LoginPage {
   }
 
   protected login(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      throw new Error('Form fields are invalid');
+    }
 
     const email = this.form.value.email;
     const password = this.form.value.password;
 
-    if (!email || !password) return;
+    if (!email || !password) {
+      throw new Error('Email and Password fields are required');
+    }
 
     this.authStore.login({
       email,

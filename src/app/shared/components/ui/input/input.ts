@@ -34,7 +34,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (!this.control) return;
+    if (!this.control) throw new Error('No control provided');
 
     this.changesSubscription.add(
       this.control.valueChanges.subscribe(() => this.checkIfInvalid()),
@@ -57,7 +57,7 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected checkIfInvalid(): void {
-    if (!this.control) return;
+    if (!this.control) throw new Error('No control provided');
 
     this.invalid.set(
       this.control.invalid && (this.control.touched || this.control.dirty),
