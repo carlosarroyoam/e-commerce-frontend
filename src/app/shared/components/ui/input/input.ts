@@ -1,19 +1,20 @@
 import {
   AfterViewInit,
   computed,
+  DestroyRef,
   Directive,
   inject,
-  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   NgControl,
   PristineChangeEvent,
   TouchedChangeEvent,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { filter } from 'rxjs';
 import { twMerge } from 'tailwind-merge';
 
 @Directive({
@@ -22,9 +23,9 @@ import { twMerge } from 'tailwind-merge';
     '[class]': 'hostClass()',
   },
 })
-export class AppInput implements OnInit, AfterViewInit, OnDestroy {
+export class AppInput implements OnInit, AfterViewInit {
   private readonly ngControl = inject(NgControl);
-  private readonly changesSubscription = new Subscription();
+  private readonly destroyRef = inject(DestroyRef);
   private control?: AbstractControl | null;
 
   private invalid = signal(false);
@@ -34,30 +35,30 @@ export class AppInput implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (!this.control) throw new Error('No control provided');
+    if (!this.control) {
+      throw new Error('No control provided');
+    }
 
-    this.changesSubscription.add(
-      this.control.valueChanges.subscribe(() => this.checkIfInvalid()),
-    );
+    this.control.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.checkIfInvalid());
 
-    this.changesSubscription.add(
-      this.control.events.subscribe((event) => {
-        if (
-          event instanceof TouchedChangeEvent ||
-          event instanceof PristineChangeEvent
-        ) {
-          this.checkIfInvalid();
-        }
-      }),
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.changesSubscription.unsubscribe();
+    this.control.events
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        filter(
+          (event) =>
+            event instanceof TouchedChangeEvent ||
+            event instanceof PristineChangeEvent,
+        ),
+      )
+      .subscribe(() => this.checkIfInvalid());
   }
 
   protected checkIfInvalid(): void {
-    if (!this.control) throw new Error('No control provided');
+    if (!this.control) {
+      throw new Error('No control provided');
+    }
 
     this.invalid.set(
       this.control.invalid && (this.control.touched || this.control.dirty),

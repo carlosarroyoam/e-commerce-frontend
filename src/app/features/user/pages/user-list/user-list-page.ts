@@ -62,23 +62,23 @@ export class UserListPage {
   constructor() {
     this.form.valueChanges
       .pipe(debounceTime(250), takeUntilDestroyed())
-      .subscribe((value) => {
+      .subscribe((value) =>
         this.queryParamsService.updateQueryParams({
           page: DEFAULT_FIRST_PAGE,
           search: value.search || undefined,
           status: value.status || undefined,
-        });
-      });
+        }),
+      );
 
-    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) => {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
       this.form.patchValue(
         {
           search: params['search'],
           status: params['status'],
         },
         { emitEvent: false },
-      );
-    });
+      ),
+    );
   }
 
   protected reset(): void {
