@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
-import { DialogService } from '@/core/services/dialog-service/dialog-service';
+import { DialogService } from '@/shared/services/dialog-service/dialog-service';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const dialogService = inject(DialogService);

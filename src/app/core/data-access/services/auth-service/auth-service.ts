@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { DEVICE_FINGERPRINT_KEY } from '@/core/constants/storage-keys.constants';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
-import { LocalStorageService } from '@/core/services/storage-service/local-storage-service';
+import { LocalStorageService } from '@/core/data-access/services/storage-service/local-storage-service';
 import { environment } from '@/environments/environment';
 
 @Injectable({

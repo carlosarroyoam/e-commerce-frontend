@@ -6,7 +6,7 @@ import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
-import { DialogService } from '@/core/services/dialog-service/dialog-service';
+import { DialogService } from '@/shared/services/dialog-service/dialog-service';
 import { User } from '@/features/user/data-access/interfaces/user';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';

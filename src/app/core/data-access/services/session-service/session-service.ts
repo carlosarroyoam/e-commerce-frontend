@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
 import { Session } from '@/core/data-access/interfaces/session';
-import { LocalStorageService } from '@/core/services/storage-service/local-storage-service';
+import { LocalStorageService } from '@/core/data-access/services/storage-service/local-storage-service';
 import { User } from '@/features/user/data-access/interfaces/user';
 
 @Injectable({

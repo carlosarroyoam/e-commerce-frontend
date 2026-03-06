@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { DialogService } from '@/core/services/dialog-service/dialog-service';
+import { DialogService } from '@/shared/services/dialog-service/dialog-service';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserListPage } from './user-list-page';
 
