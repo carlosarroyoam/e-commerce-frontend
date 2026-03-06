@@ -4,7 +4,7 @@ import {
 } from '@/core/constants/pagination.constants';
 import { Pagination } from '@/core/data-access/interfaces/pagination';
 import { User } from '@/features/user/data-access/interfaces/user';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
+import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 
 export interface UserState {
   users: User[];

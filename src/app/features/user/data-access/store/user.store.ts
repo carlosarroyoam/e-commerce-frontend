@@ -5,7 +5,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { finalize, pipe, switchMap, tap } from 'rxjs';
 
 import { extractErrorMessage } from '@/core/utils/error.utils';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
+import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { initialState } from '@/features/user/data-access/store/user.state';
 

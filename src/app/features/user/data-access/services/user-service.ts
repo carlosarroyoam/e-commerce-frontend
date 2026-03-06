@@ -8,7 +8,7 @@ import {
 } from '@/core/constants/pagination.constants';
 import { environment } from '@/environments/environment';
 import { UserResponse } from '@/features/user/data-access/interfaces/user.response';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
+import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UsersResponse } from '@/features/user/data-access/interfaces/users-response';
 
 @Injectable({

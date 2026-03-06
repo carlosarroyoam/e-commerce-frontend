@@ -7,7 +7,7 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
 import { safeParsePositiveInt } from '@/core/utils/number.utils';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request';
+import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UserStore } from '../data-access/store/user.store';
 
 @Injectable()
