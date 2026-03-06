@@ -1,0 +1,12 @@
+import { Injectable } from '@angular/core';
+
+import { APP_NAMESPACE } from '@/core/constants/storage-keys.constants';
+import { StorageService } from '@/core/services/storage-service/storage-service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LocalStorageService extends StorageService {
+  protected readonly storage = localStorage;
+  protected readonly namespace = APP_NAMESPACE;
+}

@@ -3,8 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
+import { DEVICE_FINGERPRINT_KEY } from '@/core/constants/storage-keys.constants';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
+import { LocalStorageService } from '@/core/services/storage-service/local-storage-service';
 import { environment } from '@/environments/environment';
 
 @Injectable({
@@ -12,8 +14,7 @@ import { environment } from '@/environments/environment';
 })
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
-
-  private readonly DEVICE_FINGERPRINT_KEY = 'device-fingerprint';
+  private readonly localStorageService = inject(LocalStorageService);
 
   public login(payload: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(
@@ -35,17 +36,15 @@ export class AuthService {
   public refreshToken(): Observable<void> {
     return this.httpClient.post<void>(
       `${environment.apiUrl}/auth/refresh-token`,
-      {
-        device_fingerprint: this.getDeviceFingerprint(),
-      },
+      { device_fingerprint: this.getDeviceFingerprint() },
     );
   }
 
   private getDeviceFingerprint(): string | null {
-    if (!localStorage.getItem(this.DEVICE_FINGERPRINT_KEY)) {
-      localStorage.setItem(this.DEVICE_FINGERPRINT_KEY, uuid());
+    if (!this.localStorageService.hasKey(DEVICE_FINGERPRINT_KEY)) {
+      this.localStorageService.setItem(DEVICE_FINGERPRINT_KEY, uuid());
     }
 
-    return localStorage.getItem(this.DEVICE_FINGERPRINT_KEY);
+    return this.localStorageService.getItem<string>(DEVICE_FINGERPRINT_KEY);
   }
 }
