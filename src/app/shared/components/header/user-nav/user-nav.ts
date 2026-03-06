@@ -25,12 +25,8 @@ export class UserNav {
 
   protected isOpen = signal(false);
 
-  protected fullname = computed(() => {
-    return `${this.session()?.first_name} ${this.session()?.last_name}`;
-  });
-
   protected src = computed(() => {
-    return `https://ui-avatars.com/api/?name=${this.fullname()}&format=svg&background=d4d4d8`;
+    return `https://ui-avatars.com/api/?name=${this.session()?.full_name}&format=svg&background=d4d4d8`;
   });
 
   protected alt = computed(() => {

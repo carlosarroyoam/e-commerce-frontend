@@ -49,8 +49,6 @@ export class UserQueryParamsService {
       queryParams: {
         page: DEFAULT_FIRST_PAGE,
         size: DEFAULT_PAGE_SIZE,
-        search: null,
-        status: null,
       },
       replaceUrl: true,
     });

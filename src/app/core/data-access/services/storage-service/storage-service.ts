@@ -12,20 +12,12 @@ export abstract class StorageService {
   protected abstract readonly storage: Storage;
   protected abstract readonly namespace: string;
 
-  private get isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
-  private buildKey(key: string): string {
-    return `${this.namespace}:${key}`;
-  }
-
-  hasKey(key: string): boolean {
+  public hasKey(key: string): boolean {
     if (!this.isBrowser) return false;
     return this.storage.getItem(this.buildKey(key)) !== null;
   }
 
-  setItem<T>(key: string, value: T, ttlInMs?: number): boolean {
+  public setItem<T>(key: string, value: T, ttlInMs?: number): boolean {
     if (!this.isBrowser) return false;
 
     try {
@@ -42,7 +34,7 @@ export abstract class StorageService {
     }
   }
 
-  getItem<T>(key: string): T | null {
+  public getItem<T>(key: string): T | null {
     if (!this.isBrowser) return null;
 
     try {
@@ -62,12 +54,12 @@ export abstract class StorageService {
     }
   }
 
-  removeItem(key: string): void {
+  public removeItem(key: string): void {
     if (!this.isBrowser) return;
     this.storage.removeItem(this.buildKey(key));
   }
 
-  clear(): void {
+  public clear(): void {
     if (!this.isBrowser) return;
 
     const keysToRemove: string[] = [];
@@ -82,5 +74,13 @@ export abstract class StorageService {
     for (const key of keysToRemove) {
       this.storage.removeItem(key);
     }
+  }
+
+  private get isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  private buildKey(key: string): string {
+    return `${this.namespace}:${key}`;
   }
 }
