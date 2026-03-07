@@ -61,7 +61,7 @@ export class UserListPage {
 
   constructor() {
     this.form.valueChanges
-      .pipe(debounceTime(250), takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(), debounceTime(250))
       .subscribe((value) =>
         this.queryParamsService.updateQueryParams({
           page: DEFAULT_FIRST_PAGE,

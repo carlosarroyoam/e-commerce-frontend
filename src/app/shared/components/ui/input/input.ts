@@ -35,15 +35,17 @@ export class AppInput implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.control) {
+    const control = this.control;
+
+    if (!control) {
       throw new Error('No control provided');
     }
 
-    this.control.valueChanges
+    control.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.checkIfInvalid());
+      .subscribe(() => this.checkIfInvalid(control));
 
-    this.control.events
+    control.events
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         filter(
@@ -52,17 +54,11 @@ export class AppInput implements OnInit, AfterViewInit {
             event instanceof PristineChangeEvent,
         ),
       )
-      .subscribe(() => this.checkIfInvalid());
+      .subscribe(() => this.checkIfInvalid(control));
   }
 
-  protected checkIfInvalid(): void {
-    if (!this.control) {
-      throw new Error('No control provided');
-    }
-
-    this.invalid.set(
-      this.control.invalid && (this.control.touched || this.control.dirty),
-    );
+  protected checkIfInvalid(control: AbstractControl): void {
+    this.invalid.set(control.invalid && (control.touched || control.dirty));
   }
 
   protected hostClass = computed(() => {
