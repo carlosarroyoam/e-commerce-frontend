@@ -21,51 +21,51 @@ export interface SelectOption {
   ],
 })
 export class SelectInput implements ControlValueAccessor {
-  public readonly placeholder = input('Select an option');
+  public readonly placeholder = input('Select an option...');
   public readonly options = input.required<SelectOption[]>();
 
+  protected selected = signal<SelectOption | null>(null);
   protected isOpen = signal(false);
   protected isDisabled = signal(false);
-  protected selectedOption = signal<SelectOption | null>(null);
-  protected value = signal<string | number | null>(null);
 
-  protected toggleIsOpen(): void {
-    this.isOpen.update((isOpen) => !isOpen);
-  }
-
-  protected close(): void {
-    this.isOpen.set(false);
-  }
+  private onChange?: (value: string | number | null) => void;
+  private onTouched?: () => void;
 
   protected selectOption(option: SelectOption | null): void {
     if (option?.disabled) return;
 
-    this.selectedOption.set(option);
-    this.value.set(option?.value ?? null);
+    this.selected.set(option);
     this.onChange?.(option?.value ?? null);
     this.onTouched?.();
     this.close();
   }
 
-  writeValue(value: string | number | null): void {
-    this.value.set(value);
-    this.selectedOption.set(
-      this.options()?.find((o) => o.value === value) ?? null,
-    );
+  protected toggleIsOpen(): void {
+    this.isOpen.update((isOpen) => !isOpen);
+
+    if (!this.isOpen) {
+      this.onTouched?.();
+    }
   }
 
-  registerOnChange(fn: (value: string | number | null) => void): void {
+  protected close(): void {
+    this.isOpen.set(false);
+    this.onTouched?.();
+  }
+
+  public writeValue(value: string | number | null): void {
+    this.selected.set(this.options()?.find((o) => o.value === value) ?? null);
+  }
+
+  public registerOnChange(fn: (value: string | number | null) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  public setDisabledState?(isDisabled: boolean): void {
     this.isDisabled.set(isDisabled);
   }
-
-  private onChange?: (value: string | number | null) => void;
-  private onTouched?: () => void;
 }

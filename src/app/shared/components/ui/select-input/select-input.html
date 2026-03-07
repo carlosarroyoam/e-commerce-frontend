@@ -10,8 +10,8 @@
   (click)="toggleIsOpen()"
   class="group flex w-full cursor-pointer items-center gap-4 rounded-md border border-zinc-200 px-3 py-2 text-sm text-nowrap text-zinc-700 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:bg-zinc-50 disabled:text-zinc-500"
 >
-  @if (selectedOption()) {
-    <span>{{ selectedOption()?.label }}</span>
+  @if (selected()) {
+    <span>{{ selected()?.label }}</span>
   } @else {
     <span class="group-not-disabled:text-zinc-600">{{ placeholder() }}</span>
   }
@@ -41,7 +41,7 @@
   [cdkConnectedOverlayMatchWidth]="true"
   [cdkConnectedOverlayPositions]="[
     {
-      offsetY: 8,
+      offsetY: 4,
       originX: 'end',
       originY: 'bottom',
       overlayX: 'end',
@@ -62,9 +62,7 @@
       <button
         type="button"
         [attr.data-disabled]="option.disabled ? '' : null"
-        [attr.data-selected]="
-          option.value === selectedOption()?.value ? '' : null
-        "
+        [attr.data-selected]="option.value === selected()?.value ? '' : null"
         (click)="selectOption(option)"
         class="w-full cursor-pointer text-left text-sm text-zinc-600 hover:text-zinc-900 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-selected:font-medium data-selected:text-zinc-900"
       >
