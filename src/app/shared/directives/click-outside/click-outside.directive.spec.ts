@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
-import { ClickOutside } from './click-outside';
+import { ClickOutside } from './click-outside.directive';
 
 @Component({
   imports: [ClickOutside],

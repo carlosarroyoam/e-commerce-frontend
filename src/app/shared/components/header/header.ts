@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 
 import { Session } from '@/core/data-access/interfaces/session';
 import { UserNav } from '@/shared/components/header/user-nav/user-nav';
-import { ClickOutside } from '@/shared/directives/click-outside/click-outside';
+import { ClickOutside } from '@/shared/directives/click-outside/click-outside.directive';
 
 export interface MenuItem {
   href: string;

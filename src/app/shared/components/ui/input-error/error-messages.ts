@@ -12,4 +12,6 @@ export const ERROR_MESSAGES: Record<string, string | ErrorMessageFn> = {
   max: (err) => `The maximum value is ${err['max'].max}.`,
   email: 'The field should be a valid email address.',
   pattern: 'The field format is invalid.',
+  invalidDateTimeFormat: (err) =>
+    `The field format should be ${err['invalidDateTimeFormat'].requiredFormat}.`,
 };
