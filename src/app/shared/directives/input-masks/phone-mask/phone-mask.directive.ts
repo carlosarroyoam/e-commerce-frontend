@@ -1,7 +1,7 @@
 import { Directive, input } from '@angular/core';
 
+import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 import { PatternMask } from '@/shared/directives/input-masks/pattern-mask/pattern-mask-directive';
-import { patternMaskProvider } from '@/shared/directives/input-masks/pattern-mask/pattern-mask.provider';
 
 export type PhoneFormat =
   | '(###) ###-####' // US/MX: (555) 123-4567
@@ -10,7 +10,7 @@ export type PhoneFormat =
 
 @Directive({
   selector: '[appPhoneMask]',
-  providers: [patternMaskProvider(PhoneMask)],
+  providers: [valueAccessorProvider(PhoneMask)],
   host: {
     inputmode: 'tel',
   },

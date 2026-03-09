@@ -1,7 +1,11 @@
 import { ElementRef, inject } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  ValidationErrors,
+  Validator,
+} from '@angular/forms';
 
-export abstract class BaseMask implements ControlValueAccessor {
+export abstract class BaseMask implements ControlValueAccessor, Validator {
   protected readonly elementRef = inject(ElementRef<HTMLInputElement>);
 
   protected onChange?: (value: number | string | Date | null) => void;
@@ -24,6 +28,10 @@ export abstract class BaseMask implements ControlValueAccessor {
     this.onValidatorChange = fn;
   }
 
+  public validate(): ValidationErrors | null {
+    return null;
+  }
+
   protected abstract onInput(): void;
 
   protected abstract onBlur(): void;
@@ -37,44 +45,40 @@ export abstract class BaseMask implements ControlValueAccessor {
     suffixLength?: number,
     decimalSeparator?: string,
   ): void {
-    const elementRef = this.elementRef.nativeElement;
+    const element = this.elementRef.nativeElement;
+    const maxPosition = nextValue.length - (suffixLength || 0);
+
+    if (
+      decimalSeparator &&
+      nextValue[cursorPosition - 1] === decimalSeparator
+    ) {
+      const pos = Math.min(cursorPosition, maxPosition);
+      element.setSelectionRange(pos, pos);
+      return;
+    }
 
     const charsBeforeCursor = prevValue.slice(0, cursorPosition);
     const digitsBeforeCursor = (charsBeforeCursor.match(/\d/g) ?? []).length;
-    const hadDecimalBeforeCursor = decimalSeparator
-      ? charsBeforeCursor.includes(decimalSeparator)
-      : false;
 
-    let newPosition = 0;
     let digitCount = 0;
-    let decimalPassed = false;
+    let newPosition = 0;
 
     for (let i = 0; i < nextValue.length; i++) {
       const char = nextValue[i];
 
-      if (char === decimalSeparator) {
-        decimalPassed = true;
-        if (hadDecimalBeforeCursor && digitCount >= digitsBeforeCursor) {
+      if (/\d/.test(char)) {
+        digitCount++;
+
+        if (digitCount === digitsBeforeCursor) {
           newPosition = i + 1;
           break;
         }
-        continue;
       }
 
-      if (
-        digitCount === digitsBeforeCursor &&
-        (!hadDecimalBeforeCursor || decimalPassed)
-      ) {
-        newPosition = i;
-        break;
-      }
-
-      if (/\d/.test(char)) digitCount++;
       newPosition = i + 1;
     }
 
-    const maxPosition = nextValue.length - (suffixLength || 0);
     const clampedPosition = Math.min(newPosition, maxPosition);
-    elementRef.setSelectionRange(clampedPosition, clampedPosition);
+    element.setSelectionRange(clampedPosition, clampedPosition);
   }
 }

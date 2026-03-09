@@ -1,4 +1,4 @@
-export const KEYS_ALLOWED = [
+export const ALLOWED_KEYS = [
   'F1',
   'F2',
   'F3',

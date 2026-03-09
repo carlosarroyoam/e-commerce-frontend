@@ -1,8 +1,8 @@
 import { Directive, input } from '@angular/core';
 
+import { ALLOWED_KEYS } from '@/shared/directives/input-masks/allowed-keys';
 import { BaseMask } from '@/shared/directives/input-masks/base-mask';
-import { KEYS_ALLOWED } from '@/shared/directives/input-masks/keys-allowed';
-import { patternMaskProvider } from '@/shared/directives/input-masks/pattern-mask/pattern-mask.provider';
+import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 
 @Directive({
   selector: '[appPatternMask]',
@@ -11,7 +11,7 @@ import { patternMaskProvider } from '@/shared/directives/input-masks/pattern-mas
     '(input)': 'onInput()',
     '(blur)': 'onBlur()',
   },
-  providers: [patternMaskProvider(PatternMask)],
+  providers: [valueAccessorProvider(PatternMask)],
 })
 export class PatternMask<TMask extends string = string> extends BaseMask {
   public readonly mask = input.required<TMask>();
@@ -30,7 +30,7 @@ export class PatternMask<TMask extends string = string> extends BaseMask {
   protected override onKeyDown(event: KeyboardEvent): void {
     if (
       /^[a-zA-Z0-9]$/.test(event.key) ||
-      KEYS_ALLOWED.includes(event.key) ||
+      ALLOWED_KEYS.includes(event.key) ||
       event.ctrlKey ||
       event.metaKey
     ) {

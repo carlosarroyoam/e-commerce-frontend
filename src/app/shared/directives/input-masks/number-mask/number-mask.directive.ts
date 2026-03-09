@@ -1,12 +1,8 @@
 import { Directive, input } from '@angular/core';
 
+import { ALLOWED_KEYS } from '@/shared/directives/input-masks/allowed-keys';
 import { BaseMask } from '@/shared/directives/input-masks/base-mask';
-import { KEYS_ALLOWED } from '@/shared/directives/input-masks/keys-allowed';
-import {
-  toNumber,
-  truncateDecimals,
-} from '@/shared/directives/input-masks/mask.utils';
-import { numberMaskProvider } from '@/shared/directives/input-masks/number-mask/number-mask.provider';
+import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 
 @Directive({
   selector: '[appNumberMask]',
@@ -16,7 +12,7 @@ import { numberMaskProvider } from '@/shared/directives/input-masks/number-mask/
     '(blur)': 'onBlur()',
     '[attr.inputmode]': 'withDecimals() ? "decimal" : "numeric"',
   },
-  providers: [numberMaskProvider(NumberMask)],
+  providers: [valueAccessorProvider(NumberMask)],
 })
 export class NumberMask extends BaseMask {
   public readonly allowNegatives = input<boolean>(false);
@@ -44,7 +40,7 @@ export class NumberMask extends BaseMask {
 
     if (
       /^\d$/.test(event.key) ||
-      KEYS_ALLOWED.includes(event.key) ||
+      ALLOWED_KEYS.includes(event.key) ||
       event.ctrlKey ||
       event.metaKey ||
       (this.withDecimals() && event.key === this.decimalSeparator())
@@ -82,7 +78,7 @@ export class NumberMask extends BaseMask {
     }
 
     const sanitized = this.withDecimals()
-      ? truncateDecimals(
+      ? this.truncateDecimals(
           this.sanitize(withoutSuffix),
           this.decimalSeparator(),
           this.decimalPlaces(),
@@ -103,7 +99,7 @@ export class NumberMask extends BaseMask {
     );
 
     this.onChange?.(
-      clamped ? toNumber(sanitized, this.decimalSeparator()) : null,
+      clamped ? this.toNumber(sanitized, this.decimalSeparator()) : null,
     );
   }
 
@@ -112,7 +108,7 @@ export class NumberMask extends BaseMask {
     const withoutPrefix = this.removePrefix(elementRef.value);
     const withoutSuffix = this.removeSuffix(withoutPrefix);
     const sanitized = this.sanitize(withoutSuffix);
-    const number = toNumber(sanitized, this.decimalSeparator());
+    const number = this.toNumber(sanitized, this.decimalSeparator());
 
     elementRef.value = number !== null ? this.format(number) : '';
 
@@ -165,7 +161,7 @@ export class NumberMask extends BaseMask {
     const withoutSign = isNegative ? sanitized.slice(1) : sanitized;
 
     const truncated = this.withDecimals()
-      ? truncateDecimals(
+      ? this.truncateDecimals(
           this.sanitize(withoutSign),
           this.decimalSeparator(),
           this.decimalPlaces(),
@@ -200,9 +196,26 @@ export class NumberMask extends BaseMask {
   }
 
   private clampMax(sanitized: string): string {
-    const num = toNumber(sanitized, this.decimalSeparator());
+    const num = this.toNumber(sanitized, this.decimalSeparator());
     if (num == null) return sanitized;
     if (this.clamped() && num > this.max()) return String(this.max());
     return sanitized;
+  }
+
+  private truncateDecimals(
+    cleaned: string,
+    separator: string,
+    decimalPlaces: number,
+  ): string {
+    const [integerPart, decimalPart] = cleaned.split(separator);
+    if (decimalPart === undefined) return integerPart;
+    return `${integerPart}${separator}${decimalPart.slice(0, decimalPlaces)}`;
+  }
+
+  private toNumber(cleaned: string, decimalSeparator: string): number | null {
+    if (!cleaned) return null;
+    const normalized = cleaned.replace(decimalSeparator, '.');
+    const number = parseFloat(normalized);
+    return isNaN(number) ? null : number;
   }
 }

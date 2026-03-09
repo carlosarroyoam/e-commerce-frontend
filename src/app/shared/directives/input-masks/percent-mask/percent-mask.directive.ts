@@ -1,11 +1,11 @@
 import { Directive, input } from '@angular/core';
 
+import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 import { NumberMask } from '@/shared/directives/input-masks/number-mask/number-mask.directive';
-import { numberMaskProvider } from '@/shared/directives/input-masks/number-mask/number-mask.provider';
 
 @Directive({
   selector: '[appPercentMask]',
-  providers: [numberMaskProvider(PercentMask)],
+  providers: [valueAccessorProvider(PercentMask)],
 })
 export class PercentMask extends NumberMask {
   public override readonly suffix = input<string>('%');
