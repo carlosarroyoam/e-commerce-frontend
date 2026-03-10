@@ -60,6 +60,11 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
     const charsBeforeCursor = prevValue.slice(0, cursorPosition);
     const digitsBeforeCursor = (charsBeforeCursor.match(/\d/g) ?? []).length;
 
+    if (digitsBeforeCursor === 0) {
+      element.setSelectionRange(0, 0);
+      return;
+    }
+
     let digitCount = 0;
     let newPosition = 0;
 
@@ -74,8 +79,6 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
           break;
         }
       }
-
-      newPosition = i + 1;
     }
 
     const clampedPosition = Math.min(newPosition, maxPosition);

@@ -17,9 +17,9 @@ export class PatternMask<TMask extends string = string> extends BaseMask {
   public readonly mask = input.required<TMask>();
 
   protected patterns: Record<string, RegExp> = {
-    '#': /\d/,
-    A: /[a-zA-Z]/,
-    '*': /[a-zA-Z0-9]/,
+    '#': /\d/, // Digit
+    A: /[a-zA-Z]/, // Letter
+    X: /[a-zA-Z0-9]/, // Alphanumeric
   };
 
   public override writeValue(value: string | null): void {
