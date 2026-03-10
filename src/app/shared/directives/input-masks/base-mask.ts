@@ -52,8 +52,8 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
       decimalSeparator &&
       nextValue[cursorPosition - 1] === decimalSeparator
     ) {
-      const pos = Math.min(cursorPosition, maxPosition);
-      element.setSelectionRange(pos, pos);
+      const position = Math.min(cursorPosition, maxPosition);
+      element.setSelectionRange(position, position);
       return;
     }
 

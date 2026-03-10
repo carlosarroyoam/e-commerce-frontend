@@ -8,6 +8,8 @@ import {
   valueAccessorProvider,
 } from '@/shared/directives/input-masks/base-mask-providers';
 
+type Meridiem = 'AM' | 'PM';
+
 type DateTimeFormat =
   | 'DD/MM/YYYY'
   | 'MM/DD/YYYY'
@@ -29,8 +31,6 @@ interface DateTimeSegments {
   meridiem?: string;
 }
 
-type Meridiem = 'AM' | 'PM';
-
 @Directive({
   selector: '[appDateTimeMask]',
   host: {
@@ -47,7 +47,7 @@ type Meridiem = 'AM' | 'PM';
 export class DateTimeMask extends BaseMask {
   public readonly datetimeFormat = input<DateTimeFormat>('DD/MM/YYYY');
 
-  private isDateInvalid = false;
+  private isDateTimeValid = true;
   private currentMeridiem: Meridiem | null = null;
 
   private get hasMeridiem(): boolean {
@@ -89,7 +89,7 @@ export class DateTimeMask extends BaseMask {
   }
 
   public override validate(): ValidationErrors | null {
-    if (!this.isDateInvalid) return null;
+    if (this.isDateTimeValid) return null;
 
     return {
       invalidDateTimeFormat: {
@@ -109,9 +109,9 @@ export class DateTimeMask extends BaseMask {
     }
 
     if (this.hasMeridiem && ['A', 'P'].includes(event.key.toUpperCase())) {
-      this.currentMeridiem = event.key.toUpperCase() === 'A' ? 'AM' : 'PM';
       event.preventDefault();
-      this.applyFormat();
+      this.currentMeridiem = event.key.toUpperCase() === 'A' ? 'AM' : 'PM';
+      this.applyMeridiem();
       return;
     }
 
@@ -123,25 +123,25 @@ export class DateTimeMask extends BaseMask {
     const cursorPosition = elementRef.selectionStart ?? 0;
     const prevValue = elementRef.value;
 
-    const digits = this.extractDigits(elementRef.value);
+    const digits = this.getDigits(elementRef.value);
 
     if (!digits) {
-      this.reset();
+      this.isDateTimeValid = true;
+      this.currentMeridiem = null;
+      this.onValidatorChange?.();
+      this.onChange?.(null);
       return;
     }
 
     elementRef.value = this.formatLive(digits);
 
-    const isComplete = digits.length === this.getExpectedDigits();
-
-    this.isDateInvalid = !isComplete;
+    this.isDateTimeValid = digits.length === this.getExpectedDigitsLength();
     this.onValidatorChange?.();
     this.updateCursor(cursorPosition, prevValue, elementRef.value);
 
-    if (isComplete) {
-      const segments = this.buildSegments(digits);
+    if (this.isDateTimeValid) {
+      const segments = this.getSegments(digits);
       this.onChange?.(this.toDate(segments));
-      this.isDateInvalid = false;
     }
   }
 
@@ -150,10 +150,11 @@ export class DateTimeMask extends BaseMask {
 
     if (!elementRef.value.trim()) return;
 
-    const digits = this.extractDigits(elementRef.value);
-    const segments = this.buildSegments(digits);
+    const digits = this.getDigits(elementRef.value);
+    const segments = this.getSegments(digits);
 
-    this.isDateInvalid = false;
+    this.isDateTimeValid = digits.length === this.getExpectedDigitsLength();
+
     elementRef.value = this.format(segments);
     this.onChange?.(this.toDate(segments));
     this.onTouched?.();
@@ -161,7 +162,7 @@ export class DateTimeMask extends BaseMask {
   }
 
   private sanitize(value: string): string {
-    return value.replace(/\D/g, '').slice(0, this.getExpectedDigits());
+    return value.replace(/\D/g, '').slice(0, this.getExpectedDigitsLength());
   }
 
   private format(segments: DateTimeSegments): string {
@@ -195,7 +196,7 @@ export class DateTimeMask extends BaseMask {
   private formatLive(digits: string): string {
     const tokens = this.getTokens();
     const separators = this.datetimeFormat().match(/[^A-Za-z]/g) ?? [];
-    const expectedDigits = this.getExpectedDigits();
+    const expectedDigits = this.getExpectedDigitsLength();
     const isComplete = digits.length === expectedDigits;
 
     const parts: string[] = [];
@@ -217,7 +218,6 @@ export class DateTimeMask extends BaseMask {
       cursor += part.length;
 
       if (part.length !== len) return;
-
       if (!separators[index]) return;
 
       const hasNextDigitToken = tokens.slice(index + 1).some((t) => t !== 'A');
@@ -233,45 +233,28 @@ export class DateTimeMask extends BaseMask {
     return parts.join('');
   }
 
-  private reset(): void {
-    this.isDateInvalid = false;
-    this.currentMeridiem = null;
-    this.onValidatorChange?.();
-    this.onChange?.(null);
-  }
-
-  private applyFormat(): void {
+  private applyMeridiem(): void {
     const elementRef = this.elementRef.nativeElement;
-    const digits = this.extractDigits(elementRef.value);
+    const digits = this.getDigits(elementRef.value);
     elementRef.value = this.formatLive(digits);
 
-    if (digits.length === this.getExpectedDigits()) {
-      this.onChange?.(this.toDate(this.buildSegments(digits)));
-    }
-  }
+    const isComplete = digits.length === this.getExpectedDigitsLength();
 
-  private extractDigits(value: string): string {
-    const clean = value.replace(/a\.\s*m\.|p\.\s*m\./gi, '').trim();
-    return this.sanitize(clean);
+    if (isComplete) {
+      const segments = this.getSegments(digits);
+      this.onChange?.(this.toDate(segments));
+    }
   }
 
   private resolveMeridiem(digits: string): string {
     if (!this.currentMeridiem) {
-      const hour = Number(this.extractSegments(digits).hour ?? 0);
+      const hour = Number(this.getSegments(digits).hour ?? 0);
       this.currentMeridiem = hour >= 12 ? 'PM' : 'AM';
     }
     return this.currentMeridiem === 'AM' ? 'a. m.' : 'p. m.';
   }
 
-  private buildSegments(digits: string): DateTimeSegments {
-    const segments = this.extractSegments(digits);
-    if (this.currentMeridiem) {
-      segments.meridiem = this.currentMeridiem;
-    }
-    return segments;
-  }
-
-  private extractSegments(digits: string): DateTimeSegments {
+  private getSegments(digits: string): DateTimeSegments {
     const tokens = this.getTokens();
     const map: DateTimeSegments = {};
     let cursor = 0;
@@ -290,6 +273,10 @@ export class DateTimeMask extends BaseMask {
       cursor += len;
     }
 
+    if (this.currentMeridiem) {
+      map.meridiem = this.currentMeridiem;
+    }
+
     return map;
   }
 
@@ -301,7 +288,12 @@ export class DateTimeMask extends BaseMask {
     return token === 'YYYY' ? 4 : 2;
   }
 
-  private getExpectedDigits(): number {
+  private getDigits(value: string): string {
+    const clean = value.replace(/a\.\s*m\.|p\.\s*m\./gi, '').trim();
+    return this.sanitize(clean);
+  }
+
+  private getExpectedDigitsLength(): number {
     return this.getTokens()
       .filter((t) => t !== 'A')
       .reduce((sum, t) => sum + this.getTokenLength(t), 0);
