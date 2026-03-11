@@ -1,5 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, input, signal } from '@angular/core';
+import { Component, ElementRef, input, signal, viewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface SelectOption {
@@ -21,6 +21,8 @@ export interface SelectOption {
   ],
 })
 export class SelectInput implements ControlValueAccessor {
+  private readonly dropdown = viewChild<ElementRef<HTMLElement>>('dropdown');
+
   public readonly placeholder = input('Select an option...');
   public readonly options = input.required<SelectOption[]>();
 
@@ -51,6 +53,26 @@ export class SelectInput implements ControlValueAccessor {
   protected close(): void {
     this.isOpen.set(false);
     this.onTouched?.();
+  }
+
+  protected scrollSelectedIntoView(): void {
+    const dropdown = this.dropdown()?.nativeElement;
+    if (!dropdown) return;
+
+    const selectedOption =
+      dropdown.querySelector<HTMLElement>('[data-selected]');
+    if (!selectedOption) return;
+
+    const dropdownRect = dropdown.getBoundingClientRect();
+    const selectedOptionRect = selectedOption.getBoundingClientRect();
+
+    const scrollTop =
+      dropdown.scrollTop +
+      selectedOptionRect.top -
+      dropdownRect.top -
+      (dropdownRect.height - selectedOptionRect.height) / 2;
+
+    dropdown.scrollTo({ top: scrollTop, behavior: 'instant' });
   }
 
   public writeValue(value: string | number | null): void {

@@ -48,15 +48,17 @@
       overlayY: 'top',
     },
   ]"
-  (backdropClick)="toggleIsOpen()"
+  (backdropClick)="close()"
+  (attach)="scrollSelectedIntoView()"
   (detach)="close()"
 >
   <div
+    #dropdown
     id="select-input-dropdown"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="select-input-trigger"
-    class="flex w-full flex-col space-y-2 overflow-hidden rounded-md border border-zinc-100 bg-white px-4 py-2 shadow-sm"
+    class="flex max-h-56 w-full flex-col space-y-2 overflow-auto rounded-md border border-zinc-100 bg-white px-4 py-2 shadow-sm"
   >
     @for (option of options(); track option.value) {
       <button
