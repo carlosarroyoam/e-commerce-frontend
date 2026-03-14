@@ -3,8 +3,8 @@
     <div
       [style.transform]="`translateY(-${i * 12}px) scale(${1 - i * 0.04})`"
       [style.zIndex]="100 - i"
-      animate.enter="animate-toast-in"
-      animate.leave="animate-toast-out"
+      animate.enter="animate-toast-enter"
+      animate.leave="animate-toast-leave"
       class="absolute bottom-0 left-1/2 w-full -translate-x-1/2 px-6 md:right-0 md:left-auto md:w-auto md:translate-x-0 md:px-0"
     >
       <app-toast [data]="toast" (close)="removeToast(toast.id)" />

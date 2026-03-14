@@ -12,6 +12,7 @@ export class ModalService {
     config?: Partial<DialogConfig<TData, DialogRef<TResult, TComponent>>>,
   ): DialogRef<TResult, TComponent> {
     return this.dialog.open<TResult, TData, TComponent>(component, {
+      ariaModal: true,
       ...config,
     });
   }

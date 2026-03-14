@@ -10,10 +10,12 @@
 }
 
 @theme {
-  --animate-toast-in: toast-in 150ms ease-out;
-  --animate-toast-out: toast-out 150ms ease-in forwards;
+  --animate-toast-enter: toast-enter 150ms ease-out;
+  --animate-toast-leave: toast-enter 150ms ease-in reverse;
+  --animate-modal-enter: modal-enter 150ms ease-out;
+  --animate-modal-leave: modal-enter 150ms ease-in reverse;
 
-  @keyframes toast-in {
+  @keyframes toast-enter {
     from {
       opacity: 0;
       transform: translateY(40px) scale(0.95);
@@ -24,14 +26,14 @@
     }
   }
 
-  @keyframes toast-out {
+  @keyframes modal-enter {
     from {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+      opacity: 0;
+      transform: translateY(8px);
     }
     to {
-      opacity: 0;
-      transform: translateY(40px) scale(0.95);
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }
