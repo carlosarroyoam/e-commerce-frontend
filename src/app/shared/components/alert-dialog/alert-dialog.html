@@ -6,19 +6,19 @@
       id="dialog-title"
       class="text-center font-semibold text-zinc-900 sm:text-left"
     >
-      {{ data?.title }}
+      {{ data.title }}
     </h2>
 
-    @if (data?.description) {
+    @if (data.description) {
       <!-- Dialog description -->
       <p id="dialog-description" class="mt-1 text-center text-sm sm:text-left">
-        {{ data?.description }}
+        {{ data.description }}
       </p>
     }
   </div>
 
   <!-- Dismiss button -->
-  <div class="absolute top-5 right-5 hidden hover:cursor-pointer sm:block">
+  <div class="absolute top-5 right-5 hidden sm:block">
     <span class="sr-only">Close dialog</span>
     <button (click)="closeDialog()">
       <svg
@@ -28,7 +28,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         aria-hidden="true"
-        class="size-6"
+        class="size-6 hover:cursor-pointer"
       >
         <path
           stroke-linecap="round"
@@ -41,19 +41,19 @@
 
   <!-- Dialog footer -->
   <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-    @if (data?.showSecondaryButton) {
+    @if (data.showSecondaryButton) {
       <button
         appButton
         type="button"
         [variant]="'secondary'"
         (click)="cancel()"
       >
-        {{ data?.secondaryButtonLabel ?? "Cancel" }}
+        {{ data.secondaryButtonLabel ?? "Cancel" }}
       </button>
     }
 
     <button appButton type="button" (click)="accept()">
-      {{ data?.primaryButtonLabel ?? "Accept" }}
+      {{ data.primaryButtonLabel ?? "Accept" }}
     </button>
   </div>
 </app-modal-container>

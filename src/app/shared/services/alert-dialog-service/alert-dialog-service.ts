@@ -1,24 +1,24 @@
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { inject, Injectable } from '@angular/core';
 
+import { AlertDialog } from '@/shared/components/alert-dialog/alert-dialog';
 import {
-  AlertDialog,
-  DialogData,
-  DialogResult,
-} from '@/shared/components/alert-dialog/alert-dialog';
+  AlertDialogData,
+  AlertDialogResult,
+} from '@/shared/components/alert-dialog/interfaces/alert-dialog.interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DialogService {
+export class AlertDialogService {
   private readonly dialog = inject(Dialog);
 
   public open(
     config?: Partial<
-      DialogConfig<DialogData, DialogRef<DialogResult, AlertDialog>>
+      DialogConfig<AlertDialogData, DialogRef<AlertDialogResult, AlertDialog>>
     >,
-  ): DialogRef<DialogResult, AlertDialog> {
-    return this.dialog.open<DialogResult, DialogData, AlertDialog>(
+  ): DialogRef<AlertDialogResult, AlertDialog> {
+    return this.dialog.open<AlertDialogResult, AlertDialogData, AlertDialog>(
       AlertDialog,
       {
         ariaModal: true,

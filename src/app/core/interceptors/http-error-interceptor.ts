@@ -3,10 +3,10 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
-import { DialogService } from '@/shared/services/dialog-service/dialog-service';
+import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
-  const dialogService = inject(DialogService);
+  const alertDialogService = inject(AlertDialogService);
   const isAuthRequest = API_AUTH_ROUTES.some((route) =>
     req.url.includes(route),
   );
@@ -24,7 +24,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       if (err.error?.status && err.error.status !== 500) {
-        dialogService.open({
+        alertDialogService.open({
           data: {
             title: err.error.error,
             description: err.error.message,
@@ -32,7 +32,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
           },
         });
       } else {
-        dialogService.open({
+        alertDialogService.open({
           data: {
             title: 'Whoops! something went wrong',
             description:

@@ -6,7 +6,6 @@ import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
-import { DialogService } from '@/shared/services/dialog-service/dialog-service';
 import { User } from '@/features/user/data-access/interfaces/user';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
@@ -20,6 +19,7 @@ import {
   SelectInput,
   SelectOption,
 } from '@/shared/components/ui/select-input/select-input';
+import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 
 @Component({
@@ -40,6 +40,7 @@ export class UserListPage {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
+  private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
   private readonly queryParamsService = inject(UserQueryParamsService);
 
@@ -116,7 +117,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
         tap(() =>
           this.toastService.success({
-            title: 'User deleted successfully',
+            title: `The user ${user.first_name} was deleted successfully`,
           }),
         ),
       )
@@ -138,7 +139,7 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
         tap(() =>
           this.toastService.success({
-            title: 'User restored successfully',
+            title: `The user ${user.first_name} was restored successfully`,
           }),
         ),
       )

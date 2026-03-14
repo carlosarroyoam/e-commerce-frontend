@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { DialogService } from '@/shared/services/dialog-service/dialog-service';
+import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserListPage } from './user-list-page';
 
@@ -45,7 +45,7 @@ describe('UserListPage', () => {
           },
         },
         {
-          provide: DialogService,
+          provide: AlertDialogService,
           useValue: {
             open: () => ({
               closed: of({ accepted: false }),
