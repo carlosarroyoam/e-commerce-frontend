@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
-import { debounceTime, filter, switchMap } from 'rxjs';
+import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
 import { DialogService } from '@/shared/services/dialog-service/dialog-service';
@@ -20,6 +20,7 @@ import {
   SelectInput,
   SelectOption,
 } from '@/shared/components/ui/select-input/select-input';
+import { ToastService } from '@/shared/services/toast-service/toast-service';
 
 @Component({
   selector: 'app-user-list',
@@ -39,7 +40,7 @@ export class UserListPage {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
-  private readonly dialogService = inject(DialogService);
+  private readonly toastService = inject(ToastService);
   private readonly queryParamsService = inject(UserQueryParamsService);
 
   protected readonly store = inject(UserStore);
@@ -101,7 +102,7 @@ export class UserListPage {
   }
 
   protected onDeleteUser(user: User): void {
-    this.dialogService
+    this.alertDialogService
       .open({
         data: {
           title: `Delete user`,
@@ -113,12 +114,17 @@ export class UserListPage {
       .closed.pipe(
         filter((result) => result?.accepted || false),
         switchMap(() => this.userService.deleteById(user.id)),
+        tap(() =>
+          this.toastService.success({
+            title: 'User deleted successfully',
+          }),
+        ),
       )
       .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
 
   protected onRestoreUser(user: User): void {
-    this.dialogService
+    this.alertDialogService
       .open({
         data: {
           title: `Restore user`,
@@ -130,6 +136,11 @@ export class UserListPage {
       .closed.pipe(
         filter((result) => result?.accepted || false),
         switchMap(() => this.userService.restoreById(user.id)),
+        tap(() =>
+          this.toastService.success({
+            title: 'User restored successfully',
+          }),
+        ),
       )
       .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
