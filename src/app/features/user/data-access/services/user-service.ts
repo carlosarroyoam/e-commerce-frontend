@@ -10,6 +10,7 @@ import { environment } from '@/environments/environment';
 import { UserResponse } from '@/features/user/data-access/interfaces/user.response';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UsersResponse } from '@/features/user/data-access/interfaces/users-response';
+import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password.request';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +40,16 @@ export class UserService {
   public getById(userId: number): Observable<UserResponse | null> {
     return this.httpClient.get<UserResponse>(
       `${environment.apiUrl}/users/${userId}`,
+    );
+  }
+
+  public changePassword(
+    userId: number,
+    payload: ChangePasswordRequest,
+  ): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.apiUrl}/users/${userId}/change-password`,
+      payload,
     );
   }
 
