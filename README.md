@@ -1,27 +1,82 @@
 # e-commerce-frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.3.
+Angular 21 e-commerce frontend application with standalone components, Signals, NgRx Signals, and TailwindCSS 4.x.
+
+## Tech Stack
+
+- **Angular 21** with standalone components
+- **NgRx Signals** for state management
+- **TailwindCSS 4.x** for styling
+- **Vitest** for unit testing
+- **ESLint + Prettier** for linting/formatting
+
+## Prerequisites
+
+- Node.js 18+
+- npm 9+
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+npm start
+```
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Navigate to `http://localhost:4200/`. The application will automatically reload if you change any source files.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm run build              # Production build
+npm run build -- --configuration development  # Development build
+```
 
-## Running unit tests
+Build artifacts are stored in `dist/e-commerce-frontend`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Testing
 
-## Running end-to-end tests
+```bash
+npm test             # Run all tests
+npm run watch        # Watch mode (terminal stays open)
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Running specific tests
 
-## Further help
+```bash
+# Single file
+npx vitest run src/app/shared/components/alert-dialog/alert-dialog.spec.ts
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# By pattern
+npx vitest run -t "should create"
+
+# Directory
+npx vitest run src/app/features/auth/
+```
+
+## Linting & Formatting
+
+```bash
+npm run lint         # Run ESLint
+npm run lint:fix     # Auto-fix ESLint issues
+npm run format       # Fix Prettier formatting
+npm run format:check # Check Prettier formatting
+```
+
+## Code Generation
+
+```bash
+ng generate component component-name
+ng generate directive|pipe|service|class|guard|interface|enum
+```
+
+## Project Structure
+
+```
+src/app/
+├── core/           # Core features (guards, interceptors, services)
+├── features/       # Feature modules (auth, product, order, etc.)
+└── shared/         # Shared components, directives, pipes, services
+```
+
+## Additional Documentation
+
+- [AGENTS.md](./AGENTS.md) - Coding guidelines for AI agents
