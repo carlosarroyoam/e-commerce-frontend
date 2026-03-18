@@ -2,9 +2,10 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 
+import { DEFAULT_TOAST_DURATION } from '@/core/constants/toast.constants';
 import { ToastStack } from '@/shared/components/toast-stack/toast-stack';
-import { ToastRef } from '@/shared/components/toast/toast-ref';
 import { ToastData } from '@/shared/components/toast/interfaces/toast.interfaces';
+import { ToastRef } from '@/shared/components/toast/toast-ref';
 
 export type ToastInput = Omit<ToastData, 'id' | 'type' | 'ref' | 'duration'> & {
   duration?: number;
@@ -33,7 +34,7 @@ export class ToastService {
     return this.stack.addToast({
       title: data.title,
       description: data.description,
-      duration: data.duration ?? 5000,
+      duration: data.duration ?? DEFAULT_TOAST_DURATION,
       type: 'success',
     });
   }
@@ -42,7 +43,7 @@ export class ToastService {
     return this.stack.addToast({
       title: data.title,
       description: data.description,
-      duration: data.duration ?? 5000,
+      duration: data.duration ?? DEFAULT_TOAST_DURATION,
       type: 'error',
     });
   }
@@ -51,7 +52,7 @@ export class ToastService {
     return this.stack.addToast({
       title: data.title,
       description: data.description,
-      duration: data.duration ?? 5000,
+      duration: data.duration ?? DEFAULT_TOAST_DURATION,
       type: 'info',
     });
   }
@@ -60,7 +61,7 @@ export class ToastService {
     return this.stack.addToast({
       title: data.title,
       description: data.description,
-      duration: data.duration ?? 5000,
+      duration: data.duration ?? DEFAULT_TOAST_DURATION,
       type: 'warning',
     });
   }
