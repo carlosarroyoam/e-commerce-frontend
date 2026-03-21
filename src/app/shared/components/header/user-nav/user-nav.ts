@@ -23,7 +23,7 @@ export class UserNav {
   public readonly menuItems = input.required<MenuItem[]>();
   public readonly logout = output<void>();
 
-  protected isOpen = signal(false);
+  protected readonly isOpen = signal(false);
 
   protected src = computed(() => {
     return `https://ui-avatars.com/api/?name=${this.session()?.full_name}&format=svg&background=d4d4d8`;

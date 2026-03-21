@@ -26,7 +26,7 @@ export class Header {
   public readonly session = input.required<Session | null>();
   public readonly logout = output<void>();
 
-  protected isMobileMenuOpen = signal(false);
+  protected readonly isMobileMenuOpen = signal(false);
 
   protected menuItems: MenuItem[] = [
     { href: '/dashboard', title: 'Dashboard' },

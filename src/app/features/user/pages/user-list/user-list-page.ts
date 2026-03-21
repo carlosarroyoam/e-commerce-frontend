@@ -15,10 +15,8 @@ import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
 import { AppInput } from '@/shared/components/ui/input/input';
-import {
-  SelectInput,
-  SelectOption,
-} from '@/shared/components/ui/select-input/select-input';
+import { SelectableOption } from '@/shared/components/ui/option-selectors/base-option-selector';
+import { Select } from '@/shared/components/ui/option-selectors/select/select';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 
@@ -26,11 +24,11 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
   selector: 'app-user-list',
   imports: [
     ReactiveFormsModule,
-    Button,
-    AppInput,
-    SelectInput,
     TableComponent,
     Paginator,
+    Button,
+    AppInput,
+    Select,
   ],
   templateUrl: './user-list-page.html',
   providers: [UserStore, UserQueryParamsService],
@@ -146,7 +144,7 @@ export class UserListPage {
       .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
 
-  protected statuses: SelectOption[] = [
+  protected statuses: SelectableOption[] = [
     {
       label: 'Active',
       value: 'active',

@@ -1,13 +1,15 @@
 <button
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
-  id="select-input-trigger"
   type="button"
   aria-haspopup="true"
-  aria-controls="select-input-dropdown"
-  [attr.aria-expanded]="isOpen()"
+  [id]="instanceId + '-trigger'"
   [disabled]="isDisabled()"
-  (click)="toggleIsOpen()"
+  [attr.aria-controls]="instanceId + '-dropdown'"
+  [attr.aria-expanded]="isOpen()"
+  (focus)="handleFocus()"
+  (blur)="handleBlur($event)"
+  (click)="open()"
   class="group flex w-full cursor-pointer items-center gap-4 rounded-md border border-zinc-200 px-3 py-2 text-sm text-nowrap text-zinc-700 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:bg-zinc-50 disabled:text-zinc-500"
 >
   @if (selected()) {
@@ -22,7 +24,7 @@
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="currentColor"
-    class="ml-auto size-5"
+    class="ml-auto size-4.5"
   >
     <path
       stroke-linecap="round"
@@ -54,19 +56,23 @@
 >
   <div
     #dropdown
-    id="select-input-dropdown"
-    role="menu"
+    role="listbox"
     aria-orientation="vertical"
-    aria-labelledby="select-input-trigger"
-    class="flex max-h-56 w-full flex-col space-y-2 overflow-auto rounded-md border border-zinc-100 bg-white px-4 py-2 shadow-sm"
+    [id]="instanceId + '-dropdown'"
+    [attr.aria-labelledby]="instanceId + '-trigger'"
+    (focusout)="handleDropdownFocusOut($event)"
+    class="flex max-h-56 w-full flex-col overflow-auto rounded-md border border-zinc-100 bg-white shadow-sm"
   >
-    @for (option of options(); track option.value) {
+    @for (option of options(); track option.value; let index = $index) {
       <button
         type="button"
+        role="option"
         [attr.data-disabled]="option.disabled ? '' : null"
         [attr.data-selected]="option.value === selected()?.value ? '' : null"
+        [attr.data-highlighted]="isOptionHighlighted(index) ? '' : null"
+        [attr.aria-selected]="option.value === selected()?.value"
         (click)="selectOption(option)"
-        class="w-full cursor-pointer text-left text-sm text-zinc-600 hover:text-zinc-900 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-selected:font-medium data-selected:text-zinc-900"
+        class="w-full cursor-pointer px-4 py-2 text-left text-sm text-zinc-600 hover:bg-zinc-50 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-highlighted:bg-zinc-100 data-selected:font-medium data-selected:text-zinc-900"
       >
         {{ option.label }}
       </button>

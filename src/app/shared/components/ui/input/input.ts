@@ -28,7 +28,7 @@ export class AppInput implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private control?: AbstractControl | null;
 
-  private invalid = signal(false);
+  private readonly invalid = signal(false);
 
   ngOnInit(): void {
     this.control = this.ngControl?.control;

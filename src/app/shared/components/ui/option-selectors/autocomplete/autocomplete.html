@@ -1,0 +1,87 @@
+<div cdkOverlayOrigin #trigger="cdkOverlayOrigin" class="relative w-full">
+  <input
+    #input
+    type="text"
+    autocomplete="off"
+    aria-autocomplete="list"
+    [id]="instanceId + '-input'"
+    [value]="query()"
+    [placeholder]="placeholder()"
+    [disabled]="isDisabled()"
+    [attr.aria-controls]="instanceId + '-dropdown'"
+    [attr.aria-expanded]="isOpen()"
+    (focus)="handleFocus()"
+    (blur)="handleBlur($event)"
+    (input)="handleInput(input.value)"
+    class="peer w-full rounded-md border border-zinc-200 px-3 py-2 pr-8 text-sm text-zinc-700 placeholder:text-zinc-600 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:bg-zinc-50 disabled:text-zinc-500 disabled:placeholder:text-zinc-500"
+  />
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="absolute top-2.5 right-0 mr-3 size-4.5 text-zinc-600 peer-disabled:cursor-not-allowed peer-disabled:text-zinc-500"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+    />
+  </svg>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayHasBackdrop]="isOpen()"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayMatchWidth]="true"
+  [cdkConnectedOverlayPositions]="[
+    {
+      offsetY: 4,
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+    },
+  ]"
+  (backdropClick)="close()"
+  (attach)="scrollSelectedIntoView()"
+  (detach)="close()"
+>
+  <div
+    #dropdown
+    role="listbox"
+    aria-orientation="vertical"
+    [id]="instanceId + '-dropdown'"
+    [attr.aria-labelledby]="instanceId + '-input'"
+    (focusout)="handleDropdownFocusOut($event)"
+    class="flex max-h-56 w-full flex-col overflow-auto rounded-md border border-zinc-100 bg-white shadow-sm"
+  >
+    @if (filteredOptions().length) {
+      @for (
+        option of filteredOptions();
+        track option.value;
+        let index = $index
+      ) {
+        <button
+          type="button"
+          role="option"
+          [attr.data-disabled]="option.disabled ? '' : null"
+          [attr.data-selected]="option.value === selected()?.value ? '' : null"
+          [attr.data-highlighted]="isOptionHighlighted(index) ? '' : null"
+          [attr.aria-selected]="option.value === selected()?.value"
+          (click)="selectOption(option)"
+          class="w-full cursor-pointer px-4 py-2 text-left text-sm text-zinc-600 hover:bg-zinc-50 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-highlighted:bg-zinc-100 data-selected:font-medium data-selected:text-zinc-900"
+        >
+          {{ option.label }}
+        </button>
+      }
+    } @else {
+      <span class="px-4 py-2 text-sm text-zinc-500">{{ emptyMessage() }}</span>
+    }
+  </div>
+</ng-template>
