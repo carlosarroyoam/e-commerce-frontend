@@ -50,11 +50,11 @@ export class Chip {
   public readonly variant = input<ChipVariants['variant']>();
   public readonly label = input.required<string>();
 
-  protected chipBadgeClass = computed(() => {
+  protected readonly chipBadgeClass = computed(() => {
     return twMerge(chipBadgeVariants({ variant: this.variant() }));
   });
 
-  protected hostClass = computed(() => {
+  protected readonly hostClass = computed(() => {
     return twMerge(chipVariants({ variant: this.variant() }));
   });
 }

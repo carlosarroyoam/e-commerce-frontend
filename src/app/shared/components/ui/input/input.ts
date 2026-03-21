@@ -61,7 +61,7 @@ export class AppInput implements OnInit, AfterViewInit {
     this.invalid.set(control.invalid && (control.touched || control.dirty));
   }
 
-  protected hostClass = computed(() => {
+  protected readonly hostClass = computed(() => {
     const invalid = this.invalid() && 'border-red-500 focus:border-red-500';
 
     return twMerge(

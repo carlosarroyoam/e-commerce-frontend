@@ -25,16 +25,16 @@ export class UserNav {
 
   protected readonly isOpen = signal(false);
 
-  protected src = computed(() => {
+  protected readonly src = computed(() => {
     return `https://ui-avatars.com/api/?name=${this.session()?.full_name}&format=svg&background=d4d4d8`;
   });
 
-  protected alt = computed(() => {
+  protected readonly alt = computed(() => {
     return `${this.session()?.first_name}'s profile picture`;
   });
 
-  protected toggleIsOpen(): void {
-    this.isOpen.update((isOpen) => !isOpen);
+  protected open(): void {
+    this.isOpen.set(true);
   }
 
   protected close(): void {

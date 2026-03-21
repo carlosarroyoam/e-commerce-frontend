@@ -32,19 +32,19 @@ export class Paginator {
 
   protected readonly pageType = PageType;
 
-  protected from = computed(() => {
+  protected readonly from = computed(() => {
     return (this.page() - 1) * this.size() + 1;
   });
 
-  protected to = computed(() => {
+  protected readonly to = computed(() => {
     return (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0);
   });
 
-  protected totalPages = computed(() => {
+  protected readonly totalPages = computed(() => {
     return this.pagination()?.totalPages ?? 0;
   });
 
-  protected totalItems = computed(() => {
+  protected readonly totalItems = computed(() => {
     return this.pagination()?.totalItems ?? 0;
   });
 

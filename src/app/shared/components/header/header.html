@@ -71,8 +71,8 @@
             <li
               tabindex="0"
               role="menuitem"
-              (keyup.enter)="toggleMobileMenu()"
-              (click)="toggleMobileMenu()"
+              (click)="closeMobileMenu()"
+              (keyup.enter)="closeMobileMenu()"
             >
               <a
                 [routerLink]="menuItem.href"
@@ -92,8 +92,8 @@
             <li
               tabindex="0"
               role="menuitem"
-              (keyup.enter)="toggleMobileMenu()"
-              (click)="toggleMobileMenu()"
+              (click)="closeMobileMenu()"
+              (keyup.enter)="closeMobileMenu()"
             >
               <a
                 [routerLink]="menuItem.href"
@@ -108,8 +108,8 @@
           <li
             tabindex="0"
             role="menuitem"
-            (keyup.enter)="logout.emit()"
             (click)="logout.emit()"
+            (keyup.enter)="logout.emit()"
           >
             <button
               class="text-sm font-medium tracking-tight hover:text-zinc-700"

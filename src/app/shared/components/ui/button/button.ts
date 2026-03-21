@@ -40,7 +40,7 @@ export class Button {
   public readonly variant = input<ButtonVariants['variant']>();
   public readonly size = input<ButtonVariants['size']>();
 
-  protected hostClass = computed(() => {
+  protected readonly hostClass = computed(() => {
     return twMerge(
       buttonVariants({ variant: this.variant(), size: this.size() }),
     );

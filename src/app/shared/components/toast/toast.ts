@@ -40,7 +40,7 @@ export class Toast implements OnDestroy, OnInit {
   private remaining = 0;
   private start = 0;
 
-  protected hostClass = computed(() => {
+  protected readonly hostClass = computed(() => {
     return twMerge(toastVariants({ variant: this.data().type }));
   });
 
