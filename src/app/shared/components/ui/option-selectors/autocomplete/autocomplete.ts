@@ -8,8 +8,11 @@ import {
   signal,
 } from '@angular/core';
 
+import {
+  BaseOptionSelector,
+  SelectableOption,
+} from '@/shared/components/ui/option-selectors/base-option-selector';
 import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/base-option-selector-providers';
-import { BaseOptionSelector, SelectableOption } from '../base-option-selector';
 
 let nextAutocompleteId = 0;
 
