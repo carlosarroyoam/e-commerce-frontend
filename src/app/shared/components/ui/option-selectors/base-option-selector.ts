@@ -1,4 +1,11 @@
-import { Directive, ElementRef, signal, viewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  Directive,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 export interface SelectableOption {
@@ -9,7 +16,9 @@ export interface SelectableOption {
 
 @Directive()
 export abstract class BaseOptionSelector implements ControlValueAccessor {
-  protected readonly dropdown = viewChild<ElementRef<HTMLElement>>('dropdown');
+  private readonly document = inject(DOCUMENT);
+  private readonly dropdown = viewChild<ElementRef<HTMLElement>>('dropdown');
+
   protected readonly selected = signal<SelectableOption | null>(null);
   protected readonly isOpen = signal(false);
   protected readonly isDisabled = signal(false);
@@ -20,7 +29,9 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
 
   public writeValue(value: string | number | null): void {
     const selected =
-      this.getAllOptions().find((option) => option.value === value) ?? null;
+      this.getAllOptions().find(
+        (option) => option.value === value && !option.disabled,
+      ) ?? null;
 
     this.selected.set(selected);
     this.afterValueChange(selected);
@@ -75,27 +86,54 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
       (option) => !option.disabled,
     );
 
-    switch (event.key) {
+    const hasEnabledOptions = options.length > 0;
+
+    switch (event.code) {
+      case 'Home':
+        event.preventDefault();
+        if (hasEnabledOptions) {
+          this.highlightedIndex.set(0);
+          this.scrollHighlightedIntoView();
+        }
+        return;
+
+      case 'End':
+        event.preventDefault();
+        if (hasEnabledOptions) {
+          this.highlightedIndex.set(options.length - 1);
+          this.scrollHighlightedIntoView();
+        }
+        return;
+
       case 'ArrowDown':
         event.preventDefault();
-        this.highlightedIndex.update((index) =>
-          options.length ? (index + 1) % options.length : 0,
-        );
-        this.scrollHighlightedIntoView();
+        if (hasEnabledOptions) {
+          this.highlightedIndex.update((index) => (index + 1) % options.length);
+          this.scrollHighlightedIntoView();
+        }
         return;
 
       case 'ArrowUp':
         event.preventDefault();
-        this.highlightedIndex.update((index) =>
-          options.length ? (index - 1 + options.length) % options.length : 0,
-        );
-        this.scrollHighlightedIntoView();
+        if (hasEnabledOptions) {
+          this.highlightedIndex.update(
+            (index) => (index - 1 + options.length) % options.length,
+          );
+          this.scrollHighlightedIntoView();
+        }
         return;
 
       case 'Enter':
+      case 'Space':
         event.preventDefault();
-        if (!this.isOpen()) return;
-        this.selectOption(options[this.highlightedIndex()] ?? null);
+        if (!this.isOpen()) {
+          this.open();
+          return;
+        }
+
+        if (hasEnabledOptions) {
+          this.selectOption(options[this.highlightedIndex()] ?? null);
+        }
         return;
 
       case 'Escape':
@@ -120,19 +158,28 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.closeIfFocusLeft(event);
   }
 
+  protected isOptionSelected(index: number): boolean {
+    const options = this.getVisibleOptions();
+    const option = options[index];
+
+    return this.selected()?.value === option?.value;
+  }
+
   protected isOptionHighlighted(index: number): boolean {
-    const visibleOptions = this.getVisibleOptions();
-    const enabledOptions = visibleOptions.filter((option) => !option.disabled);
-    const option = visibleOptions[index];
+    const options = this.getVisibleOptions();
+    const enabledOptions = options.filter((option) => !option.disabled);
+    const option = options[index];
 
     return enabledOptions[this.highlightedIndex()]?.value === option?.value;
   }
 
   protected resetHighlightedIndex(): void {
     const options = this.getVisibleOptions();
+    const enabledOptions = options.filter((option) => !option.disabled);
     const selectedValue = this.selected()?.value;
-    const selectedIndex = options.findIndex(
-      (option) => option.value === selectedValue && !option.disabled,
+
+    const selectedIndex = enabledOptions.findIndex(
+      (option) => option.value === selectedValue,
     );
 
     if (selectedIndex >= 0) {
@@ -140,8 +187,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
       return;
     }
 
-    const firstEnabledIndex = options.findIndex((option) => !option.disabled);
-    this.highlightedIndex.set(firstEnabledIndex >= 0 ? firstEnabledIndex : 0);
+    this.highlightedIndex.set(0);
   }
 
   protected scrollSelectedIntoView(): void {
@@ -178,6 +224,10 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
   private closeIfFocusLeft(event: FocusEvent): void {
     const nextFocused = event.relatedTarget;
     const dropdown = this.dropdown()?.nativeElement;
+
+    if (!nextFocused && !this.document.hasFocus()) {
+      return;
+    }
 
     if (nextFocused instanceof Node && dropdown?.contains(nextFocused)) {
       return;

@@ -68,9 +68,9 @@
         type="button"
         role="option"
         [attr.data-disabled]="option.disabled ? '' : null"
-        [attr.data-selected]="option.value === selected()?.value ? '' : null"
+        [attr.data-selected]="isOptionSelected(index) ? '' : null"
         [attr.data-highlighted]="isOptionHighlighted(index) ? '' : null"
-        [attr.aria-selected]="option.value === selected()?.value"
+        [attr.aria-selected]="isOptionSelected(index)"
         (click)="selectOption(option)"
         class="w-full cursor-pointer px-4 py-2 text-left text-sm text-zinc-600 hover:bg-zinc-50 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-highlighted:bg-zinc-100 data-selected:font-medium data-selected:text-zinc-900"
       >
