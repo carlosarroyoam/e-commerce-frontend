@@ -18,6 +18,35 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
   private onChange?: (value: string | number | null) => void;
   private onTouched?: () => void;
 
+  public writeValue(value: string | number | null): void {
+    const selected =
+      this.getAllOptions().find((option) => option.value === value) ?? null;
+
+    this.selected.set(selected);
+    this.afterValueChange(selected);
+    this.resetHighlightedIndex();
+  }
+
+  public registerOnChange(fn: (value: string | number | null) => void): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  public setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  protected propagateChange(value: string | number | null): void {
+    this.onChange?.(value);
+  }
+
+  protected abstract getAllOptions(): SelectableOption[];
+
+  protected abstract getVisibleOptions(): SelectableOption[];
+
   protected open(): void {
     if (this.isDisabled()) return;
 
@@ -37,10 +66,6 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.afterValueChange(option);
     this.propagateChange(option?.value ?? null);
     this.close();
-  }
-
-  protected propagateChange(value: string | number | null): void {
-    this.onChange?.(value);
   }
 
   protected handleKeydown(event: KeyboardEvent): void {
@@ -127,34 +152,9 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.scrollOptionIntoView('[data-highlighted]');
   }
 
-  public writeValue(value: string | number | null): void {
-    const selected =
-      this.getAllOptions().find((option) => option.value === value) ?? null;
-
-    this.selected.set(selected);
-    this.afterValueChange(selected);
-    this.resetHighlightedIndex();
-  }
-
-  public registerOnChange(fn: (value: string | number | null) => void): void {
-    this.onChange = fn;
-  }
-
-  public registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  public setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
-  }
-
   protected afterValueChange(option: SelectableOption | null): void {
     void option;
   }
-
-  protected abstract getAllOptions(): SelectableOption[];
-
-  protected abstract getVisibleOptions(): SelectableOption[];
 
   private scrollOptionIntoView(selector: string): void {
     const dropdown = this.dropdown()?.nativeElement;

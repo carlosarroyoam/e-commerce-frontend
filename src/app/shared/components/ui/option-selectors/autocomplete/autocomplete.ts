@@ -7,8 +7,8 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/base-option-selector-providers';
 import { BaseOptionSelector, SelectableOption } from '../base-option-selector';
 
 let nextAutocompleteId = 0;
@@ -43,16 +43,10 @@ let nextAutocompleteId = 0;
   selector: 'app-autocomplete',
   imports: [OverlayModule],
   templateUrl: './autocomplete.html',
+  providers: [valueAccessorProvider(Autocomplete)],
   host: {
     '(keydown)': 'handleKeydown($event)',
   },
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: Autocomplete,
-      multi: true,
-    },
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Autocomplete extends BaseOptionSelector implements OnInit {
@@ -82,6 +76,18 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
     this.optionCallback()?.(this.query());
   }
 
+  protected override afterValueChange(option: SelectableOption | null): void {
+    this.query.set(option?.label ?? '');
+  }
+
+  protected override getAllOptions(): SelectableOption[] {
+    return this.options();
+  }
+
+  protected override getVisibleOptions(): SelectableOption[] {
+    return this.filteredOptions();
+  }
+
   protected override close(): void {
     this.syncQueryWithSelection();
     super.close();
@@ -100,18 +106,6 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
     }
 
     this.resetHighlightedIndex();
-  }
-
-  protected override afterValueChange(option: SelectableOption | null): void {
-    this.query.set(option?.label ?? '');
-  }
-
-  protected override getAllOptions(): SelectableOption[] {
-    return this.options();
-  }
-
-  protected override getVisibleOptions(): SelectableOption[] {
-    return this.filteredOptions();
   }
 
   private syncQueryWithSelection(): void {

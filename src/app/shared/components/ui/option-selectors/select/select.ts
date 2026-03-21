@@ -1,7 +1,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/base-option-selector-providers';
 import { BaseOptionSelector, SelectableOption } from '../base-option-selector';
 
 let nextSelectId = 0;
@@ -10,16 +10,10 @@ let nextSelectId = 0;
   selector: 'app-select',
   imports: [OverlayModule],
   templateUrl: './select.html',
+  providers: [valueAccessorProvider(Select)],
   host: {
     '(keydown)': 'handleKeydown($event)',
   },
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: Select,
-      multi: true,
-    },
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Select extends BaseOptionSelector {
