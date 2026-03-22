@@ -1,12 +1,23 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
+import {
+  createAngularTable,
+  getCoreRowModel,
+  type OnChangeFn,
+  type SortingState,
+} from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
 import { User } from '@/features/user/data-access/interfaces/user';
+import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
@@ -44,6 +55,19 @@ export class UserListPage {
 
   protected readonly store = inject(UserStore);
 
+  private readonly sorting = computed<SortingState>(() => {
+    const sort = this.store.requestParams().sort;
+
+    if (!sort) {
+      return [];
+    }
+
+    const isDesc = sort.startsWith('-');
+    const id = isDesc ? sort.slice(1) : sort;
+
+    return [{ id, desc: isDesc }];
+  });
+
   protected readonly form = this.fb.group({
     search: this.fb.control<string | null>(null),
     status: this.fb.control<'active' | 'inactive' | null>(null),
@@ -56,6 +80,10 @@ export class UserListPage {
       onDelete: (user) => this.onDeleteUser(user),
       onRestore: (user) => this.onRestoreUser(user),
     }),
+    manualSorting: true,
+    enableSortingRemoval: true,
+    state: { sorting: this.sorting() },
+    onSortingChange: this.onSortingChange,
     getCoreRowModel: getCoreRowModel(),
   }));
 
@@ -95,6 +123,20 @@ export class UserListPage {
       size,
     });
   }
+
+  private readonly onSortingChange: OnChangeFn<SortingState> = (updater) => {
+    const currentSorting = this.sorting();
+    const nextSorting =
+      typeof updater === 'function' ? updater(currentSorting) : updater;
+    const nextColumn = nextSorting[0];
+
+    this.queryParamsService.updateQueryParams({
+      page: DEFAULT_FIRST_PAGE,
+      sort: nextColumn
+        ? (`${nextColumn.desc ? '-' : ''}${nextColumn.id}` as UsersRequestParams['sort'])
+        : undefined,
+    });
+  };
 
   protected onEditUser(user: User): void {
     console.log('Edit user:', user.id);

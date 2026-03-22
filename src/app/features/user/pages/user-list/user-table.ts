@@ -14,38 +14,46 @@ export function buildUsersTableColumns(opts: {
   return [
     {
       id: 'profile_picture',
+      enableSorting: false,
       cell: () => flexRenderComponent(Avatar),
     },
     {
-      accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+      accessorKey: 'first_name',
       header: 'Name',
-      cell: (info) => info.getValue(),
+      enableSorting: true,
+      cell: (info) =>
+        `${info.row.original.first_name} ${info.row.original.last_name}`,
     },
     {
       accessorKey: 'email',
       header: 'Email',
+      enableSorting: true,
       cell: (info) => info.getValue(),
     },
     {
       accessorKey: 'user_role',
       header: 'Role',
+      enableSorting: false,
       cell: (info) => (info.getValue() as string).replace('App/', ''),
     },
     {
       accessorKey: 'created_at',
       header: 'Created at',
+      enableSorting: false,
       cell: (info) =>
         formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'updated_at',
       header: 'Updated at',
+      enableSorting: false,
       cell: (info) =>
         formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'deleted_at',
       header: 'Status',
+      enableSorting: false,
       cell: (info) => {
         const deletedAt = info.getValue() as string;
 
@@ -60,6 +68,7 @@ export function buildUsersTableColumns(opts: {
     {
       id: 'actions',
       header: 'Actions',
+      enableSorting: false,
       cell: () =>
         flexRenderComponent(UserTableButtons, {
           inputs: {

@@ -56,10 +56,11 @@ export class UserQueryParamsService {
 
   private mapRequestParams(params: Params): UsersRequestParams {
     return {
+      search: params['search'],
+      status: params['status'] as UsersRequestParams['status'],
+      sort: params['sort'] as UsersRequestParams['sort'],
       page: safeParsePositiveInt(params['page'], DEFAULT_FIRST_PAGE),
       size: safeParsePositiveInt(params['size'], DEFAULT_PAGE_SIZE),
-      search: params['search'],
-      status: params['status'] as 'active' | 'inactive' | undefined,
     };
   }
 }

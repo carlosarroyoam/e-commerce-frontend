@@ -183,7 +183,7 @@ src/assets/env.template.js
 The template currently expects:
 
 ```js
-window['apiUrl'] = '${apiUrl}';
+window["apiUrl"] = "${apiUrl}";
 ```
 
 For container deployment, the startup command replaces `${apiUrl}` with an environment variable value and writes the result to `src/assets/env.js` inside the served build.

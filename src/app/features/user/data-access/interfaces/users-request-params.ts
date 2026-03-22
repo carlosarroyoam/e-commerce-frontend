@@ -1,4 +1,6 @@
 export interface UsersRequestParams {
+  search?: string;
+  status?: 'active' | 'inactive';
   page?: number;
   size?: number;
   sort?:
@@ -10,6 +12,4 @@ export interface UsersRequestParams {
     | '-last_name'
     | 'email'
     | '-email';
-  search?: string;
-  status?: 'active' | 'inactive';
 }

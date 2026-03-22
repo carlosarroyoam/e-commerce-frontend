@@ -9,15 +9,47 @@
                 scope="col"
                 class="px-4 py-2 text-start text-sm font-medium tracking-tight"
               >
-                <ng-container
-                  *flexRender="
-                    header.column.columnDef.header;
-                    props: header.getContext();
-                    let header
-                  "
-                >
-                  <div [innerHTML]="header"></div>
-                </ng-container>
+                @if (header.column.getCanSort()) {
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-2 text-left transition-colors hover:text-zinc-900"
+                    (click)="header.column.toggleSorting()"
+                  >
+                    <ng-container
+                      *flexRender="
+                        header.column.columnDef.header;
+                        props: header.getContext();
+                        let header
+                      "
+                    >
+                      <div [innerHTML]="header"></div>
+                    </ng-container>
+
+                    @switch (header.column.getIsSorted()) {
+                      @case ("asc") {
+                        <span aria-hidden="true">&uarr;</span>
+                      }
+                      @case ("desc") {
+                        <span aria-hidden="true">&darr;</span>
+                      }
+                      @default {
+                        <span aria-hidden="true" class="text-zinc-400"
+                          >&udarr;</span
+                        >
+                      }
+                    }
+                  </button>
+                } @else {
+                  <ng-container
+                    *flexRender="
+                      header.column.columnDef.header;
+                      props: header.getContext();
+                      let header
+                    "
+                  >
+                    <div [innerHTML]="header"></div>
+                  </ng-container>
+                }
               </th>
             }
           }
