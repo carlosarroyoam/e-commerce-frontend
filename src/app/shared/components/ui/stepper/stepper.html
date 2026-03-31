@@ -1,0 +1,92 @@
+<div [class]="containerClass()">
+  <ol [class]="headerClass()">
+    @for (
+      step of resolvedSteps();
+      track trackByIndex($index);
+      let index = $index
+    ) {
+      <li class="flex min-w-0 flex-1 items-start gap-3">
+        @if (isStepInteractive(step)) {
+          <button
+            type="button"
+            [attr.aria-controls]="panelId(index)"
+            [attr.aria-current]="index === activeStep() ? 'step' : null"
+            [attr.id]="stepLabelId(index)"
+            (click)="handleStepClick(step, index)"
+            class="flex min-w-0 flex-1 items-start gap-3 text-left"
+          >
+            <span [class]="indicatorClass(step)">
+              @if (step.resolvedStatus === "completed") {
+                <span aria-hidden="true">&#10003;</span>
+              } @else if (step.resolvedStatus === "error") {
+                <span aria-hidden="true">!</span>
+              } @else {
+                {{ index + 1 }}
+              }
+            </span>
+
+            <span class="min-w-0">
+              <span class="block text-sm font-semibold text-zinc-900">
+                {{ step.label }}
+              </span>
+
+              @if (step.description) {
+                <span class="mt-1 block text-sm text-zinc-500">
+                  {{ step.description }}
+                </span>
+              }
+            </span>
+          </button>
+        } @else {
+          <div
+            [attr.aria-controls]="panelId(index)"
+            [attr.aria-current]="index === activeStep() ? 'step' : null"
+            [attr.id]="stepLabelId(index)"
+            class="flex min-w-0 flex-1 items-start gap-3"
+          >
+            <span [class]="indicatorClass(step)">
+              @if (step.resolvedStatus === "completed") {
+                <span aria-hidden="true">&#10003;</span>
+              } @else if (step.resolvedStatus === "error") {
+                <span aria-hidden="true">!</span>
+              } @else {
+                {{ index + 1 }}
+              }
+            </span>
+
+            <span class="min-w-0">
+              <span class="block text-sm font-semibold text-zinc-900">
+                {{ step.label }}
+              </span>
+
+              @if (step.description) {
+                <span class="mt-1 block text-sm text-zinc-500">
+                  {{ step.description }}
+                </span>
+              }
+            </span>
+          </div>
+        }
+
+        @if (!$last) {
+          <span
+            aria-hidden="true"
+            [class]="connectorClass(step)"
+            [ngClass]="connectorStateClass(step)"
+          ></span>
+        }
+      </li>
+    }
+  </ol>
+
+  <section
+    [attr.aria-labelledby]="stepLabelId(activeStep())"
+    [attr.id]="panelId(activeStep())"
+    [class]="panelClass()"
+    role="region"
+  >
+    @if (activePanel(); as panel) {
+      <ng-container [ngTemplateOutlet]="panel.templateRef"></ng-container>
+    }
+  </section>
+</div>

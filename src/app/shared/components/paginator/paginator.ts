@@ -48,13 +48,13 @@ export class Paginator {
     return this.pagination()?.totalItems ?? 0;
   });
 
-  protected hasPreviousPage(): boolean {
+  protected readonly hasPreviousPage = computed(() => {
     return this.page() - 1 >= 1;
-  }
+  });
 
-  protected hasNextPage(): boolean {
+  protected readonly hasNextPage = computed(() => {
     return this.page() + 1 <= this.totalPages();
-  }
+  });
 
   protected changePage(pageType: PageType): void {
     switch (pageType) {
