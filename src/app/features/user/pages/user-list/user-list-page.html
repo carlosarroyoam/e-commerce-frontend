@@ -1,63 +1,67 @@
-<section>
-  <h2 class="heading">Users</h2>
-  <p class="mt-1 text-sm">
-    A list of all the users registered including their name, email, and role.
-  </p>
+<article>
+  <header>
+    <h1 class="heading">Users</h1>
+    <p class="mt-1 text-sm">
+      A list of all the users registered including their name, email, and role.
+    </p>
+  </header>
 
-  <form [formGroup]="form" class="my-8">
-    <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-      <div class="relative inline-block">
-        <input
-          appInput
-          id="search"
-          type="text"
-          placeholder="Search for users..."
-          autocomplete="off"
-          class="peer w-full pr-9"
-          formControlName="search"
+  <section>
+    <form [formGroup]="form" class="my-8">
+      <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div class="relative inline-block">
+          <input
+            appInput
+            id="search"
+            type="text"
+            placeholder="Search for users..."
+            autocomplete="off"
+            class="peer w-full pr-9"
+            formControlName="search"
+          />
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="absolute top-2.5 right-0 mr-3 size-4.5 text-zinc-600 peer-disabled:cursor-not-allowed peer-disabled:text-zinc-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </div>
+
+        <app-select
+          placeholder="Status"
+          [options]="statuses"
+          formControlName="status"
         />
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="absolute top-2.5 right-0 mr-3 size-4.5 text-zinc-600 peer-disabled:cursor-not-allowed peer-disabled:text-zinc-500"
+        <button
+          appButton
+          type="button"
+          variant="secondary"
+          (click)="reset()"
+          class="md:max-w-32"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
+          Clear
+        </button>
       </div>
+    </form>
 
-      <app-select
-        placeholder="Status"
-        [options]="statuses"
-        formControlName="status"
-      />
+    <app-table [table]="table" />
 
-      <button
-        appButton
-        type="button"
-        variant="secondary"
-        (click)="reset()"
-        class="md:max-w-32"
-      >
-        Clear
-      </button>
-    </div>
-  </form>
-
-  <app-table [table]="table" />
-
-  <app-paginator
-    [page]="store.requestParams().page!"
-    [size]="store.requestParams().size!"
-    [pagination]="store.pagination()"
-    (pageChanged)="onPageChanged($event)"
-    (sizeChanged)="onSizeChanged($event)"
-  />
-</section>
+    <app-paginator
+      [page]="store.requestParams().page!"
+      [size]="store.requestParams().size!"
+      [pagination]="store.pagination()"
+      (pageChanged)="onPageChanged($event)"
+      (sizeChanged)="onSizeChanged($event)"
+    />
+  </section>
+</article>

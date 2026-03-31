@@ -7,7 +7,7 @@ import { User } from '@/features/user/data-access/interfaces/user';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 
 export interface UserState {
-  users: User[];
+  items: User[];
   pagination: Pagination;
   requestParams: UsersRequestParams;
   isLoading: boolean;
@@ -15,7 +15,7 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  users: [],
+  items: [],
   pagination: {
     page: DEFAULT_FIRST_PAGE,
     size: 0,

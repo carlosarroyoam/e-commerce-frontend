@@ -7,10 +7,10 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
 import { environment } from '@/environments/environment';
-import { UserResponse } from '@/features/user/data-access/interfaces/user.response';
+import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password.request';
+import { User } from '@/features/user/data-access/interfaces/user';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UsersResponse } from '@/features/user/data-access/interfaces/users-response';
-import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password.request';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +37,8 @@ export class UserService {
     });
   }
 
-  public getById(userId: number): Observable<UserResponse | null> {
-    return this.httpClient.get<UserResponse>(
-      `${environment.apiUrl}/users/${userId}`,
-    );
+  public getById(userId: number): Observable<User | null> {
+    return this.httpClient.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
 
   public changePassword(

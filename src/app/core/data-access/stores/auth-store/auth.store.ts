@@ -36,7 +36,7 @@ export const AuthStore = signalStore(
           switchMap((loginRequest) =>
             authService.login(loginRequest).pipe(
               tapResponse({
-                next: ({ user }) => {
+                next: (user) => {
                   sessionService.saveSession(user);
 
                   patchState(store, {

@@ -26,14 +26,14 @@ export const UserStore = signalStore(
         switchMap((requestParams) =>
           userService.getAll(requestParams).pipe(
             tapResponse({
-              next: ({ users, pagination }) =>
+              next: ({ items, pagination }) =>
                 patchState(store, {
-                  users,
+                  items,
                   pagination,
                 }),
               error: (err) =>
                 patchState(store, {
-                  users: [],
+                  items: [],
                   pagination: { ...initialState.pagination },
                   error: extractErrorMessage(err),
                 }),

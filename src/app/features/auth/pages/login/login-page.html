@@ -1,49 +1,53 @@
-<section class="mx-auto max-w-md">
-  <h2 class="heading">Log in</h2>
-  <p class="mt-1 text-sm">
-    Enter your email and password to start managing your e-commerce.
-  </p>
+<article>
+  <header class="mx-auto max-w-md">
+    <h2 class="heading">Log in</h2>
+    <p class="mt-1 text-sm">
+      Enter your email and password to start managing your e-commerce.
+    </p>
+  </header>
 
-  <form
-    novalidate
-    [formGroup]="form"
-    (ngSubmit)="login()"
-    class="mt-6 space-y-4"
-  >
-    <div class="space-y-2">
-      <label appInputLabel for="email">Email</label>
-      <input
-        appInput
-        id="email"
-        type="email"
-        placeholder="Enter your email"
-        autocomplete="email"
-        formControlName="email"
-      />
-      <app-input-error [control]="form.get('email')" />
+  <section class="mx-auto max-w-md">
+    <form
+      novalidate
+      [formGroup]="form"
+      (ngSubmit)="login()"
+      class="mt-6 space-y-4"
+    >
+      <div class="space-y-2">
+        <label appInputLabel for="email">Email</label>
+        <input
+          appInput
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          formControlName="email"
+        />
+        <app-input-error [control]="form.get('email')" />
+      </div>
+
+      <div class="space-y-2">
+        <label appInputLabel for="password">Password</label>
+        <input
+          appInput
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="off"
+          formControlName="password"
+        />
+        <app-input-error [control]="form.get('password')" />
+      </div>
+
+      <button appButton type="submit" class="w-full" [disabled]="form.invalid">
+        Log in
+      </button>
+    </form>
+
+    <div class="mt-6 flex justify-center">
+      <a appButton variant="link" routerLink="/auth/forgot-password">
+        Forgot your password?
+      </a>
     </div>
-
-    <div class="space-y-2">
-      <label appInputLabel for="password">Password</label>
-      <input
-        appInput
-        id="password"
-        type="password"
-        placeholder="Enter your password"
-        autocomplete="off"
-        formControlName="password"
-      />
-      <app-input-error [control]="form.get('password')" />
-    </div>
-
-    <button appButton type="submit" class="w-full" [disabled]="form.invalid">
-      Log in
-    </button>
-  </form>
-
-  <div class="mt-6 flex justify-center">
-    <a appButton variant="link" routerLink="/auth/forgot-password">
-      Forgot your password?
-    </a>
-  </div>
-</section>
+  </section>
+</article>

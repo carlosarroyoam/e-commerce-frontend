@@ -74,7 +74,7 @@ export class UserListPage {
   });
 
   protected table = createAngularTable(() => ({
-    data: this.store.users(),
+    data: this.store.items(),
     columns: buildUsersTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
