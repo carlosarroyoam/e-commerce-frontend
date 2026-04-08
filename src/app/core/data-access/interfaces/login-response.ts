@@ -1,6 +1,6 @@
-import { User } from '@/features/user/data-access/interfaces/user';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
 export type LoginResponse = Pick<
-  User,
+  UserResponse,
   'id' | 'first_name' | 'last_name' | 'email' | 'user_role' | 'user_role_id'
 >;

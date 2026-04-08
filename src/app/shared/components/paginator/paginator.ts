@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
-import { Pagination } from '@/core/data-access/interfaces/pagination';
+import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
 import { Button } from '@/shared/components/ui/button/button';
 
 export enum PageType {
@@ -24,7 +24,7 @@ export enum PageType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Paginator {
-  public readonly pagination = input<Pagination | undefined>();
+  public readonly pagination = input<PaginationResponse | undefined>();
   public readonly page = input.required<number>();
   public readonly size = input.required<number>();
   public readonly pageChanged = output<number>();

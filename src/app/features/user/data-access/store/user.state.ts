@@ -2,13 +2,13 @@ import {
   DEFAULT_FIRST_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
-import { Pagination } from '@/core/data-access/interfaces/pagination';
-import { User } from '@/features/user/data-access/interfaces/user';
+import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 
 export interface UserState {
-  items: User[];
-  pagination: Pagination;
+  items: UserResponse[];
+  pagination: PaginationResponse;
   requestParams: UsersRequestParams;
   isLoading: boolean;
   error: string | null;

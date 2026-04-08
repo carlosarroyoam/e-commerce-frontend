@@ -16,7 +16,7 @@ import {
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
-import { User } from '@/features/user/data-access/interfaces/user';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
@@ -138,11 +138,11 @@ export class UserListPage {
     });
   };
 
-  protected onEditUser(user: User): void {
+  protected onEditUser(user: UserResponse): void {
     console.log('Edit user:', user.id);
   }
 
-  protected onDeleteUser(user: User): void {
+  protected onDeleteUser(user: UserResponse): void {
     this.alertDialogService
       .open({
         data: {
@@ -164,7 +164,7 @@ export class UserListPage {
       .subscribe(() => this.store.getAll(this.store.requestParams()));
   }
 
-  protected onRestoreUser(user: User): void {
+  protected onRestoreUser(user: UserResponse): void {
     this.alertDialogService
       .open({
         data: {

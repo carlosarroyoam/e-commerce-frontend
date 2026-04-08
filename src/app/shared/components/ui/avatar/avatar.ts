@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
-import { User } from '@/features/user/data-access/interfaces/user';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
 @Component({
   selector: 'app-avatar',
@@ -10,7 +10,7 @@ import { User } from '@/features/user/data-access/interfaces/user';
 })
 export class Avatar {
   private readonly context =
-    injectFlexRenderContext<CellContext<User, unknown>>();
+    injectFlexRenderContext<CellContext<UserResponse, unknown>>();
   private readonly user = this.context.row.original;
 
   get fullname(): string {

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
 import { Session } from '@/core/data-access/interfaces/session';
 import { LocalStorageService } from '@/core/data-access/services/storage-service/local-storage-service';
-import { User } from '@/features/user/data-access/interfaces/user';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class SessionService {
     return this.localStorageService.getItem<Session>(SESSION_KEY);
   }
 
-  public saveSession(user: Partial<User>): void {
+  public saveSession(user: Partial<UserResponse>): void {
     this.localStorageService.setItem(SESSION_KEY, {
       id: user.id,
       email: user.email,

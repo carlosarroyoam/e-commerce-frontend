@@ -94,7 +94,6 @@ export class Example {
 2. Angular common imports (`CommonModule`, etc.)
 3. Third-party library imports
 4. Internal app imports (use path aliases)
-5. Relative imports for same feature
 
 ```typescript
 // Correct import order
@@ -106,8 +105,8 @@ import { SomeLibrary } from "some-library";
 
 import { AuthStore } from "@/core/data-access/stores/auth-store/auth.store";
 import { Button } from "@/shared/components/ui/button/button";
-import { MyService } from "../services/my-service";
-import { MyComponent } from "./my-component";
+import { MyService } from "@feature/user/services/my-service";
+import { MyComponent } from "@feature/user/my-component";
 ```
 
 ### Path Aliases
@@ -135,32 +134,6 @@ This project uses strict TypeScript mode. Follow these rules:
 - Use explicit types, avoid `any`
 - Use `noPropertyAccessFromIndexSignature: true` - always use proper types
 - Use `noImplicitReturns: true` - all code paths must return values
-
-### Error Handling
-
-- Use try-catch for synchronous operations
-- Use RxJS `catchError` operator for observable streams
-- Use `throwError` to re-throw errors after handling
-- Display user-friendly messages via `AlertDialogService`
-
-```typescript
-// HTTP error handling pattern
-return this.http.get(url).pipe(
-  catchError((err) => {
-    if (err instanceof HttpErrorResponse) {
-      // Handle specific errors
-      if (err.status === 401) {
-        // Redirect to login or refresh token
-      }
-    }
-    // Show error dialog
-    this.alertDialogService.open({
-      /* ... */
-    });
-    return throwError(() => err);
-  }),
-);
-```
 
 ### State Management
 

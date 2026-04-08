@@ -1,16 +1,16 @@
 import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
-import { User } from '@/features/user/data-access/interfaces/user';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UserTableButtons } from '@/features/user/components/user-table-buttons/user-table-buttons';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
 export function buildUsersTableColumns(opts: {
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
-  onRestore: (user: User) => void;
-}): ColumnDef<User>[] {
+  onEdit: (user: UserResponse) => void;
+  onDelete: (user: UserResponse) => void;
+  onRestore: (user: UserResponse) => void;
+}): ColumnDef<UserResponse>[] {
   return [
     {
       id: 'profile_picture',

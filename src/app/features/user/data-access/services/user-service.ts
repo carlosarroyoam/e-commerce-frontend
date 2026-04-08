@@ -7,10 +7,10 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
 import { environment } from '@/environments/environment';
-import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password.request';
-import { User } from '@/features/user/data-access/interfaces/user';
+import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password-request';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
-import { UsersResponse } from '@/features/user/data-access/interfaces/users-response';
+import { PagedUsersResponse } from '@/features/user/data-access/interfaces/paged-users-response';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class UserService {
     page = DEFAULT_FIRST_PAGE,
     size = DEFAULT_PAGE_SIZE,
     sort,
-  }: UsersRequestParams): Observable<UsersResponse> {
+  }: UsersRequestParams): Observable<PagedUsersResponse> {
     let params = new HttpParams();
     params = params.append('page', page);
     params = params.append('size', size);
@@ -32,13 +32,18 @@ export class UserService {
     if (search) params = params.append('search', search);
     if (status) params = params.append('status', status);
 
-    return this.httpClient.get<UsersResponse>(`${environment.apiUrl}/users`, {
-      params,
-    });
+    return this.httpClient.get<PagedUsersResponse>(
+      `${environment.apiUrl}/users`,
+      {
+        params,
+      },
+    );
   }
 
-  public getById(userId: number): Observable<User | null> {
-    return this.httpClient.get<User>(`${environment.apiUrl}/users/${userId}`);
+  public getById(userId: number): Observable<UserResponse | null> {
+    return this.httpClient.get<UserResponse>(
+      `${environment.apiUrl}/users/${userId}`,
+    );
   }
 
   public changePassword(
