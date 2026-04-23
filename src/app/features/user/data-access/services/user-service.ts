@@ -9,7 +9,7 @@ import {
 import { environment } from '@/environments/environment';
 import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password-request';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { PagedUsersResponse } from '@/features/user/data-access/interfaces/paged-users-response';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class UserService {
     page = DEFAULT_FIRST_PAGE,
     size = DEFAULT_PAGE_SIZE,
     sort,
-  }: UsersRequestParams): Observable<PagedUsersResponse> {
+  }: UserQueryParams): Observable<PagedUsersResponse> {
     let params = new HttpParams();
     params = params.append('page', page);
     params = params.append('size', size);
@@ -34,9 +34,7 @@ export class UserService {
 
     return this.httpClient.get<PagedUsersResponse>(
       `${environment.apiUrl}/users`,
-      {
-        params,
-      },
+      { params },
     );
   }
 

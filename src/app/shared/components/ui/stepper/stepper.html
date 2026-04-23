@@ -69,11 +69,7 @@
         }
 
         @if (!$last) {
-          <span
-            aria-hidden="true"
-            [class]="connectorClass(step)"
-            [ngClass]="connectorStateClass(step)"
-          ></span>
+          <span aria-hidden="true" [class]="connectorClass(step)"></span>
         }
       </li>
     }

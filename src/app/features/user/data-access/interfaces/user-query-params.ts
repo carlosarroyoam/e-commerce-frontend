@@ -1,4 +1,4 @@
-export interface UsersRequestParams {
+export interface UserQueryParams {
   search?: string;
   status?: 'active' | 'inactive';
   page?: number;
