@@ -5,7 +5,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { finalize, pipe, switchMap, tap } from 'rxjs';
 
 import { extractErrorMessage } from '@/core/utils/error.utils';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { initialState } from '@/features/user/data-access/store/user.state';
 
@@ -18,13 +18,13 @@ export const UserStore = signalStore(
     /**
      * Gets all users.
      */
-    getAll: rxMethod<UsersRequestParams>(
+    getAll: rxMethod<UserQueryParams>(
       pipe(
-        tap((requestParams) =>
-          patchState(store, { requestParams, isLoading: true, error: null }),
+        tap((queryParams) =>
+          patchState(store, { queryParams, isLoading: true, error: null }),
         ),
-        switchMap((requestParams) =>
-          userService.getAll(requestParams).pipe(
+        switchMap((queryParams) =>
+          userService.getAll(queryParams).pipe(
             tapResponse({
               next: ({ items, pagination }) =>
                 patchState(store, {

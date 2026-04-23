@@ -7,7 +7,7 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
 import { safeParsePositiveInt } from '@/core/utils/number.utils';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserStore } from '../data-access/store/user.store';
 
 @Injectable()
@@ -25,11 +25,11 @@ export class UserQueryParamsService {
       });
   }
 
-  public updateQueryParams(partial: Partial<UsersRequestParams>): void {
+  public updateQueryParams(partial: Partial<UserQueryParams>): void {
     const queryParams: Params = {};
 
     for (const key in partial) {
-      const value = partial[key as keyof UsersRequestParams];
+      const value = partial[key as keyof UserQueryParams];
 
       queryParams[key] =
         value === undefined || value === null || value === '' ? null : value;
@@ -54,11 +54,11 @@ export class UserQueryParamsService {
     });
   }
 
-  private mapRequestParams(params: Params): UsersRequestParams {
+  private mapRequestParams(params: Params): UserQueryParams {
     return {
       search: params['search'],
-      status: params['status'] as UsersRequestParams['status'],
-      sort: params['sort'] as UsersRequestParams['sort'],
+      status: params['status'] as UserQueryParams['status'],
+      sort: params['sort'] as UserQueryParams['sort'],
       page: safeParsePositiveInt(params['page'], DEFAULT_FIRST_PAGE),
       size: safeParsePositiveInt(params['size'], DEFAULT_PAGE_SIZE),
     };

@@ -3,13 +3,13 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/core/constants/pagination.constants';
 import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 
 export interface UserState {
   items: UserResponse[];
   pagination: PaginationResponse;
-  requestParams: UsersRequestParams;
+  queryParams: UserQueryParams;
   isLoading: boolean;
   error: string | null;
 }
@@ -22,7 +22,7 @@ export const initialState: UserState = {
     totalItems: 0,
     totalPages: 0,
   },
-  requestParams: {
+  queryParams: {
     page: DEFAULT_FIRST_PAGE,
     size: DEFAULT_PAGE_SIZE,
   },

@@ -16,8 +16,8 @@ import {
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
-import { UsersRequestParams } from '@/features/user/data-access/interfaces/users-request-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
@@ -56,7 +56,7 @@ export class UserListPage {
   protected readonly store = inject(UserStore);
 
   private readonly sorting = computed<SortingState>(() => {
-    const sort = this.store.requestParams().sort;
+    const sort = this.store.queryParams().sort;
 
     if (!sort) {
       return [];
@@ -133,7 +133,7 @@ export class UserListPage {
     this.queryParamsService.updateQueryParams({
       page: DEFAULT_FIRST_PAGE,
       sort: nextColumn
-        ? (`${nextColumn.desc ? '-' : ''}${nextColumn.id}` as UsersRequestParams['sort'])
+        ? (`${nextColumn.desc ? '-' : ''}${nextColumn.id}` as UserQueryParams['sort'])
         : undefined,
     });
   };
@@ -161,7 +161,7 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.getAll(this.store.requestParams()));
+      .subscribe(() => this.store.getAll(this.store.queryParams()));
   }
 
   protected onRestoreUser(user: UserResponse): void {
@@ -183,7 +183,7 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.getAll(this.store.requestParams()));
+      .subscribe(() => this.store.getAll(this.store.queryParams()));
   }
 
   protected statuses: SelectableOption[] = [

@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectionStrategy,
@@ -72,7 +72,7 @@ const stepperPanelVariants = cva(
 
 @Component({
   selector: 'app-stepper',
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   templateUrl: './stepper.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -172,18 +172,16 @@ export class Stepper implements AfterContentChecked {
     return twMerge(shared, variants[step.resolvedStatus]);
   }
 
-  protected connectorClass(_step: ResolvedStepperStep): string {
+  protected connectorClass(step: ResolvedStepperStep): string {
     const shared = 'hidden rounded-full md:block';
+    const statusClass =
+      step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
 
     if (this.orientation() === 'vertical') {
       return twMerge(shared, 'ml-4 h-10 w-px self-start');
     }
 
-    return twMerge(shared, 'mt-4 h-px flex-1');
-  }
-
-  protected connectorStateClass(step: ResolvedStepperStep): string {
-    return step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
+    return twMerge(shared, statusClass, 'mt-4 h-px flex-1');
   }
 
   protected panelId(index: number): string {
