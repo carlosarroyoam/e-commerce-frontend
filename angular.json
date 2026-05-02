@@ -26,7 +26,7 @@
               "base": "dist/e-commerce-frontend"
             },
             "index": "src/index.html",
-            "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
@@ -76,12 +76,6 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n",
-          "options": {
-            "buildTarget": "e-commerce-frontend:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
@@ -94,9 +88,6 @@
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
-      },
-      "i18n": {
-        "sourceLocale": "es-MX"
       }
     }
   }
