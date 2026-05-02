@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /home/node/app
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build --omit=dev
 
-FROM nginx:1.27.2-alpine
+FROM nginx:1.30.0-alpine
 
 WORKDIR /usr/share/nginx/html
 
