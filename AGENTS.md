@@ -1,211 +1,54 @@
-# AGENTS.md - Agentic Coding Guidelines
+You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
-This file provides guidelines for agentic coding agents working in this repository.
+## TypeScript Best Practices
 
-## Project Overview
+- Use strict type checking
+- Prefer type inference when the type is obvious
+- Avoid the `any` type; use `unknown` when type is uncertain
 
-This is an Angular 21 standalone components application using:
+## Angular Best Practices
 
-- Angular Signals and NgRx Signals for state management
-- TailwindCSS 4.x for styling
-- Vitest for testing (not Karma/Jasmine)
-- ESLint + Prettier for linting/formatting
+- Always use standalone components over NgModules
+- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
+- Use signals for state management
+- Implement lazy loading for feature routes
+- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+- Use `NgOptimizedImage` for all static images.
+  - `NgOptimizedImage` does not work for inline base64 images.
 
-## Build, Lint, and Test Commands
+## Accessibility Requirements
 
-### Development
+- It MUST pass all AXE checks.
+- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
 
-```bash
-npm start            # Start dev server at http://localhost:4200
-npm run watch        # Watch mode build for development
-```
+### Components
 
-### Build
-
-```bash
-npm run build        # Production build (output: dist/e-commerce-frontend)
-npm run build -- --configuration development  # Development build
-```
-
-### Linting & Formatting
-
-```bash
-npm run lint         # Run ESLint on all .ts and .html files
-npm run lint:fix     # Run ESLint with auto-fix
-npm run format:check # Check Prettier formatting
-npm run format       # Fix Prettier formatting
-```
-
-### Testing
-
-```bash
-npm test             # Run all tests once
-ng test --watch     # Watch mode (terminal stays open)
-ng test --watch=false --browsers=ChromeHeadless  # Single run, headless
-```
-
-**Running a single test file:**
-
-```bash
-npx vitest run src/app/shared/components/alert-dialog/alert-dialog.spec.ts
-```
-
-**Running tests matching a pattern:**
-
-```bash
-npx vitest run -t "should create"
-```
-
-**Running tests in a specific directory:**
-
-```bash
-npx vitest run src/app/features/auth/
-```
-
-## Code Style Guidelines
-
-### File Naming Conventions
-
-- Components/Directives/Pipes: `name.ts` (NOT `name.component.ts`)
-- Spec files: `name.spec.ts`
-- Interfaces: `name.interfaces.ts` (in `interfaces/` subfolder)
-- Services: `name.service.ts` (in `services/` subfolder)
-- Stores: `name.store.ts` (in `stores/` subfolder)
-
-### Component Structure
-
-```typescript
-@Component({
-  selector: "app-example",
-  imports: [
-    /* standalone imports */
-  ],
-  templateUrl: "./example.html",
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class Example {
-  /* class members */
-}
-```
-
-### Import Organization (Order matters!)
-
-1. Angular core imports (`@angular/*`)
-2. Angular common imports (`CommonModule`, etc.)
-3. Third-party library imports
-4. Internal app imports (use path aliases)
-
-```typescript
-// Correct import order
-import { Component, inject } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
-import { SomeLibrary } from "some-library";
-
-import { AuthStore } from "@/core/data-access/stores/auth-store/auth.store";
-import { Button } from "@/shared/components/ui/button/button";
-import { MyService } from "@feature/user/services/my-service";
-import { MyComponent } from "@feature/user/my-component";
-```
-
-### Path Aliases
-
-Use these path aliases (defined in tsconfig.json):
-
-- `@/*` maps to `src/app/*`
-- `@/environments/*` maps to `src/environments/*`
-
-Example: `import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';`
-
-### Naming Conventions
-
-- **Components/Directives**: `PascalCase` (e.g., `AlertDialog`, `AppButton`)
-- **Selectors**: kebab-case with `app` prefix (e.g., `app-alert-dialog`, `button[appButton]`)
-- **Variables/Methods**: `camelCase` (e.g., `isLoading`, `getUserById`)
-- **Constants**: `PascalCase` with meaningful names (e.g., `API_AUTH_ROUTES`)
-- **Interfaces**: `PascalCase` ending with `Interface` or descriptive (e.g., `AlertDialogData`)
-
-### TypeScript Strict Mode
-
-This project uses strict TypeScript mode. Follow these rules:
-
-- Enable `strict: true` in tsconfig.json
-- Use explicit types, avoid `any`
-- Use `noPropertyAccessFromIndexSignature: true` - always use proper types
-- Use `noImplicitReturns: true` - all code paths must return values
-
-### State Management
-
-- Use NgRx Signals for global state (in `core/data-access/stores/`)
-- Use Angular Signals for local component state
+- Keep components small and focused on a single responsibility
+- Use `input()` and `output()` functions instead of decorators
 - Use `computed()` for derived state
-- Use `effect()` for side effects (navigation, etc.)
+- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
+- Prefer inline templates for small components
+- Prefer Reactive forms instead of Template-driven ones
+- Do NOT use `ngClass`, use `class` bindings instead
+- Do NOT use `ngStyle`, use `style` bindings instead
+- When using external templates/styles, use paths relative to the component TS file.
 
-### Testing Patterns
+## State Management
 
-- Use Vitest with `describe`, `it`, `beforeEach`
-- Use `vi.fn()` for mocks (from 'vitest')
-- Use TestBed for component testing
-- Use `ComponentFixture` and `detectChanges()`
+- Use signals for local component state
+- Use `computed()` for derived state
+- Keep state transformations pure and predictable
+- Do NOT use `mutate` on signals, use `update` or `set` instead
 
-```typescript
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { vi } from "vitest";
+## Templates
 
-describe("ComponentName", () => {
-  let component: ComponentName;
-  let fixture: ComponentFixture<ComponentName>;
+- Keep templates simple and avoid complex logic
+- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
+- Use the async pipe to handle observables
+- Do not assume globals like (`new Date()`) are available.
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ComponentName],
-      providers: [{ provide: SomeService, useValue: vi.fn() }],
-    }).compileComponents();
+## Services
 
-    fixture = TestBed.createComponent(ComponentName);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it("should create", () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
-
-### CSS/Styling
-
-- Use TailwindCSS 4.x (with `@theme` and `@utility` directives)
-- Use `class-variance-authority` (cva) + `tailwind-merge` (twMerge) for component variants
-- Avoid global styles; use component-scoped styles
-
-```typescript
-import { cva } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
-
-export const buttonVariants = cva("base classes", {
-  variants: {
-    variant: { default: "...", secondary: "..." },
-    size: { default: "...", sm: "..." },
-  },
-  defaultVariants: { variant: "default", size: "default" },
-});
-```
-
-### Editor Settings
-
-- 2-space indentation
-- Single quotes for TypeScript
-- UTF-8 charset
-- Trim trailing whitespace
-- Insert final newline
-
-Configured in `.editorconfig` - ensure your editor respects these settings.
-
-## Additional Notes
-
-- Angular version: 21.x (standalone components only, no NgModules)
-- Target: ES2022
-- Localization: es-MX (configured in angular.json)
-- Use `ChangeDetectionStrategy.OnPush` for all components
+- Design services around a single responsibility
+- Use the `providedIn: 'root'` option for singleton services
+- Use the `inject()` function instead of constructor injection
