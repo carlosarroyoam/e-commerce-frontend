@@ -143,7 +143,7 @@ export class UserListPage {
     this.alertDialogService
       .open({
         data: {
-          title: `Delete user`,
+          title: 'Delete user',
           description: `Are you sure you want to delete the user ${user.first_name}?`,
           primaryButtonLabel: 'Delete',
           showSecondaryButton: true,
@@ -165,7 +165,7 @@ export class UserListPage {
     this.alertDialogService
       .open({
         data: {
-          title: `Restore user`,
+          title: 'Restore user',
           description: `Are you sure you want to restore the user ${user.first_name}?`,
           primaryButtonLabel: 'Restore',
           showSecondaryButton: true,
