@@ -1,3 +1,5 @@
+/// <reference types="@angular/localize" />
+
 import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 

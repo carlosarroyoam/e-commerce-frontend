@@ -13,8 +13,6 @@ This project uses a modern Angular setup focused on:
 - Vitest for unit tests
 - ESLint and Prettier for code quality
 
-The app is configured for `es-MX`, targets `ES2022`, and uses strict TypeScript and strict Angular template checks.
-
 ## Tech Stack
 
 - Angular 21
