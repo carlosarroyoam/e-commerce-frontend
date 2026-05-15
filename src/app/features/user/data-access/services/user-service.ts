@@ -18,7 +18,7 @@ import { PagedUsersResponse } from '@/features/user/data-access/interfaces/paged
 export class UserService {
   private readonly httpClient = inject(HttpClient);
 
-  public getAll({
+  public findAll({
     search,
     status,
     page = DEFAULT_FIRST_PAGE,
@@ -38,7 +38,7 @@ export class UserService {
     );
   }
 
-  public getById(userId: number): Observable<UserResponse | null> {
+  public findById(userId: number): Observable<UserResponse | null> {
     return this.httpClient.get<UserResponse>(
       `${environment.apiUrl}/users/${userId}`,
     );

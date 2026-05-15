@@ -7,6 +7,7 @@ export type QueryParamValue = boolean | number | string | null | undefined;
 export type QueryParamsShape<TParams> = {
   [TKey in keyof TParams]: QueryParamValue;
 };
+
 export interface QueryParamsConfig<TParams extends QueryParamsShape<TParams>> {
   load(params: TParams): void;
   mapFromRoute(params: Params): TParams;

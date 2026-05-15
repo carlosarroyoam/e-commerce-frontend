@@ -15,13 +15,13 @@ export const provideUserQueryParamsConfig =
     const store = inject(UserStore);
 
     return {
-      load: (params) => store.getAll(params),
+      load: (params) => store.findAll(params),
       mapFromRoute: (params: Params) => ({
         search: params['search'],
         status: params['status'] as UserQueryParams['status'],
-        sort: params['sort'] as UserQueryParams['sort'],
         page: safeParsePositiveInt(params['page'], DEFAULT_FIRST_PAGE),
         size: safeParsePositiveInt(params['size'], DEFAULT_PAGE_SIZE),
+        sort: params['sort'],
       }),
       resetQueryParams: {
         page: DEFAULT_FIRST_PAGE,

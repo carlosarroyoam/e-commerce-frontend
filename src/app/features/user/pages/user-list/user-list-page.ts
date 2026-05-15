@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   createAngularTable,
   getCoreRowModel,
-  type OnChangeFn,
+  Updater,
   type SortingState,
 } from '@tanstack/angular-table';
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
@@ -24,7 +24,7 @@ import { UserQueryParams } from '@/features/user/data-access/interfaces/user-que
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
-import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
+import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
 import { provideUserQueryParamsConfig } from '@/features/user/routing/query-params-config-providers';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -64,21 +64,7 @@ export class UserListPage {
     inject<QueryParamsService<UserQueryParams>>(QueryParamsService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
-
   protected readonly store = inject(UserStore);
-
-  private readonly sorting = computed<SortingState>(() => {
-    const sort = this.store.queryParams().sort;
-
-    if (!sort) {
-      return [];
-    }
-
-    const isDesc = sort.startsWith('-');
-    const id = isDesc ? sort.slice(1) : sort;
-
-    return [{ id, desc: isDesc }];
-  });
 
   protected readonly form = this.fb.group({
     search: this.fb.control<string | null>(null),
@@ -87,15 +73,15 @@ export class UserListPage {
 
   protected table = createAngularTable(() => ({
     data: this.store.items(),
-    columns: buildUsersTableColumns({
+    columns: buildUserTableColumns({
       onEdit: (user) => this.onEditUser(user),
       onDelete: (user) => this.onDeleteUser(user),
       onRestore: (user) => this.onRestoreUser(user),
     }),
     manualSorting: true,
     enableSortingRemoval: true,
-    state: { sorting: this.sorting() },
-    onSortingChange: this.onSortingChange,
+    state: { sorting: this.sort() },
+    onSortingChange: (updater) => this.onSortingChange(updater),
     getCoreRowModel: getCoreRowModel(),
   }));
 
@@ -104,39 +90,50 @@ export class UserListPage {
     { label: 'Inactive', value: 'inactive' },
   ];
 
+  private readonly sort = computed<SortingState>(() => {
+    const sort = this.store.queryParams().sort;
+    if (!sort) return [];
+
+    const desc = sort.startsWith('-');
+    const id = desc ? sort.slice(1) : sort;
+    return [{ id, desc }];
+  });
+
   constructor() {
     this.subscribeFormChanges();
-    this.subscribeQueryParamChanges();
+    this.subscribeQueryParamsChanges();
   }
 
   protected reset(): void {
     this.queryParamsService.resetQueryParams();
   }
 
-  protected onPageChanged(page: number): void {
+  protected onPageChange(page: number): void {
     this.queryParamsService.updateQueryParams({ page });
   }
 
-  protected onSizeChanged(size: number): void {
+  protected onSizeChange(size: number): void {
     this.queryParamsService.updateQueryParams({
       page: DEFAULT_FIRST_PAGE,
       size,
     });
   }
 
-  private readonly onSortingChange: OnChangeFn<SortingState> = (updater) => {
-    const currentSorting = this.sorting();
+  protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
+    const currentSorting = this.sort();
     const nextSorting =
-      typeof updater === 'function' ? updater(currentSorting) : updater;
+      typeof updaterOrValue === 'function'
+        ? updaterOrValue(currentSorting)
+        : updaterOrValue;
     const nextColumn = nextSorting[0];
 
     this.queryParamsService.updateQueryParams({
       page: DEFAULT_FIRST_PAGE,
       sort: nextColumn
-        ? (`${nextColumn.desc ? '-' : ''}${nextColumn.id}` as UserQueryParams['sort'])
+        ? `${nextColumn.desc ? '-' : ''}${nextColumn.id}`
         : undefined,
     });
-  };
+  }
 
   protected onEditUser(user: UserResponse): void {
     console.log('Edit user:', user.id);
@@ -161,7 +158,7 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.getAll(this.store.queryParams()));
+      .subscribe(() => this.store.findAll(this.store.queryParams()));
   }
 
   protected onRestoreUser(user: UserResponse): void {
@@ -183,7 +180,7 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.getAll(this.store.queryParams()));
+      .subscribe(() => this.store.findAll(this.store.queryParams()));
   }
 
   private subscribeFormChanges() {
@@ -198,7 +195,7 @@ export class UserListPage {
       );
   }
 
-  private subscribeQueryParamChanges() {
+  private subscribeQueryParamsChanges() {
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
       this.form.patchValue(
         {

@@ -6,7 +6,7 @@ import { UserTableButtons } from '@/features/user/components/user-table-buttons/
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
-export function buildUsersTableColumns(opts: {
+export function buildUserTableColumns(opts: {
   onEdit: (user: UserResponse) => void;
   onDelete: (user: UserResponse) => void;
   onRestore: (user: UserResponse) => void;

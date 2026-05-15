@@ -16,15 +16,15 @@ export const UserStore = signalStore(
 
   withMethods((store, userService = inject(UserService)) => ({
     /**
-     * Gets all users.
+     * Gets the list of users.
      */
-    getAll: rxMethod<UserQueryParams>(
+    findAll: rxMethod<UserQueryParams>(
       pipe(
         tap((queryParams) =>
           patchState(store, { queryParams, isLoading: true, error: null }),
         ),
         switchMap((queryParams) =>
-          userService.getAll(queryParams).pipe(
+          userService.findAll(queryParams).pipe(
             tapResponse({
               next: ({ items, pagination }) =>
                 patchState(store, {
