@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
@@ -10,39 +10,48 @@ import { UserListPage } from './user-list-page';
 describe('UserListPage', () => {
   let component: UserListPage;
   let fixture: ComponentFixture<UserListPage>;
+  let queryParams$: BehaviorSubject<Params>;
+
+  const userServiceMock = {
+    getAll: vi.fn(() =>
+      of({
+        items: [],
+        pagination: {
+          page: 1,
+          size: 20,
+          totalItems: 0,
+          totalPages: 0,
+        },
+      }),
+    ),
+    deleteById: vi.fn(() => of(null)),
+    restoreById: vi.fn(() => of(null)),
+  };
+
+  const routerMock = {
+    navigate: vi.fn(() => Promise.resolve(true)),
+  };
 
   beforeEach(async () => {
+    queryParams$ = new BehaviorSubject<Params>({});
+    vi.clearAllMocks();
+
     await TestBed.configureTestingModule({
       imports: [UserListPage],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
-            queryParams: of({}),
+            queryParams: queryParams$.asObservable(),
           },
         },
         {
           provide: Router,
-          useValue: {
-            navigate: vi.fn(),
-          },
+          useValue: routerMock,
         },
         {
           provide: UserService,
-          useValue: {
-            getAll: vi.fn(() =>
-              of({
-                users: [],
-                pagination: {
-                  page: 1,
-                  size: 20,
-                  total: 0,
-                },
-              }),
-            ),
-            deleteById: vi.fn(() => of(null)),
-            restoreById: vi.fn(() => of(null)),
-          },
+          useValue: userServiceMock,
         },
         {
           provide: AlertDialogService,
@@ -62,5 +71,23 @@ describe('UserListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should map route query params before loading users', () => {
+    queryParams$.next({
+      search: 'alice',
+      status: 'active',
+      sort: '-email',
+      page: 'invalid',
+      size: '0',
+    });
+
+    expect(userServiceMock.getAll).toHaveBeenLastCalledWith({
+      search: 'alice',
+      status: 'active',
+      sort: '-email',
+      page: 1,
+      size: 20,
+    });
   });
 });

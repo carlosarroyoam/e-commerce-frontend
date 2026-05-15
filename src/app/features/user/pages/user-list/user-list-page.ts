@@ -16,12 +16,16 @@ import {
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
+import {
+  QUERY_PARAMS_CONFIG,
+  QueryParamsService,
+} from '@/core/routing/query-params.service';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUsersTableColumns } from '@/features/user/pages/user-list/user-table';
-import { UserQueryParamsService } from '@/features/user/routing/user-query-param.service';
+import { provideUserQueryParamsConfig } from '@/features/user/routing/query-params-config-providers';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -42,16 +46,24 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
     Select,
   ],
   templateUrl: './user-list-page.html',
-  providers: [UserStore, UserQueryParamsService],
+  providers: [
+    UserStore,
+    QueryParamsService,
+    {
+      provide: QUERY_PARAMS_CONFIG,
+      useFactory: provideUserQueryParamsConfig,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
+  private readonly queryParamsService =
+    inject<QueryParamsService<UserQueryParams>>(QueryParamsService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
-  private readonly queryParamsService = inject(UserQueryParamsService);
 
   protected readonly store = inject(UserStore);
 
@@ -87,26 +99,14 @@ export class UserListPage {
     getCoreRowModel: getCoreRowModel(),
   }));
 
-  constructor() {
-    this.form.valueChanges
-      .pipe(takeUntilDestroyed(), debounceTime(250))
-      .subscribe((value) =>
-        this.queryParamsService.updateQueryParams({
-          page: DEFAULT_FIRST_PAGE,
-          search: value.search || undefined,
-          status: value.status || undefined,
-        }),
-      );
+  protected readonly statuses: SelectableOption[] = [
+    { label: 'Active', value: 'active' },
+    { label: 'Inactive', value: 'inactive' },
+  ];
 
-    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
-      this.form.patchValue(
-        {
-          search: params['search'],
-          status: params['status'],
-        },
-        { emitEvent: false },
-      ),
-    );
+  constructor() {
+    this.subscribeFormChanges();
+    this.subscribeQueryParamChanges();
   }
 
   protected reset(): void {
@@ -186,14 +186,27 @@ export class UserListPage {
       .subscribe(() => this.store.getAll(this.store.queryParams()));
   }
 
-  protected statuses: SelectableOption[] = [
-    {
-      label: 'Active',
-      value: 'active',
-    },
-    {
-      label: 'Inactive',
-      value: 'inactive',
-    },
-  ];
+  private subscribeFormChanges() {
+    this.form.valueChanges
+      .pipe(takeUntilDestroyed(), debounceTime(250))
+      .subscribe((value) =>
+        this.queryParamsService.updateQueryParams({
+          page: DEFAULT_FIRST_PAGE,
+          search: value.search || undefined,
+          status: value.status || undefined,
+        }),
+      );
+  }
+
+  private subscribeQueryParamChanges() {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
+      this.form.patchValue(
+        {
+          search: params['search'],
+          status: params['status'],
+        },
+        { emitEvent: false },
+      ),
+    );
+  }
 }
