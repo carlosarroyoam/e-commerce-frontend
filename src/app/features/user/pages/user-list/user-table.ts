@@ -1,8 +1,8 @@
 import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
-import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UserTableButtons } from '@/features/user/components/user-table-buttons/user-table-buttons';
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
