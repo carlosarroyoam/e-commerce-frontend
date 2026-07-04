@@ -25,11 +25,7 @@ export class TextMask extends BaseMask {
   }
 
   protected override onKeyDown(event: KeyboardEvent): void {
-    if (
-      ALLOWED_KEYS.includes(event.key) ||
-      event.ctrlKey ||
-      event.metaKey
-    ) {
+    if (ALLOWED_KEYS.includes(event.key) || event.ctrlKey || event.metaKey) {
       return;
     }
 
