@@ -1,9 +1,9 @@
-export interface Session {
-  user_id: string;
-  email: string;
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
+
+export type Session = Pick<
+  UserResponse,
+  'id' | 'first_name' | 'last_name' | 'email'
+> & {
+  roles: string[];
   full_name: string;
-  first_name: string;
-  last_name: string;
-  user_role: string;
-  user_role_id: string;
-}
+};

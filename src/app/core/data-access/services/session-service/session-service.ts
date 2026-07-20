@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 
 import { SESSION_KEY } from '@/core/constants/storage-keys.constants';
+import { LoginResponse } from '@/core/data-access/interfaces/login-response';
 import { Session } from '@/core/data-access/interfaces/session';
 import { LocalStorageService } from '@/core/data-access/services/storage-service/local-storage-service';
-import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +15,18 @@ export class SessionService {
     return this.localStorageService.getItem<Session>(SESSION_KEY);
   }
 
-  public saveSession(user: Partial<UserResponse>): void {
+  public save(response: LoginResponse): void {
     this.localStorageService.setItem(SESSION_KEY, {
-      id: user.id,
-      email: user.email,
-      full_name: `${user.first_name} ${user.last_name}`,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      user_role: user.user_role,
-      user_role_id: user.user_role_id,
+      id: response.id,
+      first_name: response.first_name,
+      last_name: response.last_name,
+      full_name: `${response.first_name} ${response.last_name}`,
+      email: response.email,
+      roles: response.roles,
     });
   }
 
-  public clearSession(): void {
+  public clear(): void {
     this.localStorageService.removeItem(SESSION_KEY);
   }
 }

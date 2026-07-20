@@ -33,23 +33,23 @@ export class Paginator {
   protected readonly pageType = PageType;
 
   protected readonly from = computed(() => {
-    return (this.page() - 1) * this.size() + 1;
+    return this.page() * this.size() + 1;
   });
 
   protected readonly to = computed(() => {
-    return (this.page() - 1) * this.size() + (this.pagination()?.size ?? 0);
+    return this.page() * this.size() + (this.pagination()?.size ?? 0);
   });
 
   protected readonly totalPages = computed(() => {
-    return this.pagination()?.totalPages ?? 0;
+    return this.pagination()?.total_pages ?? 0;
   });
 
   protected readonly totalItems = computed(() => {
-    return this.pagination()?.totalItems ?? 0;
+    return this.pagination()?.total_items ?? 0;
   });
 
   protected readonly hasPreviousPage = computed(() => {
-    return this.page() - 1 >= 1;
+    return this.page() >= 0;
   });
 
   protected readonly hasNextPage = computed(() => {

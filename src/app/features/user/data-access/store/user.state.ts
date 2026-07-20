@@ -19,8 +19,8 @@ export const initialState: UserState = {
   pagination: {
     page: DEFAULT_FIRST_PAGE,
     size: 0,
-    totalItems: 0,
-    totalPages: 0,
+    total_items: 0,
+    total_pages: 0,
   },
   queryParams: {
     page: DEFAULT_FIRST_PAGE,

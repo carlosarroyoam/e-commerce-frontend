@@ -2,5 +2,8 @@ import { UserResponse } from '@/features/user/data-access/interfaces/user-respon
 
 export type LoginResponse = Pick<
   UserResponse,
-  'id' | 'first_name' | 'last_name' | 'email' | 'user_role' | 'user_role_id'
->;
+  'id' | 'first_name' | 'last_name' | 'email'
+> & {
+  roles: string[];
+  access_token: string;
+};

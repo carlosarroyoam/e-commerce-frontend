@@ -26,7 +26,7 @@
 
   <div class="mt-4 flex items-center justify-between gap-4 sm:mt-0">
     @if (totalPages()) {
-      <p class="text-sm">Page {{ page() }} of {{ totalPages() }}</p>
+      <p class="text-sm">Page {{ page() + 1 }} of {{ totalPages() }}</p>
     }
 
     <div class="flex items-center gap-2">

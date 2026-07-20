@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
 
 import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
-import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const authService = inject(AuthService);
   const authStore = inject(AuthStore);
 
   const isAuthRequest = API_AUTH_ROUTES.some((route) =>
@@ -27,8 +25,14 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => err);
       }
 
-      return authService.refreshToken().pipe(
-        switchMap(() => next(req)),
+      return authStore.refreshAccessToken().pipe(
+        switchMap((accessToken) =>
+          next(
+            req.clone({
+              setHeaders: { Authorization: `Bearer ${accessToken}` },
+            }),
+          ),
+        ),
         catchError((refreshError) => {
           if (
             refreshError instanceof HttpErrorResponse &&

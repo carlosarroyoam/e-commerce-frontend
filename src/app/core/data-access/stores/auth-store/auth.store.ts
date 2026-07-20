@@ -8,7 +8,16 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { finalize, pipe, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  map,
+  Observable,
+  of,
+  pipe,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
@@ -26,47 +35,74 @@ export const AuthStore = signalStore(
       store,
       authService = inject(AuthService),
       sessionService = inject(SessionService),
-    ) => ({
-      /**
-       * Login.
-       */
-      login: rxMethod<LoginRequest>(
-        pipe(
-          tap(() => patchState(store, { isLoading: true, error: null })),
-          switchMap((loginRequest) =>
-            authService.login(loginRequest).pipe(
-              tapResponse({
-                next: (user) => {
-                  sessionService.saveSession(user);
+    ) => {
+      return {
+        /**
+         * Login.
+         */
+        login: rxMethod<LoginRequest>(
+          pipe(
+            tap(() => patchState(store, { isLoading: true, error: null })),
+            switchMap((payload) =>
+              authService.login(payload).pipe(
+                tapResponse({
+                  next: (response) => {
+                    sessionService.save(response);
 
-                  patchState(store, {
-                    session: sessionService.getSession(),
-                    isAuthenticated: true,
-                  });
-                },
-                error: (err) =>
-                  patchState(store, { error: extractErrorMessage(err) }),
-              }),
-              finalize(() => patchState(store, { isLoading: false })),
+                    patchState(store, {
+                      accessToken: response.access_token,
+                      session: sessionService.getSession(),
+                      isAuthenticated: true,
+                    });
+                  },
+                  error: (err) =>
+                    patchState(store, { error: extractErrorMessage(err) }),
+                }),
+                finalize(() => patchState(store, { isLoading: false })),
+              ),
             ),
           ),
         ),
-      ),
 
-      /**
-       * Logout.
-       */
-      logout(): void {
-        authService.logout().subscribe();
+        /**
+         * Refresh access token.
+         */
+        refreshAccessToken(): Observable<string> {
+          return authService.refreshToken().pipe(
+            tap((response) =>
+              patchState(store, {
+                accessToken: response.access_token,
+                isAuthenticated: true,
+              }),
+            ),
+            map((response) => response.access_token),
+          );
+        },
 
-        sessionService.clearSession();
+        /**
+         * Logout.
+         */
+        logout(): void {
+          authService
+            .logout()
+            .pipe(
+              catchError((err) => {
+                console.error(err);
+                return of(undefined);
+              }),
+            )
+            .subscribe();
 
-        patchState(store, {
-          session: null,
-          isAuthenticated: false,
-        });
-      },
-    }),
+          sessionService.clear();
+
+          patchState(store, {
+            accessToken: null,
+            session: null,
+            isAuthenticated: false,
+          });
+        },
+      };
+    },
   ),
 
   withHooks({
@@ -77,10 +113,7 @@ export const AuthStore = signalStore(
       const session = sessionService.getSession();
 
       if (session) {
-        patchState(store, {
-          session,
-          isAuthenticated: true,
-        });
+        patchState(store, { session, isAuthenticated: true });
       }
     },
   }),

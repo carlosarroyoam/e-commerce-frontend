@@ -2,7 +2,10 @@ import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
 import { UserTableButtons } from '@/features/user/components/user-table-buttons/user-table-buttons';
-import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
+import {
+  RoleResponse,
+  UserResponse,
+} from '@/features/user/data-access/interfaces/user-response';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
@@ -31,10 +34,11 @@ export function buildUserTableColumns(opts: {
       cell: (info) => info.getValue(),
     },
     {
-      accessorKey: 'user_role',
+      accessorKey: 'roles',
       header: 'Role',
       enableSorting: false,
-      cell: (info) => (info.getValue() as string).replace('App/', ''),
+      cell: (info) =>
+        (info.getValue() as RoleResponse[]).map((role) => role.name).join(', '),
     },
     {
       accessorKey: 'created_at',
