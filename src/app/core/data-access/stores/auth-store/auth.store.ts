@@ -11,7 +11,6 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   catchError,
   finalize,
-  map,
   Observable,
   of,
   pipe,
@@ -20,6 +19,7 @@ import {
 } from 'rxjs';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
+import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { SessionService } from '@/core/data-access/services/session-service/session-service';
 import { initialState } from '@/core/data-access/stores/auth-store/auth.state';
@@ -56,7 +56,12 @@ export const AuthStore = signalStore(
                     });
                   },
                   error: (err) =>
-                    patchState(store, { error: extractErrorMessage(err) }),
+                    patchState(store, {
+                      accessToken: null,
+                      session: null,
+                      isAuthenticated: false,
+                      error: extractErrorMessage(err),
+                    }),
                 }),
                 finalize(() => patchState(store, { isLoading: false })),
               ),
@@ -67,15 +72,25 @@ export const AuthStore = signalStore(
         /**
          * Refresh access token.
          */
-        refreshAccessToken(): Observable<string> {
+        refreshAccessToken(): Observable<RefreshTokenResponse> {
           return authService.refreshToken().pipe(
-            tap((response) =>
-              patchState(store, {
-                accessToken: response.access_token,
-                isAuthenticated: true,
-              }),
-            ),
-            map((response) => response.access_token),
+            tapResponse({
+              next: (response) => {
+                patchState(store, {
+                  accessToken: response.access_token,
+                  isAuthenticated: true,
+                });
+              },
+              error: (err) => {
+                sessionService.clear();
+                patchState(store, {
+                  accessToken: null,
+                  session: null,
+                  isAuthenticated: false,
+                  error: extractErrorMessage(err),
+                });
+              },
+            }),
           );
         },
 
@@ -113,7 +128,7 @@ export const AuthStore = signalStore(
       const session = sessionService.getSession();
 
       if (session) {
-        patchState(store, { session, isAuthenticated: true });
+        patchState(store, { session });
       }
     },
   }),

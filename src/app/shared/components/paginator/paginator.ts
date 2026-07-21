@@ -37,7 +37,10 @@ export class Paginator {
   });
 
   protected readonly to = computed(() => {
-    return this.page() * this.size() + (this.pagination()?.size ?? 0);
+    return Math.min(
+      this.page() * this.size() + (this.pagination()?.size ?? 0),
+      this.totalItems(),
+    );
   });
 
   protected readonly totalPages = computed(() => {
@@ -49,17 +52,17 @@ export class Paginator {
   });
 
   protected readonly hasPreviousPage = computed(() => {
-    return this.page() >= 0;
+    return this.page() > 0;
   });
 
   protected readonly hasNextPage = computed(() => {
-    return this.page() + 1 <= this.totalPages();
+    return this.page() < this.totalPages() - 1;
   });
 
   protected changePage(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
-        this.pageChanged.emit(1);
+        this.pageChanged.emit(0);
         break;
       case PageType.PREVIOUS_PAGE:
         this.pageChanged.emit(this.page() - 1);
@@ -68,7 +71,7 @@ export class Paginator {
         this.pageChanged.emit(this.page() + 1);
         break;
       case PageType.LAST_PAGE:
-        this.pageChanged.emit(this.totalPages());
+        this.pageChanged.emit(this.totalPages() - 1);
         break;
       default:
         console.error('Invalid PageType: ' + pageType);

@@ -26,10 +26,12 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       return authStore.refreshAccessToken().pipe(
-        switchMap((accessToken) =>
+        switchMap(() =>
           next(
             req.clone({
-              setHeaders: { Authorization: `Bearer ${accessToken}` },
+              setHeaders: {
+                Authorization: `Bearer ${authStore.accessToken()}`,
+              },
             }),
           ),
         ),

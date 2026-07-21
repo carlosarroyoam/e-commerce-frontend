@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { DEVICE_ID_KEY as DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
+import { DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
 import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
