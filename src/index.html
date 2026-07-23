@@ -7,8 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script src="/assets/env.js"></script>
+    <style>
+      #bootstrap-loader {
+        position: fixed;
+        display: grid;
+        width: 100%;
+        min-height: 100dvh;
+        place-items: center;
+        background: #fff;
+      }
+
+      #bootstrap-loader__spinner {
+        width: 2rem;
+        height: 2rem;
+        border: 0.25rem solid #dbeafe;
+        border-top-color: #2563eb;
+        border-radius: 50%;
+        animation: bootstrap-loader-spin 0.75s linear infinite;
+      }
+
+      @keyframes bootstrap-loader-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #bootstrap-loader__spinner {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body class="bg-white text-zinc-600 antialiased">
+    <div id="bootstrap-loader" role="status" aria-label="Loading app">
+      <div id="bootstrap-loader__spinner" aria-hidden="true"></div>
+    </div>
     <app-root></app-root>
   </body>
 </html>

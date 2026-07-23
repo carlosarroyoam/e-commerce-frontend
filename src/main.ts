@@ -14,4 +14,6 @@ if (environment.production) {
 bootstrapApplication(App, {
   ...appConfig,
   providers: [provideZoneChangeDetection(), ...appConfig.providers],
-}).catch((err) => console.error(err));
+})
+  .finally(() => document.getElementById('bootstrap-loader')?.remove())
+  .catch((err: unknown) => console.error(err));
