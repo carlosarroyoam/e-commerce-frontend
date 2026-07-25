@@ -19,8 +19,8 @@ describe('UserListPage', () => {
         pagination: {
           page: 1,
           size: 20,
-          totalItems: 0,
-          totalPages: 0,
+          total_items: 0,
+          total_pages: 0,
         },
       }),
     ),
@@ -75,16 +75,26 @@ describe('UserListPage', () => {
 
   it('should map route query params before loading users', () => {
     queryParams$.next({
-      search: 'alice',
-      status: 'active',
+      firstName: 'Alice',
+      lastName: 'Doe',
+      email: 'alice@example.com',
+      status: 'ACTIVE',
+      startDate: '2026-01-01',
+      endDate: '2026-01-31',
+      roleIds: '1',
       sort: 'firstName,desc',
       page: 'invalid',
       size: '0',
     });
 
     expect(userServiceMock.findAll).toHaveBeenLastCalledWith({
-      search: 'alice',
-      status: 'active',
+      firstName: 'Alice',
+      lastName: 'Doe',
+      email: 'alice@example.com',
+      status: 'ACTIVE',
+      startDate: '2026-01-01',
+      endDate: '2026-01-31',
+      roleIds: '1',
       sort: 'firstName,desc',
       page: 0,
       size: 10,

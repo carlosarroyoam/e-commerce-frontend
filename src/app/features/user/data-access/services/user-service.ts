@@ -19,8 +19,13 @@ export class UserService {
   private readonly httpClient = inject(HttpClient);
 
   public findAll({
-    search,
+    firstName,
+    lastName,
+    email,
     status,
+    startDate,
+    endDate,
+    roleIds,
     page = DEFAULT_FIRST_PAGE,
     size = DEFAULT_PAGE_SIZE,
     sort,
@@ -29,8 +34,13 @@ export class UserService {
     params = params.append('page', page);
     params = params.append('size', size);
     if (sort) params = params.append('sort', sort);
-    if (search) params = params.append('search', search);
+    if (firstName) params = params.append('firstName', firstName);
+    if (lastName) params = params.append('lastName', lastName);
+    if (email) params = params.append('email', email);
     if (status) params = params.append('status', status);
+    if (startDate) params = params.append('startDate', startDate);
+    if (endDate) params = params.append('endDate', endDate);
+    if (roleIds) params = params.append('roleIds', roleIds);
 
     return this.httpClient.get<PagedUsersResponse>(
       `${environment.apiUrl}/users`,

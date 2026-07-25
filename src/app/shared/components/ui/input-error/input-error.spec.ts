@@ -46,4 +46,12 @@ describe('InputError', () => {
 
     expect(text()).toContain('The field is required.');
   });
+
+  it('should show the date range error when touched and invalid', () => {
+    host.control.setErrors({ dateRange: true });
+    host.control.markAsTouched();
+    fixture.detectChanges();
+
+    expect(text()).toContain('Start date must be on or before end date.');
+  });
 });

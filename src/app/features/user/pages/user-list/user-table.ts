@@ -5,9 +5,19 @@ import { UserTableButtons } from '@/features/user/components/user-table-buttons/
 import {
   RoleResponse,
   UserResponse,
+  UserStatus,
 } from '@/features/user/data-access/interfaces/user-response';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
-import { Chip } from '@/shared/components/ui/chip/chip';
+import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
+
+const USER_STATUS_CONFIG: Record<
+  UserStatus,
+  { label: string; variant: NonNullable<ChipVariants['variant']> }
+> = {
+  ACTIVE: { label: 'Active', variant: 'success' },
+  INACTIVE: { label: 'Inactive', variant: 'warning' },
+  DELETED: { label: 'Deleted', variant: 'danger' },
+};
 
 export function buildUserTableColumns(opts: {
   onEdit: (user: UserResponse) => void;
@@ -35,7 +45,7 @@ export function buildUserTableColumns(opts: {
     },
     {
       accessorKey: 'roles',
-      header: 'Role',
+      header: 'Roles',
       enableSorting: false,
       cell: (info) =>
         (info.getValue() as RoleResponse[]).map((role) => role.name).join(', '),
@@ -55,16 +65,17 @@ export function buildUserTableColumns(opts: {
         formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
-      accessorKey: 'deleted_at',
+      accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
       cell: (info) => {
-        const deletedAt = info.getValue() as string;
+        const status = info.getValue() as UserStatus;
+        const { label, variant } = USER_STATUS_CONFIG[status];
 
         return flexRenderComponent(Chip, {
           inputs: {
-            variant: deletedAt ? 'danger' : 'success',
-            label: deletedAt ? 'Inactive' : 'Active',
+            variant,
+            label,
           },
         });
       },

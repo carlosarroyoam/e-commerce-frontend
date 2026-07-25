@@ -1,3 +1,5 @@
+export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'DELETED';
+
 export interface RoleResponse {
   id: number;
   name: string;
@@ -9,6 +11,7 @@ export interface UserResponse {
   first_name: string;
   last_name: string;
   email: string;
+  status: UserStatus;
   roles: RoleResponse[];
   created_at: string;
   updated_at: string;

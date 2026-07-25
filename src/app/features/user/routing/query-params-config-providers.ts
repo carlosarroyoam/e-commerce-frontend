@@ -17,8 +17,13 @@ export const provideUserQueryParamsConfig =
     return {
       load: (params) => store.findAll(params),
       mapFromRoute: (params: Params) => ({
-        search: params['search'],
+        firstName: params['firstName'],
+        lastName: params['lastName'],
+        email: params['email'],
         status: params['status'] as UserQueryParams['status'],
+        startDate: params['startDate'],
+        endDate: params['endDate'],
+        roleIds: params['roleIds'],
         page: safeParsePositiveInt(params['page'], DEFAULT_FIRST_PAGE),
         size: safeParsePositiveInt(params['size'], DEFAULT_PAGE_SIZE),
         sort: params['sort'],

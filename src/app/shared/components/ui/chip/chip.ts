@@ -14,6 +14,7 @@ export const chipVariants = cva(
       variant: {
         default: 'bg-blue-50 text-blue-600',
         success: 'bg-green-50 text-green-600',
+        warning: 'bg-orange-50 text-orange-600',
         danger: 'bg-red-50 text-red-600',
       },
     },
@@ -28,6 +29,7 @@ const chipBadgeVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
     variant: {
       default: 'bg-blue-600',
       success: 'bg-green-600',
+      warning: 'bg-orange-600',
       danger: 'bg-red-600',
     },
   },

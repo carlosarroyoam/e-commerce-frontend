@@ -14,4 +14,5 @@ export const ERROR_MESSAGES: Record<string, string | ErrorMessageFn> = {
   pattern: 'The field format is invalid.',
   invalidDateTimeFormat: (error) =>
     `The field format should be ${error['invalidDateTimeFormat'].requiredFormat}.`,
+  dateRange: 'Start date must be on or before end date.',
 };

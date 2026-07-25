@@ -20,8 +20,12 @@ import {
   QUERY_PARAMS_CONFIG,
   QueryParamsService,
 } from '@/core/routing/query-params.service';
+import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
-import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
+import {
+  UserResponse,
+  UserStatus,
+} from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
@@ -29,12 +33,14 @@ import { provideUserQueryParamsConfig } from '@/features/user/routing/query-para
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
+import { InputError } from '@/shared/components/ui/input-error/input-error';
+import { InputLabel } from '@/shared/components/ui/input-label/input-label';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { SelectableOption } from '@/shared/components/ui/option-selectors/base-option-selector';
 import { Select } from '@/shared/components/ui/option-selectors/select/select';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
-import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
+import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 
 @Component({
   selector: 'app-user-list',
@@ -44,6 +50,8 @@ import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
     Paginator,
     Button,
     AppInput,
+    InputLabel,
+    InputError,
     Select,
   ],
   templateUrl: './user-list-page.html',
@@ -67,10 +75,18 @@ export class UserListPage {
   private readonly toastService = inject(ToastService);
   protected readonly store = inject(UserStore);
 
-  protected readonly form = this.fb.group({
-    search: this.fb.control<string | null>(null),
-    status: this.fb.control<'active' | 'inactive' | null>(null),
-  });
+  protected readonly form = this.fb.group(
+    {
+      firstName: this.fb.control<string | null>(null),
+      lastName: this.fb.control<string | null>(null),
+      email: this.fb.control<string | null>(null),
+      status: this.fb.control<UserStatus | null>(null),
+      startDate: this.fb.control<string | null>(null),
+      endDate: this.fb.control<string | null>(null),
+      roleId: this.fb.control<number | null>(null),
+    },
+    { validators: dateRangeValidator },
+  );
 
   protected table = createAngularTable(() => ({
     data: this.store.items(),
@@ -87,8 +103,15 @@ export class UserListPage {
   }));
 
   protected readonly statuses: SelectableOption[] = [
+    { label: 'All statuses', value: null },
     { label: 'Active', value: 'ACTIVE' },
     { label: 'Inactive', value: 'INACTIVE' },
+    { label: 'Deleted', value: 'DELETED' },
+  ];
+
+  protected readonly roles: SelectableOption[] = [
+    { label: 'All roles', value: null },
+    { label: 'ADMIN', value: 1 },
   ];
 
   private readonly sort = computed<SortingState>(() => {
@@ -187,12 +210,21 @@ export class UserListPage {
 
   private subscribeFormChanges() {
     this.form.valueChanges
-      .pipe(takeUntilDestroyed(), debounceTime(250))
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(250),
+        filter(() => this.form.valid),
+      )
       .subscribe((value) =>
         this.queryParamsService.updateQueryParams({
           page: DEFAULT_FIRST_PAGE,
-          search: value.search || undefined,
+          firstName: value.firstName || undefined,
+          lastName: value.lastName || undefined,
+          email: value.email || undefined,
           status: value.status || undefined,
+          startDate: value.startDate || undefined,
+          endDate: value.endDate || undefined,
+          roleIds: value.roleId ? String(value.roleId) : undefined,
         }),
       );
   }
@@ -201,8 +233,13 @@ export class UserListPage {
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
       this.form.patchValue(
         {
-          search: params['search'],
+          firstName: params['firstName'],
+          lastName: params['lastName'],
+          email: params['email'],
           status: params['status'],
+          startDate: params['startDate'],
+          endDate: params['endDate'],
+          roleId: Number(params['roleIds']) === 1 ? 1 : null,
         },
         { emitEvent: false },
       ),
