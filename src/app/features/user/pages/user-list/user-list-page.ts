@@ -34,6 +34,7 @@ import { SelectableOption } from '@/shared/components/ui/option-selectors/base-o
 import { Select } from '@/shared/components/ui/option-selectors/select/select';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
+import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 
 @Component({
   selector: 'app-user-list',
@@ -86,17 +87,18 @@ export class UserListPage {
   }));
 
   protected readonly statuses: SelectableOption[] = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
+    { label: 'Active', value: 'ACTIVE' },
+    { label: 'Inactive', value: 'INACTIVE' },
   ];
 
   private readonly sort = computed<SortingState>(() => {
     const sort = this.store.queryParams().sort;
     if (!sort) return [];
 
-    const desc = sort.startsWith('-');
-    const id = desc ? sort.slice(1) : sort;
-    return [{ id, desc }];
+    const [field, direction] = sort.split(',');
+    if (!field) return [];
+
+    return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
   });
 
   constructor() {
@@ -130,7 +132,7 @@ export class UserListPage {
     this.queryParamsService.updateQueryParams({
       page: DEFAULT_FIRST_PAGE,
       sort: nextColumn
-        ? `${nextColumn.desc ? '-' : ''}${nextColumn.id}`
+        ? `${toCamelCase(nextColumn.id)},${nextColumn.desc ? 'desc' : 'asc'}`
         : undefined,
     });
   }

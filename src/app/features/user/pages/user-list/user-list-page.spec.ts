@@ -77,7 +77,7 @@ describe('UserListPage', () => {
     queryParams$.next({
       search: 'alice',
       status: 'active',
-      sort: '-email',
+      sort: 'firstName,desc',
       page: 'invalid',
       size: '0',
     });
@@ -85,7 +85,7 @@ describe('UserListPage', () => {
     expect(userServiceMock.findAll).toHaveBeenLastCalledWith({
       search: 'alice',
       status: 'active',
-      sort: '-email',
+      sort: 'firstName,desc',
       page: 0,
       size: 10,
     });
