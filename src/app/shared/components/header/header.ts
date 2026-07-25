@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { Session } from '@/core/data-access/interfaces/session';
+import { AuthSession } from '@/core/data-access/interfaces/auth-session';
 import { UserNav } from '@/shared/components/header/user-nav/user-nav';
 import { ClickOutside } from '@/shared/directives/click-outside/click-outside.directive';
 
@@ -23,7 +23,7 @@ export interface MenuItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  public readonly session = input.required<Session | null>();
+  public readonly session = input.required<AuthSession | null>();
   public readonly logout = output<void>();
 
   protected readonly isMobileMenuOpen = signal(false);

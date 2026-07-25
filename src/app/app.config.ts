@@ -16,7 +16,7 @@ import { xsrfInterceptor } from '@/core/interceptors/xsrf-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAppInitializer(() => inject(AuthStore).refreshAccessToken()),
+    provideAppInitializer(() => inject(AuthStore).restoreSession()),
     provideRouter(routes),
     provideHttpClient(
       withInterceptors([

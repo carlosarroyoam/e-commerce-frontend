@@ -1,16 +1,11 @@
 import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   catchError,
   finalize,
+  map,
   Observable,
   of,
   pipe,
@@ -19,9 +14,10 @@ import {
 } from 'rxjs';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
+import { AuthSession } from '@/core/data-access/interfaces/auth-session';
+import { LoginResponse } from '@/core/data-access/interfaces/login-response';
 import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
-import { SessionService } from '@/core/data-access/services/session-service/session-service';
 import { initialState } from '@/core/data-access/stores/auth-store/auth.state';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 
@@ -30,106 +26,104 @@ export const AuthStore = signalStore(
 
   withState(initialState),
 
-  withMethods(
-    (
-      store,
-      authService = inject(AuthService),
-      sessionService = inject(SessionService),
-    ) => {
-      return {
-        /**
-         * Login.
-         */
-        login: rxMethod<LoginRequest>(
-          pipe(
-            tap(() => patchState(store, { isLoading: true, error: null })),
-            switchMap((payload) =>
-              authService.login(payload).pipe(
-                tapResponse({
-                  next: (response) => {
-                    sessionService.save(response);
-
-                    patchState(store, {
-                      accessToken: response.access_token,
-                      session: sessionService.getSession(),
-                      isAuthenticated: true,
-                    });
-                  },
-                  error: (err) =>
-                    patchState(store, {
-                      accessToken: null,
-                      session: null,
-                      isAuthenticated: false,
-                      error: extractErrorMessage(err),
-                    }),
-                }),
-                finalize(() => patchState(store, { isLoading: false })),
-              ),
+  withMethods((store, authService = inject(AuthService)) => {
+    return {
+      /**
+       * Login.
+       */
+      login: rxMethod<LoginRequest>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap((payload) =>
+            authService.login(payload).pipe(
+              tapResponse({
+                next: (response) => {
+                  patchState(store, {
+                    accessToken: response.access_token,
+                    session: toAuthSession(response),
+                    isAuthenticated: true,
+                  });
+                },
+                error: (err) =>
+                  patchState(store, {
+                    accessToken: null,
+                    session: null,
+                    isAuthenticated: false,
+                    error: extractErrorMessage(err),
+                  }),
+              }),
+              finalize(() => patchState(store, { isLoading: false })),
             ),
           ),
         ),
+      ),
 
-        /**
-         * Refresh access token.
-         */
-        refreshAccessToken(): Observable<RefreshTokenResponse> {
-          return authService.refreshToken().pipe(
-            tapResponse({
-              next: (response) => {
-                patchState(store, {
-                  accessToken: response.access_token,
-                  isAuthenticated: true,
-                });
-              },
-              error: (err) => {
-                sessionService.clear();
-                patchState(store, {
-                  accessToken: null,
-                  session: null,
-                  isAuthenticated: false,
-                  error: extractErrorMessage(err),
-                });
-              },
+      /**
+       * Refresh access token.
+       */
+      refreshAccessToken(): Observable<RefreshTokenResponse> {
+        return authService.refreshToken().pipe(
+          tapResponse({
+            next: (response) => {
+              patchState(store, {
+                accessToken: response.access_token,
+                session: toAuthSession(response),
+                isAuthenticated: true,
+              });
+            },
+            error: (err) => {
+              patchState(store, {
+                accessToken: null,
+                session: null,
+                isAuthenticated: false,
+                error: extractErrorMessage(err),
+              });
+            },
+          }),
+        );
+      },
+
+      /**
+       * Restores the in-memory session during app startup.
+       */
+      restoreSession(): Observable<void> {
+        return this.refreshAccessToken().pipe(
+          map(() => undefined),
+          catchError(() => of(undefined)),
+        );
+      },
+
+      /**
+       * Logout.
+       */
+      logout(): void {
+        authService
+          .logout()
+          .pipe(
+            catchError((err) => {
+              console.error(err);
+              return of(undefined);
             }),
-          );
-        },
+          )
+          .subscribe();
 
-        /**
-         * Logout.
-         */
-        logout(): void {
-          authService
-            .logout()
-            .pipe(
-              catchError((err) => {
-                console.error(err);
-                return of(undefined);
-              }),
-            )
-            .subscribe();
-
-          sessionService.clear();
-
-          patchState(store, {
-            accessToken: null,
-            session: null,
-            isAuthenticated: false,
-          });
-        },
-      };
-    },
-  ),
-
-  withHooks({
-    /**
-     * Initializes store from localStorage.
-     */
-    onInit(store, sessionService = inject(SessionService)) {
-      const session = sessionService.getSession();
-
-      if (session) {
-        patchState(store, { session });
-      }
-    },
+        patchState(store, {
+          accessToken: null,
+          session: null,
+          isAuthenticated: false,
+        });
+      },
+    };
   }),
 );
+
+const toAuthSession = (
+  response: LoginResponse | RefreshTokenResponse,
+): AuthSession => ({
+  id: response.id,
+  first_name: response.first_name,
+  last_name: response.last_name,
+  full_name: `${response.first_name} ${response.last_name}`,
+  email: response.email,
+  roles: response.roles,
+});

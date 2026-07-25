@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { Session } from '@/core/data-access/interfaces/session';
+import { AuthSession } from '@/core/data-access/interfaces/auth-session';
 import { MenuItem } from '@/shared/components/header/header';
 
 @Component({
@@ -19,7 +19,7 @@ import { MenuItem } from '@/shared/components/header/header';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
-  public readonly session = input.required<Session | null>();
+  public readonly session = input.required<AuthSession | null>();
   public readonly menuItems = input.required<MenuItem[]>();
   public readonly logout = output<void>();
 

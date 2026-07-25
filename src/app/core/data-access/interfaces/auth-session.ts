@@ -1,6 +1,6 @@
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
-export type Session = Pick<
+export type AuthSession = Pick<
   UserResponse,
   'id' | 'first_name' | 'last_name' | 'email'
 > & {
