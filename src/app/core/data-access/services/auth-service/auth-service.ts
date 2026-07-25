@@ -1,6 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { finalize, Observable, shareReplay } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  Observable,
+  shareReplay,
+  throwError,
+} from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
@@ -35,20 +41,19 @@ export class AuthService {
       return this.refreshInFlight$;
     }
 
-    const refreshRequest$ = this.httpClient
-      .post<RefreshTokenResponse>(
-        `${environment.apiUrl}/auth/refresh-token`,
-        null,
-        { context: createAuthRequestContext() },
-      )
-      .pipe(
-        finalize(() => {
-          if (this.refreshInFlight$ === refreshRequest$) {
-            this.refreshInFlight$ = null;
-          }
-        }),
-        shareReplay({ bufferSize: 1, refCount: false }),
-      );
+    const refreshRequest$ = this.createRefreshRequest().pipe(
+      catchError((error: unknown) =>
+        error instanceof HttpErrorResponse && error.status === 403
+          ? this.createRefreshRequest()
+          : throwError(() => error),
+      ),
+      finalize(() => {
+        if (this.refreshInFlight$ === refreshRequest$) {
+          this.refreshInFlight$ = null;
+        }
+      }),
+      shareReplay({ bufferSize: 1, refCount: false }),
+    );
 
     this.refreshInFlight$ = refreshRequest$;
 
@@ -58,6 +63,14 @@ export class AuthService {
   public logout(): Observable<void> {
     return this.httpClient.post<void>(
       `${environment.apiUrl}/auth/logout`,
+      null,
+      { context: createAuthRequestContext() },
+    );
+  }
+
+  private createRefreshRequest(): Observable<RefreshTokenResponse> {
+    return this.httpClient.post<RefreshTokenResponse>(
+      `${environment.apiUrl}/auth/refresh-token`,
       null,
       { context: createAuthRequestContext() },
     );
