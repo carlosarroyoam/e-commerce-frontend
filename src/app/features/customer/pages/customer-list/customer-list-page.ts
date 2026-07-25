@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   createAngularTable,
@@ -70,7 +70,9 @@ export class CustomerListPage {
     {
       firstName: this.fb.control<string | null>(null),
       lastName: this.fb.control<string | null>(null),
-      email: this.fb.control<string | null>(null),
+      email: this.fb.control<string | null>(null, {
+        validators: [Validators.email],
+      }),
       status: this.fb.control<CustomerStatus | null>(null),
       startDate: this.fb.control<string | null>(null),
       endDate: this.fb.control<string | null>(null),
@@ -141,6 +143,7 @@ export class CustomerListPage {
 
   protected reset(): void {
     this.queryParamsService.resetQueryParams();
+    this.form.reset();
   }
 
   protected onPageChange(page: number): void {

@@ -21,6 +21,7 @@
             placeholder="First name"
             formControlName="firstName"
           />
+          <app-input-error [control]="form.get('firstName')" />
         </div>
 
         <div class="space-y-2">
@@ -34,6 +35,7 @@
             placeholder="Last name"
             formControlName="lastName"
           />
+          <app-input-error [control]="form.get('lastName')" />
         </div>
 
         <div class="space-y-2">
@@ -48,6 +50,7 @@
             placeholder="Email"
             formControlName="email"
           />
+          <app-input-error [control]="form.get('email')" />
         </div>
 
         <div class="space-y-2">
@@ -59,6 +62,7 @@
             [options]="statuses"
             formControlName="status"
           />
+          <app-input-error [control]="form.get('status')" />
         </div>
 
         <div class="space-y-2">
@@ -71,6 +75,7 @@
             [attr.aria-invalid]="form.hasError('dateRange') ? 'true' : null"
             formControlName="startDate"
           />
+          <app-input-error [control]="form.get('startDate')" />
         </div>
 
         <div class="space-y-2">
@@ -83,6 +88,7 @@
             [attr.aria-invalid]="form.hasError('dateRange') ? 'true' : null"
             formControlName="endDate"
           />
+          <app-input-error [control]="form.get('endDate')" />
         </div>
 
         <button
