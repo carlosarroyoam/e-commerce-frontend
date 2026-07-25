@@ -21,15 +21,6 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
       }
 
       return authStore.refreshAccessToken().pipe(
-        switchMap(() =>
-          next(
-            request.clone({
-              setHeaders: {
-                Authorization: `Bearer ${authStore.accessToken()}`,
-              },
-            }),
-          ),
-        ),
         catchError((refreshError: unknown) => {
           if (
             refreshError instanceof HttpErrorResponse &&
@@ -41,6 +32,15 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
 
           return throwError(() => refreshError);
         }),
+        switchMap(() =>
+          next(
+            request.clone({
+              setHeaders: {
+                Authorization: `Bearer ${authStore.accessToken()}`,
+              },
+            }),
+          ),
+        ),
       );
     }),
   );

@@ -30,7 +30,7 @@
     <!-- User navigation. -->
     <app-user-nav
       [menuItems]="userNavMenuItems"
-      [session]="session()"
+      [authSession]="authSession()"
       (logout)="logout.emit()"
       class="hidden md:block"
     />

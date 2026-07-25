@@ -4,14 +4,14 @@ type ErrorMessageFn = (errors: ValidationErrors) => string;
 
 export const ERROR_MESSAGES: Record<string, string | ErrorMessageFn> = {
   required: 'The field is required.',
-  minlength: (err) =>
-    `The field should be at least ${err['minlength'].requiredLength} characters long.`,
-  maxlength: (err) =>
-    `The field should be at most ${err['maxlength'].requiredLength} characters long.`,
-  min: (err) => `The minimum value is ${err['min'].min}.`,
-  max: (err) => `The maximum value is ${err['max'].max}.`,
+  minlength: (error) =>
+    `The field should be at least ${error['minlength'].requiredLength} characters long.`,
+  maxlength: (error) =>
+    `The field should be at most ${error['maxlength'].requiredLength} characters long.`,
+  min: (error) => `The minimum value is ${error['min'].min}.`,
+  max: (error) => `The maximum value is ${error['max'].max}.`,
   email: 'The field should be a valid email address.',
   pattern: 'The field format is invalid.',
-  invalidDateTimeFormat: (err) =>
-    `The field format should be ${err['invalidDateTimeFormat'].requiredFormat}.`,
+  invalidDateTimeFormat: (error) =>
+    `The field format should be ${error['invalidDateTimeFormat'].requiredFormat}.`,
 };

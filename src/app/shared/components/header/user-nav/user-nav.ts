@@ -19,18 +19,18 @@ import { MenuItem } from '@/shared/components/header/header';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserNav {
-  public readonly session = input.required<AuthSession | null>();
+  public readonly authSession = input.required<AuthSession | null>();
   public readonly menuItems = input.required<MenuItem[]>();
   public readonly logout = output<void>();
 
   protected readonly isOpen = signal(false);
 
   protected readonly src = computed(() => {
-    return `https://ui-avatars.com/api/?name=${this.session()?.full_name}&format=svg&background=d4d4d8`;
+    return `https://ui-avatars.com/api/?name=${this.authSession()?.full_name}&format=svg&background=d4d4d8`;
   });
 
   protected readonly alt = computed(() => {
-    return `${this.session()?.first_name}'s profile picture`;
+    return `${this.authSession()?.first_name}'s profile picture`;
   });
 
   protected open(): void {

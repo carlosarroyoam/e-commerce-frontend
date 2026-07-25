@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable, shareReplay } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
@@ -17,6 +17,7 @@ import { environment } from '@/environments/environment';
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly localStorageService = inject(LocalStorageService);
+  private refreshInFlight$: Observable<RefreshTokenResponse> | null = null;
 
   public login(payload: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(
@@ -30,11 +31,28 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<RefreshTokenResponse> {
-    return this.httpClient.post<RefreshTokenResponse>(
-      `${environment.apiUrl}/auth/refresh-token`,
-      null,
-      { context: createAuthRequestContext() },
-    );
+    if (this.refreshInFlight$) {
+      return this.refreshInFlight$;
+    }
+
+    const refreshRequest$ = this.httpClient
+      .post<RefreshTokenResponse>(
+        `${environment.apiUrl}/auth/refresh-token`,
+        null,
+        { context: createAuthRequestContext() },
+      )
+      .pipe(
+        finalize(() => {
+          if (this.refreshInFlight$ === refreshRequest$) {
+            this.refreshInFlight$ = null;
+          }
+        }),
+        shareReplay({ bufferSize: 1, refCount: false }),
+      );
+
+    this.refreshInFlight$ = refreshRequest$;
+
+    return refreshRequest$;
   }
 
   public logout(): Observable<void> {

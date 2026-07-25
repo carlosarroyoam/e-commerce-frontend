@@ -31,11 +31,11 @@ export const UserStore = signalStore(
                   items,
                   pagination,
                 }),
-              error: (err) =>
+              error: (error) =>
                 patchState(store, {
                   items: [],
                   pagination: { ...initialState.pagination },
-                  error: extractErrorMessage(err),
+                  error: extractErrorMessage(error),
                 }),
             }),
             finalize(() => patchState(store, { isLoading: false })),

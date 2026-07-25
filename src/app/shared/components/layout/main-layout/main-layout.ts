@@ -15,11 +15,7 @@ import { Header } from '@/shared/components/header/header';
 })
 export class MainLayout {
   private readonly router = inject(Router);
-  private readonly authStore = inject(AuthStore);
-
-  get session() {
-    return this.authStore.session();
-  }
+  protected readonly authStore = inject(AuthStore);
 
   protected logout(): void {
     this.authStore.logout();

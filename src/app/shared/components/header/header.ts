@@ -23,7 +23,7 @@ export interface MenuItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  public readonly session = input.required<AuthSession | null>();
+  public readonly authSession = input.required<AuthSession | null>();
   public readonly logout = output<void>();
 
   protected readonly isMobileMenuOpen = signal(false);

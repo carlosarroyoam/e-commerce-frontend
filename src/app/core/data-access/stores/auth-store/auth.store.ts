@@ -40,16 +40,16 @@ export const AuthStore = signalStore(
                 next: (response) => {
                   patchState(store, {
                     accessToken: response.access_token,
-                    session: toAuthSession(response),
+                    authSession: toAuthSession(response),
                     isAuthenticated: true,
                   });
                 },
-                error: (err) =>
+                error: (error) =>
                   patchState(store, {
                     accessToken: null,
-                    session: null,
+                    authSession: null,
                     isAuthenticated: false,
-                    error: extractErrorMessage(err),
+                    error: extractErrorMessage(error),
                   }),
               }),
               finalize(() => patchState(store, { isLoading: false })),
@@ -63,23 +63,25 @@ export const AuthStore = signalStore(
        */
       refreshAccessToken(): Observable<RefreshTokenResponse> {
         return authService.refreshToken().pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
           tapResponse({
             next: (response) => {
               patchState(store, {
                 accessToken: response.access_token,
-                session: toAuthSession(response),
+                authSession: toAuthSession(response),
                 isAuthenticated: true,
               });
             },
-            error: (err) => {
+            error: (error) => {
               patchState(store, {
                 accessToken: null,
-                session: null,
+                authSession: null,
                 isAuthenticated: false,
-                error: extractErrorMessage(err),
+                error: extractErrorMessage(error),
               });
             },
           }),
+          finalize(() => patchState(store, { isLoading: false })),
         );
       },
 
@@ -97,19 +99,11 @@ export const AuthStore = signalStore(
        * Logout.
        */
       logout(): void {
-        authService
-          .logout()
-          .pipe(
-            catchError((err) => {
-              console.error(err);
-              return of(undefined);
-            }),
-          )
-          .subscribe();
+        authService.logout().subscribe();
 
         patchState(store, {
           accessToken: null,
-          session: null,
+          authSession: null,
           isAuthenticated: false,
         });
       },

@@ -44,11 +44,11 @@
   >
     <div class="px-2 py-1.5">
       <p class="text-sm font-semibold text-zinc-900">
-        {{ session()?.full_name }}
+        {{ authSession()?.full_name }}
       </p>
 
       <span class="text-sm">
-        {{ session()?.email }}
+        {{ authSession()?.email }}
       </span>
     </div>
 

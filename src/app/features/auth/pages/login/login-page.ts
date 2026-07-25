@@ -46,27 +46,26 @@ export class LoginPage {
       if (this.authStore.isAuthenticated()) {
         const returnUrl =
           this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
-
         this.router.navigateByUrl(returnUrl);
       }
     });
   }
 
   protected login(): void {
+    const rawValue = this.form.getRawValue();
+
     if (this.form.invalid) {
+      this.form.markAllAsTouched();
       throw new Error('Form fields are invalid');
     }
 
-    const email = this.form.value.email;
-    const password = this.form.value.password;
-
-    if (!email || !password) {
+    if (!rawValue.email || !rawValue.password) {
       throw new Error('Email and Password fields are required');
     }
 
     this.authStore.login({
-      email,
-      password,
+      email: rawValue.email,
+      password: rawValue.password,
     });
   }
 }

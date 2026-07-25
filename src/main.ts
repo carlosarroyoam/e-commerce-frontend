@@ -16,4 +16,4 @@ bootstrapApplication(App, {
   providers: [provideZoneChangeDetection(), ...appConfig.providers],
 })
   .finally(() => document.getElementById('bootstrap-loader')?.remove())
-  .catch((err: unknown) => console.error(err));
+  .catch((error: unknown) => console.error(error));
