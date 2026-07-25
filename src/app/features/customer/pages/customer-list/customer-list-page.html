@@ -107,7 +107,7 @@
       </div>
     </form>
 
-    <app-table [table]="table" />
+    <app-table [table]="table" [isLoading]="store.isLoading()" />
 
     <app-paginator
       [page]="store.queryParams().page!"
