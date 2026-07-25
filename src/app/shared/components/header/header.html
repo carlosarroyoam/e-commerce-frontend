@@ -12,7 +12,7 @@
         e-commerce
       </a>
 
-      <ul class="hidden md:ml-12 md:flex md:flex-row md:items-center md:gap-8">
+      <ul class="hidden lg:ml-12 lg:flex lg:flex-row lg:items-center lg:gap-8">
         @for (menuItem of menuItems; track $index) {
           <li>
             <a
@@ -32,11 +32,11 @@
       [menuItems]="userNavMenuItems"
       [authSession]="authSession()"
       (logout)="logout.emit()"
-      class="hidden md:block"
+      class="hidden lg:block"
     />
 
     <!-- Mobile menu trigger. -->
-    <div class="flex md:hidden">
+    <div class="flex lg:hidden">
       <button
         type="button"
         (click)="toggleMobileMenu()"
@@ -64,7 +64,7 @@
 
   <!-- Mobile menu, show/hide based on menu open state. -->
   @if (isMobileMenuOpen()) {
-    <div class="md:hidden">
+    <div class="lg:hidden">
       <nav class="container">
         <ul class="flex flex-col gap-4">
           @for (menuItem of menuItems; track $index) {
