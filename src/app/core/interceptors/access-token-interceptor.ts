@@ -1,23 +1,20 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 
-import { API_AUTH_ROUTES } from '@/core/constants/auth.constants';
+import { SKIP_ACCESS_TOKEN } from '@/core/http/auth-request-context';
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
 
-export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => {
+export const accessTokenInterceptor: HttpInterceptorFn = (request, next) => {
   const authStore = inject(AuthStore);
-  const isAuthRequest = API_AUTH_ROUTES.some((route) =>
-    req.url.includes(route),
-  );
-  const token = authStore.accessToken();
+  const accessToken = authStore.accessToken();
 
-  if (isAuthRequest || !token) {
-    return next(req);
+  if (request.context.get(SKIP_ACCESS_TOKEN) || !accessToken) {
+    return next(request);
   }
 
   return next(
-    req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
+    request.clone({
+      setHeaders: { Authorization: `Bearer ${accessToken}` },
     }),
   );
 };

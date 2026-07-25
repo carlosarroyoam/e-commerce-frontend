@@ -8,6 +8,7 @@ import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
 import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
 import { LocalStorageService } from '@/core/data-access/services/storage-service/local-storage-service';
+import { createAuthRequestContext } from '@/core/http/auth-request-context';
 import { environment } from '@/environments/environment';
 
 @Injectable({
@@ -24,6 +25,7 @@ export class AuthService {
         ...payload,
         device_id: this.getDeviceId(),
       },
+      { context: createAuthRequestContext() },
     );
   }
 
@@ -31,6 +33,7 @@ export class AuthService {
     return this.httpClient.post<RefreshTokenResponse>(
       `${environment.apiUrl}/auth/refresh-token`,
       null,
+      { context: createAuthRequestContext() },
     );
   }
 
@@ -38,6 +41,7 @@ export class AuthService {
     return this.httpClient.post<void>(
       `${environment.apiUrl}/auth/logout`,
       null,
+      { context: createAuthRequestContext() },
     );
   }
 

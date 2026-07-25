@@ -8,33 +8,35 @@ const XSRF_COOKIE_NAME = 'XSRF-TOKEN';
 const XSRF_HEADER_NAME = 'X-XSRF-TOKEN';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
-export const xsrfInterceptor: HttpInterceptorFn = (req, next) => {
+export const xsrfInterceptor: HttpInterceptorFn = (request, next) => {
   const document = inject(DOCUMENT);
 
   if (
-    SAFE_METHODS.has(req.method) ||
-    req.headers.has(XSRF_HEADER_NAME) ||
-    !isApiRequest(req.url)
+    SAFE_METHODS.has(request.method) ||
+    request.headers.has(XSRF_HEADER_NAME) ||
+    !isApiRequest(request.url)
   ) {
-    return next(req);
+    return next(request);
   }
 
-  const token = getCookieValue(document.cookie, XSRF_COOKIE_NAME);
+  const xsrfToken = getCookieValue(document.cookie, XSRF_COOKIE_NAME);
 
   return next(
-    token ? req.clone({ setHeaders: { [XSRF_HEADER_NAME]: token } }) : req,
+    xsrfToken
+      ? request.clone({ setHeaders: { [XSRF_HEADER_NAME]: xsrfToken } })
+      : request,
   );
 };
 
-function isApiRequest(url: string): boolean {
+const isApiRequest = (url: string): boolean => {
   const browserOrigin = window.location.origin;
   const apiOrigin = new URL(environment.apiUrl, browserOrigin).origin;
   const requestOrigin = new URL(url, browserOrigin).origin;
 
   return requestOrigin === apiOrigin;
-}
+};
 
-function getCookieValue(cookies: string, name: string): string | null {
+const getCookieValue = (cookies: string, name: string): string | null => {
   const prefix = `${encodeURIComponent(name)}=`;
   const cookie = cookies
     .split(';')
@@ -42,4 +44,4 @@ function getCookieValue(cookies: string, name: string): string | null {
     .find((value) => value.startsWith(prefix));
 
   return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : null;
-}
+};
