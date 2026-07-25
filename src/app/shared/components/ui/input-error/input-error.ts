@@ -1,4 +1,10 @@
-import { Component, effect, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+  signal,
+} from '@angular/core';
 import {
   AbstractControl,
   PristineChangeEvent,
@@ -14,6 +20,7 @@ import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-message
   host: {
     class: 'block text-sm text-red-500',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputError {
   public readonly control = input.required<AbstractControl | null>();

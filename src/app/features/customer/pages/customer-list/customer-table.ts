@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
+import { CustomerTableButtons } from '@/features/customer/components/customer-table-buttons/customer-table-buttons';
 import {
   CustomerResponse,
   CustomerStatus,
@@ -68,6 +69,12 @@ export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
 
         return flexRenderComponent(Chip, { inputs: { variant, label } });
       },
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      enableSorting: false,
+      cell: () => flexRenderComponent(CustomerTableButtons, { inputs: {} }),
     },
   ];
 }
