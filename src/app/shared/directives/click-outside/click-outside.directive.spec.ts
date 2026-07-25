@@ -40,7 +40,7 @@ describe('ClickOutside', () => {
       '[data-testid="outside"]',
     ) as HTMLElement;
 
-    outside.click();
+    outside.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
 
     expect(host.outsideClicks).toBe(1);
   });

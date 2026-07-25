@@ -13,7 +13,7 @@ describe('UserListPage', () => {
   let queryParams$: BehaviorSubject<Params>;
 
   const userServiceMock = {
-    getAll: vi.fn(() =>
+    findAll: vi.fn(() =>
       of({
         items: [],
         pagination: {
@@ -82,12 +82,12 @@ describe('UserListPage', () => {
       size: '0',
     });
 
-    expect(userServiceMock.getAll).toHaveBeenLastCalledWith({
+    expect(userServiceMock.findAll).toHaveBeenLastCalledWith({
       search: 'alice',
       status: 'active',
       sort: '-email',
-      page: 1,
-      size: 20,
+      page: 0,
+      size: 10,
     });
   });
 });

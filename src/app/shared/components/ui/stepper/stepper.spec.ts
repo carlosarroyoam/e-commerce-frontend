@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StepPanel } from './step-panel';
@@ -8,10 +8,10 @@ import { Stepper, StepperStep } from './stepper';
   imports: [Stepper, StepPanel],
   template: `
     <app-stepper
-      [activeStep]="activeStep"
-      [interactive]="interactive"
-      [orientation]="orientation"
-      [steps]="steps"
+      [activeStep]="activeStep()"
+      [interactive]="interactive()"
+      [orientation]="orientation()"
+      [steps]="steps()"
       (stepChange)="handleStepChange($event)"
     >
       <ng-template [appStepPanel]="0">Step 1 Content</ng-template>
@@ -22,15 +22,15 @@ import { Stepper, StepperStep } from './stepper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class HostComponent {
-  public activeStep = 1;
-  public interactive = true;
-  public orientation: 'horizontal' | 'vertical' = 'horizontal';
+  public readonly activeStep = signal(1);
+  public readonly interactive = signal(true);
+  public readonly orientation = signal<'horizontal' | 'vertical'>('horizontal');
   public readonly stepChangeEvents: number[] = [];
-  public steps: StepperStep[] = [
+  public readonly steps = signal<StepperStep[]>([
     { label: 'Cart' },
     { label: 'Shipping', description: 'Choose an address' },
     { label: 'Payment' },
-  ];
+  ]);
 
   public handleStepChange(index: number): void {
     this.stepChangeEvents.push(index);
@@ -67,11 +67,11 @@ describe('Stepper', () => {
   });
 
   it('should respect explicit statuses', () => {
-    component.steps = [
+    component.steps.set([
       { label: 'Cart', status: 'completed' },
       { label: 'Shipping', status: 'error' },
       { label: 'Payment', status: 'upcoming' },
-    ];
+    ]);
 
     fixture.detectChanges();
 
@@ -97,11 +97,11 @@ describe('Stepper', () => {
   });
 
   it('should not emit stepChange when clicking a disabled step', () => {
-    component.steps = [
+    component.steps.set([
       { label: 'Cart' },
       { label: 'Shipping', disabled: true },
       { label: 'Payment' },
-    ];
+    ]);
 
     fixture.detectChanges();
 
@@ -116,7 +116,7 @@ describe('Stepper', () => {
   });
 
   it('should support vertical orientation', () => {
-    component.orientation = 'vertical';
+    component.orientation.set('vertical');
 
     fixture.detectChanges();
 
@@ -138,6 +138,9 @@ describe('Stepper', () => {
         { label: 'Shipping' },
       ];
     }
+
+    fixture.destroy();
+    TestBed.resetTestingModule();
 
     await TestBed.configureTestingModule({
       imports: [InvalidHostComponent],

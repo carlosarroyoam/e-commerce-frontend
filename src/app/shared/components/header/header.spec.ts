@@ -23,7 +23,7 @@ describe('Header', () => {
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('sessionData', null);
+    fixture.componentRef.setInput('authSession', null);
 
     fixture.detectChanges();
   });

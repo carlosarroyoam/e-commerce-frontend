@@ -1,4 +1,4 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import {
   AbstractControl,
   PristineChangeEvent,
@@ -17,7 +17,7 @@ import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-message
 })
 export class InputError {
   public readonly control = input.required<AbstractControl | null>();
-  protected errorMessages: string[] = [];
+  protected readonly errorMessages = signal<string[]>([]);
 
   constructor() {
     effect((onCleanup) => {
@@ -29,8 +29,8 @@ export class InputError {
       }
 
       subs.add(
-        control.statusChanges.subscribe(
-          () => (this.errorMessages = this.buildErrorMessages(control)),
+        control.statusChanges.subscribe(() =>
+          this.errorMessages.set(this.buildErrorMessages(control)),
         ),
       );
 
@@ -43,8 +43,8 @@ export class InputError {
                 event instanceof PristineChangeEvent,
             ),
           )
-          .subscribe(
-            () => (this.errorMessages = this.buildErrorMessages(control)),
+          .subscribe(() =>
+            this.errorMessages.set(this.buildErrorMessages(control)),
           ),
       );
 

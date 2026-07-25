@@ -23,6 +23,7 @@ describe('InputError', () => {
 
     fixture = TestBed.createComponent(HostComponent);
     host = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   function text(): string {

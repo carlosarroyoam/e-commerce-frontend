@@ -13,6 +13,14 @@ describe('Toast', () => {
 
     fixture = TestBed.createComponent(Toast);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('data', {
+      id: 'toast-id',
+      title: 'Test toast',
+      duration: 0,
+      type: 'info',
+      ref: { close: () => undefined },
+    });
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
