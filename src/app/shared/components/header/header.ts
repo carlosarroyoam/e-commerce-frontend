@@ -33,6 +33,7 @@ export class Header {
     { href: '/orders', title: 'Orders' },
     { href: '/products', title: 'Products' },
     { href: '/categories', title: 'Categories' },
+    { href: '/customers', title: 'Customers' },
     { href: '/users', title: 'Users' },
   ];
 

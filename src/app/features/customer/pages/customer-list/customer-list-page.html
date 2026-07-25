@@ -1,0 +1,114 @@
+<article>
+  <header>
+    <h1 class="heading">Customers</h1>
+    <p class="mt-1 text-sm">
+      A list of all the customers registered including their name, email, and
+      role.
+    </p>
+  </header>
+
+  <section>
+    <form [formGroup]="form" class="my-8">
+      <div class="grid gap-x-8 gap-y-2 md:grid-cols-2 lg:grid-cols-4">
+        <div class="space-y-2">
+          <label appInputLabel for="firstName">First name</label>
+          <input
+            appInput
+            id="firstName"
+            type="text"
+            maxlength="64"
+            autocomplete="off"
+            placeholder="First name"
+            formControlName="firstName"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label appInputLabel for="lastName">Last name</label>
+          <input
+            appInput
+            id="lastName"
+            type="text"
+            maxlength="64"
+            autocomplete="off"
+            placeholder="Last name"
+            formControlName="lastName"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label appInputLabel for="email">Email</label>
+          <input
+            appInput
+            id="email"
+            type="text"
+            inputmode="email"
+            maxlength="64"
+            autocomplete="off"
+            placeholder="Email"
+            formControlName="email"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label appInputLabel for="status">Status</label>
+          <app-select
+            id="status"
+            placeholder="All statuses"
+            ariaLabel="Status filter"
+            [options]="statuses"
+            formControlName="status"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label appInputLabel for="startDate">Start date</label>
+          <input
+            appInput
+            id="startDate"
+            type="date"
+            aria-describedby="date-range-error"
+            [attr.aria-invalid]="form.hasError('dateRange') ? 'true' : null"
+            formControlName="startDate"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label appInputLabel for="endDate">End date</label>
+          <input
+            appInput
+            id="endDate"
+            type="date"
+            aria-describedby="date-range-error"
+            [attr.aria-invalid]="form.hasError('dateRange') ? 'true' : null"
+            formControlName="endDate"
+          />
+        </div>
+
+        <button
+          appButton
+          type="button"
+          variant="secondary"
+          (click)="reset()"
+          class="self-end lg:max-w-32"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <app-input-error id="date-range-error" [control]="form" />
+      </div>
+    </form>
+
+    <app-table [table]="table" />
+
+    <app-paginator
+      [page]="store.queryParams().page!"
+      [size]="store.queryParams().size!"
+      [pagination]="store.pagination()"
+      (pageChanged)="onPageChange($event)"
+      (sizeChanged)="onSizeChange($event)"
+    />
+  </section>
+</article>
