@@ -2,10 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import {
-  DEFAULT_FIRST_PAGE,
-  DEFAULT_PAGE_SIZE,
-} from '@/core/constants/pagination.constants';
+import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { environment } from '@/environments/environment';
 import { PagedCustomersResponse } from '@/features/customer/data-access/interfaces/paged-customers-response';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
@@ -37,9 +34,8 @@ export class CustomerService {
     if (startDate) params = params.append('startDate', startDate);
     if (endDate) params = params.append('endDate', endDate);
 
-    return this.httpClient.get<PagedCustomersResponse>(
-      `${environment.apiUrl}/customers`,
-      { params },
-    );
+    return this.httpClient.get<PagedCustomersResponse>(`${environment.apiUrl}/customers`, {
+      params,
+    });
   }
 }

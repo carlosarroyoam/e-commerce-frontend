@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -15,14 +10,7 @@ import { AppInput } from '@/shared/components/ui/input/input';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    Button,
-    AppInput,
-    InputLabel,
-    InputError,
-  ],
+  imports: [ReactiveFormsModule, RouterLink, Button, AppInput, InputLabel, InputError],
   templateUrl: './login-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -44,8 +32,7 @@ export class LoginPage {
   constructor() {
     effect(() => {
       if (this.authStore.isAuthenticated()) {
-        const returnUrl =
-          this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
         this.router.navigateByUrl(returnUrl);
       }
     });

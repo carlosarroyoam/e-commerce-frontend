@@ -15,14 +15,11 @@ export const CustomerStore = signalStore(
   withMethods((store, customerService = inject(CustomerService)) => ({
     findAll: rxMethod<CustomerQueryParams>(
       pipe(
-        tap((queryParams) =>
-          patchState(store, { queryParams, isLoading: true, error: null }),
-        ),
+        tap((queryParams) => patchState(store, { queryParams, isLoading: true, error: null })),
         switchMap((queryParams) =>
           customerService.findAll(queryParams).pipe(
             tapResponse({
-              next: ({ items, pagination }) =>
-                patchState(store, { items, pagination }),
+              next: ({ items, pagination }) => patchState(store, { items, pagination }),
               error: (error) =>
                 patchState(store, {
                   items: [],

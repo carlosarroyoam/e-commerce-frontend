@@ -1,12 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  catchError,
-  finalize,
-  Observable,
-  shareReplay,
-  throwError,
-} from 'rxjs';
+import { catchError, finalize, Observable, shareReplay, throwError } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
@@ -61,11 +55,9 @@ export class AuthService {
   }
 
   public logout(): Observable<void> {
-    return this.httpClient.post<void>(
-      `${environment.apiUrl}/auth/logout`,
-      null,
-      { context: createAuthRequestContext() },
-    );
+    return this.httpClient.post<void>(`${environment.apiUrl}/auth/logout`, null, {
+      context: createAuthRequestContext(),
+    });
   }
 
   private createRefreshRequest(): Observable<RefreshTokenResponse> {

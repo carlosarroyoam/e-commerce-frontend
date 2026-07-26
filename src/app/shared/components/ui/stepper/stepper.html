@@ -1,10 +1,6 @@
 <div [class]="containerClass()">
   <ol [class]="headerClass()">
-    @for (
-      step of resolvedSteps();
-      track trackByIndex($index);
-      let index = $index
-    ) {
+    @for (step of resolvedSteps(); track trackByIndex($index); let index = $index) {
       <li class="flex min-w-0 flex-1 items-start gap-3">
         @if (isStepInteractive(step)) {
           <button
@@ -16,9 +12,9 @@
             class="flex min-w-0 flex-1 items-start gap-3 text-left"
           >
             <span [class]="indicatorClass(step)">
-              @if (step.resolvedStatus === "completed") {
+              @if (step.resolvedStatus === 'completed') {
                 <span aria-hidden="true">&#10003;</span>
-              } @else if (step.resolvedStatus === "error") {
+              } @else if (step.resolvedStatus === 'error') {
                 <span aria-hidden="true">!</span>
               } @else {
                 {{ index + 1 }}
@@ -45,9 +41,9 @@
             class="flex min-w-0 flex-1 items-start gap-3"
           >
             <span [class]="indicatorClass(step)">
-              @if (step.resolvedStatus === "completed") {
+              @if (step.resolvedStatus === 'completed') {
                 <span aria-hidden="true">&#10003;</span>
-              } @else if (step.resolvedStatus === "error") {
+              } @else if (step.resolvedStatus === 'error') {
                 <span aria-hidden="true">!</span>
               } @else {
                 {{ index + 1 }}

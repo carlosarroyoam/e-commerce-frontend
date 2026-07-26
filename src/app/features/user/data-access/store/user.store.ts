@@ -20,9 +20,7 @@ export const UserStore = signalStore(
      */
     findAll: rxMethod<UserQueryParams>(
       pipe(
-        tap((queryParams) =>
-          patchState(store, { queryParams, isLoading: true, error: null }),
-        ),
+        tap((queryParams) => patchState(store, { queryParams, isLoading: true, error: null })),
         switchMap((queryParams) =>
           userService.findAll(queryParams).pipe(
             tapResponse({

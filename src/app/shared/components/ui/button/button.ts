@@ -7,13 +7,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'bg-zinc-900 text-white hover:bg-zinc-900/90 focus:ring-zinc-800',
-        secondary:
-          'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/90 focus:ring-zinc-100',
+        default: 'bg-zinc-900 text-white hover:bg-zinc-900/90 focus:ring-zinc-800',
+        secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/90 focus:ring-zinc-100',
         danger: 'bg-red-500 text-white hover:bg-red-500/90 focus:ring-red-500',
-        outline:
-          'border border-zinc-300 text-zinc-900 hover:bg-zinc-50 focus:ring-zinc-100',
+        outline: 'border border-zinc-300 text-zinc-900 hover:bg-zinc-50 focus:ring-zinc-100',
         link: 'whitespace-nowrap text-zinc-700 underline-offset-8 hover:text-zinc-900 hover:underline focus:ring-zinc-800',
       },
       size: {
@@ -41,8 +38,6 @@ export class Button {
   public readonly size = input<ButtonVariants['size']>();
 
   protected readonly hostClass = computed(() => {
-    return twMerge(
-      buttonVariants({ variant: this.variant(), size: this.size() }),
-    );
+    return twMerge(buttonVariants({ variant: this.variant(), size: this.size() }));
   });
 }

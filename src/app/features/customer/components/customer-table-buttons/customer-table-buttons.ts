@@ -18,8 +18,7 @@ export class CustomerTableButtons {
   public readonly onDelete = input<(customer: CustomerResponse) => void>();
   public readonly onRestore = input<(customer: CustomerResponse) => void>();
 
-  private readonly context =
-    injectFlexRenderContext<CellContext<CustomerResponse, unknown>>();
+  private readonly context = injectFlexRenderContext<CellContext<CustomerResponse, unknown>>();
 
   protected readonly customer = this.context.row.original;
 

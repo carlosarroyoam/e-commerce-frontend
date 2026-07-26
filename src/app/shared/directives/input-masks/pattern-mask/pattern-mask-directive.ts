@@ -23,8 +23,7 @@ export class PatternMask<TMask extends string = string> extends BaseMask {
   };
 
   public override writeValue(value: string | null): void {
-    this.elementRef.nativeElement.value =
-      value !== null ? this.format(this.sanitize(value)) : '';
+    this.elementRef.nativeElement.value = value !== null ? this.format(this.sanitize(value)) : '';
   }
 
   protected override onKeyDown(event: KeyboardEvent): void {

@@ -35,8 +35,7 @@ describe('Table', () => {
   });
 
   it('should render empty state', () => {
-    const td: HTMLTableCellElement =
-      fixture.nativeElement.querySelector('tbody td');
+    const td: HTMLTableCellElement = fixture.nativeElement.querySelector('tbody td');
 
     expect(td.textContent?.trim()).toBe('No results.');
   });
@@ -45,10 +44,8 @@ describe('Table', () => {
     fixture.componentRef.setInput('isLoading', true);
     fixture.detectChanges();
 
-    const table: HTMLTableElement =
-      fixture.nativeElement.querySelector('table');
-    const status: HTMLElement =
-      fixture.nativeElement.querySelector('[role="status"]');
+    const table: HTMLTableElement = fixture.nativeElement.querySelector('table');
+    const status: HTMLElement = fixture.nativeElement.querySelector('[role="status"]');
 
     expect(table.getAttribute('aria-busy')).toBe('true');
     expect(status.textContent?.trim()).toBe('Loading results...');

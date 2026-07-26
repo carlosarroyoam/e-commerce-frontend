@@ -105,9 +105,7 @@ describe('Stepper', () => {
 
     fixture.detectChanges();
 
-    const disabledStep = fixture.nativeElement.querySelector(
-      '[id$="-step-1"]',
-    ) as HTMLElement;
+    const disabledStep = fixture.nativeElement.querySelector('[id$="-step-1"]') as HTMLElement;
 
     disabledStep.click();
     fixture.detectChanges();
@@ -133,10 +131,7 @@ describe('Stepper', () => {
       `,
     })
     class InvalidHostComponent {
-      public readonly steps: StepperStep[] = [
-        { label: 'Cart' },
-        { label: 'Shipping' },
-      ];
+      public readonly steps: StepperStep[] = [{ label: 'Cart' }, { label: 'Shipping' }];
     }
 
     fixture.destroy();

@@ -3,11 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { type Mock, vi } from 'vitest';
 
-import {
-  QUERY_PARAMS_CONFIG,
-  QueryParamsConfig,
-  QueryParamsService,
-} from './query-params.service';
+import { QUERY_PARAMS_CONFIG, QueryParamsConfig, QueryParamsService } from './query-params.service';
 
 interface TestQueryParams {
   search?: string;
@@ -27,8 +23,7 @@ describe('QueryParamsService', () => {
     routeQueryParams$ = new BehaviorSubject<Params>({});
     routerNavigate = vi.fn(() => Promise.resolve(true));
     mapFromRoute = vi.fn((params: Params) => ({
-      search:
-        typeof params['search'] === 'string' ? params['search'] : undefined,
+      search: typeof params['search'] === 'string' ? params['search'] : undefined,
       page: typeof params['page'] === 'number' ? params['page'] : 1,
       size: typeof params['size'] === 'number' ? params['size'] : 20,
     }));
@@ -63,9 +58,7 @@ describe('QueryParamsService', () => {
       ],
     });
 
-    service = TestBed.inject(
-      QueryParamsService,
-    ) as QueryParamsService<TestQueryParams>;
+    service = TestBed.inject(QueryParamsService) as QueryParamsService<TestQueryParams>;
     route = TestBed.inject(ActivatedRoute);
   });
 

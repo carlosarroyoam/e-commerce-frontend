@@ -30,8 +30,7 @@ export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
       accessorKey: 'first_name',
       header: 'Name',
       enableSorting: true,
-      cell: (info) =>
-        `${info.row.original.first_name} ${info.row.original.last_name}`,
+      cell: (info) => `${info.row.original.first_name} ${info.row.original.last_name}`,
     },
     {
       accessorKey: 'email',
@@ -49,15 +48,13 @@ export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'updated_at',
       header: 'Updated at',
       enableSorting: false,
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'status',

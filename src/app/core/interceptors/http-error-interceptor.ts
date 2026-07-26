@@ -2,10 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
-import {
-  RETRY_ON_UNAUTHORIZED,
-  SKIP_ERROR_DIALOG,
-} from '@/core/http/auth-request-context';
+import { RETRY_ON_UNAUTHORIZED, SKIP_ERROR_DIALOG } from '@/core/http/auth-request-context';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
@@ -32,8 +29,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
             }
           : {
               title: 'Whoops! something went wrong',
-              description:
-                'There was a problem processing the request. Please try again later.',
+              description: 'There was a problem processing the request. Please try again later.',
               primaryButtonLabel: 'Dismiss',
             },
       });

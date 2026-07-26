@@ -34,8 +34,7 @@ export function buildUserTableColumns(opts: {
       accessorKey: 'first_name',
       header: 'Name',
       enableSorting: true,
-      cell: (info) =>
-        `${info.row.original.first_name} ${info.row.original.last_name}`,
+      cell: (info) => `${info.row.original.first_name} ${info.row.original.last_name}`,
     },
     {
       accessorKey: 'email',
@@ -47,22 +46,19 @@ export function buildUserTableColumns(opts: {
       accessorKey: 'roles',
       header: 'Roles',
       enableSorting: false,
-      cell: (info) =>
-        (info.getValue() as RoleResponse[]).map((role) => role.name).join(', '),
+      cell: (info) => (info.getValue() as RoleResponse[]).map((role) => role.name).join(', '),
     },
     {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'updated_at',
       header: 'Updated at',
       enableSorting: false,
-      cell: (info) =>
-        formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
       accessorKey: 'status',

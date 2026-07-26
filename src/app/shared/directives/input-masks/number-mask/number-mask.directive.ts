@@ -30,8 +30,7 @@ export class NumberMask extends BaseMask {
   public readonly max = input<number>(100);
 
   public override writeValue(value: number | null): void {
-    this.elementRef.nativeElement.value =
-      value !== null ? this.format(value) : '';
+    this.elementRef.nativeElement.value = value !== null ? this.format(value) : '';
   }
 
   protected override onKeyDown(event: KeyboardEvent): void {
@@ -98,9 +97,7 @@ export class NumberMask extends BaseMask {
       this.decimalSeparator(),
     );
 
-    this.onChange?.(
-      clamped ? this.toNumber(sanitized, this.decimalSeparator()) : null,
-    );
+    this.onChange?.(clamped ? this.toNumber(sanitized, this.decimalSeparator()) : null);
   }
 
   protected override onBlur(): void {
@@ -130,9 +127,7 @@ export class NumberMask extends BaseMask {
       result = onlyValid;
     } else {
       const integerPart = onlyValid.slice(0, firstSeparator);
-      const decimalPart = onlyValid
-        .slice(firstSeparator + 1)
-        .replace(new RegExp(escaped, 'g'), '');
+      const decimalPart = onlyValid.slice(firstSeparator + 1).replace(new RegExp(escaped, 'g'), '');
       result = `${integerPart}${separator}${decimalPart}`;
     }
 
@@ -183,16 +178,12 @@ export class NumberMask extends BaseMask {
 
   private removePrefix(value: string) {
     const prefix = this.prefix();
-    return prefix !== '' && value.startsWith(prefix)
-      ? value.slice(prefix.length)
-      : value;
+    return prefix !== '' && value.startsWith(prefix) ? value.slice(prefix.length) : value;
   }
 
   private removeSuffix(value: string): string {
     const suffix = this.suffix();
-    return suffix !== '' && value.endsWith(suffix)
-      ? value.slice(0, -suffix.length)
-      : value;
+    return suffix !== '' && value.endsWith(suffix) ? value.slice(0, -suffix.length) : value;
   }
 
   private clampMax(sanitized: string): string {
@@ -202,11 +193,7 @@ export class NumberMask extends BaseMask {
     return sanitized;
   }
 
-  private truncateDecimals(
-    cleaned: string,
-    separator: string,
-    decimalPlaces: number,
-  ): string {
+  private truncateDecimals(cleaned: string, separator: string, decimalPlaces: number): string {
     const [integerPart, decimalPart] = cleaned.split(separator);
     if (decimalPart === undefined) return integerPart;
     return `${integerPart}${separator}${decimalPart.slice(0, decimalPlaces)}`;

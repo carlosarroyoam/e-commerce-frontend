@@ -1,12 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
 
 import {
   BaseOptionSelector,
@@ -56,9 +49,7 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
   public readonly placeholder = input('Select an option...');
   public readonly emptyMessage = input('No options found.');
   public readonly options = input.required<SelectableOption[]>();
-  public readonly optionCallback = input<
-    ((query: string) => void) | undefined
-  >();
+  public readonly optionCallback = input<((query: string) => void) | undefined>();
 
   protected readonly instanceId = `autocomplete-${nextAutocompleteId++}`;
   protected readonly query = signal('');
@@ -70,9 +61,7 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
       return this.options();
     }
 
-    return this.options().filter((option) =>
-      this.normalize(option.label).includes(query),
-    );
+    return this.options().filter((option) => this.normalize(option.label).includes(query));
   });
 
   ngOnInit(): void {

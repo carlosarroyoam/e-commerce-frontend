@@ -6,9 +6,7 @@ import { Button } from './button';
 @Component({
   imports: [Button],
   template: `
-    <button appButton [variant]="variant" [size]="size" data-testid="btn">
-      Click
-    </button>
+    <button appButton [variant]="variant" [size]="size" data-testid="btn">Click</button>
   `,
 })
 class HostComponent {
@@ -32,9 +30,7 @@ describe('Button', () => {
 
     fixture.detectChanges();
 
-    button = fixture.nativeElement.querySelector(
-      '[data-testid="btn"]',
-    ) as HTMLButtonElement;
+    button = fixture.nativeElement.querySelector('[data-testid="btn"]') as HTMLButtonElement;
   });
 
   it('should apply base button classes', () => {

@@ -22,17 +22,13 @@ export const QUERY_PARAMS_CONFIG = new InjectionToken<
 export class QueryParamsService<TParams extends QueryParamsShape<TParams>> {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly config = inject(
-    QUERY_PARAMS_CONFIG,
-  ) as QueryParamsConfig<TParams>;
+  private readonly config = inject(QUERY_PARAMS_CONFIG) as QueryParamsConfig<TParams>;
 
   constructor() {
-    this.route.queryParams
-      .pipe(takeUntilDestroyed())
-      .subscribe((queryParams) => {
-        const mappedParams = this.config.mapFromRoute(queryParams);
-        this.config.load(mappedParams);
-      });
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((queryParams) => {
+      const mappedParams = this.config.mapFromRoute(queryParams);
+      this.config.load(mappedParams);
+    });
   }
 
   public updateQueryParams(partial: Partial<TParams>): void {
@@ -56,8 +52,7 @@ export class QueryParamsService<TParams extends QueryParamsShape<TParams>> {
     const queryParams: Params = {};
 
     for (const [key, value] of Object.entries(partial)) {
-      queryParams[key] =
-        value === undefined || value === null || value === '' ? null : value;
+      queryParams[key] = value === undefined || value === null || value === '' ? null : value;
     }
 
     return queryParams;

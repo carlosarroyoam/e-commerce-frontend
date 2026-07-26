@@ -14,18 +14,13 @@ export class AlertDialogService {
   private readonly dialog = inject(Dialog);
 
   public open(
-    config?: Partial<
-      DialogConfig<AlertDialogData, DialogRef<AlertDialogResult, AlertDialog>>
-    >,
+    config?: Partial<DialogConfig<AlertDialogData, DialogRef<AlertDialogResult, AlertDialog>>>,
   ): DialogRef<AlertDialogResult, AlertDialog> {
-    return this.dialog.open<AlertDialogResult, AlertDialogData, AlertDialog>(
-      AlertDialog,
-      {
-        ariaModal: true,
-        ariaLabelledBy: 'dialog-title',
-        ariaDescribedBy: 'dialog-description',
-        ...config,
-      },
-    );
+    return this.dialog.open<AlertDialogResult, AlertDialogData, AlertDialog>(AlertDialog, {
+      ariaModal: true,
+      ariaLabelledBy: 'dialog-title',
+      ariaDescribedBy: 'dialog-description',
+      ...config,
+    });
   }
 }

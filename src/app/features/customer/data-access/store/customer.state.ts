@@ -1,7 +1,4 @@
-import {
-  DEFAULT_FIRST_PAGE,
-  DEFAULT_PAGE_SIZE,
-} from '@/core/constants/pagination.constants';
+import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';

@@ -22,9 +22,7 @@ export const xsrfInterceptor: HttpInterceptorFn = (request, next) => {
   const xsrfToken = getCookieValue(document.cookie, XSRF_COOKIE_NAME);
 
   return next(
-    xsrfToken
-      ? request.clone({ setHeaders: { [XSRF_HEADER_NAME]: xsrfToken } })
-      : request,
+    xsrfToken ? request.clone({ setHeaders: { [XSRF_HEADER_NAME]: xsrfToken } }) : request,
   );
 };
 

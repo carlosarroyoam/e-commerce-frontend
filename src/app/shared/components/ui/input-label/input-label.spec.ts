@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { InputLabel } from './input-label';
 
@@ -36,15 +31,13 @@ describe('InputLabel', () => {
   });
 
   it('should append a red asterisk when control is required', () => {
-    const label: HTMLLabelElement =
-      fixture.nativeElement.querySelector('label');
+    const label: HTMLLabelElement = fixture.nativeElement.querySelector('label');
 
     expect(label.innerHTML).toContain('<span class="text-red-500">*</span>');
   });
 
   it('should apply host css classes', () => {
-    const label: HTMLLabelElement =
-      fixture.nativeElement.querySelector('label');
+    const label: HTMLLabelElement = fixture.nativeElement.querySelector('label');
 
     expect(label.className).toContain('text-sm');
     expect(label.className).toContain('font-medium');

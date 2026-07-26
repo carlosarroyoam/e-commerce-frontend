@@ -1,9 +1,5 @@
 import { ElementRef, inject } from '@angular/core';
-import {
-  ControlValueAccessor,
-  ValidationErrors,
-  Validator,
-} from '@angular/forms';
+import { ControlValueAccessor, ValidationErrors, Validator } from '@angular/forms';
 
 export abstract class BaseMask implements ControlValueAccessor, Validator {
   protected readonly elementRef = inject(ElementRef<HTMLInputElement>);
@@ -14,9 +10,7 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
 
   public abstract writeValue(value: number | string | Date | null): void;
 
-  public registerOnChange(
-    fn: (value: number | string | Date | null) => void,
-  ): void {
+  public registerOnChange(fn: (value: number | string | Date | null) => void): void {
     this.onChange = fn;
   }
 
@@ -48,10 +42,7 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
     const element = this.elementRef.nativeElement;
     const maxPosition = nextValue.length - (suffixLength || 0);
 
-    if (
-      decimalSeparator &&
-      nextValue[cursorPosition - 1] === decimalSeparator
-    ) {
+    if (decimalSeparator && nextValue[cursorPosition - 1] === decimalSeparator) {
       const position = Math.min(cursorPosition, maxPosition);
       element.setSelectionRange(position, position);
       return;

@@ -1,10 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
-import {
-  ToastData,
-  ToastResult,
-} from '@/shared/components/toast/interfaces/toast.interfaces';
+import { ToastData, ToastResult } from '@/shared/components/toast/interfaces/toast.interfaces';
 import { Toast } from '@/shared/components/toast/toast';
 import { ToastRef } from '@/shared/components/toast/toast-ref';
 
@@ -17,20 +14,11 @@ export class ToastStack {
   private readonly toasts = signal<ToastData[]>([]);
   private readonly MAX_VISIBLE = 3;
 
-  protected readonly visibleToasts = computed(() =>
-    this.toasts().slice(0, this.MAX_VISIBLE),
-  );
+  protected readonly visibleToasts = computed(() => this.toasts().slice(0, this.MAX_VISIBLE));
 
-  protected readonly queue = computed(() =>
-    this.toasts().slice(this.MAX_VISIBLE),
-  );
+  protected readonly queue = computed(() => this.toasts().slice(this.MAX_VISIBLE));
 
-  public addToast({
-    title,
-    description,
-    type,
-    duration,
-  }: Omit<ToastData, 'id' | 'ref'>): ToastRef {
+  public addToast({ title, description, type, duration }: Omit<ToastData, 'id' | 'ref'>): ToastRef {
     const id = uuid();
 
     const ref = new ToastRef((data) => this.removeToast(id, data));

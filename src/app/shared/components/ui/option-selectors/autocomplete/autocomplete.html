@@ -24,11 +24,7 @@
     stroke="currentColor"
     class="absolute top-2.5 right-0 mr-3 size-4.5 text-zinc-600 peer-disabled:cursor-not-allowed peer-disabled:text-zinc-500"
   >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="m19.5 8.25-7.5 7.5-7.5-7.5"
-    />
+    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
   </svg>
 </div>
 
@@ -62,11 +58,7 @@
     class="flex max-h-56 w-full flex-col overflow-auto rounded-md border border-zinc-100 bg-white shadow-sm"
   >
     @if (filteredOptions().length) {
-      @for (
-        option of filteredOptions();
-        track option.value;
-        let index = $index
-      ) {
+      @for (option of filteredOptions(); track option.value; let index = $index) {
         <button
           type="button"
           role="option"

@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 import { DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
@@ -37,10 +31,7 @@ export class Paginator {
   });
 
   protected readonly to = computed(() => {
-    return Math.min(
-      this.page() * this.size() + (this.pagination()?.size ?? 0),
-      this.totalItems(),
-    );
+    return Math.min(this.page() * this.size() + (this.pagination()?.size ?? 0), this.totalItems());
   });
 
   protected readonly totalPages = computed(() => {

@@ -1,8 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
@@ -43,9 +40,7 @@ describe('AuthService', () => {
     httpTestingController
       .expectOne(`${environment.apiUrl}/auth/refresh-token`)
       .flush(null, { status: 403, statusText: 'Forbidden' });
-    httpTestingController
-      .expectOne(`${environment.apiUrl}/auth/refresh-token`)
-      .flush(response);
+    httpTestingController.expectOne(`${environment.apiUrl}/auth/refresh-token`).flush(response);
 
     expect(result).toEqual(response);
   });

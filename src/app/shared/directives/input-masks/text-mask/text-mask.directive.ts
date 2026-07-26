@@ -85,11 +85,7 @@ export class TextMask extends BaseMask {
     return value;
   }
 
-  private updateTextCursor(
-    cursorPosition: number,
-    prevValue: string,
-    nextValue: string,
-  ): void {
+  private updateTextCursor(cursorPosition: number, prevValue: string, nextValue: string): void {
     const element = this.elementRef.nativeElement;
 
     if (cursorPosition === 0) {

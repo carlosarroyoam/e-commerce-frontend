@@ -2,10 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import {
-  DEFAULT_FIRST_PAGE,
-  DEFAULT_PAGE_SIZE,
-} from '@/core/constants/pagination.constants';
+import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { environment } from '@/environments/environment';
 import { ChangePasswordRequest } from '@/features/user/data-access/interfaces/change-password-request';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
@@ -42,22 +39,14 @@ export class UserService {
     if (endDate) params = params.append('endDate', endDate);
     if (roleIds) params = params.append('roleIds', roleIds);
 
-    return this.httpClient.get<PagedUsersResponse>(
-      `${environment.apiUrl}/users`,
-      { params },
-    );
+    return this.httpClient.get<PagedUsersResponse>(`${environment.apiUrl}/users`, { params });
   }
 
   public findById(userId: number): Observable<UserResponse | null> {
-    return this.httpClient.get<UserResponse>(
-      `${environment.apiUrl}/users/${userId}`,
-    );
+    return this.httpClient.get<UserResponse>(`${environment.apiUrl}/users/${userId}`);
   }
 
-  public changePassword(
-    userId: number,
-    payload: ChangePasswordRequest,
-  ): Observable<void> {
+  public changePassword(userId: number, payload: ChangePasswordRequest): Observable<void> {
     return this.httpClient.put<void>(
       `${environment.apiUrl}/users/${userId}/change-password`,
       payload,
@@ -65,15 +54,10 @@ export class UserService {
   }
 
   public deleteById(userId: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${environment.apiUrl}/users/${userId}`,
-    );
+    return this.httpClient.delete<void>(`${environment.apiUrl}/users/${userId}`);
   }
 
   public restoreById(userId: number): Observable<void> {
-    return this.httpClient.put<void>(
-      `${environment.apiUrl}/users/${userId}/restore`,
-      null,
-    );
+    return this.httpClient.put<void>(`${environment.apiUrl}/users/${userId}/restore`, null);
   }
 }

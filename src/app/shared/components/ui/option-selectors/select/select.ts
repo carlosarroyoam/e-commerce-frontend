@@ -1,10 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import {
   BaseOptionSelector,
@@ -29,9 +24,7 @@ export class Select extends BaseOptionSelector {
   public readonly ariaLabel = input<string>();
 
   protected readonly triggerId = computed(() => `select-${this.id()}-trigger`);
-  protected readonly dropdownId = computed(
-    () => `select-${this.id()}-dropdown`,
-  );
+  protected readonly dropdownId = computed(() => `select-${this.id()}-dropdown`);
 
   protected override getAllOptions(): SelectableOption[] {
     return this.options();

@@ -1,15 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  input,
-  signal,
-} from '@angular/core';
-import {
-  AbstractControl,
-  PristineChangeEvent,
-  TouchedChangeEvent,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
+import { AbstractControl, PristineChangeEvent, TouchedChangeEvent } from '@angular/forms';
 import { filter, Subscription } from 'rxjs';
 
 import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-messages';
@@ -46,13 +36,10 @@ export class InputError {
           .pipe(
             filter(
               (event) =>
-                event instanceof TouchedChangeEvent ||
-                event instanceof PristineChangeEvent,
+                event instanceof TouchedChangeEvent || event instanceof PristineChangeEvent,
             ),
           )
-          .subscribe(() =>
-            this.errorMessages.set(this.buildErrorMessages(control)),
-          ),
+          .subscribe(() => this.errorMessages.set(this.buildErrorMessages(control))),
       );
 
       onCleanup(() => subs.unsubscribe());

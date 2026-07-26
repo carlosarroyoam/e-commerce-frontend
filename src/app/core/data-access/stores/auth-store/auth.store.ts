@@ -2,16 +2,7 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import {
-  catchError,
-  finalize,
-  map,
-  Observable,
-  of,
-  pipe,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, finalize, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
 
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
@@ -111,9 +102,7 @@ export const AuthStore = signalStore(
   }),
 );
 
-const toAuthSession = (
-  response: LoginResponse | RefreshTokenResponse,
-): AuthSession => ({
+const toAuthSession = (response: LoginResponse | RefreshTokenResponse): AuthSession => ({
   id: response.id,
   first_name: response.first_name,
   last_name: response.last_name,

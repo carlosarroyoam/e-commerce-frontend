@@ -45,8 +45,7 @@ const stepperContainerVariants = cva('flex gap-6', {
 const stepperHeaderVariants = cva('flex', {
   variants: {
     orientation: {
-      horizontal:
-        'flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3',
+      horizontal: 'flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3',
       vertical: 'w-full flex-col gap-4 lg:max-w-sm',
     },
   },
@@ -55,20 +54,17 @@ const stepperHeaderVariants = cva('flex', {
   },
 });
 
-const stepperPanelVariants = cva(
-  'rounded-xl border border-zinc-200 bg-white p-5 shadow-xs',
-  {
-    variants: {
-      orientation: {
-        horizontal: 'w-full',
-        vertical: 'w-full flex-1',
-      },
-    },
-    defaultVariants: {
-      orientation: 'horizontal',
+const stepperPanelVariants = cva('rounded-xl border border-zinc-200 bg-white p-5 shadow-xs', {
+  variants: {
+    orientation: {
+      horizontal: 'w-full',
+      vertical: 'w-full flex-1',
     },
   },
-);
+  defaultVariants: {
+    orientation: 'horizontal',
+  },
+});
 
 @Component({
   selector: 'app-stepper',
@@ -102,9 +98,7 @@ export class Stepper implements AfterContentChecked {
   });
 
   protected readonly containerClass = computed(() => {
-    return twMerge(
-      stepperContainerVariants({ orientation: this.orientation() }),
-    );
+    return twMerge(stepperContainerVariants({ orientation: this.orientation() }));
   });
 
   protected readonly headerClass = computed(() => {
@@ -135,14 +129,10 @@ export class Stepper implements AfterContentChecked {
       throw new Error('Stepper step panels must use unique indexes.');
     }
 
-    const missingPanelIndex = steps.findIndex(
-      (_, index) => !uniqueIndexes.has(index),
-    );
+    const missingPanelIndex = steps.findIndex((_, index) => !uniqueIndexes.has(index));
 
     if (missingPanelIndex >= 0) {
-      throw new Error(
-        `Stepper is missing a panel for step index ${missingPanelIndex}.`,
-      );
+      throw new Error(`Stepper is missing a panel for step index ${missingPanelIndex}.`);
     }
   }
 
@@ -174,8 +164,7 @@ export class Stepper implements AfterContentChecked {
 
   protected connectorClass(step: ResolvedStepperStep): string {
     const shared = 'hidden rounded-full md:block';
-    const statusClass =
-      step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
+    const statusClass = step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
 
     if (this.orientation() === 'vertical') {
       return twMerge(shared, 'ml-4 h-10 w-px self-start');
@@ -196,10 +185,7 @@ export class Stepper implements AfterContentChecked {
     return index;
   }
 
-  private resolveStepStatus(
-    index: number,
-    activeStep: number,
-  ): StepperStepStatus {
+  private resolveStepStatus(index: number, activeStep: number): StepperStepStatus {
     if (index < activeStep) {
       return 'completed';
     }

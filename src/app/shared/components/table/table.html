@@ -8,10 +8,7 @@
         <tr>
           @for (header of headerGroup.headers; track header.id) {
             @if (!header.isPlaceholder) {
-              <th
-                scope="col"
-                class="px-4 py-2 text-start text-sm font-medium tracking-tight"
-              >
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
                 @if (header.column.getCanSort()) {
                   <button
                     type="button"
@@ -29,16 +26,14 @@
                     </ng-container>
 
                     @switch (header.column.getIsSorted()) {
-                      @case ("asc") {
+                      @case ('asc') {
                         <span aria-hidden="true">&uarr;</span>
                       }
-                      @case ("desc") {
+                      @case ('desc') {
                         <span aria-hidden="true">&darr;</span>
                       }
                       @default {
-                        <span aria-hidden="true" class="text-zinc-400"
-                          >&udarr;</span
-                        >
+                        <span aria-hidden="true" class="text-zinc-400">&udarr;</span>
                       }
                     }
                   </button>
@@ -62,28 +57,21 @@
 
     <tbody class="divide-y divide-zinc-200">
       @switch (contentState()) {
-        @case ("loading") {
+        @case ('loading') {
           <tr>
-            <td
-              [attr.colspan]="table().getFlatHeaders().length"
-              class="h-24 text-center"
-            >
+            <td [attr.colspan]="table().getFlatHeaders().length" class="h-24 text-center">
               Loading...
             </td>
           </tr>
         }
 
-        @case ("loaded") {
+        @case ('loaded') {
           @for (row of table().getRowModel().rows; track row.id) {
             <tr class="hover:bg-zinc-50">
               @for (cell of row.getVisibleCells(); track cell.id) {
                 <td class="px-4 py-2 text-sm">
                   <ng-container
-                    *flexRender="
-                      cell.column.columnDef.cell;
-                      props: cell.getContext();
-                      let cell
-                    "
+                    *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell"
                   >
                     <div [innerHTML]="cell"></div>
                   </ng-container>
@@ -93,12 +81,9 @@
           }
         }
 
-        @case ("empty") {
+        @case ('empty') {
           <tr>
-            <td
-              [attr.colspan]="table().getFlatHeaders().length"
-              class="h-24 text-center"
-            >
+            <td [attr.colspan]="table().getFlatHeaders().length" class="h-24 text-center">
               No results.
             </td>
           </tr>

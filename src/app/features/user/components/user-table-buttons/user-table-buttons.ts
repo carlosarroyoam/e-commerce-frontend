@@ -18,8 +18,7 @@ export class UserTableButtons {
   public readonly onDelete = input<(user: UserResponse) => void>();
   public readonly onRestore = input<(user: UserResponse) => void>();
 
-  private readonly context =
-    injectFlexRenderContext<CellContext<UserResponse, unknown>>();
+  private readonly context = injectFlexRenderContext<CellContext<UserResponse, unknown>>();
 
   protected readonly user = this.context.row.original;
 

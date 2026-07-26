@@ -1,1 +1,1 @@
-window["apiUrl"] = "${apiUrl}";
+window['apiUrl'] = '${apiUrl}';

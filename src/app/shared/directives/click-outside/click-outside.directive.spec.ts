@@ -6,9 +6,7 @@ import { ClickOutside } from './click-outside.directive';
 @Component({
   imports: [ClickOutside],
   template: `
-    <div appClickOutside (clickOutside)="onOutside()" data-testid="target">
-      Inside
-    </div>
+    <div appClickOutside (clickOutside)="onOutside()" data-testid="target">Inside</div>
 
     <div data-testid="outside">Outside</div>
   `,
@@ -36,9 +34,7 @@ describe('ClickOutside', () => {
   });
 
   it('should emit when clicking outside', () => {
-    const outside = fixture.nativeElement.querySelector(
-      '[data-testid="outside"]',
-    ) as HTMLElement;
+    const outside = fixture.nativeElement.querySelector('[data-testid="outside"]') as HTMLElement;
 
     outside.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
 
@@ -46,9 +42,7 @@ describe('ClickOutside', () => {
   });
 
   it('should NOT emit when clicking inside', () => {
-    const inside = fixture.nativeElement.querySelector(
-      '[data-testid="target"]',
-    ) as HTMLElement;
+    const inside = fixture.nativeElement.querySelector('[data-testid="target"]') as HTMLElement;
 
     inside.click();
 

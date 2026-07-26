@@ -49,9 +49,7 @@ export class AppInput implements OnInit, AfterViewInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         filter(
-          (event) =>
-            event instanceof TouchedChangeEvent ||
-            event instanceof PristineChangeEvent,
+          (event) => event instanceof TouchedChangeEvent || event instanceof PristineChangeEvent,
         ),
       )
       .subscribe(() => this.checkIfInvalid(control));

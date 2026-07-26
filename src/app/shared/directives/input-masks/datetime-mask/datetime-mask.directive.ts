@@ -39,10 +39,7 @@ interface DateTimeSegments {
     '(blur)': 'onBlur()',
     '[attr.maxlength]': 'maxLength',
   },
-  providers: [
-    valueAccessorProvider(DateTimeMask),
-    validatorsProvider(DateTimeMask),
-  ],
+  providers: [valueAccessorProvider(DateTimeMask), validatorsProvider(DateTimeMask)],
 })
 export class DateTimeMask extends BaseMask {
   public readonly datetimeFormat = input<DateTimeFormat>('DD/MM/YYYY');

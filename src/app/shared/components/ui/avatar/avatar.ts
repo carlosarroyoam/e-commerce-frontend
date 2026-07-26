@@ -9,8 +9,7 @@ import { UserResponse } from '@/features/user/data-access/interfaces/user-respon
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Avatar {
-  private readonly context =
-    injectFlexRenderContext<CellContext<UserResponse, unknown>>();
+  private readonly context = injectFlexRenderContext<CellContext<UserResponse, unknown>>();
   private readonly user = this.context.row.original;
 
   get fullname(): string {

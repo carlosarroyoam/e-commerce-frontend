@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -16,16 +11,10 @@ import {
 import { debounceTime, filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
-import {
-  QUERY_PARAMS_CONFIG,
-  QueryParamsService,
-} from '@/core/routing/query-params.service';
+import { QUERY_PARAMS_CONFIG, QueryParamsService } from '@/core/routing/query-params.service';
 import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
-import {
-  UserResponse,
-  UserStatus,
-} from '@/features/user/data-access/interfaces/user-response';
+import { UserResponse, UserStatus } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
@@ -150,9 +139,7 @@ export class UserListPage {
   protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
     const currentSorting = this.sort();
     const nextSorting =
-      typeof updaterOrValue === 'function'
-        ? updaterOrValue(currentSorting)
-        : updaterOrValue;
+      typeof updaterOrValue === 'function' ? updaterOrValue(currentSorting) : updaterOrValue;
     const nextColumn = nextSorting[0];
 
     this.queryParamsService.updateQueryParams({

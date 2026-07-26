@@ -2,10 +2,7 @@
 <app-modal-container>
   <div class="flex flex-col">
     <!-- Dialog title -->
-    <h2
-      id="dialog-title"
-      class="text-center font-semibold text-zinc-900 sm:text-left"
-    >
+    <h2 id="dialog-title" class="text-center font-semibold text-zinc-900 sm:text-left">
       {{ data.title }}
     </h2>
 
@@ -30,11 +27,7 @@
         aria-hidden="true"
         class="size-6 hover:cursor-pointer"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
@@ -42,18 +35,13 @@
   <!-- Dialog footer -->
   <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
     @if (data.showSecondaryButton) {
-      <button
-        appButton
-        type="button"
-        [variant]="'secondary'"
-        (click)="cancel()"
-      >
-        {{ data.secondaryButtonLabel ?? "Cancel" }}
+      <button appButton type="button" [variant]="'secondary'" (click)="cancel()">
+        {{ data.secondaryButtonLabel ?? 'Cancel' }}
       </button>
     }
 
     <button appButton type="button" (click)="accept()">
-      {{ data.primaryButtonLabel ?? "Accept" }}
+      {{ data.primaryButtonLabel ?? 'Accept' }}
     </button>
   </div>
 </app-modal-container>

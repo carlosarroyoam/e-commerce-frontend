@@ -4,10 +4,7 @@ import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask
 import { PatternMask } from '@/shared/directives/input-masks/pattern-mask/pattern-mask-directive';
 
 export type CreditCardFormat =
-  | '#### #### #### ####'
-  | '**** **** **** ####'
-  | '####-####-####-####'
-  | '****-****-****-####';
+  '#### #### #### ####' | '**** **** **** ####' | '####-####-####-####' | '****-****-****-####';
 
 @Directive({
   selector: '[appCreditCardMask]',
@@ -17,7 +14,5 @@ export type CreditCardFormat =
   },
 })
 export class CreditCardMask extends PatternMask<CreditCardFormat> {
-  public override readonly mask = input<CreditCardFormat>(
-    '**** **** **** ####',
-  );
+  public override readonly mask = input<CreditCardFormat>('**** **** **** ####');
 }

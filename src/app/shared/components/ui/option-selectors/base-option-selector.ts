@@ -1,11 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Directive, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 export interface SelectableOption {
@@ -29,9 +23,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
 
   public writeValue(value: string | number | null): void {
     const selected =
-      this.getAllOptions().find(
-        (option) => option.value === value && !option.disabled,
-      ) ?? null;
+      this.getAllOptions().find((option) => option.value === value && !option.disabled) ?? null;
 
     this.selected.set(selected);
     this.afterValueChange(selected);
@@ -82,9 +74,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
   protected handleKeydown(event: KeyboardEvent): void {
     if (this.isDisabled()) return;
 
-    const options = this.getVisibleOptions().filter(
-      (option) => !option.disabled,
-    );
+    const options = this.getVisibleOptions().filter((option) => !option.disabled);
 
     const hasEnabledOptions = options.length > 0;
 
@@ -116,9 +106,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
       case 'ArrowUp':
         event.preventDefault();
         if (hasEnabledOptions) {
-          this.highlightedIndex.update(
-            (index) => (index - 1 + options.length) % options.length,
-          );
+          this.highlightedIndex.update((index) => (index - 1 + options.length) % options.length);
           this.scrollHighlightedIntoView();
         }
         return;
@@ -178,9 +166,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     const enabledOptions = options.filter((option) => !option.disabled);
     const selectedValue = this.selected()?.value;
 
-    const selectedIndex = enabledOptions.findIndex(
-      (option) => option.value === selectedValue,
-    );
+    const selectedIndex = enabledOptions.findIndex((option) => option.value === selectedValue);
 
     if (selectedIndex >= 0) {
       this.highlightedIndex.set(selectedIndex);

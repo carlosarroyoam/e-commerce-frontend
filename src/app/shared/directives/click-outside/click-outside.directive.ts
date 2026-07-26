@@ -19,16 +19,12 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
   private listener?: () => void;
 
   ngAfterViewInit(): void {
-    this.listener = this.renderer.listen(
-      'document',
-      'mousedown',
-      (event: MouseEvent) => {
-        const path = event.composedPath?.() ?? [];
-        if (!path.includes(this.elementRef.nativeElement)) {
-          this.clickOutside.emit();
-        }
-      },
-    );
+    this.listener = this.renderer.listen('document', 'mousedown', (event: MouseEvent) => {
+      const path = event.composedPath?.() ?? [];
+      if (!path.includes(this.elementRef.nativeElement)) {
+        this.clickOutside.emit();
+      }
+    });
   }
 
   ngOnDestroy(): void {
