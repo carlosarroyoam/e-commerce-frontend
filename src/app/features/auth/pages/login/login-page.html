@@ -6,7 +6,7 @@
 
   <section class="mx-auto max-w-md">
     <form novalidate [formGroup]="form" (ngSubmit)="login()" class="mt-6 space-y-4">
-      <div class="space-y-2">
+      <div class="space-y-1">
         <label appInputLabel for="email">Email</label>
         <input
           appInput
@@ -19,7 +19,7 @@
         <app-input-error [control]="form.get('email')" />
       </div>
 
-      <div class="space-y-2">
+      <div class="space-y-1">
         <label appInputLabel for="password">Password</label>
         <input
           appInput
@@ -32,7 +32,7 @@
         <app-input-error [control]="form.get('password')" />
       </div>
 
-      <button appButton type="submit" class="w-full" [disabled]="form.invalid">Log in</button>
+      <button appButton type="submit" class="mt-2 w-full" [disabled]="form.invalid">Log in</button>
     </form>
 
     <div class="mt-6 flex justify-center">
