@@ -31,10 +31,13 @@ export class LoginPage {
 
   constructor() {
     effect(() => {
-      if (this.authStore.isAuthenticated()) {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
-        this.router.navigateByUrl(returnUrl);
-      }
+      if (!this.authStore.isAuthenticated()) return;
+
+      const requestedUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      const returnUrl =
+        requestedUrl?.startsWith('/') && !requestedUrl.startsWith('//') ? requestedUrl : '/';
+
+      this.router.navigateByUrl(returnUrl);
     });
   }
 
