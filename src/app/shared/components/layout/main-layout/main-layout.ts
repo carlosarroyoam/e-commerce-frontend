@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+﻿import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
 import { Footer } from '@/shared/components/footer/footer';
 import { Header } from '@/shared/components/header/header';
+import { Sidebar } from '@/shared/components/sidebar/sidebar';
 
 @Component({
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, Sidebar],
   templateUrl: './main-layout.html',
   host: {
-    class: 'grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr_auto]',
+    class: 'grid min-h-dvh grid-cols-1 lg:grid-cols-[18rem_minmax(0,1fr)]',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayout {
   private readonly router = inject(Router);

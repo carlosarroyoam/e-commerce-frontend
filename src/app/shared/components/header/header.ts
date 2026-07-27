@@ -1,46 +1,19 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+﻿import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AuthSession } from '@/core/data-access/interfaces/auth-session';
-import { UserNav } from '@/shared/components/header/user-nav/user-nav';
-import { ClickOutside } from '@/shared/directives/click-outside/click-outside.directive';
-
-export interface MenuItem {
-  href: string;
-  title: string;
-}
+import { SidebarService } from '@/shared/services/sidebar-service/sidebar-service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, UserNav, ClickOutside],
+  imports: [RouterLink],
   templateUrl: './header.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  public readonly authSession = input.required<AuthSession | null>();
-  public readonly logout = output<void>();
+  private readonly sidebarService = inject(SidebarService);
 
-  protected readonly isMobileMenuOpen = signal(false);
+  protected readonly isSidebarOpen = this.sidebarService.isSidebarOpen;
 
-  protected menuItems: MenuItem[] = [
-    { href: '/dashboard', title: 'Dashboard' },
-    { href: '/orders', title: 'Orders' },
-    { href: '/products', title: 'Products' },
-    { href: '/categories', title: 'Categories' },
-    { href: '/customers', title: 'Customers' },
-    { href: '/users', title: 'Users' },
-  ];
-
-  protected userNavMenuItems: MenuItem[] = [
-    { href: '/account', title: 'Account' },
-    { href: '/settings', title: 'Settings' },
-  ];
-
-  protected toggleMobileMenu(): void {
-    this.isMobileMenuOpen.update((isMobileMenuOpen) => !isMobileMenuOpen);
-  }
-
-  protected closeMobileMenu(): void {
-    this.isMobileMenuOpen.set(false);
+  protected toggleSidebar(): void {
+    this.sidebarService.toggle();
   }
 }

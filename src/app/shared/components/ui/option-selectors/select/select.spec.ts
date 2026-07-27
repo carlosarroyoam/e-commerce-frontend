@@ -13,6 +13,9 @@ describe('Select', () => {
 
     fixture = TestBed.createComponent(Select);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('id', 'test-select');
+    fixture.componentRef.setInput('options', []);
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 

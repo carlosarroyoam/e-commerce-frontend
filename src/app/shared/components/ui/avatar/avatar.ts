@@ -17,7 +17,7 @@ export class Avatar {
   }
 
   get src(): string {
-    return `https://ui-avatars.com/api/name=${this.fullname}&format=svg&background=d4d4d8`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(this.fullname)}&format=svg&background=d4d4d8`;
   }
 
   get alt(): string {

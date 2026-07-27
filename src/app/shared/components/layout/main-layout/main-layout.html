@@ -1,7 +1,11 @@
-<app-header (logout)="logout()" [authSession]="authStore.authSession()" />
+﻿<app-sidebar [authSession]="authStore.authSession()" (logout)="logout()" />
 
-<main class="container py-6">
-  <router-outlet />
-</main>
+<div class="grid min-h-dvh min-w-0 grid-rows-[auto_1fr_auto]">
+  <app-header />
 
-<app-footer />
+  <main tabindex="-1" class="container min-w-0 py-6">
+    <router-outlet />
+  </main>
+
+  <app-footer />
+</div>

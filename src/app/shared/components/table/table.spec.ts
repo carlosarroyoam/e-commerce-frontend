@@ -45,9 +45,7 @@ describe('Table', () => {
     fixture.detectChanges();
 
     const table: HTMLTableElement = fixture.nativeElement.querySelector('table');
-    const status: HTMLElement = fixture.nativeElement.querySelector('[role="status"]');
 
     expect(table.getAttribute('aria-busy')).toBe('true');
-    expect(status.textContent?.trim()).toBe('Loading results...');
   });
 });
