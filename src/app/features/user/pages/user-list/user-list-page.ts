@@ -11,11 +11,12 @@ import { filter, switchMap, tap } from 'rxjs';
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
 import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
+import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse, UserStatus } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
-import { mapUserQueryParams } from '@/features/user/routing/user-query-params.mapper';
+import { userQueryParamsDeserializer } from '@/features/user/routing/user-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -81,34 +82,21 @@ export class UserListPage {
     getCoreRowModel: getCoreRowModel(),
   }));
 
-  private readonly queryParamsSync = createQueryParamsSync({
-    parse: mapUserQueryParams,
-    formChanges: this.form.valueChanges,
-    isFormValid: () => this.form.valid,
-    toQueryParams: (value) => ({
-      firstName: value.firstName || undefined,
-      lastName: value.lastName || undefined,
-      email: value.email || undefined,
-      status: value.status || undefined,
-      startDate: value.startDate || undefined,
-      endDate: value.endDate || undefined,
-      roleIds: value.roleId ? String(value.roleId) : undefined,
-      page: DEFAULT_FIRST_PAGE,
-    }),
-    patchForm: (params) =>
-      this.form.patchValue(
-        {
-          firstName: params.firstName,
-          lastName: params.lastName,
-          email: params.email,
-          status: params.status,
-          startDate: params.startDate,
-          endDate: params.endDate,
-          roleId: Number(params.roleIds) === 1 ? 1 : null,
-        },
-        { emitEvent: false },
-      ),
+  private readonly queryParamsSync = createQueryParamsSync<UserQueryParams>(this.form, {
+    deserialize: userQueryParamsDeserializer,
     resetParams: { page: DEFAULT_FIRST_PAGE, size: DEFAULT_PAGE_SIZE },
+  });
+
+  protected readonly queryParams = this.queryParamsSync.params;
+
+  private readonly sort = computed<SortingState>(() => {
+    const sort = this.queryParams().sort;
+    if (!sort) return [];
+
+    const [field, direction] = sort.split(',');
+    if (!field) return [];
+
+    return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
   });
 
   protected readonly statuses: SelectableOption[] = [
@@ -122,18 +110,6 @@ export class UserListPage {
     { label: 'All roles', value: null },
     { label: 'ADMIN', value: 1 },
   ];
-
-  protected readonly queryParams = this.queryParamsSync.params;
-
-  private readonly sort = computed<SortingState>(() => {
-    const sort = this.queryParams().sort;
-    if (!sort) return [];
-
-    const [field, direction] = sort.split(',');
-    if (!field) return [];
-
-    return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
-  });
 
   constructor() {
     this.store.findAll(this.queryParams);

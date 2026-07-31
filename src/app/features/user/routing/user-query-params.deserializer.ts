@@ -4,7 +4,7 @@ import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/paginati
 import { safeParseInt } from '@/core/utils/number.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 
-export const mapUserQueryParams = (params: ParamMap): UserQueryParams => ({
+export const userQueryParamsDeserializer = (params: ParamMap): UserQueryParams => ({
   firstName: params.get('firstName') ?? undefined,
   lastName: params.get('lastName') ?? undefined,
   email: params.get('email') ?? undefined,

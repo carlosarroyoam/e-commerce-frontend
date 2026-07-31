@@ -29,7 +29,10 @@ describe('CustomerListPage', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { queryParamMap: queryParamMap$.asObservable() },
+          useValue: {
+            queryParamMap: queryParamMap$.asObservable(),
+            snapshot: { queryParamMap: queryParamMap$.value },
+          },
         },
         {
           provide: Router,

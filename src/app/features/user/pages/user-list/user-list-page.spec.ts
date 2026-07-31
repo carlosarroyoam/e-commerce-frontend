@@ -43,6 +43,7 @@ describe('UserListPage', () => {
           provide: ActivatedRoute,
           useValue: {
             queryParamMap: queryParamMap$.asObservable(),
+            snapshot: { queryParamMap: queryParamMap$.value },
           },
         },
         {

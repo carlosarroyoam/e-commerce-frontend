@@ -10,10 +10,11 @@ import {
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
 import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
+import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { CustomerStatus } from '@/features/customer/data-access/interfaces/customer-response';
 import { CustomerStore } from '@/features/customer/data-access/store/customer.store';
 import { buildCustomerTableColumns } from '@/features/customer/pages/customer-list/customer-table';
-import { mapCustomerQueryParams } from '@/features/customer/routing/customer-query-params.mapper';
+import { customerQueryParamsDeserializer } from '@/features/customer/routing/customer-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -69,40 +70,10 @@ export class CustomerListPage {
     getCoreRowModel: getCoreRowModel(),
   }));
 
-  private readonly queryParamsSync = createQueryParamsSync({
-    parse: mapCustomerQueryParams,
-    formChanges: this.form.valueChanges,
-    isFormValid: () => this.form.valid,
-    toQueryParams: (value) => ({
-      firstName: value.firstName || undefined,
-      lastName: value.lastName || undefined,
-      email: value.email || undefined,
-      status: value.status || undefined,
-      startDate: value.startDate || undefined,
-      endDate: value.endDate || undefined,
-      page: DEFAULT_FIRST_PAGE,
-    }),
-    patchForm: (params) =>
-      this.form.patchValue(
-        {
-          firstName: params.firstName,
-          lastName: params.lastName,
-          email: params.email,
-          status: params.status,
-          startDate: params.startDate,
-          endDate: params.endDate,
-        },
-        { emitEvent: false },
-      ),
+  private readonly queryParamsSync = createQueryParamsSync<CustomerQueryParams>(this.form, {
+    deserialize: customerQueryParamsDeserializer,
     resetParams: { page: DEFAULT_FIRST_PAGE, size: DEFAULT_PAGE_SIZE },
   });
-
-  protected readonly statuses: SelectableOption[] = [
-    { label: 'All statuses', value: null },
-    { label: 'Active', value: 'ACTIVE' },
-    { label: 'Suspended', value: 'SUSPENDED' },
-    { label: 'Deleted', value: 'DELETED' },
-  ];
 
   protected readonly queryParams = this.queryParamsSync.params;
 
@@ -115,6 +86,13 @@ export class CustomerListPage {
 
     return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
   });
+
+  protected readonly statuses: SelectableOption[] = [
+    { label: 'All statuses', value: null },
+    { label: 'Active', value: 'ACTIVE' },
+    { label: 'Suspended', value: 'SUSPENDED' },
+    { label: 'Deleted', value: 'DELETED' },
+  ];
 
   constructor() {
     this.store.findAll(this.queryParams);

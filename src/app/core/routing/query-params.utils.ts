@@ -1,74 +1,94 @@
-import { DestroyRef, effect, inject, Signal } from '@angular/core';
+import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
+import { DestroyRef, inject, Signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
-import { debounceTime, filter, map, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 
-export interface QueryParamsSyncConfig<TParams extends object, TFormValue> {
-  parse(params: ParamMap): TParams;
-  formChanges: Observable<TFormValue>;
-  isFormValid(): boolean;
-  toQueryParams(value: TFormValue): Partial<TParams>;
-  patchForm(params: TParams): void;
-  resetParams: Partial<TParams>;
+const DEFAULT_DEBOUNCE_MS = 250;
+
+export interface QueryParamsSyncOptions<
+  TParams extends object,
+  TFormValue extends object = TParams,
+> {
   debounceMs?: number;
+  serialize?: (value: TFormValue) => Params;
+  deserialize?: (params: ParamMap) => TParams;
+  resetParams?: Partial<TParams>;
 }
 
 export interface QueryParamsSync<TParams extends object> {
+  reset: () => void;
+  update: (value: Partial<TParams>) => void;
   params: Signal<TParams>;
-  update(partial: Partial<TParams>): void;
-  reset(): void;
 }
 
-export const createQueryParamsSync = <TParams extends object, TFormValue>({
-  parse,
-  formChanges,
-  isFormValid,
-  toQueryParams,
-  patchForm,
-  resetParams,
-  debounceMs = 250,
-}: QueryParamsSyncConfig<TParams, TFormValue>): QueryParamsSync<TParams> => {
-  const route = inject(ActivatedRoute);
+export const createQueryParamsSync = <TParams extends object, TFormValue extends object = TParams>(
+  form: FormGroup,
+  options: QueryParamsSyncOptions<TParams, TFormValue> = {},
+): QueryParamsSync<TParams> => {
   const router = inject(Router);
+  const route = inject(ActivatedRoute);
   const destroyRef = inject(DestroyRef);
-  const params = toSignal(route.queryParamMap.pipe(map(parse)), { requireSync: true });
 
-  const update = (partial: Partial<TParams>): void => {
+  const {
+    debounceMs = DEFAULT_DEBOUNCE_MS,
+    serialize = defaultSerialize,
+    deserialize = defaultDeserialize,
+    resetParams = {},
+  } = options;
+
+  const navigate = (queryParams: Params, merge = false): void => {
     void router.navigate([], {
       relativeTo: route,
-      queryParams: normalizeQueryParams(partial),
-      queryParamsHandling: 'merge',
+      queryParams,
+      queryParamsHandling: merge ? 'merge' : '',
       replaceUrl: true,
     });
   };
 
-  const reset = (): void => {
-    void router.navigate([], {
-      relativeTo: route,
-      queryParams: resetParams,
-      replaceUrl: true,
-    });
-  };
+  const initialParams = route.snapshot.queryParamMap;
 
-  effect(() => patchForm(params()));
-
-  formChanges
-    .pipe(
-      debounceTime(debounceMs),
-      filter(() => isFormValid()),
-      takeUntilDestroyed(destroyRef),
-    )
-    .subscribe((value) => update(toQueryParams(value)));
-
-  return { params, update, reset };
-};
-
-const normalizeQueryParams = (partial: object): Params => {
-  const queryParams: Params = {};
-
-  for (const [key, value] of Object.entries(partial)) {
-    queryParams[key] = value === undefined || value === null || value === '' ? null : value;
+  if (initialParams.keys.length > 0) {
+    form.patchValue(deserialize(initialParams), { emitEvent: false });
+  } else {
+    navigate(resetParams);
   }
 
-  return queryParams;
+  form.valueChanges
+    .pipe(
+      debounceTime(debounceMs),
+      filter(() => form.valid),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      takeUntilDestroyed(destroyRef),
+    )
+    .subscribe((value) => navigate({ ...serialize(value), page: DEFAULT_FIRST_PAGE }, true));
+
+  const params = toSignal(route.queryParamMap.pipe(map(deserialize)), {
+    initialValue: deserialize(initialParams),
+  });
+
+  return {
+    reset: () => {
+      form.reset();
+      navigate(resetParams);
+    },
+    update: (value: Partial<TParams>) => {
+      form.patchValue(value, { emitEvent: false });
+      navigate({ ...serialize(form.getRawValue()), ...value }, true);
+    },
+    params,
+  };
+};
+
+const defaultSerialize = <TFormValue extends object>(value: TFormValue): Params => {
+  const params: Params = {};
+  for (const [key, val] of Object.entries(value)) {
+    params[key] = val === undefined || val === null || val === '' ? null : val;
+  }
+  return params;
+};
+
+const defaultDeserialize = <TParams extends object>(params: ParamMap): TParams => {
+  return Object.fromEntries(params.keys.map((key) => [key, params.get(key)])) as TParams;
 };
