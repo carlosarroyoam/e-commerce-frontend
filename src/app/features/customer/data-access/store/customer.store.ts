@@ -11,11 +11,13 @@ import { initialState } from '@/features/customer/data-access/store/customer.sta
 
 export const CustomerStore = signalStore(
   { providedIn: undefined },
+
   withState(initialState),
+
   withMethods((store, customerService = inject(CustomerService)) => ({
     findAll: rxMethod<CustomerQueryParams>(
       pipe(
-        tap((queryParams) => patchState(store, { queryParams, isLoading: true, error: null })),
+        tap(() => patchState(store, { isLoading: true, error: null })),
         switchMap((queryParams) =>
           customerService.findAll(queryParams).pipe(
             tapResponse({

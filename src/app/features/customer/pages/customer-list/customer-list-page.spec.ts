@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -9,7 +9,7 @@ import { CustomerListPage } from './customer-list-page';
 describe('CustomerListPage', () => {
   let component: CustomerListPage;
   let fixture: ComponentFixture<CustomerListPage>;
-  let queryParams$: BehaviorSubject<Params>;
+  let queryParamMap$: BehaviorSubject<ParamMap>;
 
   const customerServiceMock = {
     findAll: vi.fn(() =>
@@ -21,7 +21,7 @@ describe('CustomerListPage', () => {
   };
 
   beforeEach(async () => {
-    queryParams$ = new BehaviorSubject<Params>({});
+    queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
     vi.clearAllMocks();
 
     await TestBed.configureTestingModule({
@@ -29,7 +29,7 @@ describe('CustomerListPage', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { queryParams: queryParams$.asObservable() },
+          useValue: { queryParamMap: queryParamMap$.asObservable() },
         },
         {
           provide: Router,

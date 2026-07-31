@@ -1,24 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import {
   createAngularTable,
   getCoreRowModel,
   Updater,
   type SortingState,
 } from '@tanstack/angular-table';
-import { debounceTime, filter, switchMap, tap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 
-import { DEFAULT_FIRST_PAGE } from '@/core/constants/pagination.constants';
-import { QUERY_PARAMS_CONFIG, QueryParamsService } from '@/core/routing/query-params.service';
+import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
+import { createQueryParamsSync } from '@/core/routing/query-params.utils';
 import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
-import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse, UserStatus } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/store/user.store';
 import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
-import { provideUserQueryParamsConfig } from '@/features/user/routing/query-params-config-providers';
+import { mapUserQueryParams } from '@/features/user/routing/user-query-params.mapper';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { Button } from '@/shared/components/ui/button/button';
@@ -44,22 +41,13 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
     Select,
   ],
   templateUrl: './user-list-page.html',
-  providers: [
-    UserStore,
-    QueryParamsService,
-    {
-      provide: QUERY_PARAMS_CONFIG,
-      useFactory: provideUserQueryParamsConfig,
-    },
-  ],
+  providers: [UserStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
   private readonly fb = inject(FormBuilder);
-  private readonly route = inject(ActivatedRoute);
+
   private readonly userService = inject(UserService);
-  private readonly queryParamsService =
-    inject<QueryParamsService<UserQueryParams>>(QueryParamsService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
   protected readonly store = inject(UserStore);
@@ -79,7 +67,7 @@ export class UserListPage {
     { validators: dateRangeValidator },
   );
 
-  protected table = createAngularTable(() => ({
+  protected readonly table = createAngularTable(() => ({
     data: this.store.items(),
     columns: buildUserTableColumns({
       onEdit: (user) => this.onEditUser(user),
@@ -93,6 +81,36 @@ export class UserListPage {
     getCoreRowModel: getCoreRowModel(),
   }));
 
+  private readonly queryParamsSync = createQueryParamsSync({
+    parse: mapUserQueryParams,
+    formChanges: this.form.valueChanges,
+    isFormValid: () => this.form.valid,
+    toQueryParams: (value) => ({
+      firstName: value.firstName || undefined,
+      lastName: value.lastName || undefined,
+      email: value.email || undefined,
+      status: value.status || undefined,
+      startDate: value.startDate || undefined,
+      endDate: value.endDate || undefined,
+      roleIds: value.roleId ? String(value.roleId) : undefined,
+      page: DEFAULT_FIRST_PAGE,
+    }),
+    patchForm: (params) =>
+      this.form.patchValue(
+        {
+          firstName: params.firstName,
+          lastName: params.lastName,
+          email: params.email,
+          status: params.status,
+          startDate: params.startDate,
+          endDate: params.endDate,
+          roleId: Number(params.roleIds) === 1 ? 1 : null,
+        },
+        { emitEvent: false },
+      ),
+    resetParams: { page: DEFAULT_FIRST_PAGE, size: DEFAULT_PAGE_SIZE },
+  });
+
   protected readonly statuses: SelectableOption[] = [
     { label: 'All statuses', value: null },
     { label: 'Active', value: 'ACTIVE' },
@@ -105,8 +123,10 @@ export class UserListPage {
     { label: 'ADMIN', value: 1 },
   ];
 
+  protected readonly queryParams = this.queryParamsSync.params;
+
   private readonly sort = computed<SortingState>(() => {
-    const sort = this.store.queryParams().sort;
+    const sort = this.queryParams().sort;
     if (!sort) return [];
 
     const [field, direction] = sort.split(',');
@@ -116,21 +136,15 @@ export class UserListPage {
   });
 
   constructor() {
-    this.subscribeFormChanges();
-    this.subscribeQueryParamsChanges();
-  }
-
-  protected reset(): void {
-    this.queryParamsService.resetQueryParams();
-    this.form.reset();
+    this.store.findAll(this.queryParams);
   }
 
   protected onPageChange(page: number): void {
-    this.queryParamsService.updateQueryParams({ page });
+    this.queryParamsSync.update({ page });
   }
 
   protected onSizeChange(size: number): void {
-    this.queryParamsService.updateQueryParams({
+    this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
       size,
     });
@@ -142,12 +156,16 @@ export class UserListPage {
       typeof updaterOrValue === 'function' ? updaterOrValue(currentSorting) : updaterOrValue;
     const nextColumn = nextSorting[0];
 
-    this.queryParamsService.updateQueryParams({
+    this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
       sort: nextColumn
         ? `${toCamelCase(nextColumn.id)},${nextColumn.desc ? 'desc' : 'asc'}`
         : undefined,
     });
+  }
+
+  protected reset(): void {
+    this.queryParamsSync.reset();
   }
 
   protected onEditUser(user: UserResponse): void {
@@ -173,7 +191,7 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.findAll(this.store.queryParams()));
+      .subscribe(() => this.store.findAll(this.queryParams()));
   }
 
   protected onRestoreUser(user: UserResponse): void {
@@ -195,44 +213,6 @@ export class UserListPage {
           }),
         ),
       )
-      .subscribe(() => this.store.findAll(this.store.queryParams()));
-  }
-
-  private subscribeFormChanges() {
-    this.form.valueChanges
-      .pipe(
-        takeUntilDestroyed(),
-        debounceTime(250),
-        filter(() => this.form.valid),
-      )
-      .subscribe((value) =>
-        this.queryParamsService.updateQueryParams({
-          page: DEFAULT_FIRST_PAGE,
-          firstName: value.firstName || undefined,
-          lastName: value.lastName || undefined,
-          email: value.email || undefined,
-          status: value.status || undefined,
-          startDate: value.startDate || undefined,
-          endDate: value.endDate || undefined,
-          roleIds: value.roleId ? String(value.roleId) : undefined,
-        }),
-      );
-  }
-
-  private subscribeQueryParamsChanges() {
-    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe((params) =>
-      this.form.patchValue(
-        {
-          firstName: params['firstName'],
-          lastName: params['lastName'],
-          email: params['email'],
-          status: params['status'],
-          startDate: params['startDate'],
-          endDate: params['endDate'],
-          roleId: Number(params['roleIds']) === 1 ? 1 : null,
-        },
-        { emitEvent: false },
-      ),
-    );
+      .subscribe(() => this.store.findAll(this.queryParams()));
   }
 }

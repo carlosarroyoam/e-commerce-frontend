@@ -121,8 +121,8 @@
     <app-table [table]="table" [isLoading]="store.isLoading()" />
 
     <app-paginator
-      [page]="store.queryParams().page!"
-      [size]="store.queryParams().size!"
+      [page]="queryParams().page!"
+      [size]="queryParams().size!"
       [pagination]="store.pagination()"
       (pageChanged)="onPageChange($event)"
       (sizeChanged)="onSizeChange($event)"

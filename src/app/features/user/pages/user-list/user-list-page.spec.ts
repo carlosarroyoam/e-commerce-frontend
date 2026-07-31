@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -10,7 +10,7 @@ import { UserListPage } from './user-list-page';
 describe('UserListPage', () => {
   let component: UserListPage;
   let fixture: ComponentFixture<UserListPage>;
-  let queryParams$: BehaviorSubject<Params>;
+  let queryParamMap$: BehaviorSubject<ParamMap>;
 
   const userServiceMock = {
     findAll: vi.fn(() =>
@@ -33,7 +33,7 @@ describe('UserListPage', () => {
   };
 
   beforeEach(async () => {
-    queryParams$ = new BehaviorSubject<Params>({});
+    queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
     vi.clearAllMocks();
 
     await TestBed.configureTestingModule({
@@ -42,7 +42,7 @@ describe('UserListPage', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            queryParams: queryParams$.asObservable(),
+            queryParamMap: queryParamMap$.asObservable(),
           },
         },
         {
@@ -74,18 +74,21 @@ describe('UserListPage', () => {
   });
 
   it('should map route query params before loading users', () => {
-    queryParams$.next({
-      firstName: 'Alice',
-      lastName: 'Doe',
-      email: 'alice@example.com',
-      status: 'ACTIVE',
-      startDate: '2026-01-01',
-      endDate: '2026-01-31',
-      roleIds: '1',
-      sort: 'firstName,desc',
-      page: 'invalid',
-      size: '0',
-    });
+    queryParamMap$.next(
+      convertToParamMap({
+        firstName: 'Alice',
+        lastName: 'Doe',
+        email: 'alice@example.com',
+        status: 'ACTIVE',
+        startDate: '2026-01-01',
+        endDate: '2026-01-31',
+        roleIds: '1',
+        sort: 'firstName,desc',
+        page: 'invalid',
+        size: '0',
+      }),
+    );
+    fixture.detectChanges();
 
     expect(userServiceMock.findAll).toHaveBeenLastCalledWith({
       firstName: 'Alice',
