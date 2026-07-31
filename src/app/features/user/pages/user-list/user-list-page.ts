@@ -153,7 +153,7 @@ export class UserListPage {
       .open({
         data: {
           title: 'Delete user',
-          description: `Are you sure you want to delete the user ${user.first_name}?`,
+          description: `Are you sure you want to delete the user ${user.first_name} ${user.last_name}?`,
           primaryButtonLabel: 'Delete',
           showSecondaryButton: true,
         },
@@ -163,7 +163,7 @@ export class UserListPage {
         switchMap(() => this.userService.deleteById(user.id)),
         tap(() =>
           this.toastService.success({
-            title: `The user ${user.first_name} was deleted successfully`,
+            title: `The user ${user.first_name} ${user.last_name} was deleted successfully`,
           }),
         ),
       )
@@ -175,7 +175,7 @@ export class UserListPage {
       .open({
         data: {
           title: 'Restore user',
-          description: `Are you sure you want to restore the user ${user.first_name}?`,
+          description: `Are you sure you want to restore the user ${user.first_name} ${user.last_name}?`,
           primaryButtonLabel: 'Restore',
           showSecondaryButton: true,
         },
@@ -185,7 +185,7 @@ export class UserListPage {
         switchMap(() => this.userService.restoreById(user.id)),
         tap(() =>
           this.toastService.success({
-            title: `The user ${user.first_name} was restored successfully`,
+            title: `The user ${user.first_name} ${user.last_name} was restored successfully`,
           }),
         ),
       )

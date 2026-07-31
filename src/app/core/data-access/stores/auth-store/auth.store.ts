@@ -1,11 +1,11 @@
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, finalize, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
 
-import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
+import { LoginRequest } from '@/core/data-access/interfaces/login-request';
 import { LoginResponse } from '@/core/data-access/interfaces/login-response';
 import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
@@ -17,62 +17,58 @@ export const AuthStore = signalStore(
 
   withState(initialState),
 
+  withComputed((store) => ({
+    isAuthenticated: computed(() => store.status() === 'authenticated'),
+    isInitialized: computed(() => store.status() !== 'unknown'),
+  })),
+
   withMethods((store, authService = inject(AuthService)) => {
+    const setAuthenticated = (response: LoginResponse | RefreshTokenResponse): void => {
+      patchState(store, {
+        status: 'authenticated',
+        accessToken: response.access_token,
+        authSession: toAuthSession(response),
+        error: null,
+      });
+    };
+
+    const setUnathenticated = (error: string | null = null): void => {
+      patchState(store, {
+        status: 'unauthenticated',
+        accessToken: null,
+        authSession: null,
+        error,
+      });
+    };
+
     return {
       /**
-       * Login.
+       * Authenticates a user.
        */
       login: rxMethod<LoginRequest>(
         pipe(
-          tap(() => patchState(store, { isLoading: true, error: null })),
+          tap(() => patchState(store, { isLoggingIn: true, error: null })),
           switchMap((payload) =>
             authService.login(payload).pipe(
               tapResponse({
-                next: (response) => {
-                  patchState(store, {
-                    accessToken: response.access_token,
-                    authSession: toAuthSession(response),
-                    isAuthenticated: true,
-                  });
-                },
-                error: (error) =>
-                  patchState(store, {
-                    accessToken: null,
-                    authSession: null,
-                    isAuthenticated: false,
-                    error: extractErrorMessage(error),
-                  }),
+                next: (response) => setAuthenticated(response),
+                error: (error) => setUnathenticated(extractErrorMessage(error)),
               }),
-              finalize(() => patchState(store, { isLoading: false })),
+              finalize(() => patchState(store, { isLoggingIn: false })),
             ),
           ),
         ),
       ),
 
       /**
-       * Refresh access token.
+       * Refreshes access token.
        */
       refreshAccessToken(): Observable<RefreshTokenResponse> {
         return authService.refreshToken().pipe(
-          tap(() => patchState(store, { isLoading: true, error: null })),
           tapResponse({
-            next: (response) => {
-              patchState(store, {
-                accessToken: response.access_token,
-                authSession: toAuthSession(response),
-                isAuthenticated: true,
-              });
-            },
-            error: (error) => {
-              patchState(store, {
-                accessToken: null,
-                authSession: null,
-                isAuthenticated: false,
-                error: extractErrorMessage(error),
-              });
-            },
+            next: (response) => setAuthenticated(response),
+            error: (error) => setUnathenticated(extractErrorMessage(error)),
           }),
-          finalize(() => patchState(store, { isLoading: false })),
         );
       },
 
@@ -80,6 +76,10 @@ export const AuthStore = signalStore(
        * Restores the in-memory session during app startup.
        */
       restoreSession(): Observable<void> {
+        if (store.status() !== 'unknown') {
+          return of(undefined);
+        }
+
         return this.refreshAccessToken().pipe(
           map(() => undefined),
           catchError(() => of(undefined)),
@@ -90,13 +90,11 @@ export const AuthStore = signalStore(
        * Logout.
        */
       logout(): void {
-        authService.logout().subscribe();
-
-        patchState(store, {
-          accessToken: null,
-          authSession: null,
-          isAuthenticated: false,
-        });
+        setUnathenticated();
+        authService
+          .logout()
+          .pipe(catchError(() => EMPTY))
+          .subscribe();
       },
     };
   }),
