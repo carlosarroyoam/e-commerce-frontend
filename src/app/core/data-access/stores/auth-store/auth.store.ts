@@ -32,7 +32,7 @@ export const AuthStore = signalStore(
       });
     };
 
-    const setUnathenticated = (error: string | null = null): void => {
+    const setUnauthenticated = (error: string | null = null): void => {
       patchState(store, {
         status: 'unauthenticated',
         accessToken: null,
@@ -52,7 +52,7 @@ export const AuthStore = signalStore(
             authService.login(payload).pipe(
               tapResponse({
                 next: (response) => setAuthenticated(response),
-                error: (error) => setUnathenticated(extractErrorMessage(error)),
+                error: (error) => setUnauthenticated(extractErrorMessage(error)),
               }),
               finalize(() => patchState(store, { isLoggingIn: false })),
             ),
@@ -67,7 +67,7 @@ export const AuthStore = signalStore(
         return authService.refreshToken().pipe(
           tapResponse({
             next: (response) => setAuthenticated(response),
-            error: (error) => setUnathenticated(extractErrorMessage(error)),
+            error: (error) => setUnauthenticated(extractErrorMessage(error)),
           }),
         );
       },
@@ -90,7 +90,7 @@ export const AuthStore = signalStore(
        * Logout.
        */
       logout(): void {
-        setUnathenticated();
+        setUnauthenticated();
         authService
           .logout()
           .pipe(catchError(() => EMPTY))
