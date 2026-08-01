@@ -4,12 +4,12 @@
       @for (item of navigationItems; track item.id) {
         <li>
           <a
-            routerLinkActive="bg-zinc-100 text-zinc-800"
+            routerLinkActive="bg-zinc-100 text-zinc-700"
             ariaCurrentWhenActive="page"
             [routerLink]="item.route"
             [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
             (click)="closeSidebar()"
-            class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-600 outline-offset-2 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-zinc-900"
+            class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-500 outline-offset-2 transition-colors hover:bg-zinc-100 hover:text-zinc-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +18,7 @@
               fill="none"
               stroke="currentColor"
               stroke-width="1.8"
-              class="size-5 text-zinc-500"
+              class="size-5"
             >
               @switch (item.icon) {
                 @case ('dashboard') {
@@ -80,8 +80,8 @@
 
 <ng-template #userPanel>
   @if (authSession()) {
-    <section class="mt-6 border-t border-zinc-200 pt-5" aria-label="Signed-in user">
-      <div class="flex items-center gap-3 px-3">
+    <section class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
+      <div class="mt-5 flex items-center gap-3 px-3">
         <img [src]="avatarSrc()" [alt]="avatarAlt()" class="size-10 rounded-full bg-zinc-200" />
         <div class="min-w-0">
           <p class="truncate text-sm font-semibold text-zinc-950">{{ authSession()?.full_name }}</p>
@@ -92,7 +92,7 @@
       <button
         type="button"
         (click)="logout.emit()"
-        class="mt-4 flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-600 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-zinc-900"
+        class="mt-4 flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-500 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@
           fill="none"
           stroke="currentColor"
           stroke-width="1.8"
-          class="size-5 text-zinc-500"
+          class="size-5"
         >
           <path
             stroke-linecap="round"
@@ -116,12 +116,12 @@
 </ng-template>
 
 <aside
-  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-6 lg:flex"
+  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-6 lg:flex"
 >
   <a
     routerLink="/dashboard"
     (click)="closeSidebar()"
-    class="mb-6 rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4 focus-visible:outline-2 focus-visible:outline-zinc-900"
+    class="mb-6 rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4"
   >
     e-commerce
   </a>
@@ -145,13 +145,13 @@
     aria-modal="true"
     aria-label="Primary navigation"
     (keydown.escape)="closeSidebar()"
-    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
+    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
   >
     <div class="mb-6 flex items-center justify-between">
       <a
         routerLink="/dashboard"
         (click)="closeSidebar()"
-        class="rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4 focus-visible:outline-2 focus-visible:outline-zinc-900"
+        class="rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4"
       >
         e-commerce
       </a>
@@ -159,7 +159,7 @@
       <button
         type="button"
         (click)="closeSidebar()"
-        class="rounded-md p-2 text-zinc-600 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-zinc-900"
+        class="rounded-md p-2 text-zinc-600 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-800"
       >
         <span class="sr-only">Close navigation</span>
         <svg
