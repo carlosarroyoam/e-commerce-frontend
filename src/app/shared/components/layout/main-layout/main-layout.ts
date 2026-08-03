@@ -19,6 +19,6 @@ export class MainLayout {
 
   protected logout(): void {
     this.authStore.logout();
-    this.router.navigate(['/auth/login']);
+    void this.router.navigate(['/auth/login']);
   }
 }

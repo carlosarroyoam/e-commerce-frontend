@@ -3,7 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 import { refreshTokenInterceptor } from './refresh-token-interceptor';
 
-describe('responseErrorInterceptor', () => {
+describe('refreshTokenInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) =>
     TestBed.runInInjectionContext(() => refreshTokenInterceptor(req, next));
 

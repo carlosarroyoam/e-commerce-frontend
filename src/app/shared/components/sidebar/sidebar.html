@@ -30,7 +30,7 @@
 }
 
 <ng-template #header>
-  <div class="mb-6 flex items-center justify-between">
+  <header class="mb-6 flex items-center justify-between">
     <a
       routerLink="/dashboard"
       (click)="closeSidebar()"
@@ -57,7 +57,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </button>
-  </div>
+  </header>
 </ng-template>
 
 <ng-template #navigation>
@@ -142,7 +142,7 @@
 
 <ng-template #footer>
   @if (authSession()) {
-    <section class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
+    <footer class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
       <div class="mt-5 flex items-center gap-3 px-3">
         <img [src]="avatarSrc()" [alt]="avatarAlt()" class="size-10 rounded-full bg-zinc-200" />
         <div class="min-w-0">
@@ -173,6 +173,6 @@
         </svg>
         Log out
       </button>
-    </section>
+    </footer>
   }
 </ng-template>

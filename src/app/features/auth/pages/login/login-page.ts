@@ -37,7 +37,7 @@ export class LoginPage {
       const returnUrl =
         requestedUrl?.startsWith('/') && !requestedUrl.startsWith('//') ? requestedUrl : '/';
 
-      this.router.navigateByUrl(returnUrl);
+      void this.router.navigateByUrl(returnUrl);
     });
   }
 

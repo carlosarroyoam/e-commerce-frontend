@@ -21,17 +21,6 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
       }
 
       return authStore.refreshAccessToken().pipe(
-        catchError((refreshError: unknown) => {
-          if (
-            refreshError instanceof HttpErrorResponse &&
-            (refreshError.status === 401 || refreshError.status === 422)
-          ) {
-            authStore.logout();
-            router.navigate(['/auth/login']);
-          }
-
-          return throwError(() => refreshError);
-        }),
         switchMap(() =>
           next(
             request.clone({
@@ -39,6 +28,17 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
             }),
           ),
         ),
+        catchError((refreshError: unknown) => {
+          if (
+            refreshError instanceof HttpErrorResponse &&
+            (refreshError.status === 401 || refreshError.status === 422)
+          ) {
+            authStore.logout();
+            void router.navigate(['/auth/login']);
+          }
+
+          return throwError(() => refreshError);
+        }),
       );
     }),
   );

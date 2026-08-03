@@ -5,6 +5,12 @@ import { catchError, throwError } from 'rxjs';
 import { RETRY_ON_UNAUTHORIZED, SKIP_ERROR_DIALOG } from '@/core/http/auth-request-context';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 
+const DEFAULT_ERROR_DIALOG = {
+  title: 'Whoops! something went wrong',
+  description: 'There was a problem processing the request. Please try again later.',
+  primaryButtonLabel: 'Dismiss',
+};
+
 export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
   const alertDialogService = inject(AlertDialogService);
 
@@ -18,23 +24,22 @@ export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
         return throwError(() => error);
       }
 
-      const hasApiError = error.error?.status && error.error.status !== 500;
-
-      alertDialogService.open({
-        data: hasApiError
-          ? {
-              title: error.error.error,
-              description: error.error.message,
-              primaryButtonLabel: 'Dismiss',
-            }
-          : {
-              title: 'Whoops! something went wrong',
-              description: 'There was a problem processing the request. Please try again later.',
-              primaryButtonLabel: 'Dismiss',
-            },
-      });
-
+      alertDialogService.open({ data: getErrorDialogData(error) });
       return throwError(() => error);
     }),
   );
+};
+
+const getErrorDialogData = (error: HttpErrorResponse) => {
+  const apiError = error.error;
+
+  if (apiError?.status && apiError.status !== 500) {
+    return {
+      title: apiError.error,
+      description: apiError.message,
+      primaryButtonLabel: 'Dismiss',
+    };
+  }
+
+  return DEFAULT_ERROR_DIALOG;
 };
