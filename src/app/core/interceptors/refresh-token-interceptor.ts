@@ -35,9 +35,7 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
         switchMap(() =>
           next(
             request.clone({
-              setHeaders: {
-                Authorization: `Bearer ${authStore.accessToken()}`,
-              },
+              setHeaders: { Authorization: `Bearer ${authStore.accessToken()}` },
             }),
           ),
         ),

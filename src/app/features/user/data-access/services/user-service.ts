@@ -27,7 +27,6 @@ export class UserService {
     sort,
   }: UserQueryParams): Observable<PagedUsersResponse> {
     let params = new HttpParams();
-    if (sort) params = params.append('sort', sort);
     if (firstName) params = params.append('firstName', firstName);
     if (lastName) params = params.append('lastName', lastName);
     if (email) params = params.append('email', email);

@@ -1,4 +1,66 @@
-﻿<ng-template #navigation>
+﻿<aside
+  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-6 lg:flex"
+>
+  <ng-container [ngTemplateOutlet]="header" />
+  <ng-container [ngTemplateOutlet]="navigation" />
+  <ng-container [ngTemplateOutlet]="footer" />
+</aside>
+
+@if (isSidebarOpen()) {
+  <div
+    class="fixed inset-0 z-40 bg-zinc-950/30 lg:hidden"
+    aria-hidden="true"
+    (click)="closeSidebar()"
+  ></div>
+
+  <aside
+    id="mobile-sidebar"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Primary navigation"
+    (keydown.escape)="closeSidebar()"
+    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
+  >
+    <ng-container [ngTemplateOutlet]="header" />
+    <ng-container [ngTemplateOutlet]="navigation" />
+    <ng-container [ngTemplateOutlet]="footer" />
+  </aside>
+}
+
+<ng-template #header>
+  <div class="mb-6 flex items-center justify-between">
+    <a
+      routerLink="/dashboard"
+      (click)="closeSidebar()"
+      class="rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4"
+    >
+      e-commerce
+    </a>
+
+    <button
+      type="button"
+      (click)="closeSidebar()"
+      class="block rounded-md p-2 text-zinc-600 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-800 lg:hidden"
+    >
+      <span class="sr-only">Close navigation</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        class="size-5 text-zinc-500"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #navigation>
   <nav aria-label="Primary navigation" class="flex-1">
     <ul class="space-y-1">
       @for (item of navigationItems; track item.id) {
@@ -78,7 +140,7 @@
   </nav>
 </ng-template>
 
-<ng-template #userPanel>
+<ng-template #footer>
   @if (authSession()) {
     <section class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
       <div class="mt-5 flex items-center gap-3 px-3">
@@ -114,69 +176,3 @@
     </section>
   }
 </ng-template>
-
-<aside
-  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-6 lg:flex"
->
-  <a
-    routerLink="/dashboard"
-    (click)="closeSidebar()"
-    class="mb-6 rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4"
-  >
-    e-commerce
-  </a>
-
-  <ng-container [ngTemplateOutlet]="navigation" />
-  <ng-container [ngTemplateOutlet]="userPanel" />
-</aside>
-
-@if (isSidebarOpen()) {
-  <div
-    class="fixed inset-0 z-40 bg-zinc-950/30 lg:hidden"
-    aria-hidden="true"
-    (click)="closeSidebar()"
-  ></div>
-
-  <aside
-    id="mobile-sidebar"
-    cdkTrapFocus
-    [cdkTrapFocusAutoCapture]="true"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Primary navigation"
-    (keydown.escape)="closeSidebar()"
-    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
-  >
-    <div class="mb-6 flex items-center justify-between">
-      <a
-        routerLink="/dashboard"
-        (click)="closeSidebar()"
-        class="rounded-md px-3 text-lg font-semibold tracking-tight text-zinc-950 outline-offset-4"
-      >
-        e-commerce
-      </a>
-
-      <button
-        type="button"
-        (click)="closeSidebar()"
-        class="rounded-md p-2 text-zinc-600 outline-offset-2 hover:bg-zinc-100 hover:text-zinc-800"
-      >
-        <span class="sr-only">Close navigation</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          class="size-5 text-zinc-500"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-
-    <ng-container [ngTemplateOutlet]="navigation" />
-    <ng-container [ngTemplateOutlet]="userPanel" />
-  </aside>
-}

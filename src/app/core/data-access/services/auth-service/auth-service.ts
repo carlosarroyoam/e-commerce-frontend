@@ -25,10 +25,7 @@ export class AuthService {
   public login(payload: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(
       `${environment.apiUrl}/auth/login`,
-      {
-        ...payload,
-        device_id: this.getDeviceId(),
-      },
+      { ...payload, device_id: this.getDeviceId() },
       { context: createLoginRequestContext() },
     );
   }
