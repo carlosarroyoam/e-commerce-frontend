@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { finalize, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
@@ -24,19 +24,10 @@ export const UserStore = signalStore(
         switchMap((queryParams) =>
           userService.findAll(queryParams).pipe(
             tapResponse({
-              next: ({ items, pagination }) =>
-                patchState(store, {
-                  items,
-                  pagination,
-                }),
-              error: (error) =>
-                patchState(store, {
-                  items: [],
-                  pagination: { ...initialState.pagination },
-                  error: extractErrorMessage(error),
-                }),
+              next: ({ items, pagination }) => patchState(store, { items, pagination }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
             }),
-            finalize(() => patchState(store, { isLoading: false })),
           ),
         ),
       ),

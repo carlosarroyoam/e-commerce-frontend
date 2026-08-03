@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { finalize, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
@@ -15,6 +15,9 @@ export const CustomerStore = signalStore(
   withState(initialState),
 
   withMethods((store, customerService = inject(CustomerService)) => ({
+    /**
+     * Gets the list of customers.
+     */
     findAll: rxMethod<CustomerQueryParams>(
       pipe(
         tap(() => patchState(store, { isLoading: true, error: null })),
@@ -22,14 +25,9 @@ export const CustomerStore = signalStore(
           customerService.findAll(queryParams).pipe(
             tapResponse({
               next: ({ items, pagination }) => patchState(store, { items, pagination }),
-              error: (error) =>
-                patchState(store, {
-                  items: [],
-                  pagination: { ...initialState.pagination },
-                  error: extractErrorMessage(error),
-                }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
             }),
-            finalize(() => patchState(store, { isLoading: false })),
           ),
         ),
       ),

@@ -2,7 +2,7 @@ import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, EMPTY, finalize, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, exhaustMap, map, Observable, of, pipe, tap } from 'rxjs';
 
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
@@ -48,13 +48,13 @@ export const AuthStore = signalStore(
       login: rxMethod<LoginRequest>(
         pipe(
           tap(() => patchState(store, { isLoggingIn: true, error: null })),
-          switchMap((payload) =>
+          exhaustMap((payload) =>
             authService.login(payload).pipe(
               tapResponse({
                 next: (response) => setAuthenticated(response),
                 error: (error) => setUnauthenticated(extractErrorMessage(error)),
+                finalize: () => patchState(store, { isLoggingIn: false }),
               }),
-              finalize(() => patchState(store, { isLoggingIn: false })),
             ),
           ),
         ),
@@ -65,7 +65,7 @@ export const AuthStore = signalStore(
        */
       refreshAccessToken(): Observable<RefreshTokenResponse> {
         return authService.refreshToken().pipe(
-          tapResponse({
+          tap({
             next: (response) => setAuthenticated(response),
             error: (error) => setUnauthenticated(extractErrorMessage(error)),
           }),

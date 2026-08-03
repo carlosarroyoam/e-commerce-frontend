@@ -1,6 +1,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
 
+import { normalize } from '@/core/utils/string.utils';
 import {
   BaseOptionSelector,
   SelectableOption,
@@ -55,13 +56,13 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
   protected readonly query = signal('');
 
   protected readonly filteredOptions = computed(() => {
-    const query = this.normalize(this.query());
+    const query = normalize(this.query());
 
     if (!query) {
       return this.options();
     }
 
-    return this.options().filter((option) => this.normalize(option.label).includes(query));
+    return this.options().filter((option) => normalize(option.label).includes(query));
   });
 
   ngOnInit(): void {
@@ -102,13 +103,5 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
 
   private syncQueryWithSelection(): void {
     this.query.set(this.selected()?.label ?? '');
-  }
-
-  private normalize(value: string): string {
-    return value
-      .trim()
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
   }
 }

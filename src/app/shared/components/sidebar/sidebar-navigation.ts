@@ -1,4 +1,4 @@
-import { NavigationItem } from '@/shared/models/navigation-item';
+import { NavigationItem } from '@/shared/components/sidebar/interfaces/navigation-item';
 
 export const SIDEBAR_NAVIGATION: readonly NavigationItem[] = [
   { id: 'dashboard', label: 'Dashboard', route: '/dashboard', icon: 'dashboard' },
