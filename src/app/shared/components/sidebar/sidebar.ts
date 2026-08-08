@@ -1,6 +1,6 @@
 ﻿import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
@@ -11,6 +11,7 @@ import { SidebarService } from '@/shared/services/sidebar-service/sidebar-servic
   selector: 'app-sidebar',
   imports: [CdkTrapFocus, NgTemplateOutlet, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block',
   },

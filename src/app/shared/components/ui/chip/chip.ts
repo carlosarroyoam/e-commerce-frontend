@@ -49,6 +49,6 @@ export class Chip {
   });
 
   protected readonly hostClass = computed(() => {
-    return twMerge(chipVariants({ variant: this.variant() }));
+    return twMerge('inline-flex items-center', chipVariants({ variant: this.variant() }));
   });
 }
