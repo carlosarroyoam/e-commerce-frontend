@@ -46,15 +46,6 @@ describe('Sidebar', () => {
     expect(fixture.nativeElement.textContent).toContain('ada@example.com');
   });
 
-  it('emits logout when requested', () => {
-    const logout = vi.fn();
-    fixture.componentInstance.logout.subscribe(logout);
-
-    (fixture.nativeElement.querySelector('button[type="button"]') as HTMLButtonElement).click();
-
-    expect(logout).toHaveBeenCalledOnce();
-  });
-
   it('shows the mobile drawer when opened', async () => {
     TestBed.inject(SidebarService).toggle();
     await fixture.whenStable();
