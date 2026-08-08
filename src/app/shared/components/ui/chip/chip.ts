@@ -5,10 +5,10 @@ import { twMerge } from 'tailwind-merge';
 export const chipVariants = cva('rounded-md bg-zinc-200 px-2.5 py-1 text-xs font-semibold', {
   variants: {
     variant: {
-      default: 'bg-blue-50 text-blue-600',
-      success: 'bg-green-50 text-green-600',
-      warning: 'bg-orange-50 text-orange-600',
-      danger: 'bg-red-50 text-red-600',
+      default: 'bg-blue-50 text-blue-500',
+      success: 'bg-green-50 text-green-500',
+      warning: 'bg-orange-50 text-orange-500',
+      danger: 'bg-red-50 text-red-500',
     },
   },
   defaultVariants: {
@@ -19,10 +19,10 @@ export const chipVariants = cva('rounded-md bg-zinc-200 px-2.5 py-1 text-xs font
 const chipBadgeVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
   variants: {
     variant: {
-      default: 'bg-blue-600',
-      success: 'bg-green-600',
-      warning: 'bg-orange-600',
-      danger: 'bg-red-600',
+      default: 'bg-blue-500',
+      success: 'bg-green-500',
+      warning: 'bg-orange-500',
+      danger: 'bg-red-500',
     },
   },
   defaultVariants: {
