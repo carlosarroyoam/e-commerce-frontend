@@ -1,0 +1,20 @@
+<article>
+  <header>
+    <h1 class="heading">Categories</h1>
+    <p class="mt-1 text-sm">A list of all the product categories.</p>
+  </header>
+
+  <section>
+    <div class="my-8">
+      <app-table [table]="table" [isLoading]="store.isLoading()" />
+
+      <app-paginator
+        [page]="queryParams().page!"
+        [size]="queryParams().size!"
+        [pagination]="store.pagination()"
+        (pageChanged)="onPageChange($event)"
+        (sizeChanged)="onSizeChange($event)"
+      />
+    </div>
+  </section>
+</article>
