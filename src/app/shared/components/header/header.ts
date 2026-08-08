@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SidebarService } from '@/shared/services/sidebar-service/sidebar-service';
@@ -7,6 +7,7 @@ import { SidebarService } from '@/shared/services/sidebar-service/sidebar-servic
   selector: 'app-header',
   imports: [RouterLink],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   private readonly sidebarService = inject(SidebarService);

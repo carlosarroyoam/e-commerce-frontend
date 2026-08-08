@@ -1,4 +1,11 @@
-import { Component, computed, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
@@ -27,6 +34,7 @@ export type ToastVariants = VariantProps<typeof toastVariants>;
   selector: 'app-toast',
   imports: [],
   templateUrl: './toast.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClass()',
     '(mouseenter)': 'pauseTimer()',

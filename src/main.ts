@@ -1,6 +1,6 @@
 /// <reference types="@angular/localize" />
 
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 
 import { App } from '@/app';
@@ -11,9 +11,6 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(App, {
-  ...appConfig,
-  providers: [provideZoneChangeDetection(), ...appConfig.providers],
-})
+bootstrapApplication(App, appConfig)
   .finally(() => document.getElementById('bootstrap-loader')?.remove())
   .catch((error: unknown) => console.error(error));

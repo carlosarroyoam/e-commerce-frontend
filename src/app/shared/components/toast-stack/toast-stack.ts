@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
 import { ToastData, ToastResult } from '@/shared/components/toast/interfaces/toast.interfaces';
@@ -9,6 +9,7 @@ import { ToastRef } from '@/shared/components/toast/toast-ref';
   selector: 'app-toast-stack',
   imports: [Toast],
   templateUrl: './toast-stack.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastStack {
   private readonly toasts = signal<ToastData[]>([]);

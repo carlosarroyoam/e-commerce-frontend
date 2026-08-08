@@ -1,5 +1,10 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from '@/app.routes';
@@ -12,6 +17,7 @@ import { xsrfInterceptor } from '@/core/interceptors/xsrf-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZonelessChangeDetection(),
     provideAppInitializer(() => inject(AuthStore).restoreSession()),
     provideRouter(routes),
     provideHttpClient(
