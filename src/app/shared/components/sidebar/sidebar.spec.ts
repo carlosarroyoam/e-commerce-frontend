@@ -1,6 +1,5 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { vi } from 'vitest';
 
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
 import { SidebarService } from '@/shared/services/sidebar-service/sidebar-service';
