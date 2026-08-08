@@ -1,5 +1,7 @@
 export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'DELETED';
 
+export const USER_STATUSES: readonly UserStatus[] = ['ACTIVE', 'INACTIVE', 'DELETED'];
+
 export interface RoleResponse {
   id: number;
   name: string;
