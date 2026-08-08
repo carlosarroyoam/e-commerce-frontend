@@ -1,6 +1,6 @@
-export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'DELETED';
+export const USER_STATUSES = ['ACTIVE', 'INACTIVE', 'DELETED'] as const;
 
-export const USER_STATUSES: readonly UserStatus[] = ['ACTIVE', 'INACTIVE', 'DELETED'];
+export type UserStatus = (typeof USER_STATUSES)[number];
 
 export interface RoleResponse {
   id: number;

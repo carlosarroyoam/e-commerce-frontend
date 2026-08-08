@@ -1,11 +1,6 @@
-export type CustomerStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED' | 'DELETED';
+export const CUSTOMER_STATUSES = ['PENDING', 'ACTIVE', 'SUSPENDED', 'DELETED'] as const;
 
-export const CUSTOMER_STATUSES: readonly CustomerStatus[] = [
-  'PENDING',
-  'ACTIVE',
-  'SUSPENDED',
-  'DELETED',
-];
+export type CustomerStatus = (typeof CUSTOMER_STATUSES)[number];
 
 export interface CustomerAddressResponse {
   id: number;
