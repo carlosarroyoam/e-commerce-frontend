@@ -4,6 +4,8 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@/features/product/pages/product-list/product-list').then((m) => m.ProductListPage),
+      import('@/features/product/pages/product-list/product-list-page').then(
+        (m) => m.ProductListPage,
+      ),
   },
 ];
