@@ -32,7 +32,17 @@
         <app-input-error [control]="form.get('password')" />
       </div>
 
-      <button appButton type="submit" class="mt-2 w-full" [disabled]="form.invalid">Log in</button>
+      <button
+        appButton
+        type="submit"
+        class="mt-2 w-full"
+        [disabled]="form.invalid || authStore.isLoggingIn()"
+      >
+        @if (authStore.isLoggingIn()) {
+          <app-spinner size="sm" class="mr-2" />
+        }
+        <span>Log in</span>
+      </button>
     </form>
 
     <div class="mt-6 flex justify-center">

@@ -7,10 +7,11 @@ import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
 import { AppInput } from '@/shared/components/ui/input/input';
+import { Spinner } from '@/shared/components/ui/spinner/spinner';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, Button, AppInput, InputLabel, InputError],
+  imports: [ReactiveFormsModule, RouterLink, Button, AppInput, InputLabel, InputError, Spinner],
   templateUrl: './login-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -18,7 +19,7 @@ export class LoginPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
-  private readonly authStore = inject(AuthStore);
+  protected readonly authStore = inject(AuthStore);
 
   protected readonly form = this.fb.group({
     email: this.fb.control<string | null>(null, {
