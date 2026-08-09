@@ -6,6 +6,7 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideLucideConfig } from '@lucide/angular';
 
 import { routes } from '@/app.routes';
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
@@ -14,7 +15,6 @@ import { httpErrorInterceptor } from '@/core/interceptors/http-error-interceptor
 import { refreshTokenInterceptor } from '@/core/interceptors/refresh-token-interceptor';
 import { withCredentialsInterceptor } from '@/core/interceptors/with-credentials-interceptor';
 import { xsrfInterceptor } from '@/core/interceptors/xsrf-interceptor';
-import { provideLucideConfig } from '@lucide/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
