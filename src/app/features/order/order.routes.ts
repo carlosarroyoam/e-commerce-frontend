@@ -4,6 +4,6 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('@/features/order/pages/order-list/order-list').then((m) => m.OrderListPage),
+      import('@/features/order/pages/order-list/order-list-page').then((m) => m.OrderListPage),
   },
 ];
