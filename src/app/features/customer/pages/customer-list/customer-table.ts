@@ -51,12 +51,6 @@ export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
       cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
     },
     {
-      accessorKey: 'updated_at',
-      header: 'Updated at',
-      enableSorting: false,
-      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
-    },
-    {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
