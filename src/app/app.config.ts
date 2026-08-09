@@ -14,6 +14,7 @@ import { httpErrorInterceptor } from '@/core/interceptors/http-error-interceptor
 import { refreshTokenInterceptor } from '@/core/interceptors/refresh-token-interceptor';
 import { withCredentialsInterceptor } from '@/core/interceptors/with-credentials-interceptor';
 import { xsrfInterceptor } from '@/core/interceptors/xsrf-interceptor';
+import { provideLucideConfig } from '@lucide/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,5 +30,8 @@ export const appConfig: ApplicationConfig = {
         httpErrorInterceptor,
       ]),
     ),
+    provideLucideConfig({
+      strokeWidth: 1.5,
+    }),
   ],
 };

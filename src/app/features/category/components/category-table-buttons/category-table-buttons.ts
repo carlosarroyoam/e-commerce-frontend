@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { LucideTrash2 } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
@@ -6,7 +7,7 @@ import { Button } from '@/shared/components/ui/button/button';
 
 @Component({
   selector: 'app-category-table-buttons',
-  imports: [Button],
+  imports: [Button, LucideTrash2],
   templateUrl: './category-table-buttons.html',
   host: {
     class: 'flex gap-2',

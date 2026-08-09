@@ -1,5 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
+import { LucideChevronDown } from '@lucide/angular';
 
 import { normalize } from '@/core/utils/string.utils';
 import {
@@ -38,7 +39,7 @@ let nextAutocompleteId = 0;
  */
 @Component({
   selector: 'app-autocomplete',
-  imports: [OverlayModule],
+  imports: [OverlayModule, LucideChevronDown],
   templateUrl: './autocomplete.html',
   providers: [valueAccessorProvider(Autocomplete)],
   host: {

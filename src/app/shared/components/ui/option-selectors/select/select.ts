@@ -1,5 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { LucideChevronDown } from '@lucide/angular';
 
 import {
   BaseOptionSelector,
@@ -9,7 +10,7 @@ import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/b
 
 @Component({
   selector: 'app-select',
-  imports: [OverlayModule],
+  imports: [OverlayModule, LucideChevronDown],
   templateUrl: './select.html',
   providers: [valueAccessorProvider(Select)],
   host: {

@@ -7,6 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
+import { LucideX } from '@lucide/angular';
 import { twMerge } from 'tailwind-merge';
 
 import { ToastData } from '@/shared/components/toast/interfaces/toast.interfaces';
@@ -32,7 +33,7 @@ export type ToastVariants = VariantProps<typeof toastVariants>;
 
 @Component({
   selector: 'app-toast',
-  imports: [],
+  imports: [LucideX],
   templateUrl: './toast.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

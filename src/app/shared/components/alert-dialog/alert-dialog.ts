@@ -1,5 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { LucideX } from '@lucide/angular';
 
 import {
   AlertDialogData,
@@ -10,7 +11,7 @@ import { Button } from '@/shared/components/ui/button/button';
 
 @Component({
   selector: 'app-alert-dialog',
-  imports: [Button, ModalContainer],
+  imports: [Button, ModalContainer, LucideX],
   templateUrl: './alert-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

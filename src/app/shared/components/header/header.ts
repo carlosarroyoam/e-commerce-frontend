@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LucideMenu } from '@lucide/angular';
 
 import { SidebarService } from '@/shared/services/sidebar-service/sidebar-service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink],
+  imports: [RouterLink, LucideMenu],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

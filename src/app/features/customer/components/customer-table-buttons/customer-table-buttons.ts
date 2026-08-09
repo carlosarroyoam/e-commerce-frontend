@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { LucidePencil, LucideRotateCcw, LucideTrash2 } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';
@@ -6,7 +7,7 @@ import { Button } from '@/shared/components/ui/button/button';
 
 @Component({
   selector: 'app-customer-table-buttons',
-  imports: [Button],
+  imports: [Button, LucidePencil, LucideRotateCcw, LucideTrash2],
   templateUrl: './customer-table-buttons.html',
   host: {
     class: 'flex gap-2',

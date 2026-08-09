@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { LucideX } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { OrderResponse } from '@/features/order/data-access/interfaces/order-response';
@@ -8,7 +9,7 @@ const CANCELLABLE_STATUSES = new Set(['PENDING', 'CONFIRMED', 'PROCESSING']);
 
 @Component({
   selector: 'app-order-table-buttons',
-  imports: [Button],
+  imports: [Button, LucideX],
   templateUrl: './order-table-buttons.html',
   host: {
     class: 'flex gap-2',

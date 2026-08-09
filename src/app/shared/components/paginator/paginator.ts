@@ -1,4 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  LucideChevronLeft,
+  LucideChevronRight,
+  LucideChevronsLeft,
+  LucideChevronsRight,
+} from '@lucide/angular';
 
 import { DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { PaginationResponse } from '@/core/data-access/interfaces/pagination-response';
@@ -13,7 +19,7 @@ export enum PageType {
 
 @Component({
   selector: 'app-paginator',
-  imports: [Button],
+  imports: [Button, LucideChevronsLeft, LucideChevronLeft, LucideChevronRight, LucideChevronsRight],
   templateUrl: './paginator.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
