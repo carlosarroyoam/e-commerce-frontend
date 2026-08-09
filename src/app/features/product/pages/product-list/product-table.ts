@@ -28,7 +28,7 @@ export function buildProductTableColumns(opts: {
       cell: (info) =>
         flexRenderComponent(Chip, {
           inputs: {
-            variant: info.getValue() ? 'success' : 'default',
+            variant: info.getValue() ? 'success' : 'warning',
             label: info.getValue() ? 'Featured' : 'Not featured',
           },
         }),
