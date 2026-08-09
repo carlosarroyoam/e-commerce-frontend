@@ -1,6 +1,6 @@
-import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
+import { formatDateTime } from '@/core/utils/date.utils';
 import { ProductTableButtons } from '@/features/product/components/product-table-buttons/product-table-buttons';
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { Chip } from '@/shared/components/ui/chip/chip';
@@ -49,7 +49,7 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDateTime(info.getValue() as string),
     },
     {
       id: 'actions',

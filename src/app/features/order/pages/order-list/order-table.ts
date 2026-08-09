@@ -1,6 +1,7 @@
-import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
+import { formatDateTime } from '@/core/utils/date.utils';
+import { formatCurrency } from '@/core/utils/number.utils';
 import { OrderTableButtons } from '@/features/order/components/order-table-buttons/order-table-buttons';
 import { OrderResponse, OrderStatus } from '@/features/order/data-access/interfaces/order-response';
 import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
@@ -17,11 +18,6 @@ const ORDER_STATUS_CONFIG: Record<
   CANCELLED: { label: 'Cancelled', variant: 'danger' },
   REFUNDED: { label: 'Refunded', variant: 'danger' },
 };
-
-const CURRENCY_FORMATTER = new Intl.NumberFormat('es-MX', {
-  style: 'currency',
-  currency: 'MXN',
-});
 
 export function buildOrderTableColumns(opts: {
   onCancel: (order: OrderResponse) => void;
@@ -46,7 +42,7 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'total',
       header: 'Total',
       enableSorting: true,
-      cell: (info) => CURRENCY_FORMATTER.format(info.getValue() as number),
+      cell: (info) => formatCurrency(info.getValue() as number),
     },
     {
       accessorKey: 'status',
@@ -68,7 +64,7 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDateTime(info.getValue() as string),
     },
     {
       id: 'actions',

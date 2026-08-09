@@ -1,6 +1,6 @@
-import { formatDate } from '@angular/common';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
+import { formatDateTime } from '@/core/utils/date.utils';
 import { CustomerTableButtons } from '@/features/customer/components/customer-table-buttons/customer-table-buttons';
 import {
   CustomerResponse,
@@ -48,7 +48,7 @@ export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDate(info.getValue() as string, 'dd/MM/yyyy hh:mm a', 'es-MX'),
+      cell: (info) => formatDateTime(info.getValue() as string),
     },
     {
       accessorKey: 'status',
