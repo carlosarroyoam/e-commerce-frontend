@@ -6,8 +6,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { cva, VariantProps } from 'class-variance-authority';
 import { LucideX } from '@lucide/angular';
+import { cva, VariantProps } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
 import { ToastData } from '@/shared/components/toast/interfaces/toast.interfaces';

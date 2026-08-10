@@ -1,5 +1,5 @@
-import { TextMask } from './text-mask.directive';
 import { createMask } from '../mask-test-utils';
+import { TextMask } from './text-mask.directive';
 
 describe('TextMask', () => {
   it('should create an instance', () => {

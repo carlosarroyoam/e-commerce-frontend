@@ -1,5 +1,5 @@
-import { PhoneMask } from './phone-mask.directive';
 import { createMask } from '../mask-test-utils';
+import { PhoneMask } from './phone-mask.directive';
 
 describe('PhoneMask', () => {
   it('should create an instance', () => {

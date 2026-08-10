@@ -3,8 +3,8 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
 
-import { RETRY_ON_UNAUTHORIZED } from '@/core/http/auth-request-context';
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
+import { RETRY_ON_UNAUTHORIZED } from '@/core/http/auth-request-context';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (request, next) => {
   const router = inject(Router);

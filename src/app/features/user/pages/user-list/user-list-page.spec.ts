@@ -3,8 +3,8 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { UserService } from '@/features/user/data-access/services/user-service';
+import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { UserListPage } from './user-list-page';
 
 describe('UserListPage', () => {
