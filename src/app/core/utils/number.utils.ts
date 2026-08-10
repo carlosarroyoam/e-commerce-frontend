@@ -1,5 +1,4 @@
-const DEFAULT_LOCALE = 'es-MX';
-const DEFAULT_CURRENCY = 'MXN';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/core/constants/locale.constants';
 
 export const formatNumber = (value: number, options: Intl.NumberFormatOptions = {}): string => {
   return new Intl.NumberFormat(DEFAULT_LOCALE, options).format(value);

@@ -1,4 +1,4 @@
-const DEFAULT_LOCALE = 'es-MX';
+import { DEFAULT_LOCALE } from '@/core/constants/locale.constants';
 
 export const formatDateTime = (
   value: Date | string | number,
