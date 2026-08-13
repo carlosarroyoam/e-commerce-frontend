@@ -1,20 +1,15 @@
-<article>
-  <header>
-    <h1 class="heading">Orders</h1>
-    <p class="mt-1 text-sm">A list of all the customer orders.</p>
-  </header>
+<header>
+  <h1 class="heading">Orders</h1>
+  <p class="mt-1 text-sm">A list of all the customer orders.</p>
+</header>
 
-  <section>
-    <div class="my-8">
-      <app-table [table]="table" [isLoading]="store.isLoading()" />
-
-      <app-paginator
-        [page]="queryParams().page!"
-        [size]="queryParams().size!"
-        [pagination]="store.pagination()"
-        (pageChanged)="onPageChange($event)"
-        (sizeChanged)="onSizeChange($event)"
-      />
-    </div>
-  </section>
-</article>
+<section class="my-8">
+  <app-table [table]="table" [isLoading]="store.isLoading()" />
+  <app-paginator
+    [page]="queryParams().page!"
+    [size]="queryParams().size!"
+    [pagination]="store.pagination()"
+    (pageChanged)="onPageChange($event)"
+    (sizeChanged)="onSizeChange($event)"
+  />
+</section>
