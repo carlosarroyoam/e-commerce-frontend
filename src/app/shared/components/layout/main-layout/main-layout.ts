@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
-import { Footer } from '@/shared/components/footer/footer';
 import { Header } from '@/shared/components/header/header';
 import { Sidebar } from '@/shared/components/sidebar/sidebar';
 
 @Component({
-  imports: [RouterOutlet, Header, Footer, Sidebar],
+  imports: [RouterOutlet, Header, Sidebar],
   templateUrl: './main-layout.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
