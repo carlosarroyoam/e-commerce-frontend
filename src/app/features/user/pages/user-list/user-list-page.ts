@@ -14,7 +14,7 @@ import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse, UserStatus } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
-import { UserStore } from '@/features/user/data-access/store/user.store';
+import { UserStore } from '@/features/user/data-access/stores/user.store';
 import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
 import { userQueryParamsDeserializer } from '@/features/user/routing/user-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';

@@ -14,7 +14,7 @@ import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { CategoryQueryParams } from '@/features/category/data-access/interfaces/category-query-params';
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { CategoryService } from '@/features/category/data-access/services/category-service';
-import { CategoryStore } from '@/features/category/data-access/store/category.store';
+import { CategoryStore } from '@/features/category/data-access/stores/category.store';
 import { buildCategoryTableColumns } from '@/features/category/pages/category-list/category-table';
 import { categoryQueryParamsDeserializer } from '@/features/category/routing/category-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';

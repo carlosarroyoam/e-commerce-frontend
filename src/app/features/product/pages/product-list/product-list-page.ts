@@ -15,7 +15,7 @@ import { CategoryService } from '@/features/category/data-access/services/catego
 import { ProductQueryParams } from '@/features/product/data-access/interfaces/product-query-params';
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { ProductService } from '@/features/product/data-access/services/product-service';
-import { ProductStore } from '@/features/product/data-access/store/product.store';
+import { ProductStore } from '@/features/product/data-access/stores/product.store';
 import { buildProductTableColumns } from '@/features/product/pages/product-list/product-table';
 import { productQueryParamsDeserializer } from '@/features/product/routing/product-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';

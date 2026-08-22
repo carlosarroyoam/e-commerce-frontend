@@ -12,7 +12,7 @@ import { createQueryParamsSync } from '@/core/routing/query-params.utils';
 import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { CustomerStatus } from '@/features/customer/data-access/interfaces/customer-response';
-import { CustomerStore } from '@/features/customer/data-access/store/customer.store';
+import { CustomerStore } from '@/features/customer/data-access/stores/customer.store';
 import { buildCustomerTableColumns } from '@/features/customer/pages/customer-list/customer-table';
 import { customerQueryParamsDeserializer } from '@/features/customer/routing/customer-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';

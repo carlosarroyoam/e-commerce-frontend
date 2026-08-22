@@ -7,7 +7,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { OrderQueryParams } from '@/features/order/data-access/interfaces/order-query-params';
 import { OrderService } from '@/features/order/data-access/services/order-service';
-import { initialState } from '@/features/order/data-access/store/order.state';
+import { initialState } from '@/features/order/data-access/stores/order.state';
 
 export const OrderStore = signalStore(
   { providedIn: undefined },

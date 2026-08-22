@@ -7,7 +7,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { CustomerService } from '@/features/customer/data-access/services/customer-service';
-import { initialState } from '@/features/customer/data-access/store/customer.state';
+import { initialState } from '@/features/customer/data-access/stores/customer.state';
 
 export const CustomerStore = signalStore(
   { providedIn: undefined },

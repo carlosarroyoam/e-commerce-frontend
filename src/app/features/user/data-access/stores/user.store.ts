@@ -7,7 +7,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserService } from '@/features/user/data-access/services/user-service';
-import { initialState } from '@/features/user/data-access/store/user.state';
+import { initialState } from '@/features/user/data-access/stores/user.state';
 
 export const UserStore = signalStore(
   { providedIn: undefined },

@@ -7,7 +7,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 import { CategoryQueryParams } from '@/features/category/data-access/interfaces/category-query-params';
 import { CategoryService } from '@/features/category/data-access/services/category-service';
-import { initialState } from '@/features/category/data-access/store/category.state';
+import { initialState } from '@/features/category/data-access/stores/category.state';
 
 export const CategoryStore = signalStore(
   { providedIn: undefined },

@@ -14,7 +14,7 @@ import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { OrderQueryParams } from '@/features/order/data-access/interfaces/order-query-params';
 import { OrderResponse } from '@/features/order/data-access/interfaces/order-response';
 import { OrderService } from '@/features/order/data-access/services/order-service';
-import { OrderStore } from '@/features/order/data-access/store/order.store';
+import { OrderStore } from '@/features/order/data-access/stores/order.store';
 import { buildOrderTableColumns } from '@/features/order/pages/order-list/order-table';
 import { orderQueryParamsDeserializer } from '@/features/order/routing/order-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
