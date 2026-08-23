@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, finalize, Observable, shareReplay, throwError } from 'rxjs';
+import { finalize, Observable, shareReplay } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { DEVICE_ID_KEY } from '@/core/constants/storage-keys.constants';
@@ -35,11 +35,6 @@ export class AuthService {
     }
 
     const refreshRequest$ = this.createRefreshRequest().pipe(
-      catchError((error: unknown) =>
-        error instanceof HttpErrorResponse && error.status === 403
-          ? this.createRefreshRequest()
-          : throwError(() => error),
-      ),
       finalize(() => {
         if (this.refreshInFlight$ === refreshRequest$) {
           this.refreshInFlight$ = null;
