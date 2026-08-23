@@ -6,8 +6,7 @@ import { catchError, EMPTY, exhaustMap, map, Observable, of, pipe, tap } from 'r
 
 import { AuthSession } from '@/core/data-access/interfaces/auth-session';
 import { LoginRequest } from '@/core/data-access/interfaces/login-request';
-import { LoginResponse } from '@/core/data-access/interfaces/login-response';
-import { RefreshTokenResponse } from '@/core/data-access/interfaces/refresh-token-response';
+import { AuthResponse } from '@/core/data-access/interfaces/auth-response';
 import { AuthService } from '@/core/data-access/services/auth-service/auth-service';
 import { initialState } from '@/core/data-access/stores/auth-store/auth.state';
 import { extractErrorMessage } from '@/core/utils/error.utils';
@@ -23,7 +22,7 @@ export const AuthStore = signalStore(
   })),
 
   withMethods((store, authService = inject(AuthService)) => {
-    const setAuthenticated = (response: LoginResponse | RefreshTokenResponse): void => {
+    const setAuthenticated = (response: AuthResponse | AuthResponse): void => {
       patchState(store, {
         status: 'authenticated',
         accessToken: response.access_token,
@@ -63,7 +62,7 @@ export const AuthStore = signalStore(
       /**
        * Refreshes access token.
        */
-      refreshAccessToken(): Observable<RefreshTokenResponse> {
+      refreshAccessToken(): Observable<AuthResponse> {
         return authService.refreshToken().pipe(
           tap({
             next: (response) => setAuthenticated(response),
@@ -100,7 +99,7 @@ export const AuthStore = signalStore(
   }),
 );
 
-const toAuthSession = (response: LoginResponse | RefreshTokenResponse): AuthSession => ({
+const toAuthSession = (response: AuthResponse): AuthSession => ({
   id: response.id,
   first_name: response.first_name,
   last_name: response.last_name,
