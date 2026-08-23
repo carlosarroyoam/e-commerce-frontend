@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build --omit=dev
 
-FROM nginx:1.30.0-alpine
+FROM nginx:1.31-alpine
 
 WORKDIR /usr/share/nginx/html
 

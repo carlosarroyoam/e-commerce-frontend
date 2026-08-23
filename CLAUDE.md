@@ -103,4 +103,4 @@ Full rules live in `AGENTS.md` — read it before structural changes. Key points
 
 ## Docker
 
-Multi-stage build: `node:20-alpine` builder, `nginx:1.27.2-alpine` runtime. `docker run -p 8080:80 -e apiUrl=http://your-api-host e-commerce-frontend` — the `apiUrl` env var is injected into `env.js` at container startup (see Runtime API configuration above).
+Multi-stage build: `node:24-alpine` builder, `nginx:1.31-alpine` runtime. `docker run -p 8080:80 -e apiUrl=http://your-api-host e-commerce-frontend` — the `apiUrl` env var is injected into `env.js` at container startup (see Runtime API configuration above).
