@@ -4,6 +4,9 @@ import { LucideMenu } from '@lucide/angular';
 
 import { SidebarService } from '@/shared/services/sidebar-service/sidebar-service';
 
+/**
+ * Encabezado del layout principal, controla la apertura del sidebar en vistas móviles.
+ */
 @Component({
   selector: 'app-header',
   imports: [RouterLink, LucideMenu],
@@ -15,6 +18,7 @@ export class Header {
 
   protected readonly isSidebarOpen = this.sidebarService.isSidebarOpen;
 
+  /** Alterna la visibilidad del sidebar. */
   protected toggleSidebar(): void {
     this.sidebarService.toggle();
   }

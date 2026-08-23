@@ -19,6 +19,13 @@ const ORDER_STATUS_CONFIG: Record<
   REFUNDED: { label: 'Refunded', variant: 'danger' },
 };
 
+/**
+ * Construye las columnas de la tabla de órdenes: número de orden, cliente, total, estado, fecha
+ * de creación y acciones.
+ *
+ * @param opts Callbacks de la tabla.
+ * @returns Definición de columnas para TanStack Table.
+ */
 export function buildOrderTableColumns(opts: {
   onCancel: (order: OrderResponse) => void;
 }): ColumnDef<OrderResponse>[] {

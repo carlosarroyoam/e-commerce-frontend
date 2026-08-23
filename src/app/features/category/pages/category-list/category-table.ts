@@ -4,6 +4,12 @@ import { CategoryTableButtons } from '@/features/category/components/category-ta
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
+/**
+ * Construye las columnas de la tabla de categorías: título, estado y acciones.
+ *
+ * @param opts Callbacks de la tabla.
+ * @returns Definición de columnas para TanStack Table.
+ */
 export function buildCategoryTableColumns(opts: {
   onDelete: (category: CategoryResponse) => void;
 }): ColumnDef<CategoryResponse>[] {

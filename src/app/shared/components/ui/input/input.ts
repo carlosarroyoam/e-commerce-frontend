@@ -17,6 +17,9 @@ import {
 import { filter } from 'rxjs';
 import { twMerge } from 'tailwind-merge';
 
+/**
+ * Directiva de estilos para inputs nativos. Aplica clases de error cuando el control asociado es inválido y fue tocado o modificado.
+ */
 @Directive({
   selector: 'input[appInput]',
   host: {
@@ -30,10 +33,16 @@ export class AppInput implements OnInit, AfterViewInit {
 
   private readonly invalid = signal(false);
 
+  /**
+   * Obtiene el control del formulario asociado al elemento.
+   */
   ngOnInit(): void {
     this.control = this.ngControl?.control;
   }
 
+  /**
+   * Suscribe a los cambios de valor y de estado del control para revalidar los estilos.
+   */
   ngAfterViewInit(): void {
     const control = this.control;
 
@@ -55,6 +64,11 @@ export class AppInput implements OnInit, AfterViewInit {
       .subscribe(() => this.checkIfInvalid(control));
   }
 
+  /**
+   * Actualiza el estado de invalidez según el valor y la interacción del control.
+   *
+   * @param control Control cuyo estado de invalidez se evalúa.
+   */
   protected checkIfInvalid(control: AbstractControl): void {
     this.invalid.set(control.invalid && (control.touched || control.dirty));
   }

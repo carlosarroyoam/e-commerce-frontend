@@ -29,6 +29,9 @@ const NAV_ICONS: Record<NavigationIcon, LucideIcon> = {
   users: LucideUserCog,
 };
 
+/**
+ * Barra de navegación lateral con los accesos principales de la aplicación y datos de sesión.
+ */
 @Component({
   selector: 'app-sidebar',
   imports: [
@@ -54,10 +57,6 @@ export class Sidebar {
   protected readonly navigationItems = SIDEBAR_NAVIGATION;
   protected readonly isSidebarOpen = this.sidebarService.isSidebarOpen;
 
-  protected navIcon(icon: NavigationIcon | undefined): LucideIcon | null {
-    return icon ? NAV_ICONS[icon] : null;
-  }
-
   protected readonly avatarSrc = computed(() => {
     const name = this.authSession()?.full_name ?? '';
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&format=svg&background=d4d4d8`;
@@ -68,6 +67,17 @@ export class Sidebar {
     return `${name}'s profile picture`;
   });
 
+  /**
+   * Devuelve el ícono asociado a un elemento de navegación.
+   *
+   * @param icon Identificador del ícono de navegación.
+   * @returns El ícono correspondiente, o null si no se proporciona un identificador.
+   */
+  protected navIcon(icon: NavigationIcon | undefined): LucideIcon | null {
+    return icon ? NAV_ICONS[icon] : null;
+  }
+
+  /** Cierra el sidebar. */
   protected closeSidebar(): void {
     this.sidebarService.close();
   }

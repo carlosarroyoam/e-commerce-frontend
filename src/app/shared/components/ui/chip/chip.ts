@@ -32,6 +32,9 @@ const chipBadgeVariants = cva('mr-1.5 inline-flex size-2 rounded-full', {
 
 export type ChipVariants = VariantProps<typeof chipVariants>;
 
+/**
+ * Etiqueta visual compacta con variantes de color para indicar estado.
+ */
 @Component({
   selector: 'app-chip',
   templateUrl: './chip.html',

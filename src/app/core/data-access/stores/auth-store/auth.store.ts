@@ -11,6 +11,9 @@ import { AuthService } from '@/core/data-access/services/auth-service/auth-servi
 import { initialState } from '@/core/data-access/stores/auth-store/auth.state';
 import { extractErrorMessage } from '@/core/utils/error.utils';
 
+/**
+ * Gestiona el estado de autenticación: sesión en memoria, access token y estado de login.
+ */
 export const AuthStore = signalStore(
   { providedIn: 'root' },
 
@@ -22,6 +25,11 @@ export const AuthStore = signalStore(
   })),
 
   withMethods((store, authService = inject(AuthService)) => {
+    /**
+     * Marca la sesión como autenticada y guarda el token y los datos de sesión.
+     *
+     * @param response Respuesta de autenticación recibida del backend.
+     */
     const setAuthenticated = (response: AuthResponse | AuthResponse): void => {
       patchState(store, {
         status: 'authenticated',
@@ -31,6 +39,11 @@ export const AuthStore = signalStore(
       });
     };
 
+    /**
+     * Marca la sesión como no autenticada y limpia el token y los datos de sesión.
+     *
+     * @param error Mensaje de error a guardar en el estado, si aplica.
+     */
     const setUnauthenticated = (error: string | null = null): void => {
       patchState(store, {
         status: 'unauthenticated',
@@ -42,7 +55,9 @@ export const AuthStore = signalStore(
 
     return {
       /**
-       * Authenticates a user.
+       * Autentica al usuario con sus credenciales.
+       *
+       * @param payload Credenciales de inicio de sesión.
        */
       login: rxMethod<LoginRequest>(
         pipe(
@@ -60,7 +75,9 @@ export const AuthStore = signalStore(
       ),
 
       /**
-       * Refreshes access token.
+       * Solicita un nuevo access token y actualiza la sesión.
+       *
+       * @returns Observable con la respuesta de autenticación renovada.
        */
       refreshAccessToken(): Observable<AuthResponse> {
         return authService.refreshToken().pipe(
@@ -72,7 +89,9 @@ export const AuthStore = signalStore(
       },
 
       /**
-       * Restores the in-memory session during app startup.
+       * Restaura la sesión en memoria al iniciar la aplicación.
+       *
+       * @returns Observable que se completa cuando la restauración finaliza.
        */
       restoreSession(): Observable<void> {
         if (store.status() !== 'unknown') {
@@ -86,7 +105,7 @@ export const AuthStore = signalStore(
       },
 
       /**
-       * Logout.
+       * Cierra la sesión del usuario.
        */
       logout(): void {
         setUnauthenticated();
@@ -99,6 +118,12 @@ export const AuthStore = signalStore(
   }),
 );
 
+/**
+ * Convierte la respuesta de autenticación al modelo de sesión usado por el store.
+ *
+ * @param response Respuesta de autenticación recibida del backend.
+ * @returns El modelo de sesión derivado de la respuesta.
+ */
 const toAuthSession = (response: AuthResponse): AuthSession => ({
   id: response.id,
   first_name: response.first_name,

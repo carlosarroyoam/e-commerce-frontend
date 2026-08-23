@@ -66,6 +66,9 @@ const stepperPanelVariants = cva('rounded-xl border border-zinc-200 bg-white p-5
   },
 });
 
+/**
+ * Componente de navegación por pasos: renderiza el indicador de progreso y el panel de contenido activo.
+ */
 @Component({
   selector: 'app-stepper',
   imports: [NgTemplateOutlet],
@@ -109,6 +112,9 @@ export class Stepper implements AfterContentChecked {
     return twMerge(stepperPanelVariants({ orientation: this.orientation() }));
   });
 
+  /**
+   * Valida en modo desarrollo que exista un panel único por cada paso declarado.
+   */
   public ngAfterContentChecked(): void {
     if (!isDevMode()) {
       return;
@@ -136,6 +142,12 @@ export class Stepper implements AfterContentChecked {
     }
   }
 
+  /**
+   * Emite el cambio de paso activo cuando el stepper es interactivo y el paso no está deshabilitado.
+   *
+   * @param step Paso resuelto sobre el que se hizo clic.
+   * @param index Índice del paso sobre el que se hizo clic.
+   */
   protected handleStepClick(step: ResolvedStepperStep, index: number): void {
     if (!this.interactive() || step.disabled) {
       return;
@@ -144,10 +156,22 @@ export class Stepper implements AfterContentChecked {
     this.stepChange.emit(index);
   }
 
+  /**
+   * Indica si un paso puede recibir interacción del usuario.
+   *
+   * @param step Paso resuelto a evaluar.
+   * @returns true si el stepper es interactivo y el paso no está deshabilitado.
+   */
   protected isStepInteractive(step: ResolvedStepperStep): boolean {
     return this.interactive() && !step.disabled;
   }
 
+  /**
+   * Calcula las clases del indicador circular según el estado resuelto del paso.
+   *
+   * @param step Paso resuelto cuyo indicador se calcula.
+   * @returns Clases CSS del indicador.
+   */
   protected indicatorClass(step: ResolvedStepperStep): string {
     const shared =
       'flex size-9 shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-colors';
@@ -162,6 +186,12 @@ export class Stepper implements AfterContentChecked {
     return twMerge(shared, variants[step.resolvedStatus]);
   }
 
+  /**
+   * Calcula las clases del conector entre pasos según la orientación y el estado.
+   *
+   * @param step Paso resuelto cuyo conector se calcula.
+   * @returns Clases CSS del conector.
+   */
   protected connectorClass(step: ResolvedStepperStep): string {
     const shared = 'hidden rounded-full md:block';
     const statusClass = step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
@@ -173,18 +203,43 @@ export class Stepper implements AfterContentChecked {
     return twMerge(shared, statusClass, 'mt-4 h-px flex-1');
   }
 
+  /**
+   * Genera el id del panel de contenido correspondiente al índice de paso.
+   *
+   * @param index Índice del paso.
+   * @returns Id del panel de contenido.
+   */
   protected panelId(index: number): string {
     return `${this.instanceId}-panel-${index}`;
   }
 
+  /**
+   * Genera el id de la etiqueta del paso correspondiente al índice.
+   *
+   * @param index Índice del paso.
+   * @returns Id de la etiqueta del paso.
+   */
   protected stepLabelId(index: number): string {
     return `${this.instanceId}-step-${index}`;
   }
 
+  /**
+   * Función de trackBy que identifica cada paso por su índice.
+   *
+   * @param index Índice del paso.
+   * @returns El mismo índice, usado como identificador.
+   */
   protected trackByIndex(index: number): number {
     return index;
   }
 
+  /**
+   * Determina el estado de un paso a partir de su índice y el paso activo.
+   *
+   * @param index Índice del paso a evaluar.
+   * @param activeStep Índice del paso actualmente activo.
+   * @returns Estado resuelto del paso.
+   */
   private resolveStepStatus(index: number, activeStep: number): StepperStepStatus {
     if (index < activeStep) {
       return 'completed';

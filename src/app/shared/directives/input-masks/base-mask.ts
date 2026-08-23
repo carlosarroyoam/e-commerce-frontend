@@ -1,6 +1,10 @@
 import { ElementRef, inject } from '@angular/core';
 import { ControlValueAccessor, ValidationErrors, Validator } from '@angular/forms';
 
+/**
+ * Base para directivas de máscara de input: implementa ControlValueAccessor y Validator,
+ * y expone el manejo de posición de cursor común a las máscaras concretas.
+ */
 export abstract class BaseMask implements ControlValueAccessor, Validator {
   protected readonly elementRef = inject(ElementRef<HTMLInputElement>);
 
@@ -10,18 +14,38 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
 
   public abstract writeValue(value: number | string | Date | null): void;
 
+  /**
+   * Registra el callback invocado cuando el valor del control cambia.
+   *
+   * @param fn Callback a invocar con el nuevo valor.
+   */
   public registerOnChange(fn: (value: number | string | Date | null) => void): void {
     this.onChange = fn;
   }
 
+  /**
+   * Registra el callback invocado cuando el control es tocado.
+   *
+   * @param fn Callback a invocar al marcar el control como tocado.
+   */
   public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  /**
+   * Registra el callback invocado cuando cambia el resultado de la validación.
+   *
+   * @param fn Callback a invocar cuando cambia la validación.
+   */
   public registerOnValidatorChange(fn: () => void): void {
     this.onValidatorChange = fn;
   }
 
+  /**
+   * Valida el control. Sin errores por defecto; las subclases lo sobrescriben si aplica.
+   *
+   * @returns Errores de validación, o `null` si el control es válido.
+   */
   public validate(): ValidationErrors | null {
     return null;
   }
@@ -32,6 +56,16 @@ export abstract class BaseMask implements ControlValueAccessor, Validator {
 
   protected abstract onKeyDown(event: KeyboardEvent): void;
 
+  /**
+   * Reposiciona el cursor del input tras reformatear el valor, preservando la cantidad
+   * de dígitos ya escritos antes de la posición original.
+   *
+   * @param cursorPosition Posición del cursor antes de reformatear.
+   * @param prevValue Valor del input antes de reformatear.
+   * @param nextValue Valor del input ya reformateado.
+   * @param suffixLength Longitud del sufijo a excluir de la posición máxima.
+   * @param decimalSeparator Separador decimal usado para ajustar la posición junto a él.
+   */
   protected updateCursor(
     cursorPosition: number,
     prevValue: string,

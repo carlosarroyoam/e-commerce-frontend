@@ -9,6 +9,9 @@ import { ProductQueryParams } from '@/features/product/data-access/interfaces/pr
 import { ProductService } from '@/features/product/data-access/services/product-service';
 import { initialState } from '@/features/product/data-access/stores/product.state';
 
+/**
+ * Gestiona el estado de productos: listado paginado, carga y errores.
+ */
 export const ProductStore = signalStore(
   { providedIn: undefined },
 
@@ -16,7 +19,9 @@ export const ProductStore = signalStore(
 
   withMethods((store, productService = inject(ProductService)) => ({
     /**
-     * Gets the list of products.
+     * Obtiene el listado de productos según los parámetros indicados.
+     *
+     * @param queryParams Filtros, ordenamiento y paginación a aplicar.
      */
     findAll: rxMethod<ProductQueryParams>(
       pipe(

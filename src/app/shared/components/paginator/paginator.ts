@@ -17,6 +17,9 @@ export enum PageType {
   LAST_PAGE = 'LAST_PAGE',
 }
 
+/**
+ * Control de paginación con navegación entre páginas y selección de tamaño de página.
+ */
 @Component({
   selector: 'app-paginator',
   imports: [Button, LucideChevronsLeft, LucideChevronLeft, LucideChevronRight, LucideChevronsRight],
@@ -56,6 +59,11 @@ export class Paginator {
     return this.page() < this.totalPages() - 1;
   });
 
+  /**
+   * Emite el número de página correspondiente al tipo de navegación solicitado.
+   *
+   * @param pageType Tipo de navegación solicitado.
+   */
   protected changePage(pageType: PageType): void {
     switch (pageType) {
       case PageType.FIRST_PAGE:
@@ -75,6 +83,11 @@ export class Paginator {
     }
   }
 
+  /**
+   * Emite el nuevo tamaño de página a partir del valor seleccionado.
+   *
+   * @param value Valor seleccionado, como cadena, correspondiente al nuevo tamaño de página.
+   */
   protected changeSize(value: string): void {
     const parsed = Number(value);
     const size = Number.isNaN(parsed) ? DEFAULT_PAGE_SIZE : parsed;

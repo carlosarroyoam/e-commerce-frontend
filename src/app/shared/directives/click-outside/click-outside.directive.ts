@@ -8,6 +8,9 @@ import {
   Renderer2,
 } from '@angular/core';
 
+/**
+ * Emite `clickOutside` cuando ocurre un mousedown fuera del elemento host.
+ */
 @Directive({
   selector: '[appClickOutside]',
 })
@@ -18,6 +21,9 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
   public readonly clickOutside = output<void>();
   private listener?: () => void;
 
+  /**
+   * Registra el listener de mousedown en el documento.
+   */
   ngAfterViewInit(): void {
     this.listener = this.renderer.listen('document', 'mousedown', (event: MouseEvent) => {
       const path = event.composedPath?.() ?? [];
@@ -27,6 +33,9 @@ export class ClickOutside implements AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Remueve el listener registrado en `ngAfterViewInit`.
+   */
   ngOnDestroy(): void {
     this.listener?.();
   }

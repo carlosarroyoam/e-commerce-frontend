@@ -19,6 +19,12 @@ const CUSTOMER_STATUS_CONFIG: Record<
   DELETED: { label: 'Deleted', variant: 'danger' },
 };
 
+/**
+ * Construye las columnas de la tabla de clientes: foto, nombre, correo, teléfono, fecha de
+ * creación, estado y acciones.
+ *
+ * @returns Definición de columnas para TanStack Table.
+ */
 export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
   return [
     {

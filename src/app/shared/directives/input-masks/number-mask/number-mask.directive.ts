@@ -4,6 +4,10 @@ import { ALLOWED_KEYS } from '@/shared/directives/input-masks/allowed-keys';
 import { BaseMask } from '@/shared/directives/input-masks/base-mask';
 import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 
+/**
+ * Aplica formato numérico al elemento host, con soporte para negativos, separador de
+ * miles, decimales, prefijo/sufijo y valor máximo.
+ */
 @Directive({
   selector: '[appNumberMask]',
   host: {
@@ -29,10 +33,20 @@ export class NumberMask extends BaseMask {
   public readonly clamped = input<boolean>(false);
   public readonly max = input<number>(100);
 
+  /**
+   * Escribe en el elemento host el valor numérico formateado.
+   *
+   * @param value Valor a escribir, o `null` para vaciar el input.
+   */
   public override writeValue(value: number | null): void {
     this.elementRef.nativeElement.value = value !== null ? this.format(value) : '';
   }
 
+  /**
+   * Bloquea teclas que no producen un carácter numérico válido según la configuración actual.
+   *
+   * @param event Evento de teclado a evaluar.
+   */
   protected override onKeyDown(event: KeyboardEvent): void {
     const elementRef = this.elementRef.nativeElement;
     const cursorPosition = elementRef.selectionStart ?? 0;
@@ -60,6 +74,9 @@ export class NumberMask extends BaseMask {
     event.preventDefault();
   }
 
+  /**
+   * Sanitiza, trunca y formatea en vivo el valor mientras el usuario escribe, y notifica el cambio.
+   */
   protected override onInput(): void {
     const elementRef = this.elementRef.nativeElement;
     const cursorPosition = elementRef.selectionStart ?? 0;
@@ -100,6 +117,9 @@ export class NumberMask extends BaseMask {
     this.onChange?.(clamped ? this.toNumber(sanitized, this.decimalSeparator()) : null);
   }
 
+  /**
+   * Reformatea el valor final al perder el foco y notifica el cambio y el touch.
+   */
   protected override onBlur(): void {
     const elementRef = this.elementRef.nativeElement;
     const withoutPrefix = this.removePrefix(elementRef.value);
@@ -113,6 +133,12 @@ export class NumberMask extends BaseMask {
     this.onTouched?.();
   }
 
+  /**
+   * Elimina caracteres no numéricos del valor, conservando el signo negativo y el separador decimal.
+   *
+   * @param value Valor crudo del input.
+   * @returns Valor sanitizado.
+   */
   private sanitize(value: string): string {
     const isNegative = this.allowNegatives() && value.startsWith('-');
     const separator = this.decimalSeparator();
@@ -134,6 +160,12 @@ export class NumberMask extends BaseMask {
     return isNegative && result !== '' ? `-${result}` : result;
   }
 
+  /**
+   * Formatea un número completo aplicando separador de miles, decimales, prefijo y sufijo.
+   *
+   * @param value Número a formatear.
+   * @returns Valor formateado como texto.
+   */
   protected format(value: number): string {
     const isNegative = value < 0;
     const absoluteValue = Math.abs(value);
@@ -151,6 +183,12 @@ export class NumberMask extends BaseMask {
     return `${isNegative ? '-' : ''}${this.prefix()}${result}${this.suffix()}`;
   }
 
+  /**
+   * Formatea el valor parcial mientras se escribe, sin exigir que esté completo.
+   *
+   * @param sanitized Valor ya sanitizado.
+   * @returns Valor formateado como texto.
+   */
   private formatLive(sanitized: string): string {
     const isNegative = sanitized.startsWith('-');
     const withoutSign = isNegative ? sanitized.slice(1) : sanitized;
@@ -176,16 +214,34 @@ export class NumberMask extends BaseMask {
     return `${isNegative ? '-' : ''}${this.prefix()}${integerFormatted}${decimalSection}${this.suffix()}`;
   }
 
+  /**
+   * Quita el prefijo configurado del valor, si está presente.
+   *
+   * @param value Valor del que quitar el prefijo.
+   * @returns Valor sin el prefijo.
+   */
   private removePrefix(value: string) {
     const prefix = this.prefix();
     return prefix !== '' && value.startsWith(prefix) ? value.slice(prefix.length) : value;
   }
 
+  /**
+   * Quita el sufijo configurado del valor, si está presente.
+   *
+   * @param value Valor del que quitar el sufijo.
+   * @returns Valor sin el sufijo.
+   */
   private removeSuffix(value: string): string {
     const suffix = this.suffix();
     return suffix !== '' && value.endsWith(suffix) ? value.slice(0, -suffix.length) : value;
   }
 
+  /**
+   * Limita el valor al máximo permitido cuando `clamped` está activo.
+   *
+   * @param sanitized Valor sanitizado a evaluar.
+   * @returns Valor limitado al máximo, o el valor original si no aplica el límite.
+   */
   private clampMax(sanitized: string): string {
     const num = this.toNumber(sanitized, this.decimalSeparator());
     if (num == null) return sanitized;
@@ -193,12 +249,27 @@ export class NumberMask extends BaseMask {
     return sanitized;
   }
 
+  /**
+   * Recorta la parte decimal al número de posiciones configurado.
+   *
+   * @param cleaned Valor sanitizado a truncar.
+   * @param separator Separador decimal usado en el valor.
+   * @param decimalPlaces Cantidad máxima de decimales a conservar.
+   * @returns Valor con la parte decimal truncada.
+   */
   private truncateDecimals(cleaned: string, separator: string, decimalPlaces: number): string {
     const [integerPart, decimalPart] = cleaned.split(separator);
     if (decimalPart === undefined) return integerPart;
     return `${integerPart}${separator}${decimalPart.slice(0, decimalPlaces)}`;
   }
 
+  /**
+   * Convierte el valor sanitizado a `number`, o `null` si está vacío o no es válido.
+   *
+   * @param cleaned Valor sanitizado a convertir.
+   * @param decimalSeparator Separador decimal usado en el valor.
+   * @returns Número resultante, o `null` si no es convertible.
+   */
   private toNumber(cleaned: string, decimalSeparator: string): number | null {
     if (!cleaned) return null;
     const normalized = cleaned.replace(decimalSeparator, '.');

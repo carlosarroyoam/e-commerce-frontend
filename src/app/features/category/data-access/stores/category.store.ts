@@ -9,6 +9,9 @@ import { CategoryQueryParams } from '@/features/category/data-access/interfaces/
 import { CategoryService } from '@/features/category/data-access/services/category-service';
 import { initialState } from '@/features/category/data-access/stores/category.state';
 
+/**
+ * Gestiona el estado de categorías: listado paginado, carga y errores.
+ */
 export const CategoryStore = signalStore(
   { providedIn: undefined },
 
@@ -16,7 +19,9 @@ export const CategoryStore = signalStore(
 
   withMethods((store, categoryService = inject(CategoryService)) => ({
     /**
-     * Gets the list of categories.
+     * Obtiene el listado de categorías según los parámetros indicados.
+     *
+     * @param queryParams Ordenamiento y paginación a aplicar.
      */
     findAll: rxMethod<CategoryQueryParams>(
       pipe(

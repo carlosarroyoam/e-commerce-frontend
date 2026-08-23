@@ -8,12 +8,21 @@ import { PagedUsersResponse } from '@/features/user/data-access/interfaces/paged
 import { UserQueryParams } from '@/features/user/data-access/interfaces/user-query-params';
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 
+/**
+ * Encapsula las llamadas HTTP al recurso de usuarios.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly httpClient = inject(HttpClient);
 
+  /**
+   * Obtiene el listado paginado de usuarios según los filtros y parámetros indicados.
+   *
+   * @param queryParams Filtros, ordenamiento y paginación a aplicar.
+   * @returns Observable con la página de usuarios.
+   */
   public findAll({
     firstName,
     lastName,
@@ -41,10 +50,23 @@ export class UserService {
     return this.httpClient.get<PagedUsersResponse>(`${environment.apiUrl}/users`, { params });
   }
 
+  /**
+   * Obtiene un usuario por su identificador.
+   *
+   * @param userId Identificador del usuario a buscar.
+   * @returns Observable con el usuario encontrado, o `null` si no existe.
+   */
   public findById(userId: number): Observable<UserResponse | null> {
     return this.httpClient.get<UserResponse>(`${environment.apiUrl}/users/${userId}`);
   }
 
+  /**
+   * Cambia la contraseña de un usuario.
+   *
+   * @param userId Identificador del usuario.
+   * @param payload Contraseña actual y nueva contraseña.
+   * @returns Observable que se completa al finalizar el cambio.
+   */
   public changePassword(userId: number, payload: ChangePasswordRequest): Observable<void> {
     return this.httpClient.put<void>(
       `${environment.apiUrl}/users/${userId}/change-password`,
@@ -52,10 +74,22 @@ export class UserService {
     );
   }
 
+  /**
+   * Elimina un usuario por su identificador.
+   *
+   * @param userId Identificador del usuario a eliminar.
+   * @returns Observable que se completa al finalizar la eliminación.
+   */
   public deleteById(userId: number): Observable<void> {
     return this.httpClient.delete<void>(`${environment.apiUrl}/users/${userId}`);
   }
 
+  /**
+   * Restaura un usuario previamente eliminado.
+   *
+   * @param userId Identificador del usuario a restaurar.
+   * @returns Observable que se completa al finalizar la restauración.
+   */
   public restoreById(userId: number): Observable<void> {
     return this.httpClient.put<void>(`${environment.apiUrl}/users/${userId}/restore`, null);
   }

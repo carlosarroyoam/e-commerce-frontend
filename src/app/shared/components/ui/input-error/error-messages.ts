@@ -2,6 +2,9 @@ import { ValidationErrors } from '@angular/forms';
 
 type ErrorMessageFn = (errors: ValidationErrors) => string;
 
+/**
+ * Mapa de claves de validadores de Angular a sus mensajes de error. Los validadores con datos adicionales usan una función que arma el mensaje a partir del error.
+ */
 export const ERROR_MESSAGES: Record<string, string | ErrorMessageFn> = {
   required: 'The field is required.',
   minlength: (error) =>

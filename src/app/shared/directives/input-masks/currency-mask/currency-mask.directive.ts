@@ -3,6 +3,9 @@ import { Directive, input } from '@angular/core';
 import { valueAccessorProvider } from '@/shared/directives/input-masks/base-mask-providers';
 import { NumberMask } from '@/shared/directives/input-masks/number-mask/number-mask.directive';
 
+/**
+ * Aplica formato de moneda al elemento host: prefijo `$`, separador de miles y decimales por defecto.
+ */
 @Directive({
   selector: '[appCurrencyMask]',
   providers: [valueAccessorProvider(CurrencyMask)],

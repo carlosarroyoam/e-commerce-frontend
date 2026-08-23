@@ -6,6 +6,9 @@ import { PatternMask } from '@/shared/directives/input-masks/pattern-mask/patter
 export type CreditCardFormat =
   '#### #### #### ####' | '**** **** **** ####' | '####-####-####-####' | '****-****-****-####';
 
+/**
+ * Aplica formato de número de tarjeta de crédito al elemento host según el patrón indicado en `mask`.
+ */
 @Directive({
   selector: '[appCreditCardMask]',
   providers: [valueAccessorProvider(CreditCardMask)],

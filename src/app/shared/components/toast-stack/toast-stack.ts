@@ -5,6 +5,9 @@ import { ToastData, ToastResult } from '@/shared/components/toast/interfaces/toa
 import { Toast } from '@/shared/components/toast/toast';
 import { ToastRef } from '@/shared/components/toast/toast-ref';
 
+/**
+ * Contenedor de notificaciones toast, gestiona la pila visible y la cola de espera.
+ */
 @Component({
   selector: 'app-toast-stack',
   imports: [Toast],
@@ -19,6 +22,12 @@ export class ToastStack {
 
   protected readonly queue = computed(() => this.toasts().slice(this.MAX_VISIBLE));
 
+  /**
+   * Agrega un toast a la pila y devuelve su referencia para controlarlo.
+   *
+   * @param toast Datos del toast a mostrar, sin id ni referencia.
+   * @returns Referencia al toast creado, permite cerrarlo o suscribirse a su cierre.
+   */
   public addToast({ title, description, type, duration }: Omit<ToastData, 'id' | 'ref'>): ToastRef {
     const id = uuid();
 
@@ -38,6 +47,12 @@ export class ToastStack {
     return ref;
   }
 
+  /**
+   * Elimina un toast de la pila y notifica su cierre.
+   *
+   * @param id Identificador del toast a eliminar.
+   * @param data Resultado a enviar a los suscriptores del cierre del toast.
+   */
   public removeToast(id: string, data?: ToastResult): void {
     const toast = this.toasts().find((toast) => toast.id === id);
 

@@ -9,6 +9,9 @@ import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/
 import { CustomerService } from '@/features/customer/data-access/services/customer-service';
 import { initialState } from '@/features/customer/data-access/stores/customer.state';
 
+/**
+ * Gestiona el estado de clientes: listado paginado, carga y errores.
+ */
 export const CustomerStore = signalStore(
   { providedIn: undefined },
 
@@ -16,7 +19,9 @@ export const CustomerStore = signalStore(
 
   withMethods((store, customerService = inject(CustomerService)) => ({
     /**
-     * Gets the list of customers.
+     * Obtiene el listado de clientes según los parámetros indicados.
+     *
+     * @param queryParams Filtros, ordenamiento y paginación a aplicar.
      */
     findAll: rxMethod<CustomerQueryParams>(
       pipe(

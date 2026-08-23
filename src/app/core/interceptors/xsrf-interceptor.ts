@@ -8,6 +8,13 @@ const XSRF_COOKIE_NAME = 'XSRF-TOKEN';
 const XSRF_HEADER_NAME = 'X-XSRF-TOKEN';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
+/**
+ * Adjunta el token XSRF de la cookie al header correspondiente en peticiones no seguras a la API.
+ *
+ * @param request Petición HTTP saliente.
+ * @param next Siguiente handler de la cadena de interceptors.
+ * @returns Observable con el evento HTTP resultante.
+ */
 export const xsrfInterceptor: HttpInterceptorFn = (request, next) => {
   const document = inject(DOCUMENT);
 
@@ -26,6 +33,13 @@ export const xsrfInterceptor: HttpInterceptorFn = (request, next) => {
   );
 };
 
+/**
+ * Extrae el valor de una cookie por nombre a partir del string de cookies del documento.
+ *
+ * @param cookies String completo de cookies del documento.
+ * @param name Nombre de la cookie a buscar.
+ * @returns El valor decodificado de la cookie, o null si no existe.
+ */
 const getCookieValue = (cookies: string, name: string): string | null => {
   const prefix = `${encodeURIComponent(name)}=`;
   const cookie = cookies

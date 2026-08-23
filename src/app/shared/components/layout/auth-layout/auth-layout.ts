@@ -3,6 +3,9 @@ import { RouterOutlet } from '@angular/router';
 
 import { Footer } from '@/shared/components/footer/footer';
 
+/**
+ * Layout para las páginas de autenticación, muestra el contenido de la ruta y el pie de página.
+ */
 @Component({
   imports: [RouterOutlet, Footer],
   templateUrl: './auth-layout.html',

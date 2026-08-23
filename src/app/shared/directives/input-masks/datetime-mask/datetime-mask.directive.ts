@@ -31,6 +31,10 @@ interface DateTimeSegments {
   meridiem?: string;
 }
 
+/**
+ * Aplica formato de fecha y/u hora al elemento host según el formato indicado en
+ * `datetimeFormat`, y valida que el valor escrito esté completo.
+ */
 @Directive({
   selector: '[appDateTimeMask]',
   host: {
@@ -47,16 +51,31 @@ export class DateTimeMask extends BaseMask {
   private isDateTimeValid = true;
   private currentMeridiem: Meridiem | null = null;
 
+  /**
+   * Indica si el formato configurado incluye meridiano (AM/PM).
+   *
+   * @returns `true` si el formato incluye el token `A`.
+   */
   private get hasMeridiem(): boolean {
     return this.datetimeFormat().includes('A');
   }
 
+  /**
+   * Longitud máxima permitida en el input según el formato configurado.
+   *
+   * @returns Cantidad máxima de caracteres.
+   */
   protected get maxLength(): number {
     const format = this.datetimeFormat();
     const meridiemExtra = this.hasMeridiem ? 5 : 0;
     return format.length + meridiemExtra;
   }
 
+  /**
+   * Escribe en el elemento host la fecha formateada según `datetimeFormat`.
+   *
+   * @param value Valor a escribir, o `null` para vaciar el input.
+   */
   public override writeValue(value: string | Date | null): void {
     if (!value) {
       this.elementRef.nativeElement.value = '';
@@ -85,6 +104,11 @@ export class DateTimeMask extends BaseMask {
     this.elementRef.nativeElement.value = this.format(segments);
   }
 
+  /**
+   * Valida que el valor escrito tenga la cantidad de dígitos esperada por el formato.
+   *
+   * @returns Error `invalidDateTimeFormat` si el valor está incompleto, o `null` si es válido.
+   */
   public override validate(): ValidationErrors | null {
     if (this.isDateTimeValid) return null;
 
@@ -95,6 +119,11 @@ export class DateTimeMask extends BaseMask {
     };
   }
 
+  /**
+   * Bloquea teclas que no sean dígitos, de control, o el meridiano cuando aplica.
+   *
+   * @param event Evento de teclado a evaluar.
+   */
   protected override onKeyDown(event: KeyboardEvent): void {
     if (
       /^\d$/.test(event.key) ||
@@ -115,6 +144,9 @@ export class DateTimeMask extends BaseMask {
     event.preventDefault();
   }
 
+  /**
+   * Sanitiza y reformatea el valor en vivo mientras el usuario escribe, y valida y notifica el cambio.
+   */
   protected override onInput(): void {
     const elementRef = this.elementRef.nativeElement;
     const cursorPosition = elementRef.selectionStart ?? 0;
@@ -142,6 +174,9 @@ export class DateTimeMask extends BaseMask {
     }
   }
 
+  /**
+   * Reformatea el valor final al perder el foco, valida y notifica el cambio y el touch.
+   */
   protected override onBlur(): void {
     const elementRef = this.elementRef.nativeElement;
 
@@ -158,10 +193,22 @@ export class DateTimeMask extends BaseMask {
     this.onValidatorChange?.();
   }
 
+  /**
+   * Elimina caracteres no numéricos y trunca a la cantidad de dígitos esperada por el formato.
+   *
+   * @param value Valor crudo del input.
+   * @returns Dígitos sanitizados y truncados.
+   */
   private sanitize(value: string): string {
     return value.replace(/\D/g, '').slice(0, this.getExpectedDigitsLength());
   }
 
+  /**
+   * Construye el texto final con separadores y meridiano a partir de los segmentos de fecha/hora.
+   *
+   * @param segments Segmentos de fecha/hora ya extraídos.
+   * @returns Valor formateado según `datetimeFormat`.
+   */
   private format(segments: DateTimeSegments): string {
     const format = this.datetimeFormat();
     const hour24 = Number(segments.hour ?? '0');
@@ -190,6 +237,12 @@ export class DateTimeMask extends BaseMask {
     );
   }
 
+  /**
+   * Formatea en vivo los dígitos parciales insertando separadores y meridiano conforme se completan.
+   *
+   * @param digits Dígitos ya sanitizados.
+   * @returns Valor formateado parcialmente.
+   */
   private formatLive(digits: string): string {
     const tokens = this.getTokens();
     const separators = this.datetimeFormat().match(/[^A-Za-z]/g) ?? [];
@@ -230,6 +283,9 @@ export class DateTimeMask extends BaseMask {
     return parts.join('');
   }
 
+  /**
+   * Reformatea el valor y notifica el cambio tras seleccionar un meridiano con teclado.
+   */
   private applyMeridiem(): void {
     const elementRef = this.elementRef.nativeElement;
     const digits = this.getDigits(elementRef.value);
@@ -243,6 +299,12 @@ export class DateTimeMask extends BaseMask {
     }
   }
 
+  /**
+   * Determina el meridiano a mostrar, infiriéndolo de la hora si aún no se ha seleccionado.
+   *
+   * @param digits Dígitos ya sanitizados.
+   * @returns Texto del meridiano (`a. m.` o `p. m.`).
+   */
   private resolveMeridiem(digits: string): string {
     if (!this.currentMeridiem) {
       const hour = Number(this.getSegments(digits).hour ?? 0);
@@ -251,6 +313,12 @@ export class DateTimeMask extends BaseMask {
     return this.currentMeridiem === 'AM' ? 'a. m.' : 'p. m.';
   }
 
+  /**
+   * Distribuye los dígitos en los segmentos de fecha/hora según los tokens del formato.
+   *
+   * @param digits Dígitos ya sanitizados.
+   * @returns Segmentos de fecha/hora extraídos.
+   */
   private getSegments(digits: string): DateTimeSegments {
     const tokens = this.getTokens();
     const map: DateTimeSegments = {};
@@ -277,25 +345,53 @@ export class DateTimeMask extends BaseMask {
     return map;
   }
 
+  /**
+   * Extrae del formato configurado la lista ordenada de tokens de fecha/hora.
+   *
+   * @returns Tokens presentes en `datetimeFormat`.
+   */
   private getTokens(): string[] {
     return this.datetimeFormat().match(/YYYY|DD|MM|HH|mm|ss|A/g) ?? [];
   }
 
+  /**
+   * Longitud en dígitos de un token del formato.
+   *
+   * @param token Token de fecha/hora a evaluar.
+   * @returns Cantidad de dígitos que ocupa el token.
+   */
   private getTokenLength(token: string): number {
     return token === 'YYYY' ? 4 : 2;
   }
 
+  /**
+   * Quita el meridiano del valor y devuelve los dígitos sanitizados restantes.
+   *
+   * @param value Valor crudo del input.
+   * @returns Dígitos sanitizados sin meridiano.
+   */
   private getDigits(value: string): string {
     const clean = value.replace(/a\.\s*m\.|p\.\s*m\./gi, '').trim();
     return this.sanitize(clean);
   }
 
+  /**
+   * Cantidad total de dígitos que exige el formato configurado, sin contar el meridiano.
+   *
+   * @returns Cantidad de dígitos esperada.
+   */
   private getExpectedDigitsLength(): number {
     return this.getTokens()
       .filter((t) => t !== 'A')
       .reduce((sum, t) => sum + this.getTokenLength(t), 0);
   }
 
+  /**
+   * Construye un `Date` a partir de los segmentos de fecha/hora, ajustando la hora según el meridiano.
+   *
+   * @param segments Segmentos de fecha/hora ya extraídos.
+   * @returns Fecha resultante, o `null` si el año no corresponde a una fecha válida.
+   */
   private toDate(segments: DateTimeSegments): Date | null {
     const year = Number(segments.year ?? 0);
     const month = Number(segments.month ?? 1);

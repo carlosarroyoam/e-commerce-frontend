@@ -8,6 +8,10 @@ export interface SelectableOption {
   disabled?: boolean;
 }
 
+/**
+ * Base abstracta para selectores de opción tipo dropdown (select, autocomplete). Gestiona apertura,
+ * selección, resaltado por teclado e integración con ControlValueAccessor.
+ */
 @Directive()
 export abstract class BaseOptionSelector implements ControlValueAccessor {
   private readonly document = inject(DOCUMENT);
@@ -21,6 +25,11 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
   private onChange?: (value: string | number | null) => void;
   private onTouched?: () => void;
 
+  /**
+   * Implementa ControlValueAccessor: sincroniza el valor recibido del formulario con la opción seleccionada.
+   *
+   * @param value Valor recibido del formulario.
+   */
   public writeValue(value: string | number | null): void {
     const selected =
       this.getAllOptions().find((option) => option.value === value && !option.disabled) ?? null;
@@ -30,18 +39,38 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.resetHighlightedIndex();
   }
 
+  /**
+   * Implementa ControlValueAccessor: registra el callback a invocar cuando cambia el valor.
+   *
+   * @param fn Callback a invocar con el nuevo valor.
+   */
   public registerOnChange(fn: (value: string | number | null) => void): void {
     this.onChange = fn;
   }
 
+  /**
+   * Implementa ControlValueAccessor: registra el callback a invocar cuando el control pierde el foco.
+   *
+   * @param fn Callback a invocar cuando el control es tocado.
+   */
   public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  /**
+   * Implementa ControlValueAccessor: habilita o deshabilita el selector.
+   *
+   * @param isDisabled true para deshabilitar el selector.
+   */
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled.set(isDisabled);
   }
 
+  /**
+   * Notifica al formulario el nuevo valor seleccionado.
+   *
+   * @param value Nuevo valor a propagar.
+   */
   protected propagateChange(value: string | number | null): void {
     this.onChange?.(value);
   }
@@ -50,6 +79,9 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
 
   protected abstract getVisibleOptions(): SelectableOption[];
 
+  /**
+   * Abre el dropdown si el selector no está deshabilitado.
+   */
   protected open(): void {
     if (this.isDisabled()) return;
 
@@ -57,11 +89,19 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.resetHighlightedIndex();
   }
 
+  /**
+   * Cierra el dropdown y marca el control como tocado.
+   */
   protected close(): void {
     this.isOpen.set(false);
     this.onTouched?.();
   }
 
+  /**
+   * Selecciona una opción, propaga el cambio y cierra el dropdown.
+   *
+   * @param option Opción a seleccionar, o null para limpiar la selección.
+   */
   protected selectOption(option: SelectableOption | null): void {
     if (option?.disabled) return;
 
@@ -71,6 +111,11 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.close();
   }
 
+  /**
+   * Maneja la navegación e interacción por teclado del dropdown.
+   *
+   * @param event Evento de teclado a procesar.
+   */
   protected handleKeydown(event: KeyboardEvent): void {
     if (this.isDisabled()) return;
 
@@ -134,18 +179,37 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     }
   }
 
+  /**
+   * Abre el dropdown al recibir el foco.
+   */
   protected handleFocus(): void {
     this.open();
   }
 
+  /**
+   * Cierra el dropdown si el foco sale del componente.
+   *
+   * @param event Evento de blur a evaluar.
+   */
   protected handleBlur(event: FocusEvent): void {
     this.closeIfFocusLeft(event);
   }
 
+  /**
+   * Cierra el dropdown si el foco sale de la lista de opciones.
+   *
+   * @param event Evento de focusout a evaluar.
+   */
   protected handleDropdownFocusOut(event: FocusEvent): void {
     this.closeIfFocusLeft(event);
   }
 
+  /**
+   * Indica si la opción en el índice dado es la opción seleccionada.
+   *
+   * @param index Índice de la opción a evaluar dentro de las opciones visibles.
+   * @returns true si la opción en ese índice es la seleccionada.
+   */
   protected isOptionSelected(index: number): boolean {
     const options = this.getVisibleOptions();
     const option = options[index];
@@ -153,6 +217,12 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     return this.selected()?.value === option?.value;
   }
 
+  /**
+   * Indica si la opción en el índice dado es la opción resaltada.
+   *
+   * @param index Índice de la opción a evaluar dentro de las opciones visibles.
+   * @returns true si la opción en ese índice es la resaltada.
+   */
   protected isOptionHighlighted(index: number): boolean {
     const options = this.getVisibleOptions();
     const enabledOptions = options.filter((option) => !option.disabled);
@@ -161,6 +231,9 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     return enabledOptions[this.highlightedIndex()]?.value === option?.value;
   }
 
+  /**
+   * Reubica el índice resaltado en la opción seleccionada o en la primera opción habilitada.
+   */
   protected resetHighlightedIndex(): void {
     const options = this.getVisibleOptions();
     const enabledOptions = options.filter((option) => !option.disabled);
@@ -176,18 +249,34 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     this.highlightedIndex.set(0);
   }
 
+  /**
+   * Desplaza el dropdown para mostrar la opción seleccionada o resaltada.
+   */
   protected scrollSelectedIntoView(): void {
     this.scrollOptionIntoView('[data-selected], [data-highlighted]');
   }
 
+  /**
+   * Desplaza el dropdown para mostrar la opción resaltada.
+   */
   protected scrollHighlightedIntoView(): void {
     this.scrollOptionIntoView('[data-highlighted]');
   }
 
+  /**
+   * Hook para que las subclases reaccionen a un cambio de valor. No hace nada por defecto.
+   *
+   * @param option Opción resultante del cambio de valor, o null si se limpió.
+   */
   protected afterValueChange(option: SelectableOption | null): void {
     void option;
   }
 
+  /**
+   * Desplaza el contenedor del dropdown para que el elemento indicado por el selector sea visible.
+   *
+   * @param selector Selector CSS del elemento a mostrar dentro del dropdown.
+   */
   private scrollOptionIntoView(selector: string): void {
     const dropdown = this.dropdown()?.nativeElement;
     if (!dropdown) return;
@@ -207,6 +296,11 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
     dropdown.scrollTo({ top: scrollTop, behavior: 'instant' });
   }
 
+  /**
+   * Cierra el dropdown si el nuevo foco quedó fuera del componente.
+   *
+   * @param event Evento de foco a evaluar.
+   */
   private closeIfFocusLeft(event: FocusEvent): void {
     const nextFocused = event.relatedTarget;
     const dropdown = this.dropdown()?.nativeElement;

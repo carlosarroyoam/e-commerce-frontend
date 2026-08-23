@@ -53,6 +53,7 @@ export class Toast implements OnDestroy, OnInit {
     return twMerge(toastVariants({ variant: this.data().type }));
   });
 
+  /** Inicia el temporizador de cierre automático si el toast tiene duración. */
   ngOnInit() {
     const duration = this.data().duration;
 
@@ -61,14 +62,21 @@ export class Toast implements OnDestroy, OnInit {
     }
   }
 
+  /** Limpia el temporizador de cierre automático al destruir el componente. */
   ngOnDestroy() {
     clearTimeout(this.timer);
   }
 
+  /** Cierra el toast. */
   protected close(): void {
     this.data().ref.close();
   }
 
+  /**
+   * Programa el cierre automático del toast tras la duración indicada.
+   *
+   * @param duration Tiempo en milisegundos antes de cerrar el toast automáticamente.
+   */
   private startTimer(duration: number) {
     this.remaining = duration;
     this.start = Date.now();
@@ -78,12 +86,14 @@ export class Toast implements OnDestroy, OnInit {
     }, duration);
   }
 
+  /** Pausa el temporizador de cierre automático y guarda el tiempo restante. */
   protected pauseTimer() {
     clearTimeout(this.timer);
     const elapsed = Date.now() - this.start;
     this.remaining -= elapsed;
   }
 
+  /** Reanuda el temporizador de cierre automático con el tiempo restante. */
   protected resumeTimer() {
     if (this.remaining <= 0) {
       return;

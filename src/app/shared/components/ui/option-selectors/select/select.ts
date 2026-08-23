@@ -8,6 +8,9 @@ import {
 } from '@/shared/components/ui/option-selectors/base-option-selector';
 import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/base-option-selector-providers';
 
+/**
+ * Selector tipo dropdown con lista fija de opciones, sin filtrado por texto.
+ */
 @Component({
   selector: 'app-select',
   imports: [OverlayModule, LucideChevronDown],
@@ -27,10 +30,20 @@ export class Select extends BaseOptionSelector {
   protected readonly triggerId = computed(() => `select-${this.id()}-trigger`);
   protected readonly dropdownId = computed(() => `select-${this.id()}-dropdown`);
 
+  /**
+   * Devuelve el listado completo de opciones disponibles.
+   *
+   * @returns Todas las opciones del componente.
+   */
   protected override getAllOptions(): SelectableOption[] {
     return this.options();
   }
 
+  /**
+   * Devuelve las opciones visibles, que coinciden con el listado completo.
+   *
+   * @returns Todas las opciones del componente.
+   */
   protected override getVisibleOptions(): SelectableOption[] {
     return this.options();
   }

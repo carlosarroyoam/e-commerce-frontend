@@ -5,6 +5,13 @@ import { ProductTableButtons } from '@/features/product/components/product-table
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { Chip } from '@/shared/components/ui/chip/chip';
 
+/**
+ * Construye las columnas de la tabla de productos: título, categoría, destacado, estado, fecha de
+ * creación y acciones.
+ *
+ * @param opts Callbacks de la tabla.
+ * @returns Definición de columnas para TanStack Table.
+ */
 export function buildProductTableColumns(opts: {
   onDelete: (product: ProductResponse) => void;
 }): ColumnDef<ProductResponse>[] {

@@ -9,6 +9,9 @@ import { InputLabel } from '@/shared/components/ui/input-label/input-label';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { Spinner } from '@/shared/components/ui/spinner/spinner';
 
+/**
+ * Página de inicio de sesión. Autentica al usuario y redirige a la URL solicitada tras el login.
+ */
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, RouterLink, Button, AppInput, InputLabel, InputError, Spinner],
@@ -30,6 +33,9 @@ export class LoginPage {
     }),
   });
 
+  /**
+   * Redirige a la URL solicitada (o a la raíz) en cuanto la sesión queda autenticada.
+   */
   constructor() {
     effect(() => {
       if (!this.authStore.isAuthenticated()) return;
@@ -42,6 +48,9 @@ export class LoginPage {
     });
   }
 
+  /**
+   * Valida el formulario y envía las credenciales al store para autenticar al usuario.
+   */
   protected login(): void {
     const rawValue = this.form.getRawValue();
 

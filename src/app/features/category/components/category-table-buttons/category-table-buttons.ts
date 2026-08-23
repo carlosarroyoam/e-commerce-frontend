@@ -5,6 +5,9 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { Button } from '@/shared/components/ui/button/button';
 
+/**
+ * Botones de acción de una fila de la tabla de categorías: elimina la categoría de la fila.
+ */
 @Component({
   selector: 'app-category-table-buttons',
   imports: [Button, LucideTrash2],
@@ -20,6 +23,9 @@ export class CategoryTableButtons {
   private readonly context = injectFlexRenderContext<CellContext<CategoryResponse, unknown>>();
   protected readonly category = this.context.row.original;
 
+  /**
+   * Invoca el callback de eliminación con la categoría de la fila actual.
+   */
   protected onDeleteClicked(): void {
     this.onDelete()?.(this.category);
   }

@@ -27,6 +27,9 @@ export const buttonVariants = cva(
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
+/**
+ * Directiva de estilos para botones y enlaces, con variantes de color y tamaño.
+ */
 @Directive({
   selector: 'button[appButton],a[appButton]',
   host: {

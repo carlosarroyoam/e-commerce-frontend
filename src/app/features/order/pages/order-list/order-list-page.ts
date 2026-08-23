@@ -22,6 +22,9 @@ import { TableComponent } from '@/shared/components/table/table';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 
+/**
+ * Página de listado de órdenes. Ordena, pagina y cancela órdenes.
+ */
 @Component({
   selector: 'app-order-list',
   imports: [TableComponent, Paginator],
@@ -68,14 +71,27 @@ export class OrderListPage {
     return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
   });
 
+  /**
+   * Carga el listado inicial de órdenes.
+   */
   constructor() {
     this.store.findAll(this.queryParams);
   }
 
+  /**
+   * Actualiza la página actual en los parámetros de la URL.
+   *
+   * @param page Número de página a mostrar.
+   */
   protected onPageChange(page: number): void {
     this.queryParamsSync.update({ page });
   }
 
+  /**
+   * Actualiza el tamaño de página y reinicia a la primera página.
+   *
+   * @param size Cantidad de elementos por página.
+   */
   protected onSizeChange(size: number): void {
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
@@ -83,6 +99,11 @@ export class OrderListPage {
     });
   }
 
+  /**
+   * Aplica el cambio de ordenamiento de la tabla y reinicia a la primera página.
+   *
+   * @param updaterOrValue Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
+   */
   protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
     const currentSorting = this.sort();
     const nextSorting =
@@ -97,6 +118,11 @@ export class OrderListPage {
     });
   }
 
+  /**
+   * Solicita confirmación y cancela la orden indicada, refrescando el listado al finalizar.
+   *
+   * @param order Orden a cancelar.
+   */
   protected onCancelOrder(order: OrderResponse): void {
     this.alertDialogService
       .open({

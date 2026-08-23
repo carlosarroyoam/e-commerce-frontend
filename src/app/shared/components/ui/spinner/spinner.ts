@@ -18,6 +18,9 @@ export const spinnerVariants = cva('inline-block animate-spin', {
 
 export type SpinnerVariants = VariantProps<typeof spinnerVariants>;
 
+/**
+ * Indicador visual de carga, con tamaño configurable mediante variantes.
+ */
 @Component({
   selector: 'app-spinner',
   templateUrl: './spinner.html',

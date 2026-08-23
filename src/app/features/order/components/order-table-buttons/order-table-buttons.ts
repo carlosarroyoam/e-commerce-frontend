@@ -7,6 +7,9 @@ import { Button } from '@/shared/components/ui/button/button';
 
 const CANCELLABLE_STATUSES = new Set(['PENDING', 'CONFIRMED', 'PROCESSING']);
 
+/**
+ * Botones de acción de una fila de la tabla de órdenes: cancela la orden si su estado lo permite.
+ */
 @Component({
   selector: 'app-order-table-buttons',
   imports: [Button, LucideX],
@@ -25,6 +28,9 @@ export class OrderTableButtons {
 
   protected readonly canCancel = CANCELLABLE_STATUSES.has(this.order.status);
 
+  /**
+   * Invoca el callback de cancelación con la orden de la fila actual.
+   */
   protected onCancelClicked(): void {
     this.onCancel()?.(this.order);
   }

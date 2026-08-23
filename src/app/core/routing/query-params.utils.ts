@@ -23,6 +23,15 @@ export interface QueryParamsSync<TParams extends object> {
   params: Signal<TParams>;
 }
 
+/**
+ * Sincroniza un `FormGroup` con los query params de la ruta actual: al cargar aplica los params
+ * existentes al formulario (o resetea la URL si no hay ninguno), y ante cada cambio de valor
+ * navega actualizando los params.
+ *
+ * @param form Formulario reactivo a sincronizar con la URL.
+ * @param options Opciones de serialización/deserialización, debounce y params de reseteo.
+ * @returns Objeto con el signal de params actuales y los métodos `reset`/`update`.
+ */
 export const createQueryParamsSync = <TParams extends object, TFormValue extends object = TParams>(
   form: FormGroup,
   options: QueryParamsSyncOptions<TParams, TFormValue> = {},
@@ -81,6 +90,13 @@ export const createQueryParamsSync = <TParams extends object, TFormValue extends
   };
 };
 
+/**
+ * Serialización por defecto: copia cada valor del formulario a los query params, convirtiendo
+ * valores vacíos (`undefined`, `null`, `''`) a `null` para que se eliminen de la URL.
+ *
+ * @param value Valor del formulario a serializar.
+ * @returns Query params equivalentes al valor del formulario.
+ */
 const defaultSerialize = <TFormValue extends object>(value: TFormValue): Params => {
   const params: Params = {};
   for (const [key, val] of Object.entries(value)) {
@@ -89,6 +105,13 @@ const defaultSerialize = <TFormValue extends object>(value: TFormValue): Params 
   return params;
 };
 
+/**
+ * Deserialización por defecto: copia cada query param presente en la URL tal cual, sin parseo ni
+ * conversión de tipos.
+ *
+ * @param params Query params de la URL actual.
+ * @returns Objeto con las claves y valores de los query params.
+ */
 const defaultDeserialize = <TParams extends object>(params: ParamMap): TParams => {
   return Object.fromEntries(params.keys.map((key) => [key, params.get(key)])) as TParams;
 };

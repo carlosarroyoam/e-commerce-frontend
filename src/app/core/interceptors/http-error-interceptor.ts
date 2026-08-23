@@ -11,6 +11,13 @@ const DEFAULT_ERROR_DIALOG = {
   primaryButtonLabel: 'Dismiss',
 };
 
+/**
+ * Muestra un diálogo de error para las peticiones fallidas que no manejan su propio error.
+ *
+ * @param request Petición HTTP saliente.
+ * @param next Siguiente handler de la cadena de interceptors.
+ * @returns Observable con el evento HTTP resultante o el error propagado.
+ */
 export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
   const alertDialogService = inject(AlertDialogService);
 
@@ -30,6 +37,12 @@ export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
   );
 };
 
+/**
+ * Construye el título y la descripción del diálogo a partir del error HTTP recibido.
+ *
+ * @param error Error HTTP recibido.
+ * @returns Datos del diálogo de error a mostrar.
+ */
 const getErrorDialogData = (error: HttpErrorResponse) => {
   const apiError = error.error;
 

@@ -9,6 +9,9 @@ import { UserQueryParams } from '@/features/user/data-access/interfaces/user-que
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { initialState } from '@/features/user/data-access/stores/user.state';
 
+/**
+ * Gestiona el estado de usuarios: listado paginado, carga y errores.
+ */
 export const UserStore = signalStore(
   { providedIn: undefined },
 
@@ -16,7 +19,9 @@ export const UserStore = signalStore(
 
   withMethods((store, userService = inject(UserService)) => ({
     /**
-     * Gets the list of users.
+     * Obtiene el listado de usuarios según los parámetros indicados.
+     *
+     * @param queryParams Filtros, ordenamiento y paginación a aplicar.
      */
     findAll: rxMethod<UserQueryParams>(
       pipe(

@@ -6,12 +6,21 @@ import { environment } from '@/environments/environment';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { PagedCustomersResponse } from '@/features/customer/data-access/interfaces/paged-customers-response';
 
+/**
+ * Encapsula las llamadas HTTP al recurso de clientes.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
   private readonly httpClient = inject(HttpClient);
 
+  /**
+   * Obtiene el listado paginado de clientes según los filtros y parámetros indicados.
+   *
+   * @param queryParams Filtros, ordenamiento y paginación a aplicar.
+   * @returns Observable con la página de clientes.
+   */
   public findAll({
     firstName,
     lastName,

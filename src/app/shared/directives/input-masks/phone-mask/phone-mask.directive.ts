@@ -8,6 +8,9 @@ export type PhoneFormat =
   | '###-###-####' // US simple: 555-123-4567
   | '## #### ####'; // MX local: 55 1234 5678
 
+/**
+ * Aplica formato de número telefónico al elemento host según el patrón indicado en `mask`.
+ */
 @Directive({
   selector: '[appPhoneMask]',
   providers: [valueAccessorProvider(PhoneMask)],

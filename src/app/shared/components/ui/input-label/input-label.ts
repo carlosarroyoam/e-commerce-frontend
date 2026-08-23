@@ -2,6 +2,9 @@ import { Directive, ElementRef, inject, input, OnInit } from '@angular/core';
 import { FormGroupDirective, Validators } from '@angular/forms';
 import { twMerge } from 'tailwind-merge';
 
+/**
+ * Directiva para etiquetas de formulario. Añade un asterisco visual cuando el control asociado es obligatorio.
+ */
 @Directive({
   selector: 'label[appInputLabel]',
   host: {
@@ -14,6 +17,9 @@ export class InputLabel implements OnInit {
 
   public readonly for = input.required<string>();
 
+  /**
+   * Agrega un indicador de campo requerido a la etiqueta si el control tiene el validador `required`.
+   */
   ngOnInit(): void {
     const control = this.formGroup.form.get(this.for());
 

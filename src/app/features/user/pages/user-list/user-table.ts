@@ -19,6 +19,13 @@ const USER_STATUS_CONFIG: Record<
   DELETED: { label: 'Deleted', variant: 'danger' },
 };
 
+/**
+ * Construye las columnas de la tabla de usuarios: foto, nombre, correo, roles, fecha de creación,
+ * estado y acciones.
+ *
+ * @param opts Callbacks de la tabla.
+ * @returns Definición de columnas para TanStack Table.
+ */
 export function buildUserTableColumns(opts: {
   onEdit: (user: UserResponse) => void;
   onDelete: (user: UserResponse) => void;

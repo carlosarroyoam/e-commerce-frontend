@@ -29,6 +29,9 @@ import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 
+/**
+ * Página de listado de usuarios. Filtra, ordena, pagina, elimina y restaura usuarios.
+ */
 @Component({
   selector: 'app-user-list',
   imports: [
@@ -111,14 +114,27 @@ export class UserListPage {
     { label: 'ADMIN', value: 1 },
   ];
 
+  /**
+   * Carga el listado inicial de usuarios.
+   */
   constructor() {
     this.store.findAll(this.queryParams);
   }
 
+  /**
+   * Actualiza la página actual en los parámetros de la URL.
+   *
+   * @param page Número de página a mostrar.
+   */
   protected onPageChange(page: number): void {
     this.queryParamsSync.update({ page });
   }
 
+  /**
+   * Actualiza el tamaño de página y reinicia a la primera página.
+   *
+   * @param size Cantidad de elementos por página.
+   */
   protected onSizeChange(size: number): void {
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
@@ -126,6 +142,11 @@ export class UserListPage {
     });
   }
 
+  /**
+   * Aplica el cambio de ordenamiento de la tabla y reinicia a la primera página.
+   *
+   * @param updaterOrValue Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
+   */
   protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
     const currentSorting = this.sort();
     const nextSorting =
@@ -140,14 +161,27 @@ export class UserListPage {
     });
   }
 
+  /**
+   * Restablece el formulario de filtros y los parámetros de la URL a sus valores por defecto.
+   */
   protected reset(): void {
     this.queryParamsSync.reset();
   }
 
+  /**
+   * Punto de entrada para editar el usuario indicado.
+   *
+   * @param user Usuario a editar.
+   */
   protected onEditUser(user: UserResponse): void {
     console.log('Edit user:', user.id);
   }
 
+  /**
+   * Solicita confirmación y elimina el usuario indicado, refrescando el listado al finalizar.
+   *
+   * @param user Usuario a eliminar.
+   */
   protected onDeleteUser(user: UserResponse): void {
     this.alertDialogService
       .open({
@@ -170,6 +204,11 @@ export class UserListPage {
       .subscribe(() => this.store.findAll(this.queryParams()));
   }
 
+  /**
+   * Solicita confirmación y restaura el usuario indicado, refrescando el listado al finalizar.
+   *
+   * @param user Usuario a restaurar.
+   */
   protected onRestoreUser(user: UserResponse): void {
     this.alertDialogService
       .open({

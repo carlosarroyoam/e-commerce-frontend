@@ -11,6 +11,9 @@ export type ToastInput = Omit<ToastData, 'id' | 'type' | 'ref' | 'duration'> & {
   duration?: number;
 };
 
+/**
+ * Encapsula la creación de toasts (success, error, info, warning) sobre el stack global.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -30,6 +33,12 @@ export class ToastService {
     this.stack = componentRef.instance;
   }
 
+  /**
+   * Muestra un toast de tipo success.
+   *
+   * @param data Título, descripción y duración opcional del toast.
+   * @returns Referencia al toast creado.
+   */
   public success(data: ToastInput): ToastRef {
     return this.stack.addToast({
       title: data.title,
@@ -39,6 +48,12 @@ export class ToastService {
     });
   }
 
+  /**
+   * Muestra un toast de tipo error.
+   *
+   * @param data Título, descripción y duración opcional del toast.
+   * @returns Referencia al toast creado.
+   */
   public error(data: ToastInput): ToastRef {
     return this.stack.addToast({
       title: data.title,
@@ -48,6 +63,12 @@ export class ToastService {
     });
   }
 
+  /**
+   * Muestra un toast de tipo info.
+   *
+   * @param data Título, descripción y duración opcional del toast.
+   * @returns Referencia al toast creado.
+   */
   public info(data: ToastInput): ToastRef {
     return this.stack.addToast({
       title: data.title,
@@ -57,6 +78,12 @@ export class ToastService {
     });
   }
 
+  /**
+   * Muestra un toast de tipo warning.
+   *
+   * @param data Título, descripción y duración opcional del toast.
+   * @returns Referencia al toast creado.
+   */
   public warning(data: ToastInput): ToastRef {
     return this.stack.addToast({
       title: data.title,

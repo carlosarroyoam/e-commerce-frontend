@@ -9,6 +9,9 @@ import { OrderQueryParams } from '@/features/order/data-access/interfaces/order-
 import { OrderService } from '@/features/order/data-access/services/order-service';
 import { initialState } from '@/features/order/data-access/stores/order.state';
 
+/**
+ * Gestiona el estado de órdenes: listado paginado, carga y errores.
+ */
 export const OrderStore = signalStore(
   { providedIn: undefined },
 
@@ -16,7 +19,9 @@ export const OrderStore = signalStore(
 
   withMethods((store, orderService = inject(OrderService)) => ({
     /**
-     * Gets the list of orders.
+     * Obtiene el listado de órdenes según los parámetros indicados.
+     *
+     * @param queryParams Ordenamiento y paginación a aplicar.
      */
     findAll: rxMethod<OrderQueryParams>(
       pipe(

@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+/**
+ * Página principal del dashboard.
+ */
 @Component({
   selector: 'app-dashboard',
   imports: [],

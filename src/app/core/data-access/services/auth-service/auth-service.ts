@@ -13,6 +13,9 @@ import {
 } from '@/core/http/auth-request-context';
 import { environment } from '@/environments/environment';
 
+/**
+ * Encapsula las llamadas HTTP de autenticación: login, refresh de token y logout.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +24,12 @@ export class AuthService {
   private readonly localStorageService = inject(LocalStorageService);
   private refreshInFlight$: Observable<AuthResponse> | null = null;
 
+  /**
+   * Envía las credenciales de inicio de sesión junto con el device id.
+   *
+   * @param payload Credenciales de inicio de sesión.
+   * @returns Observable con la respuesta de autenticación.
+   */
   public login(payload: LoginRequest): Observable<AuthResponse> {
     return this.httpClient.post<AuthResponse>(
       `${environment.apiUrl}/auth/login`,
@@ -29,6 +38,11 @@ export class AuthService {
     );
   }
 
+  /**
+   * Solicita un nuevo access token, reutilizando la petición en curso si ya existe una.
+   *
+   * @returns Observable con la respuesta de autenticación renovada.
+   */
   public refreshToken(): Observable<AuthResponse> {
     if (this.refreshInFlight$) {
       return this.refreshInFlight$;
@@ -48,18 +62,33 @@ export class AuthService {
     return refreshRequest$;
   }
 
+  /**
+   * Cierra la sesión del usuario en el backend.
+   *
+   * @returns Observable que se completa cuando el logout finaliza.
+   */
   public logout(): Observable<void> {
     return this.httpClient.post<void>(`${environment.apiUrl}/auth/logout`, null, {
       context: createAuthRequestContext(),
     });
   }
 
+  /**
+   * Construye la petición HTTP de refresh de token.
+   *
+   * @returns Observable con la respuesta de autenticación renovada.
+   */
   private createRefreshRequest(): Observable<AuthResponse> {
     return this.httpClient.post<AuthResponse>(`${environment.apiUrl}/auth/refresh-token`, null, {
       context: createAuthRequestContext(),
     });
   }
 
+  /**
+   * Obtiene el device id almacenado, generando y guardando uno nuevo si no existe.
+   *
+   * @returns El device id almacenado, o null si no pudo obtenerse.
+   */
   private getDeviceId(): string | null {
     if (!this.localStorageService.hasKey(DEVICE_ID_KEY)) {
       this.localStorageService.setItem(DEVICE_ID_KEY, uuid());

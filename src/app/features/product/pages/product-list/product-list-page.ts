@@ -30,6 +30,9 @@ import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 
+/**
+ * Página de listado de productos. Filtra, ordena, pagina y elimina productos.
+ */
 @Component({
   selector: 'app-product-list',
   imports: [
@@ -113,6 +116,9 @@ export class ProductListPage {
     { label: 'All categories', value: null },
   ]);
 
+  /**
+   * Carga el listado inicial de productos y las opciones de categoría para el filtro.
+   */
   constructor() {
     this.store.findAll(this.queryParams);
 
@@ -124,10 +130,20 @@ export class ProductListPage {
     });
   }
 
+  /**
+   * Actualiza la página actual en los parámetros de la URL.
+   *
+   * @param page Número de página a mostrar.
+   */
   protected onPageChange(page: number): void {
     this.queryParamsSync.update({ page });
   }
 
+  /**
+   * Actualiza el tamaño de página y reinicia a la primera página.
+   *
+   * @param size Cantidad de elementos por página.
+   */
   protected onSizeChange(size: number): void {
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
@@ -135,6 +151,11 @@ export class ProductListPage {
     });
   }
 
+  /**
+   * Aplica el cambio de ordenamiento de la tabla y reinicia a la primera página.
+   *
+   * @param updaterOrValue Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
+   */
   protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
     const currentSorting = this.sort();
     const nextSorting =
@@ -149,10 +170,18 @@ export class ProductListPage {
     });
   }
 
+  /**
+   * Restablece el formulario de filtros y los parámetros de la URL a sus valores por defecto.
+   */
   protected reset(): void {
     this.queryParamsSync.reset();
   }
 
+  /**
+   * Solicita confirmación y elimina el producto indicado, refrescando el listado al finalizar.
+   *
+   * @param product Producto a eliminar.
+   */
   protected onDeleteProduct(product: ProductResponse): void {
     this.alertDialogService
       .open({

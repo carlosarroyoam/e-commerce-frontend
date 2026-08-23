@@ -3,6 +3,9 @@ import { FlexRenderDirective, Table } from '@tanstack/angular-table';
 
 type TableContentState = 'loading' | 'loaded' | 'empty';
 
+/**
+ * Tabla genérica basada en TanStack Table, renderiza estados de carga, datos y vacío.
+ */
 @Component({
   selector: 'app-table',
   imports: [FlexRenderDirective],

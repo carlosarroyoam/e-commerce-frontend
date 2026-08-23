@@ -4,6 +4,9 @@ import { filter, Subscription } from 'rxjs';
 
 import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-messages';
 
+/**
+ * Componente que muestra los mensajes de error de un control de formulario según su estado de validación.
+ */
 @Component({
   selector: 'app-input-error',
   templateUrl: './input-error.html',
@@ -16,6 +19,9 @@ export class InputError {
   public readonly control = input.required<AbstractControl | null>();
   protected readonly errorMessages = signal<string[]>([]);
 
+  /**
+   * Suscribe a los cambios de estado y eventos del control para recalcular los mensajes de error.
+   */
   constructor() {
     effect((onCleanup) => {
       const control = this.control();
@@ -46,6 +52,12 @@ export class InputError {
     });
   }
 
+  /**
+   * Construye la lista de mensajes de error visibles según los errores activos del control.
+   *
+   * @param control Control del que se leen los errores activos.
+   * @returns Lista de mensajes de error a mostrar; vacía si el control es válido o no fue interactuado.
+   */
   private buildErrorMessages(control: AbstractControl): string[] {
     if (!control.invalid || (!control.dirty && !control.touched)) return [];
 

@@ -5,6 +5,9 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';
 import { Button } from '@/shared/components/ui/button/button';
 
+/**
+ * Botones de acción de una fila de la tabla de clientes: editar, eliminar y restaurar el cliente.
+ */
 @Component({
   selector: 'app-customer-table-buttons',
   imports: [Button, LucidePencil, LucideRotateCcw, LucideTrash2],
@@ -23,14 +26,23 @@ export class CustomerTableButtons {
 
   protected readonly customer = this.context.row.original;
 
+  /**
+   * Invoca el callback de edición con el cliente de la fila actual.
+   */
   protected onEditClicked(): void {
     this.onEdit()?.(this.customer);
   }
 
+  /**
+   * Invoca el callback de eliminación con el cliente de la fila actual.
+   */
   protected onDeleteClicked(): void {
     this.onDelete()?.(this.customer);
   }
 
+  /**
+   * Invoca el callback de restauración con el cliente de la fila actual.
+   */
   protected onRestoreClicked(): void {
     this.onRestore()?.(this.customer);
   }
