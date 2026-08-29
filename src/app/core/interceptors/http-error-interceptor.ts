@@ -48,8 +48,8 @@ const getErrorDialogData = (error: HttpErrorResponse) => {
 
   if (apiError?.status && apiError.status !== 500) {
     return {
-      title: apiError.error,
-      description: apiError.message,
+      title: apiError.title,
+      description: apiError.detail,
       primaryButtonLabel: 'Dismiss',
     };
   }
