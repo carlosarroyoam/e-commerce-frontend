@@ -48,14 +48,18 @@ export class AuthService {
       return this.refreshInFlight$;
     }
 
-    const refreshRequest$ = this.createRefreshRequest().pipe(
-      finalize(() => {
-        if (this.refreshInFlight$ === refreshRequest$) {
-          this.refreshInFlight$ = null;
-        }
-      }),
-      shareReplay({ bufferSize: 1, refCount: false }),
-    );
+    const refreshRequest$ = this.httpClient
+      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh-token`, null, {
+        context: createAuthRequestContext(),
+      })
+      .pipe(
+        finalize(() => {
+          if (this.refreshInFlight$ === refreshRequest$) {
+            this.refreshInFlight$ = null;
+          }
+        }),
+        shareReplay({ bufferSize: 1, refCount: false }),
+      );
 
     this.refreshInFlight$ = refreshRequest$;
 
@@ -69,17 +73,6 @@ export class AuthService {
    */
   public logout(): Observable<void> {
     return this.httpClient.post<void>(`${environment.apiUrl}/auth/logout`, null, {
-      context: createAuthRequestContext(),
-    });
-  }
-
-  /**
-   * Construye la petición HTTP de refresh de token.
-   *
-   * @returns Observable con la respuesta de autenticación renovada.
-   */
-  private createRefreshRequest(): Observable<AuthResponse> {
-    return this.httpClient.post<AuthResponse>(`${environment.apiUrl}/auth/refresh-token`, null, {
       context: createAuthRequestContext(),
     });
   }
