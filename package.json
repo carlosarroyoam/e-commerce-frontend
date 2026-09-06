@@ -25,7 +25,7 @@
     "@angular/router": "^22.1.5",
     "@lucide/angular": "^1.30.0",
     "@ngrx/operators": "^21.0.1",
-    "@ngrx/signals": "^21.0.1",
+    "@ngrx/signals": "^22.0.0",
     "@tanstack/angular-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "rxjs": "~7.5.0",
