@@ -9,34 +9,8 @@ import {
 } from '@/shared/components/ui/option-selectors/base-option-selector';
 import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/base-option-selector-providers';
 
-let nextAutocompleteId = 0;
-
 /**
  * Selector con autocompletado: filtra las opciones localmente por texto y admite una función de búsqueda externa opcional.
- *
- * @example
- * Hook opcional de búsqueda externa.
- *
- * Ejemplo:
- * `<app-autocomplete
- *    placeholder="User"
- *    [options]="userOptions()"
- *    [optionCallback]="searchUsers"
- *    formControlName="userId" />`
- *
- * `protected readonly userOptions = signal<SelectableOption[]>([]);
- *  protected searchUsers = (query: string): void => {
- *    this.userService
- *      .getAll({ search: query })
- *      .subscribe(({ users }) => {
- *        this.userOptions.set(
- *          users.map((user) => ({
- *            value: user.id,
- *            label: `${user.first_name} ${user.last_name}`,
- *          })),
- *        );
- *      });
- *  };`
  */
 @Component({
   selector: 'app-autocomplete',
@@ -49,12 +23,14 @@ let nextAutocompleteId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Autocomplete extends BaseOptionSelector implements OnInit {
+  public readonly id = input.required<string>();
   public readonly placeholder = input('Select an option...');
   public readonly emptyMessage = input('No options found.');
   public readonly options = input.required<SelectableOption[]>();
   public readonly optionCallback = input<((query: string) => void) | undefined>();
 
-  protected readonly instanceId = `autocomplete-${nextAutocompleteId++}`;
+  protected readonly triggerId = computed(() => `autocomplete-${this.id()}-trigger`);
+  protected readonly dropdownId = computed(() => `autocomplete-${this.id()}-dropdown`);
   protected readonly query = signal('');
 
   protected readonly filteredOptions = computed(() => {
