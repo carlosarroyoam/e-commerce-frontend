@@ -17,9 +17,7 @@ import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/b
   imports: [OverlayModule, LucideChevronDown],
   templateUrl: './autocomplete.html',
   providers: [valueAccessorProvider(Autocomplete)],
-  host: {
-    '(keydown)': 'handleKeydown($event)',
-  },
+  host: { '(keydown)': 'handleKeydown($event)' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Autocomplete extends BaseOptionSelector implements OnInit {
@@ -29,8 +27,8 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
   public readonly options = input.required<SelectableOption[]>();
   public readonly optionCallback = input<((query: string) => void) | undefined>();
 
-  protected readonly triggerId = computed(() => `autocomplete-${this.id()}-trigger`);
-  protected readonly dropdownId = computed(() => `autocomplete-${this.id()}-dropdown`);
+  protected readonly triggerId = computed(() => `${this.id()}-trigger`);
+  protected readonly dropdownId = computed(() => `${this.id()}-dropdown`);
   protected readonly query = signal('');
 
   protected readonly filteredOptions = computed(() => {

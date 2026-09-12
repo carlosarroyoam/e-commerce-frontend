@@ -16,19 +16,16 @@ import { valueAccessorProvider } from '@/shared/components/ui/option-selectors/b
   imports: [OverlayModule, LucideChevronDown],
   templateUrl: './select.html',
   providers: [valueAccessorProvider(Select)],
-  host: {
-    '(keydown)': 'handleKeydown($event)',
-  },
+  host: { '(keydown)': 'handleKeydown($event)' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Select extends BaseOptionSelector {
   public readonly id = input.required<string>();
   public readonly placeholder = input('Select an option...');
   public readonly options = input.required<SelectableOption[]>();
-  public readonly ariaLabel = input<string>();
 
-  protected readonly triggerId = computed(() => `select-${this.id()}-trigger`);
-  protected readonly dropdownId = computed(() => `select-${this.id()}-dropdown`);
+  protected readonly triggerId = computed(() => `${this.id()}-trigger`);
+  protected readonly dropdownId = computed(() => `${this.id()}-dropdown`);
 
   /**
    * Devuelve el listado completo de opciones disponibles.

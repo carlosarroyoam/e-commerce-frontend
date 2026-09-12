@@ -10,6 +10,7 @@
     [disabled]="isDisabled()"
     [attr.aria-controls]="dropdownId()"
     [attr.aria-expanded]="isOpen()"
+    [attr.aria-labelledby]="triggerId()"
     (focus)="handleFocus()"
     (blur)="handleBlur($event)"
     (input)="handleInput(input.value)"
