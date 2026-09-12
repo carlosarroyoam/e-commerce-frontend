@@ -107,11 +107,5 @@
 
 <section>
   <app-table [table]="table" [isLoading]="store.isLoading()" />
-  <app-paginator
-    [page]="queryParams().page!"
-    [size]="queryParams().size!"
-    [pagination]="store.pagination()"
-    (pageChanged)="onPageChange($event)"
-    (sizeChanged)="onSizeChange($event)"
-  />
+  <app-paginator [table]="table" />
 </section>

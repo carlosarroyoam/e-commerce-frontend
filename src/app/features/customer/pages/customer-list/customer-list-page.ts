@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { injectTable, type SortingState, type Updater } from '@tanstack/angular-table';
+import {
+  injectTable,
+  type PaginationState,
+  type SortingState,
+  type Updater,
+} from '@tanstack/angular-table';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
@@ -12,6 +17,7 @@ import { customerQueryParamsDeserializer } from '@/features/customer/routing/cus
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
+import { parsePaginationParam } from '@/shared/components/table/tanstack/table-pagination.utils';
 import {
   parseSortParam,
   sortingStateToParam,
@@ -67,8 +73,12 @@ export class CustomerListPage {
     data: this.store.items(),
     manualSorting: true,
     enableSortingRemoval: true,
-    state: { sorting: this.sorting() },
+    manualPagination: true,
+    autoResetPageIndex: false,
+    rowCount: this.store.pagination()?.total_items ?? 0,
+    state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
+    onPaginationChange: (updater) => this.onPaginationChange(updater),
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<CustomerQueryParams>(this.form, {
@@ -78,6 +88,9 @@ export class CustomerListPage {
 
   protected readonly queryParams = this.queryParamsSync.params;
   private readonly sorting = computed<SortingState>(() => parseSortParam(this.queryParams().sort));
+  private readonly pagination = computed<PaginationState>(() =>
+    parsePaginationParam(this.queryParams().page, this.queryParams().size),
+  );
 
   protected readonly statuses: SelectableOption[] = [
     { label: 'All statuses', value: null },
@@ -94,23 +107,19 @@ export class CustomerListPage {
   }
 
   /**
-   * Actualiza la página actual en los parámetros de la URL.
+   * Aplica el cambio de paginación de la tabla. Si cambia el tamaño de página, reinicia a la
+   * primera página; si solo cambia la página, actualiza únicamente la página.
    *
-   * @param page Número de página a mostrar.
+   * @param updater Nuevo estado de paginación o función que lo calcula a partir del actual.
    */
-  protected onPageChange(page: number): void {
-    this.queryParamsSync.update({ page });
-  }
+  protected onPaginationChange(updater: Updater<PaginationState>): void {
+    const currentPagination = this.pagination();
+    const nextPagination = typeof updater === 'function' ? updater(currentPagination) : updater;
+    const sizeChanged = nextPagination.pageSize !== currentPagination.pageSize;
 
-  /**
-   * Actualiza el tamaño de página y reinicia a la primera página.
-   *
-   * @param size Cantidad de elementos por página.
-   */
-  protected onSizeChange(size: number): void {
     this.queryParamsSync.update({
-      page: DEFAULT_FIRST_PAGE,
-      size,
+      page: sizeChanged ? DEFAULT_FIRST_PAGE : nextPagination.pageIndex,
+      size: nextPagination.pageSize,
     });
   }
 
