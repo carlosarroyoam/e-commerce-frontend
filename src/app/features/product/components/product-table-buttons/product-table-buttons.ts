@@ -4,6 +4,7 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { Button } from '@/shared/components/ui/button/button';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Botones de acción de una fila de la tabla de productos: elimina el producto de la fila.
@@ -20,7 +21,8 @@ import { Button } from '@/shared/components/ui/button/button';
 export class ProductTableButtons {
   public readonly onDelete = input<(product: ProductResponse) => void>();
 
-  private readonly context = injectFlexRenderContext<CellContext<ProductResponse, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<AppTableFeatures, ProductResponse, unknown>>();
   protected readonly product = this.context.row.original;
 
   /**

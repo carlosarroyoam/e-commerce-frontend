@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  createAngularTable,
-  getCoreRowModel,
-  type SortingState,
-  type Updater,
-} from '@tanstack/angular-table';
+import { injectTable, type SortingState, type Updater } from '@tanstack/angular-table';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
@@ -17,6 +12,7 @@ import { buildCustomerTableColumns } from '@/features/customer/pages/customer-li
 import { customerQueryParamsDeserializer } from '@/features/customer/routing/customer-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
+import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -63,14 +59,14 @@ export class CustomerListPage {
     { validators: dateRangeValidator },
   );
 
-  protected readonly table = createAngularTable(() => ({
+  protected readonly table = injectTable(() => ({
+    features: appTableFeatures,
     data: this.store.items(),
     columns: buildCustomerTableColumns(),
     manualSorting: true,
     enableSortingRemoval: true,
     state: { sorting: this.sort() },
     onSortingChange: (updater) => this.onSortingChange(updater),
-    getCoreRowModel: getCoreRowModel(),
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<CustomerQueryParams>(this.form, {

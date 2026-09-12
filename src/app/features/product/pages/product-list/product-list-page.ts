@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  createAngularTable,
-  getCoreRowModel,
-  Updater,
-  type SortingState,
-} from '@tanstack/angular-table';
+import { injectTable, Updater, type SortingState } from '@tanstack/angular-table';
 import { filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
@@ -20,6 +15,7 @@ import { buildProductTableColumns } from '@/features/product/pages/product-list/
 import { productQueryParamsDeserializer } from '@/features/product/routing/product-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
+import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -71,7 +67,8 @@ export class ProductListPage {
     { validators: dateRangeValidator },
   );
 
-  protected readonly table = createAngularTable(() => ({
+  protected readonly table = injectTable(() => ({
+    features: appTableFeatures,
     data: this.store.items(),
     columns: buildProductTableColumns({
       onDelete: (product) => this.onDeleteProduct(product),
@@ -80,7 +77,6 @@ export class ProductListPage {
     enableSortingRemoval: true,
     state: { sorting: this.sort() },
     onSortingChange: (updater) => this.onSortingChange(updater),
-    getCoreRowModel: getCoreRowModel(),
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<ProductQueryParams>(this.form, {

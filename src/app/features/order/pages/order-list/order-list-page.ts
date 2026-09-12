@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import {
-  createAngularTable,
-  getCoreRowModel,
-  Updater,
-  type SortingState,
-} from '@tanstack/angular-table';
+import { injectTable, Updater, type SortingState } from '@tanstack/angular-table';
 import { filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
@@ -19,6 +14,7 @@ import { buildOrderTableColumns } from '@/features/order/pages/order-list/order-
 import { orderQueryParamsDeserializer } from '@/features/order/routing/order-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
+import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 
@@ -42,7 +38,8 @@ export class OrderListPage {
 
   protected readonly form = this.fb.group({});
 
-  protected readonly table = createAngularTable(() => ({
+  protected readonly table = injectTable(() => ({
+    features: appTableFeatures,
     data: this.store.items(),
     columns: buildOrderTableColumns({
       onCancel: (order) => this.onCancelOrder(order),
@@ -51,7 +48,6 @@ export class OrderListPage {
     enableSortingRemoval: true,
     state: { sorting: this.sort() },
     onSortingChange: (updater) => this.onSortingChange(updater),
-    getCoreRowModel: getCoreRowModel(),
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<OrderQueryParams>(this.form, {

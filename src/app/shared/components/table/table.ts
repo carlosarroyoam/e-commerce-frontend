@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { FlexRenderDirective, Table } from '@tanstack/angular-table';
+import { FlexRender, Table, type RowData } from '@tanstack/angular-table';
+
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 type TableContentState = 'loading' | 'loaded' | 'empty';
 
@@ -8,12 +10,12 @@ type TableContentState = 'loading' | 'loaded' | 'empty';
  */
 @Component({
   selector: 'app-table',
-  imports: [FlexRenderDirective],
+  imports: [FlexRender],
   templateUrl: './table.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent<T> {
-  public readonly table = input.required<Table<T>>();
+export class TableComponent<T extends RowData> {
+  public readonly table = input.required<Table<AppTableFeatures, T>>();
   public readonly isLoading = input(false);
 
   protected readonly contentState = computed<TableContentState>(() =>

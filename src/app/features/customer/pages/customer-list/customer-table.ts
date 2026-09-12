@@ -8,6 +8,7 @@ import {
 } from '@/features/customer/data-access/interfaces/customer-response';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 const CUSTOMER_STATUS_CONFIG: Record<
   CustomerStatus,
@@ -25,7 +26,7 @@ const CUSTOMER_STATUS_CONFIG: Record<
  *
  * @returns Definición de columnas para TanStack Table.
  */
-export function buildCustomerTableColumns(): ColumnDef<CustomerResponse>[] {
+export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, CustomerResponse>[] {
   return [
     {
       id: 'profile_picture',

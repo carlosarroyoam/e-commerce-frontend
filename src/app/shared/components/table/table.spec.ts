@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Table } from '@tanstack/angular-table';
+import { Table, type RowData } from '@tanstack/angular-table';
 
 import { TableComponent } from './table';
+import { AppTableFeatures } from '@/shared/tanstack/table-features';
 
-function createEmptyTableMock<T>(): Table<T> {
+function createEmptyTableMock<T extends RowData>(): Table<AppTableFeatures, T> {
   return {
     getHeaderGroups: () => [],
     getRowCount: () => 0,
@@ -11,21 +12,23 @@ function createEmptyTableMock<T>(): Table<T> {
       rows: [],
     }),
     getFlatHeaders: () => [],
-  } as unknown as Table<T>;
+  } as unknown as Table<AppTableFeatures, T>;
 }
 
+interface MockRow {}
+
 describe('Table', () => {
-  let component: TableComponent<void>;
-  let fixture: ComponentFixture<TableComponent<void>>;
+  let component: TableComponent<MockRow>;
+  let fixture: ComponentFixture<TableComponent<MockRow>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TableComponent<void>);
+    fixture = TestBed.createComponent(TableComponent<MockRow>);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('table', createEmptyTableMock<void>());
+    fixture.componentRef.setInput('table', createEmptyTableMock<MockRow>());
 
     fixture.detectChanges();
   });

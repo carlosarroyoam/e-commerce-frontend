@@ -4,6 +4,7 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';
 import { Button } from '@/shared/components/ui/button/button';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Botones de acción de una fila de la tabla de clientes: editar, eliminar y restaurar el cliente.
@@ -22,7 +23,8 @@ export class CustomerTableButtons {
   public readonly onDelete = input<(customer: CustomerResponse) => void>();
   public readonly onRestore = input<(customer: CustomerResponse) => void>();
 
-  private readonly context = injectFlexRenderContext<CellContext<CustomerResponse, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<AppTableFeatures, CustomerResponse, unknown>>();
 
   protected readonly customer = this.context.row.original;
 

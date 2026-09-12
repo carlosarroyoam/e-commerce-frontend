@@ -3,6 +3,7 @@ import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { CategoryTableButtons } from '@/features/category/components/category-table-buttons/category-table-buttons';
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { Chip } from '@/shared/components/ui/chip/chip';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Construye las columnas de la tabla de categorías: título, estado y acciones.
@@ -12,7 +13,7 @@ import { Chip } from '@/shared/components/ui/chip/chip';
  */
 export function buildCategoryTableColumns(opts: {
   onDelete: (category: CategoryResponse) => void;
-}): ColumnDef<CategoryResponse>[] {
+}): ColumnDef<AppTableFeatures, CategoryResponse>[] {
   return [
     {
       accessorKey: 'title',

@@ -4,6 +4,7 @@ import { formatDateTime } from '@/core/utils/date.utils';
 import { ProductTableButtons } from '@/features/product/components/product-table-buttons/product-table-buttons';
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { Chip } from '@/shared/components/ui/chip/chip';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Construye las columnas de la tabla de productos: título, categoría, destacado, estado, fecha de
@@ -14,7 +15,7 @@ import { Chip } from '@/shared/components/ui/chip/chip';
  */
 export function buildProductTableColumns(opts: {
   onDelete: (product: ProductResponse) => void;
-}): ColumnDef<ProductResponse>[] {
+}): ColumnDef<AppTableFeatures, ProductResponse>[] {
   return [
     {
       accessorKey: 'title',

@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  createAngularTable,
-  getCoreRowModel,
-  Updater,
-  type SortingState,
-} from '@tanstack/angular-table';
+import { injectTable, Updater, type SortingState } from '@tanstack/angular-table';
 import { filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
@@ -19,6 +14,7 @@ import { buildUserTableColumns } from '@/features/user/pages/user-list/user-tabl
 import { userQueryParamsDeserializer } from '@/features/user/routing/user-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
+import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -50,7 +46,6 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 })
 export class UserListPage {
   private readonly fb = inject(FormBuilder);
-
   private readonly userService = inject(UserService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
@@ -71,7 +66,8 @@ export class UserListPage {
     { validators: dateRangeValidator },
   );
 
-  protected readonly table = createAngularTable(() => ({
+  protected readonly table = injectTable(() => ({
+    features: appTableFeatures,
     data: this.store.items(),
     columns: buildUserTableColumns({
       onEdit: (user) => this.onEditUser(user),
@@ -82,7 +78,6 @@ export class UserListPage {
     enableSortingRemoval: true,
     state: { sorting: this.sort() },
     onSortingChange: (updater) => this.onSortingChange(updater),
-    getCoreRowModel: getCoreRowModel(),
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<UserQueryParams>(this.form, {

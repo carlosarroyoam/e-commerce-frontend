@@ -5,6 +5,7 @@ import { formatCurrency } from '@/core/utils/number.utils';
 import { OrderTableButtons } from '@/features/order/components/order-table-buttons/order-table-buttons';
 import { OrderResponse, OrderStatus } from '@/features/order/data-access/interfaces/order-response';
 import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
@@ -28,7 +29,7 @@ const ORDER_STATUS_CONFIG: Record<
  */
 export function buildOrderTableColumns(opts: {
   onCancel: (order: OrderResponse) => void;
-}): ColumnDef<OrderResponse>[] {
+}): ColumnDef<AppTableFeatures, OrderResponse>[] {
   return [
     {
       accessorKey: 'order_number',

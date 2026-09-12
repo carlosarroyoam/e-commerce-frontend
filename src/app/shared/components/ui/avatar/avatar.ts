@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Celda de tabla que muestra el avatar generado y el nombre del usuario de la fila.
@@ -12,7 +13,8 @@ import { UserResponse } from '@/features/user/data-access/interfaces/user-respon
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Avatar {
-  private readonly context = injectFlexRenderContext<CellContext<UserResponse, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
   private readonly user = this.context.row.original;
 
   /**

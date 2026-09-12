@@ -4,6 +4,7 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { Button } from '@/shared/components/ui/button/button';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
  * Botones de acción de una fila de la tabla de usuarios: editar, eliminar y restaurar el usuario.
@@ -22,7 +23,8 @@ export class UserTableButtons {
   public readonly onDelete = input<(user: UserResponse) => void>();
   public readonly onRestore = input<(user: UserResponse) => void>();
 
-  private readonly context = injectFlexRenderContext<CellContext<UserResponse, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
 
   protected readonly user = this.context.row.original;
 

@@ -26,7 +26,7 @@
     "@lucide/angular": "^1.30.0",
     "@ngrx/operators": "^22.0.0",
     "@ngrx/signals": "^22.0.0",
-    "@tanstack/angular-table": "^8.21.3",
+    "@tanstack/angular-table": "^9.2.4",
     "class-variance-authority": "^0.7.1",
     "rxjs": "~7.5.0",
     "tailwind-merge": "^2.5.4",

@@ -9,6 +9,7 @@ import {
 } from '@/features/user/data-access/interfaces/user-response';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 const USER_STATUS_CONFIG: Record<
   UserStatus,
@@ -30,7 +31,7 @@ export function buildUserTableColumns(opts: {
   onEdit: (user: UserResponse) => void;
   onDelete: (user: UserResponse) => void;
   onRestore: (user: UserResponse) => void;
-}): ColumnDef<UserResponse>[] {
+}): ColumnDef<AppTableFeatures, UserResponse>[] {
   return [
     {
       id: 'profile_picture',

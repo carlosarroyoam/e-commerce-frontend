@@ -15,14 +15,8 @@
                     class="inline-flex items-center gap-2 text-left transition-colors hover:text-zinc-900"
                     (click)="header.column.toggleSorting()"
                   >
-                    <ng-container
-                      *flexRender="
-                        header.column.columnDef.header;
-                        props: header.getContext();
-                        let header
-                      "
-                    >
-                      <div [innerHTML]="header"></div>
+                    <ng-container *flexRenderHeader="header; let headerCell">
+                      {{ headerCell }}
                     </ng-container>
 
                     @switch (header.column.getIsSorted()) {
@@ -38,14 +32,8 @@
                     }
                   </button>
                 } @else {
-                  <ng-container
-                    *flexRender="
-                      header.column.columnDef.header;
-                      props: header.getContext();
-                      let header
-                    "
-                  >
-                    <div [innerHTML]="header"></div>
+                  <ng-container *flexRenderHeader="header; let headerCell">
+                    {{ headerCell }}
                   </ng-container>
                 }
               </th>
@@ -68,12 +56,10 @@
         @case ('loaded') {
           @for (row of table().getRowModel().rows; track row.id) {
             <tr class="hover:bg-zinc-50">
-              @for (cell of row.getVisibleCells(); track cell.id) {
+              @for (cell of row.getAllCells(); track cell.id) {
                 <td class="px-4 py-2 text-sm">
-                  <ng-container
-                    *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell"
-                  >
-                    <div [innerHTML]="cell"></div>
+                  <ng-container *flexRenderCell="cell; let renderCell">
+                    {{ renderCell }}
                   </ng-container>
                 </td>
               }

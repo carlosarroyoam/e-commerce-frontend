@@ -4,6 +4,7 @@ import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { OrderResponse } from '@/features/order/data-access/interfaces/order-response';
 import { Button } from '@/shared/components/ui/button/button';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 const CANCELLABLE_STATUSES = new Set(['PENDING', 'CONFIRMED', 'PROCESSING']);
 
@@ -22,7 +23,8 @@ const CANCELLABLE_STATUSES = new Set(['PENDING', 'CONFIRMED', 'PROCESSING']);
 export class OrderTableButtons {
   public readonly onCancel = input<(order: OrderResponse) => void>();
 
-  private readonly context = injectFlexRenderContext<CellContext<OrderResponse, unknown>>();
+  private readonly context =
+    injectFlexRenderContext<CellContext<AppTableFeatures, OrderResponse, unknown>>();
 
   protected readonly order = this.context.row.original;
 
