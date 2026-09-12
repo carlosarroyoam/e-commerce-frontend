@@ -4,7 +4,6 @@ import { injectTable, type SortingState, type Updater } from '@tanstack/angular-
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
-import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
 import { CustomerStatus } from '@/features/customer/data-access/interfaces/customer-response';
 import { CustomerStore } from '@/features/customer/data-access/stores/customer.store';
@@ -13,6 +12,10 @@ import { customerQueryParamsDeserializer } from '@/features/customer/routing/cus
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
+import {
+  parseSortParam,
+  sortingStateToParam,
+} from '@/shared/components/table/tanstack/table-sorting.utils';
 import { Button } from '@/shared/components/ui/button/button';
 import { InputError } from '@/shared/components/ui/input-error/input-error';
 import { InputLabel } from '@/shared/components/ui/input-label/input-label';
@@ -42,7 +45,6 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 })
 export class CustomerListPage {
   private readonly fb = inject(FormBuilder);
-
   protected readonly store = inject(CustomerStore);
 
   protected readonly form = this.fb.group(
@@ -61,11 +63,11 @@ export class CustomerListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    data: this.store.items(),
     columns: buildCustomerTableColumns(),
+    data: this.store.items(),
     manualSorting: true,
     enableSortingRemoval: true,
-    state: { sorting: this.sort() },
+    state: { sorting: this.sorting() },
     onSortingChange: (updater) => this.onSortingChange(updater),
   }));
 
@@ -75,16 +77,7 @@ export class CustomerListPage {
   });
 
   protected readonly queryParams = this.queryParamsSync.params;
-
-  private readonly sort = computed<SortingState>(() => {
-    const sort = this.queryParams().sort;
-    if (!sort) return [];
-
-    const [field, direction] = sort.split(',');
-    if (!field) return [];
-
-    return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
-  });
+  private readonly sorting = computed<SortingState>(() => parseSortParam(this.queryParams().sort));
 
   protected readonly statuses: SelectableOption[] = [
     { label: 'All statuses', value: null },
@@ -124,19 +117,14 @@ export class CustomerListPage {
   /**
    * Aplica el cambio de ordenamiento de la tabla y reinicia a la primera página.
    *
-   * @param updaterOrValue Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
+   * @param updater Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
    */
-  protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
-    const currentSorting = this.sort();
-    const nextSorting =
-      typeof updaterOrValue === 'function' ? updaterOrValue(currentSorting) : updaterOrValue;
-    const nextColumn = nextSorting[0];
+  protected onSortingChange(updater: Updater<SortingState>): void {
+    const nextSorting = typeof updater === 'function' ? updater(this.sorting()) : updater;
 
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
-      sort: nextColumn
-        ? `${toCamelCase(nextColumn.id)},${nextColumn.desc ? 'desc' : 'asc'}`
-        : undefined,
+      sort: sortingStateToParam(nextSorting),
     });
   }
 

@@ -5,7 +5,6 @@ import { filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
-import { toCamelCase, toSnakeCase } from '@/core/utils/string.utils';
 import { CategoryQueryParams } from '@/features/category/data-access/interfaces/category-query-params';
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { CategoryService } from '@/features/category/data-access/services/category-service';
@@ -15,6 +14,10 @@ import { categoryQueryParamsDeserializer } from '@/features/category/routing/cat
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
+import {
+  parseSortParam,
+  sortingStateToParam,
+} from '@/shared/components/table/tanstack/table-sorting.utils';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ToastService } from '@/shared/services/toast-service/toast-service';
 
@@ -30,7 +33,6 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
 })
 export class CategoryListPage {
   private readonly fb = inject(FormBuilder);
-
   private readonly categoryService = inject(CategoryService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
@@ -40,13 +42,13 @@ export class CategoryListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    data: this.store.items(),
     columns: buildCategoryTableColumns({
       onDelete: (category) => this.onDeleteCategory(category),
     }),
+    data: this.store.items(),
     manualSorting: true,
     enableSortingRemoval: true,
-    state: { sorting: this.sort() },
+    state: { sorting: this.sorting() },
     onSortingChange: (updater) => this.onSortingChange(updater),
   }));
 
@@ -56,16 +58,7 @@ export class CategoryListPage {
   });
 
   protected readonly queryParams = this.queryParamsSync.params;
-
-  private readonly sort = computed<SortingState>(() => {
-    const sort = this.queryParams().sort;
-    if (!sort) return [];
-
-    const [field, direction] = sort.split(',');
-    if (!field) return [];
-
-    return [{ id: toSnakeCase(field), desc: direction === 'desc' }];
-  });
+  private readonly sorting = computed<SortingState>(() => parseSortParam(this.queryParams().sort));
 
   /**
    * Carga el listado inicial de categorías.
@@ -98,19 +91,14 @@ export class CategoryListPage {
   /**
    * Aplica el cambio de ordenamiento de la tabla y reinicia a la primera página.
    *
-   * @param updaterOrValue Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
+   * @param updater Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
    */
-  protected onSortingChange(updaterOrValue: Updater<SortingState>): void {
-    const currentSorting = this.sort();
-    const nextSorting =
-      typeof updaterOrValue === 'function' ? updaterOrValue(currentSorting) : updaterOrValue;
-    const nextColumn = nextSorting[0];
+  protected onSortingChange(updater: Updater<SortingState>): void {
+    const nextSorting = typeof updater === 'function' ? updater(this.sorting()) : updater;
 
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
-      sort: nextColumn
-        ? `${toCamelCase(nextColumn.id)},${nextColumn.desc ? 'desc' : 'asc'}`
-        : undefined,
+      sort: sortingStateToParam(nextSorting),
     });
   }
 

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Table, type RowData } from '@tanstack/angular-table';
 
 import { TableComponent } from './table';
-import { AppTableFeatures } from '@/shared/tanstack/table-features';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 function createEmptyTableMock<T extends RowData>(): Table<AppTableFeatures, T> {
   return {
@@ -15,7 +15,7 @@ function createEmptyTableMock<T extends RowData>(): Table<AppTableFeatures, T> {
   } as unknown as Table<AppTableFeatures, T>;
 }
 
-interface MockRow {}
+type MockRow = object;
 
 describe('Table', () => {
   let component: TableComponent<MockRow>;
