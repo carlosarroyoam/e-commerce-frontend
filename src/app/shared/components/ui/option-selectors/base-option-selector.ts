@@ -4,7 +4,7 @@ import { ControlValueAccessor } from '@angular/forms';
 
 export interface SelectableOption {
   label: string;
-  value: string | number | null;
+  value: string | number | boolean | null;
   disabled?: boolean;
 }
 
@@ -22,7 +22,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
   protected readonly isDisabled = signal(false);
   protected readonly highlightedIndex = signal(0);
 
-  private onChange?: (value: string | number | null) => void;
+  private onChange?: (value: string | number | boolean | null) => void;
   private onTouched?: () => void;
 
   /**
@@ -30,7 +30,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
    *
    * @param value Valor recibido del formulario.
    */
-  public writeValue(value: string | number | null): void {
+  public writeValue(value: string | number | boolean | null): void {
     const selected =
       this.getAllOptions().find((option) => option.value === value && !option.disabled) ?? null;
 
@@ -44,7 +44,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
    *
    * @param fn Callback a invocar con el nuevo valor.
    */
-  public registerOnChange(fn: (value: string | number | null) => void): void {
+  public registerOnChange(fn: (value: string | number | boolean | null) => void): void {
     this.onChange = fn;
   }
 
@@ -71,7 +71,7 @@ export abstract class BaseOptionSelector implements ControlValueAccessor {
    *
    * @param value Nuevo valor a propagar.
    */
-  protected propagateChange(value: string | number | null): void {
+  protected propagateChange(value: string | number | boolean | null): void {
     this.onChange?.(value);
   }
 

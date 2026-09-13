@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   injectTable,
@@ -6,7 +6,8 @@ import {
   type PaginationState,
   type SortingState,
 } from '@tanstack/angular-table';
-import { filter, switchMap, tap } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
@@ -103,33 +104,36 @@ export class ProductListPage {
   );
 
   protected readonly featuredOptions: SelectableOption[] = [
-    { label: 'All products', value: null },
-    { label: 'Featured', value: 'true' },
-    { label: 'Not featured', value: 'false' },
+    { value: null, label: 'All products' },
+    { value: true, label: 'Featured' },
+    { value: false, label: 'Not featured' },
   ];
 
   protected readonly activeOptions: SelectableOption[] = [
-    { label: 'All statuses', value: null },
-    { label: 'Active', value: 'true' },
-    { label: 'Inactive', value: 'false' },
+    { value: null, label: 'All statuses' },
+    { value: true, label: 'Active' },
+    { value: false, label: 'Inactive' },
   ];
 
-  protected readonly categoryOptions = signal<SelectableOption[]>([
-    { label: 'All categories', value: null },
-  ]);
+  protected readonly categoryOptions = toSignal(
+    this.categoryService.findAll({ size: 50 }).pipe(
+      map(({ items }): SelectableOption[] => [
+        { label: 'All categories', value: null },
+        ...items.map(({ id, title, deleted_at }) => ({
+          value: id,
+          label: title,
+          disabled: deleted_at !== null,
+        })),
+      ]),
+    ),
+    { initialValue: [{ label: 'All categories', value: null }] },
+  );
 
   /**
    * Carga el listado inicial de productos y las opciones de categoría para el filtro.
    */
   constructor() {
     this.store.findAll(this.queryParams);
-
-    this.categoryService.findAll({ size: 100 }).subscribe(({ items }) => {
-      this.categoryOptions.set([
-        { label: 'All categories', value: null },
-        ...items.map((category) => ({ label: category.title, value: category.id })),
-      ]);
-    });
   }
 
   /**

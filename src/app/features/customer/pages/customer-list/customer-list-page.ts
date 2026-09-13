@@ -93,10 +93,10 @@ export class CustomerListPage {
   );
 
   protected readonly statuses: SelectableOption[] = [
-    { label: 'All statuses', value: null },
-    { label: 'Active', value: 'ACTIVE' },
-    { label: 'Suspended', value: 'SUSPENDED' },
-    { label: 'Deleted', value: 'DELETED' },
+    { value: null, label: 'All statuses' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'SUSPENDED', label: 'Suspended' },
+    { value: 'DELETED', label: 'Deleted' },
   ];
 
   /**

@@ -105,15 +105,15 @@ export class UserListPage {
   );
 
   protected readonly statuses: SelectableOption[] = [
-    { label: 'All statuses', value: null },
-    { label: 'Active', value: 'ACTIVE' },
-    { label: 'Inactive', value: 'INACTIVE' },
-    { label: 'Deleted', value: 'DELETED' },
+    { value: null, label: 'All statuses' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'INACTIVE', label: 'Inactive' },
+    { value: 'DELETED', label: 'Deleted' },
   ];
 
   protected readonly roles: SelectableOption[] = [
-    { label: 'All roles', value: null },
-    { label: 'ADMIN', value: 1 },
+    { value: null, label: 'All roles' },
+    { value: 1, label: 'ADMIN' },
   ];
 
   /**
