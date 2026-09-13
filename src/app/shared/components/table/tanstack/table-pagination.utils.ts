@@ -6,7 +6,7 @@ import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/paginati
  * Convierte los parámetros de query `page`/`size` (cero-indexados) al estado de
  * paginación de TanStack Table.
  */
-export const parsePaginationParam = (
+export const parsePaginationParams = (
   page: number | undefined,
   size: number | undefined,
 ): PaginationState => ({

@@ -19,7 +19,7 @@ import { userQueryParamsDeserializer } from '@/features/user/routing/user-query-
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
 import { appTableFeatures } from '@/shared/components/table/tanstack/table-features';
-import { parsePaginationParam } from '@/shared/components/table/tanstack/table-pagination.utils';
+import { parsePaginationParams } from '@/shared/components/table/tanstack/table-pagination.utils';
 import {
   parseSortParam,
   sortingStateToParam,
@@ -83,11 +83,11 @@ export class UserListPage {
       onRestore: (user) => this.onRestoreUser(user),
     }),
     data: this.store.items(),
+    rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
     enableSortingRemoval: true,
     manualPagination: true,
     autoResetPageIndex: false,
-    rowCount: this.store.pagination()?.total_items ?? 0,
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
@@ -101,7 +101,7 @@ export class UserListPage {
   protected readonly queryParams = this.queryParamsSync.params;
   private readonly sorting = computed<SortingState>(() => parseSortParam(this.queryParams().sort));
   private readonly pagination = computed<PaginationState>(() =>
-    parsePaginationParam(this.queryParams().page, this.queryParams().size),
+    parsePaginationParams(this.queryParams().page, this.queryParams().size),
   );
 
   protected readonly statuses: SelectableOption[] = [
@@ -146,7 +146,8 @@ export class UserListPage {
    * @param updater Nuevo estado de ordenamiento o función que lo calcula a partir del actual.
    */
   protected onSortingChange(updater: Updater<SortingState>): void {
-    const nextSorting = typeof updater === 'function' ? updater(this.sorting()) : updater;
+    const currentSorting = this.sorting();
+    const nextSorting = typeof updater === 'function' ? updater(currentSorting) : updater;
 
     this.queryParamsSync.update({
       page: DEFAULT_FIRST_PAGE,
