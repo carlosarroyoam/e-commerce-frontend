@@ -67,7 +67,7 @@ export class CategoryListPage {
     resetParams: { page: DEFAULT_FIRST_PAGE, size: DEFAULT_PAGE_SIZE },
   });
 
-  protected readonly queryParams = this.queryParamsSync.params;
+  private readonly queryParams = this.queryParamsSync.params;
   private readonly sorting = computed<SortingState>(() => parseSortParam(this.queryParams().sort));
   private readonly pagination = computed<PaginationState>(() =>
     parsePaginationParams(this.queryParams().page, this.queryParams().size),
