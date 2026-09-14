@@ -35,59 +35,59 @@ export function buildUserTableColumns(opts: {
   return [
     {
       id: 'profile_picture',
-      enableSorting: false,
-      cell: (info) =>
-        flexRenderComponent(Avatar, {
-          inputs: {
-            firstName: info.row.original.first_name,
-            lastName: info.row.original.last_name,
-          },
-        }),
-    },
-    {
-      accessorKey: 'first_name',
-      header: 'Name',
-      enableSorting: true,
-      cell: (info) => `${info.row.original.first_name} ${info.row.original.last_name}`,
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      enableSorting: true,
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: 'roles',
-      header: 'Roles',
-      enableSorting: false,
-      cell: (info) => (info.getValue() as RoleResponse[]).map((role) => role.name).join(', '),
-    },
-    {
-      accessorKey: 'created_at',
-      header: 'Created at',
-      enableSorting: false,
-      cell: (info) => formatDateTime(info.getValue() as string),
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      enableSorting: false,
-      cell: (info) => {
-        const status = info.getValue() as UserStatus;
-        const { label, variant } = USER_STATUS_CONFIG[status];
+      cell: (props) => {
+        const { first_name: firstName, last_name: lastName } = props.row.original;
 
-        return flexRenderComponent(Chip, {
+        return flexRenderComponent(Avatar, {
           inputs: {
-            variant,
-            label,
+            firstName,
+            lastName,
           },
         });
       },
     },
     {
+      id: 'first_name',
+      header: 'Name',
+      enableSorting: true,
+      accessorFn: (row) => {
+        return `${row.first_name} ${row.last_name}`;
+      },
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email',
+      enableSorting: true,
+      cell: (props) => props.getValue<string>(),
+    },
+    {
+      accessorKey: 'roles',
+      header: 'Roles',
+      enableSorting: false,
+      cell: (props) =>
+        props
+          .getValue<RoleResponse[]>()
+          .map((role) => role.name)
+          .join(', '),
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Created at',
+      enableSorting: false,
+      cell: (props) => formatDateTime(props.getValue<string>()),
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      enableSorting: false,
+      cell: (props) => {
+        const { label, variant } = USER_STATUS_CONFIG[props.getValue<UserStatus>()];
+        return flexRenderComponent(Chip, { inputs: { variant, label } });
+      },
+    },
+    {
       id: 'actions',
       header: 'Actions',
-      enableSorting: false,
       cell: () =>
         flexRenderComponent(UserTableButtons, {
           inputs: {

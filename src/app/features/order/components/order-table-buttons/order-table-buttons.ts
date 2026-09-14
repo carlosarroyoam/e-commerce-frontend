@@ -27,7 +27,6 @@ export class OrderTableButtons {
     injectFlexRenderContext<CellContext<AppTableFeatures, OrderResponse, unknown>>();
 
   protected readonly order = this.context.row.original;
-
   protected readonly canCancel = CANCELLABLE_STATUSES.has(this.order.status);
 
   /**

@@ -35,30 +35,29 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'order_number',
       header: 'Order number',
       enableSorting: true,
-      cell: (info) => info.getValue(),
+      cell: (props) => props.getValue<string>(),
     },
     {
       id: 'customer',
       header: 'Customer',
       enableSorting: false,
-      cell: (info) => {
-        const customer = info.row.original.customer;
-        return customer ? `${customer.first_name} ${customer.last_name}` : '—';
+      cell: (props) => {
+        const customer = props.row.original.customer;
+        return customer ? `${customer.first_name} ${customer.last_name}` : '-';
       },
     },
     {
       accessorKey: 'total',
       header: 'Total',
       enableSorting: true,
-      cell: (info) => formatCurrency(info.getValue() as number),
+      cell: (props) => formatCurrency(props.getValue<number>()),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
-      cell: (info) => {
-        const status = info.getValue() as OrderStatus;
-        const { label, variant } = ORDER_STATUS_CONFIG[status];
+      cell: (props) => {
+        const { label, variant } = ORDER_STATUS_CONFIG[props.getValue<OrderStatus>()];
 
         return flexRenderComponent(Chip, {
           inputs: {
@@ -72,12 +71,11 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDateTime(info.getValue() as string),
+      cell: (props) => formatDateTime(props.getValue<string>()),
     },
     {
       id: 'actions',
       header: 'Actions',
-      enableSorting: false,
       cell: () =>
         flexRenderComponent(OrderTableButtons, {
           inputs: {

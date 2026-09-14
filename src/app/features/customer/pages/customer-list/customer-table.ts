@@ -30,54 +30,55 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
   return [
     {
       id: 'profile_picture',
-      enableSorting: false,
-      cell: (info) =>
-        flexRenderComponent(Avatar, {
+      cell: (props) => {
+        const { first_name: firstName, last_name: lastName } = props.row.original;
+
+        return flexRenderComponent(Avatar, {
           inputs: {
-            firstName: info.row.original.first_name,
-            lastName: info.row.original.last_name,
+            firstName,
+            lastName,
           },
-        }),
+        });
+      },
     },
     {
-      accessorKey: 'first_name',
+      id: 'first_name',
       header: 'Name',
       enableSorting: true,
-      cell: (info) => `${info.row.original.first_name} ${info.row.original.last_name}`,
+      accessorFn: (row) => {
+        return `${row.first_name} ${row.last_name}`;
+      },
     },
     {
       accessorKey: 'email',
       header: 'Email',
       enableSorting: true,
-      cell: (info) => info.getValue(),
+      cell: (props) => props.getValue<string>(),
     },
     {
       accessorKey: 'phone_number',
       header: 'Phone number',
       enableSorting: false,
-      cell: (info) => info.getValue(),
+      cell: (props) => props.getValue<string>(),
     },
     {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDateTime(info.getValue() as string),
+      cell: (props) => formatDateTime(props.getValue<string>()),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
-      cell: (info) => {
-        const status = info.getValue() as CustomerStatus;
-        const { label, variant } = CUSTOMER_STATUS_CONFIG[status];
-
+      cell: (props) => {
+        const { label, variant } = CUSTOMER_STATUS_CONFIG[props.getValue<CustomerStatus>()];
         return flexRenderComponent(Chip, { inputs: { variant, label } });
       },
     },
     {
       id: 'actions',
       header: 'Actions',
-      enableSorting: false,
       cell: () => flexRenderComponent(CustomerTableButtons, { inputs: {} }),
     },
   ];

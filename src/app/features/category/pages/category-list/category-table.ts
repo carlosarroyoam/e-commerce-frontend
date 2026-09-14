@@ -19,24 +19,26 @@ export function buildCategoryTableColumns(opts: {
       accessorKey: 'title',
       header: 'Title',
       enableSorting: true,
-      cell: (info) => info.getValue(),
+      cell: (props) => props.getValue<string>(),
     },
     {
       accessorKey: 'deleted_at',
       header: 'Status',
       enableSorting: false,
-      cell: (info) =>
-        flexRenderComponent(Chip, {
+      cell: (props) => {
+        const deletedAt = props.getValue<string | null>();
+
+        return flexRenderComponent(Chip, {
           inputs: {
-            variant: info.getValue() ? 'danger' : 'success',
-            label: info.getValue() ? 'Deleted' : 'Active',
+            variant: deletedAt ? 'danger' : 'success',
+            label: deletedAt ? 'Deleted' : 'Active',
           },
-        }),
+        });
+      },
     },
     {
       id: 'actions',
       header: 'Actions',
-      enableSorting: false,
       cell: () =>
         flexRenderComponent(CategoryTableButtons, {
           inputs: {

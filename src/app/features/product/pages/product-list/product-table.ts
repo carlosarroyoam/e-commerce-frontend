@@ -21,48 +21,56 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'title',
       header: 'Title',
       enableSorting: true,
-      cell: (info) => info.getValue(),
+      cell: (props) => props.getValue<string>(),
     },
     {
       id: 'category',
       header: 'Category',
       enableSorting: false,
-      cell: (info) => info.row.original.category?.title ?? '—',
+      cell: (props) => {
+        const categoryTitle = props.row.original.category?.title;
+        return categoryTitle ?? '-';
+      },
     },
     {
       accessorKey: 'is_featured',
       header: 'Featured',
       enableSorting: false,
-      cell: (info) =>
-        flexRenderComponent(Chip, {
+      cell: (props) => {
+        const isFeatured = props.getValue<boolean>();
+
+        return flexRenderComponent(Chip, {
           inputs: {
-            variant: info.getValue() ? 'success' : 'warning',
-            label: info.getValue() ? 'Featured' : 'Not featured',
+            variant: isFeatured ? 'success' : 'warning',
+            label: isFeatured ? 'Featured' : 'Not featured',
           },
-        }),
+        });
+      },
     },
     {
       accessorKey: 'is_active',
       header: 'Status',
       enableSorting: false,
-      cell: (info) =>
-        flexRenderComponent(Chip, {
+      cell: (props) => {
+        const isActive = props.getValue<boolean>();
+
+        return flexRenderComponent(Chip, {
           inputs: {
-            variant: info.getValue() ? 'success' : 'danger',
-            label: info.getValue() ? 'Active' : 'Inactive',
+            variant: isActive ? 'success' : 'danger',
+            label: isActive ? 'Active' : 'Inactive',
           },
-        }),
+        });
+      },
     },
     {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (info) => formatDateTime(info.getValue() as string),
+      cell: (props) => formatDateTime(props.getValue<string>()),
     },
     {
       id: 'actions',
       header: 'Actions',
-      enableSorting: false,
       cell: () =>
         flexRenderComponent(ProductTableButtons, {
           inputs: {
