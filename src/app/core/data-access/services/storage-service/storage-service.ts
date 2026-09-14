@@ -16,6 +16,15 @@ export abstract class StorageService {
   protected abstract readonly namespace: string;
 
   /**
+   * Indica si el código se ejecuta en el navegador (no en SSR).
+   *
+   * @returns true si se ejecuta en el navegador.
+   */
+  private get isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  /**
    * Indica si existe un valor almacenado para la clave dada.
    *
    * @param key Clave a buscar, sin el namespace.
@@ -105,15 +114,6 @@ export abstract class StorageService {
     for (const key of keysToRemove) {
       this.storage.removeItem(key);
     }
-  }
-
-  /**
-   * Indica si el código se ejecuta en el navegador (no en SSR).
-   *
-   * @returns true si se ejecuta en el navegador.
-   */
-  private get isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
   }
 
   /**
