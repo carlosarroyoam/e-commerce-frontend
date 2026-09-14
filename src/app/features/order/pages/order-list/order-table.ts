@@ -35,14 +35,14 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'order_number',
       header: 'Order number',
       enableSorting: true,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       id: 'customer',
       header: 'Customer',
       enableSorting: false,
-      cell: (props) => {
-        const customer = props.row.original.customer;
+      cell: (info) => {
+        const customer = info.row.original.customer;
         return customer ? `${customer.first_name} ${customer.last_name}` : '-';
       },
     },
@@ -50,14 +50,14 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'total',
       header: 'Total',
       enableSorting: true,
-      cell: (props) => formatCurrency(props.getValue<number>()),
+      cell: (info) => formatCurrency(info.getValue<number>()),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
-      cell: (props) => {
-        const { label, variant } = ORDER_STATUS_CONFIG[props.getValue<OrderStatus>()];
+      cell: (info) => {
+        const { label, variant } = ORDER_STATUS_CONFIG[info.getValue<OrderStatus>()];
 
         return flexRenderComponent(Chip, {
           inputs: {
@@ -71,7 +71,7 @@ export function buildOrderTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (props) => formatDateTime(props.getValue<string>()),
+      cell: (info) => formatDateTime(info.getValue<string>()),
     },
     {
       id: 'actions',

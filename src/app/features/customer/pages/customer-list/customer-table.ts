@@ -30,8 +30,8 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
   return [
     {
       id: 'profile_picture',
-      cell: (props) => {
-        const { first_name: firstName, last_name: lastName } = props.row.original;
+      cell: (info) => {
+        const { first_name: firstName, last_name: lastName } = info.row.original;
 
         return flexRenderComponent(Avatar, {
           inputs: {
@@ -53,26 +53,26 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
       accessorKey: 'email',
       header: 'Email',
       enableSorting: true,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       accessorKey: 'phone_number',
       header: 'Phone number',
       enableSorting: false,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (props) => formatDateTime(props.getValue<string>()),
+      cell: (info) => formatDateTime(info.getValue<string>()),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
-      cell: (props) => {
-        const { label, variant } = CUSTOMER_STATUS_CONFIG[props.getValue<CustomerStatus>()];
+      cell: (info) => {
+        const { label, variant } = CUSTOMER_STATUS_CONFIG[info.getValue<CustomerStatus>()];
         return flexRenderComponent(Chip, { inputs: { variant, label } });
       },
     },

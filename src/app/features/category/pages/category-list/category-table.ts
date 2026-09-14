@@ -19,14 +19,14 @@ export function buildCategoryTableColumns(opts: {
       accessorKey: 'title',
       header: 'Title',
       enableSorting: true,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       accessorKey: 'deleted_at',
       header: 'Status',
       enableSorting: false,
-      cell: (props) => {
-        const deletedAt = props.getValue<string | null>();
+      cell: (info) => {
+        const deletedAt = info.getValue<string | null>();
 
         return flexRenderComponent(Chip, {
           inputs: {

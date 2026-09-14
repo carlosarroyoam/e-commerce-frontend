@@ -21,14 +21,14 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'title',
       header: 'Title',
       enableSorting: true,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       id: 'category',
       header: 'Category',
       enableSorting: false,
-      cell: (props) => {
-        const categoryTitle = props.row.original.category?.title;
+      cell: (info) => {
+        const categoryTitle = info.row.original.category?.title;
         return categoryTitle ?? '-';
       },
     },
@@ -36,8 +36,8 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'is_featured',
       header: 'Featured',
       enableSorting: false,
-      cell: (props) => {
-        const isFeatured = props.getValue<boolean>();
+      cell: (info) => {
+        const isFeatured = info.getValue<boolean>();
 
         return flexRenderComponent(Chip, {
           inputs: {
@@ -51,8 +51,8 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'is_active',
       header: 'Status',
       enableSorting: false,
-      cell: (props) => {
-        const isActive = props.getValue<boolean>();
+      cell: (info) => {
+        const isActive = info.getValue<boolean>();
 
         return flexRenderComponent(Chip, {
           inputs: {
@@ -66,7 +66,7 @@ export function buildProductTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (props) => formatDateTime(props.getValue<string>()),
+      cell: (info) => formatDateTime(info.getValue<string>()),
     },
     {
       id: 'actions',

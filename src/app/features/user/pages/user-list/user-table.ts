@@ -35,8 +35,8 @@ export function buildUserTableColumns(opts: {
   return [
     {
       id: 'profile_picture',
-      cell: (props) => {
-        const { first_name: firstName, last_name: lastName } = props.row.original;
+      cell: (info) => {
+        const { first_name: firstName, last_name: lastName } = info.row.original;
 
         return flexRenderComponent(Avatar, {
           inputs: {
@@ -58,14 +58,14 @@ export function buildUserTableColumns(opts: {
       accessorKey: 'email',
       header: 'Email',
       enableSorting: true,
-      cell: (props) => props.getValue<string>(),
+      cell: (info) => info.getValue<string>(),
     },
     {
       accessorKey: 'roles',
       header: 'Roles',
       enableSorting: false,
-      cell: (props) =>
-        props
+      cell: (info) =>
+        info
           .getValue<RoleResponse[]>()
           .map((role) => role.name)
           .join(', '),
@@ -74,14 +74,14 @@ export function buildUserTableColumns(opts: {
       accessorKey: 'created_at',
       header: 'Created at',
       enableSorting: false,
-      cell: (props) => formatDateTime(props.getValue<string>()),
+      cell: (info) => formatDateTime(info.getValue<string>()),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       enableSorting: false,
-      cell: (props) => {
-        const { label, variant } = USER_STATUS_CONFIG[props.getValue<UserStatus>()];
+      cell: (info) => {
+        const { label, variant } = USER_STATUS_CONFIG[info.getValue<UserStatus>()];
         return flexRenderComponent(Chip, { inputs: { variant, label } });
       },
     },
