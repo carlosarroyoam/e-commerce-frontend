@@ -6,9 +6,9 @@ import {
   CustomerResponse,
   CustomerStatus,
 } from '@/features/customer/data-access/interfaces/customer-response';
+import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
 import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
-import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 const CUSTOMER_STATUS_CONFIG: Record<
   CustomerStatus,
@@ -31,7 +31,13 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
     {
       id: 'profile_picture',
       enableSorting: false,
-      cell: () => flexRenderComponent(Avatar),
+      cell: (info) =>
+        flexRenderComponent(Avatar, {
+          inputs: {
+            firstName: info.row.original.first_name,
+            lastName: info.row.original.last_name,
+          },
+        }),
     },
     {
       accessorKey: 'first_name',

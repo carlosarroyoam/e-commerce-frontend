@@ -4,11 +4,19 @@ import { describe, expect, it } from 'vitest';
 import { Avatar } from './avatar';
 
 describe('Avatar', () => {
-  it('should compile', async () => {
+  it('renders the generated avatar image with the expected src and alt', async () => {
     await TestBed.configureTestingModule({
       imports: [Avatar],
     }).compileComponents();
 
-    expect(true).toBe(true);
+    const fixture = TestBed.createComponent(Avatar);
+    fixture.componentRef.setInput('firstName', 'John');
+    fixture.componentRef.setInput('lastName', 'Doe');
+    fixture.detectChanges();
+
+    const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
+
+    expect(img.src).toContain('https://ui-avatars.com/api/?name=John%20Doe');
+    expect(img.alt).toBe("John's profile picture");
   });
 });

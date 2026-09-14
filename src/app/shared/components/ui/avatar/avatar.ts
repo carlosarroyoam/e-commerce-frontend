@@ -1,11 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
-
-import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
-import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 /**
- * Celda de tabla que muestra el avatar generado y el nombre del usuario de la fila.
+ * Muestra el avatar generado a partir del nombre de una persona.
  */
 @Component({
   selector: 'app-avatar',
@@ -13,34 +9,15 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Avatar {
-  private readonly context =
-    injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
-  private readonly user = this.context.row.original;
+  public readonly firstName = input.required<string>();
+  public readonly lastName = input.required<string>();
 
-  /**
-   * Nombre completo del usuario a partir de sus nombres y apellidos.
-   *
-   * @returns Nombre completo del usuario de la fila.
-   */
-  get fullname(): string {
-    return `${this.user.first_name} ${this.user.last_name}`;
-  }
+  protected readonly fullname = computed(() => `${this.firstName()} ${this.lastName()}`);
 
-  /**
-   * URL del avatar generado a partir del nombre completo del usuario.
-   *
-   * @returns URL de la imagen del avatar.
-   */
-  get src(): string {
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(this.fullname)}&format=svg&background=d4d4d8`;
-  }
+  protected readonly src = computed(
+    () =>
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(this.fullname())}&format=svg&background=d4d4d8`,
+  );
 
-  /**
-   * Texto alternativo de la imagen del avatar.
-   *
-   * @returns Texto alternativo de la imagen del avatar.
-   */
-  get alt(): string {
-    return `${this.user.first_name}'s profile picture`;
-  }
+  protected readonly alt = computed(() => `${this.firstName()}'s profile picture`);
 }
