@@ -1,5 +1,26 @@
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/core/constants/locale.constants';
 
+const numberFormatterCache = new Map<string, Intl.NumberFormat>();
+
+/**
+ * Obtiene un `Intl.NumberFormat` cacheado para las opciones dadas, evitando
+ * recrear el formatter en cada llamada (son costosos de instanciar).
+ *
+ * @param options Opciones de formato de `Intl.NumberFormat`.
+ * @returns Formatter cacheado para esas opciones.
+ */
+const getNumberFormatter = (options: Intl.NumberFormatOptions): Intl.NumberFormat => {
+  const key = JSON.stringify(options);
+  let formatter = numberFormatterCache.get(key);
+
+  if (!formatter) {
+    formatter = new Intl.NumberFormat(DEFAULT_LOCALE, options);
+    numberFormatterCache.set(key, formatter);
+  }
+
+  return formatter;
+};
+
 /**
  * Formatea un número según el locale por defecto de la aplicación.
  *
@@ -8,7 +29,7 @@ import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/core/constants/locale.consta
  * @returns Número formateado como cadena.
  */
 export const formatNumber = (value: number, options: Intl.NumberFormatOptions = {}): string => {
-  return new Intl.NumberFormat(DEFAULT_LOCALE, options).format(value);
+  return getNumberFormatter(options).format(value);
 };
 
 /**
@@ -19,7 +40,7 @@ export const formatNumber = (value: number, options: Intl.NumberFormatOptions = 
  * @returns Número formateado como moneda.
  */
 export const formatCurrency = (value: number, currency: string = DEFAULT_CURRENCY): string => {
-  return new Intl.NumberFormat(DEFAULT_LOCALE, { style: 'currency', currency }).format(value);
+  return getNumberFormatter({ style: 'currency', currency }).format(value);
 };
 
 /**
@@ -33,5 +54,5 @@ export const formatPercent = (
   value: number,
   options: Intl.NumberFormatOptions = { maximumFractionDigits: 2 },
 ): string => {
-  return new Intl.NumberFormat(DEFAULT_LOCALE, { style: 'percent', ...options }).format(value);
+  return getNumberFormatter({ style: 'percent', ...options }).format(value);
 };

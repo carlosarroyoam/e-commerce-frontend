@@ -1,5 +1,26 @@
 import { DEFAULT_LOCALE } from '@/core/constants/locale.constants';
 
+const dateFormatterCache = new Map<string, Intl.DateTimeFormat>();
+
+/**
+ * Obtiene un `Intl.DateTimeFormat` cacheado para las opciones dadas, evitando
+ * recrear el formatter en cada llamada (son costosos de instanciar).
+ *
+ * @param options Opciones de formato de `Intl.DateTimeFormat`.
+ * @returns Formatter cacheado para esas opciones.
+ */
+const getDateFormatter = (options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat => {
+  const key = JSON.stringify(options);
+  let formatter = dateFormatterCache.get(key);
+
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(DEFAULT_LOCALE, options);
+    dateFormatterCache.set(key, formatter);
+  }
+
+  return formatter;
+};
+
 /**
  * Formatea una fecha con hora según el locale por defecto de la aplicación.
  *
@@ -18,7 +39,7 @@ export const formatDateTime = (
     hour12: true,
   },
 ): string => {
-  return new Intl.DateTimeFormat(DEFAULT_LOCALE, options).format(new Date(value));
+  return getDateFormatter(options).format(new Date(value));
 };
 
 /**
@@ -32,7 +53,7 @@ export const formatDate = (
   value: Date | string | number,
   options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' },
 ): string => {
-  return new Intl.DateTimeFormat(DEFAULT_LOCALE, options).format(new Date(value));
+  return getDateFormatter(options).format(new Date(value));
 };
 
 /**
@@ -46,5 +67,5 @@ export const formatTime = (
   value: Date | string | number,
   options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true },
 ): string => {
-  return new Intl.DateTimeFormat(DEFAULT_LOCALE, options).format(new Date(value));
+  return getDateFormatter(options).format(new Date(value));
 };
