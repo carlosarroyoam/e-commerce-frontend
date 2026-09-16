@@ -224,16 +224,6 @@ export class Stepper implements AfterContentChecked {
   }
 
   /**
-   * Función de trackBy que identifica cada paso por su índice.
-   *
-   * @param index Índice del paso.
-   * @returns El mismo índice, usado como identificador.
-   */
-  protected trackByIndex(index: number): number {
-    return index;
-  }
-
-  /**
    * Determina el estado de un paso a partir de su índice y el paso activo.
    *
    * @param index Índice del paso a evaluar.

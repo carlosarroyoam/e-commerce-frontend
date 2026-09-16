@@ -1,6 +1,6 @@
 <div [class]="containerClass()">
   <ol [class]="headerClass()">
-    @for (step of resolvedSteps(); track trackByIndex($index); let index = $index) {
+    @for (step of resolvedSteps(); track $index; let index = $index) {
       <li class="flex min-w-0 flex-1 items-start gap-3">
         @if (isStepInteractive(step)) {
           <button

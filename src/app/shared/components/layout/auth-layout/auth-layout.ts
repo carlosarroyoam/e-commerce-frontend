@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { Footer } from '@/shared/components/footer/footer';
@@ -12,6 +12,5 @@ import { Footer } from '@/shared/components/footer/footer';
   host: {
     class: 'grid min-h-dvh grid-cols-1 grid-rows-[1fr_auto]',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthLayout {}

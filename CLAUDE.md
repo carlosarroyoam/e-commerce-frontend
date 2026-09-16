@@ -89,7 +89,7 @@ List/table pages (e.g. `category-list-page.ts`) sync an (often empty) reactive `
 
 Full rules live in `AGENTS.md` — read it before structural changes. Key points:
 
-- Standalone components only, no NgModules. Do **not** set `standalone: true` (default) or `changeDetection: ChangeDetectionStrategy.OnPush` explicitly in new code — but note existing code (e.g. `category-list-page.ts`) still sets `OnPush` explicitly; match the file you're editing rather than mixing conventions within it.
+- Standalone components only, no NgModules. Do **not** set `standalone: true` explicitly (it's the default). Every component in the codebase sets `changeDetection: ChangeDetectionStrategy.OnPush` explicitly (e.g. `category-list-page.ts`) — do the same in new components.
 - Use `input()`/`output()` functions, not decorators; `inject()`, not constructor injection.
 - Use native control flow (`@if`/`@for`/`@switch`) in templates, not `*ngIf`/`*ngFor`; `class`/`style` bindings, not `ngClass`/`ngStyle`.
 - Prefer Reactive Forms; use Signal Forms (`@angular/forms/signals`) for new forms where applicable.
