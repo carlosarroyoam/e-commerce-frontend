@@ -1,4 +1,4 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -6,6 +6,20 @@ export const routes: Routes = [
     loadComponent: () =>
       import('@/features/customer/pages/customer-list/customer-list-page').then(
         (m) => m.CustomerListPage,
+      ),
+  },
+  {
+    path: 'new',
+    loadComponent: () =>
+      import('@/features/customer/pages/customer-form/customer-form-page').then(
+        (m) => m.CustomerFormPage,
+      ),
+  },
+  {
+    path: ':id/edit',
+    loadComponent: () =>
+      import('@/features/customer/pages/customer-form/customer-form-page').then(
+        (m) => m.CustomerFormPage,
       ),
   },
 ];
