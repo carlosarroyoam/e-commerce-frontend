@@ -14,7 +14,10 @@ import { OrderQueryParams } from '@/features/order/data-access/interfaces/order-
 import { OrderResponse } from '@/features/order/data-access/interfaces/order-response';
 import { OrderService } from '@/features/order/data-access/services/order-service';
 import { OrderStore } from '@/features/order/data-access/stores/order.store';
-import { buildOrderTableColumns } from '@/features/order/pages/order-list/order-table';
+import {
+  buildOrderTableColumns,
+  OrderTableMeta,
+} from '@/features/order/pages/order-list/order-table';
 import { orderQueryParamsDeserializer } from '@/features/order/routing/order-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -48,9 +51,7 @@ export class OrderListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildOrderTableColumns({
-      onCancel: (order) => this.onCancelOrder(order),
-    }),
+    columns: buildOrderTableColumns(),
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -60,6 +61,9 @@ export class OrderListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
+    meta: {
+      onCancel: (order) => this.onCancelOrder(order),
+    } satisfies OrderTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<OrderQueryParams>(this.form, {

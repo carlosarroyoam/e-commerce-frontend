@@ -14,7 +14,10 @@ import { CategoryQueryParams } from '@/features/category/data-access/interfaces/
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { CategoryService } from '@/features/category/data-access/services/category-service';
 import { CategoryStore } from '@/features/category/data-access/stores/category.store';
-import { buildCategoryTableColumns } from '@/features/category/pages/category-list/category-table';
+import {
+  buildCategoryTableColumns,
+  CategoryTableMeta,
+} from '@/features/category/pages/category-list/category-table';
 import { categoryQueryParamsDeserializer } from '@/features/category/routing/category-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -48,9 +51,7 @@ export class CategoryListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildCategoryTableColumns({
-      onDelete: (category) => this.onDeleteCategory(category),
-    }),
+    columns: buildCategoryTableColumns(),
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -60,6 +61,9 @@ export class CategoryListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
+    meta: {
+      onDelete: (category) => this.onDeleteCategory(category),
+    } satisfies CategoryTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<CategoryQueryParams>(this.form, {

@@ -21,6 +21,15 @@ const CUSTOMER_STATUS_CONFIG: Record<
 };
 
 /**
+ * Meta de la tabla de clientes: callbacks de acciones disponibles vía `table.options.meta`.
+ */
+export interface CustomerTableMeta {
+  onEdit?: (customer: CustomerResponse) => void;
+  onDelete?: (customer: CustomerResponse) => void;
+  onRestore?: (customer: CustomerResponse) => void;
+}
+
+/**
  * Construye las columnas de la tabla de clientes: foto, nombre, correo, teléfono, fecha de
  * creación, estado y acciones.
  *
@@ -79,7 +88,7 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
     {
       id: 'actions',
       header: 'Actions',
-      cell: () => flexRenderComponent(CustomerTableButtons, { inputs: {} }),
+      cell: () => flexRenderComponent(CustomerTableButtons),
     },
   ];
 }

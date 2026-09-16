@@ -21,17 +21,21 @@ const USER_STATUS_CONFIG: Record<
 };
 
 /**
+ * Meta de la tabla de usuarios: callbacks de acciones disponibles vía `table.options.meta`.
+ */
+export interface UserTableMeta {
+  onEdit?: (user: UserResponse) => void;
+  onDelete?: (user: UserResponse) => void;
+  onRestore?: (user: UserResponse) => void;
+}
+
+/**
  * Construye las columnas de la tabla de usuarios: foto, nombre, correo, roles, fecha de creación,
  * estado y acciones.
  *
- * @param opts Callbacks de la tabla.
  * @returns Definición de columnas para TanStack Table.
  */
-export function buildUserTableColumns(opts: {
-  onEdit: (user: UserResponse) => void;
-  onDelete: (user: UserResponse) => void;
-  onRestore: (user: UserResponse) => void;
-}): ColumnDef<AppTableFeatures, UserResponse>[] {
+export function buildUserTableColumns(): ColumnDef<AppTableFeatures, UserResponse>[] {
   return [
     {
       id: 'profile_picture',
@@ -88,14 +92,7 @@ export function buildUserTableColumns(opts: {
     {
       id: 'actions',
       header: 'Actions',
-      cell: () =>
-        flexRenderComponent(UserTableButtons, {
-          inputs: {
-            onEdit: opts.onEdit,
-            onDelete: opts.onDelete,
-            onRestore: opts.onRestore,
-          },
-        }),
+      cell: () => flexRenderComponent(UserTableButtons),
     },
   ];
 }

@@ -21,15 +21,19 @@ const ORDER_STATUS_CONFIG: Record<
 };
 
 /**
+ * Meta de la tabla de órdenes: callbacks de acciones disponibles vía `table.options.meta`.
+ */
+export interface OrderTableMeta {
+  onCancel?: (order: OrderResponse) => void;
+}
+
+/**
  * Construye las columnas de la tabla de órdenes: número de orden, cliente, total, estado, fecha
  * de creación y acciones.
  *
- * @param opts Callbacks de la tabla.
  * @returns Definición de columnas para TanStack Table.
  */
-export function buildOrderTableColumns(opts: {
-  onCancel: (order: OrderResponse) => void;
-}): ColumnDef<AppTableFeatures, OrderResponse>[] {
+export function buildOrderTableColumns(): ColumnDef<AppTableFeatures, OrderResponse>[] {
   return [
     {
       accessorKey: 'order_number',
@@ -76,12 +80,7 @@ export function buildOrderTableColumns(opts: {
     {
       id: 'actions',
       header: 'Actions',
-      cell: () =>
-        flexRenderComponent(OrderTableButtons, {
-          inputs: {
-            onCancel: opts.onCancel,
-          },
-        }),
+      cell: () => flexRenderComponent(OrderTableButtons),
     },
   ];
 }

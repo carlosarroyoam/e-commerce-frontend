@@ -16,7 +16,10 @@ import { ProductQueryParams } from '@/features/product/data-access/interfaces/pr
 import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { ProductService } from '@/features/product/data-access/services/product-service';
 import { ProductStore } from '@/features/product/data-access/stores/product.store';
-import { buildProductTableColumns } from '@/features/product/pages/product-list/product-table';
+import {
+  buildProductTableColumns,
+  ProductTableMeta,
+} from '@/features/product/pages/product-list/product-table';
 import { productQueryParamsDeserializer } from '@/features/product/routing/product-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -78,9 +81,7 @@ export class ProductListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildProductTableColumns({
-      onDelete: (product) => this.onDeleteProduct(product),
-    }),
+    columns: buildProductTableColumns(),
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -90,6 +91,9 @@ export class ProductListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
+    meta: {
+      onDelete: (product) => this.onDeleteProduct(product),
+    } satisfies ProductTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<ProductQueryParams>(this.form, {

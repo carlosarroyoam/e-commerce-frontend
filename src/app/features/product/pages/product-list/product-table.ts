@@ -7,15 +7,19 @@ import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
+ * Meta de la tabla de productos: callbacks de acciones disponibles vía `table.options.meta`.
+ */
+export interface ProductTableMeta {
+  onDelete?: (product: ProductResponse) => void;
+}
+
+/**
  * Construye las columnas de la tabla de productos: título, categoría, destacado, estado, fecha de
  * creación y acciones.
  *
- * @param opts Callbacks de la tabla.
  * @returns Definición de columnas para TanStack Table.
  */
-export function buildProductTableColumns(opts: {
-  onDelete: (product: ProductResponse) => void;
-}): ColumnDef<AppTableFeatures, ProductResponse>[] {
+export function buildProductTableColumns(): ColumnDef<AppTableFeatures, ProductResponse>[] {
   return [
     {
       accessorKey: 'title',
@@ -71,12 +75,7 @@ export function buildProductTableColumns(opts: {
     {
       id: 'actions',
       header: 'Actions',
-      cell: () =>
-        flexRenderComponent(ProductTableButtons, {
-          inputs: {
-            onDelete: opts.onDelete,
-          },
-        }),
+      cell: () => flexRenderComponent(ProductTableButtons),
     },
   ];
 }

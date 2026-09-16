@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LucidePencil, LucideRotateCcw, LucideTrash2 } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
-import { Button } from '@/shared/components/ui/button/button';
+import type { UserTableMeta } from '@/features/user/pages/user-list/user-table';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
+import { Button } from '@/shared/components/ui/button/button';
 
 /**
  * Botones de acción de una fila de la tabla de usuarios: editar, eliminar y restaurar el usuario.
@@ -13,39 +14,37 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
   selector: 'app-user-table-buttons',
   imports: [Button, LucidePencil, LucideRotateCcw, LucideTrash2],
   templateUrl: './user-table-buttons.html',
-  host: {
-    class: 'flex gap-2',
-  },
+  host: { class: 'flex gap-2' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTableButtons {
-  public readonly onEdit = input<(user: UserResponse) => void>();
-  public readonly onDelete = input<(user: UserResponse) => void>();
-  public readonly onRestore = input<(user: UserResponse) => void>();
-
   private readonly context =
     injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
-
-  protected readonly user = this.context.row.original;
 
   /**
    * Invoca el callback de edición con el usuario de la fila actual.
    */
   protected onEditClicked() {
-    this.onEdit()?.(this.user);
+    const meta = this.context.table.options.meta as UserTableMeta | undefined;
+    const user = this.context.row.original;
+    meta?.onEdit?.(user);
   }
 
   /**
    * Invoca el callback de eliminación con el usuario de la fila actual.
    */
   protected onDeleteClicked() {
-    this.onDelete()?.(this.user);
+    const meta = this.context.table.options.meta as UserTableMeta | undefined;
+    const user = this.context.row.original;
+    meta?.onDelete?.(user);
   }
 
   /**
    * Invoca el callback de restauración con el usuario de la fila actual.
    */
   protected onRestoreClicked() {
-    this.onRestore()?.(this.user);
+    const meta = this.context.table.options.meta as UserTableMeta | undefined;
+    const user = this.context.row.original;
+    meta?.onRestore?.(user);
   }
 }

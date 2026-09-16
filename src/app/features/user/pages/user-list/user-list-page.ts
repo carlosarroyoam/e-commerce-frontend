@@ -14,7 +14,7 @@ import { UserQueryParams } from '@/features/user/data-access/interfaces/user-que
 import { UserResponse, UserStatus } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { UserStore } from '@/features/user/data-access/stores/user.store';
-import { buildUserTableColumns } from '@/features/user/pages/user-list/user-table';
+import { buildUserTableColumns, UserTableMeta } from '@/features/user/pages/user-list/user-table';
 import { userQueryParamsDeserializer } from '@/features/user/routing/user-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -77,11 +77,7 @@ export class UserListPage {
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildUserTableColumns({
-      onEdit: (user) => this.onEditUser(user),
-      onDelete: (user) => this.onDeleteUser(user),
-      onRestore: (user) => this.onRestoreUser(user),
-    }),
+    columns: buildUserTableColumns(),
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -91,6 +87,11 @@ export class UserListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
+    meta: {
+      onEdit: (user) => this.onEditUser(user),
+      onDelete: (user) => this.onDeleteUser(user),
+      onRestore: (user) => this.onRestoreUser(user),
+    } satisfies UserTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<UserQueryParams>(this.form, {

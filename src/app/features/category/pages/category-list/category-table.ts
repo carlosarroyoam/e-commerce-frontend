@@ -6,14 +6,18 @@ import { Chip } from '@/shared/components/ui/chip/chip';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 
 /**
+ * Meta de la tabla de categorías: callbacks de acciones disponibles vía `table.options.meta`.
+ */
+export interface CategoryTableMeta {
+  onDelete?: (category: CategoryResponse) => void;
+}
+
+/**
  * Construye las columnas de la tabla de categorías: título, estado y acciones.
  *
- * @param opts Callbacks de la tabla.
  * @returns Definición de columnas para TanStack Table.
  */
-export function buildCategoryTableColumns(opts: {
-  onDelete: (category: CategoryResponse) => void;
-}): ColumnDef<AppTableFeatures, CategoryResponse>[] {
+export function buildCategoryTableColumns(): ColumnDef<AppTableFeatures, CategoryResponse>[] {
   return [
     {
       accessorKey: 'title',
@@ -39,12 +43,7 @@ export function buildCategoryTableColumns(opts: {
     {
       id: 'actions',
       header: 'Actions',
-      cell: () =>
-        flexRenderComponent(CategoryTableButtons, {
-          inputs: {
-            onDelete: opts.onDelete,
-          },
-        }),
+      cell: () => flexRenderComponent(CategoryTableButtons),
     },
   ];
 }
