@@ -81,7 +81,14 @@
   @if (authSession()) {
     <footer class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
       <div class="mt-5 flex items-center gap-3 px-3">
-        <img [src]="avatarSrc()" [alt]="avatarAlt()" class="size-10 rounded-full bg-zinc-200" />
+        <img
+          [ngSrc]="avatarSrc()"
+          [alt]="avatarAlt()"
+          width="40"
+          height="40"
+          priority
+          class="size-10 rounded-full bg-zinc-200"
+        />
         <div class="min-w-0">
           <p class="truncate text-sm font-semibold text-zinc-950">{{ authSession()?.full_name }}</p>
           <p class="truncate text-sm text-zinc-600">{{ authSession()?.email }}</p>

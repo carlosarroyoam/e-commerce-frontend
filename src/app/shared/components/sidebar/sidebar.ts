@@ -1,5 +1,5 @@
 ﻿import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
@@ -36,6 +36,7 @@ const NAV_ICONS: Record<NavigationIcon, LucideIcon> = {
   selector: 'app-sidebar',
   imports: [
     CdkTrapFocus,
+    NgOptimizedImage,
     NgTemplateOutlet,
     RouterLink,
     RouterLinkActive,
