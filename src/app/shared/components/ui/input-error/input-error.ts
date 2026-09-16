@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, PristineChangeEvent, TouchedChangeEvent } from '@angular/forms';
-import { filter, Subscription } from 'rxjs';
+import { filter, map, merge, startWith, switchMap } from 'rxjs';
 
 import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-messages';
 
@@ -17,40 +18,37 @@ import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-message
 })
 export class InputError {
   public readonly control = input.required<AbstractControl | null>();
-  protected readonly errorMessages = signal<string[]>([]);
+
+  private readonly control$ = toObservable(this.control);
 
   /**
-   * Suscribe a los cambios de estado y eventos del control para recalcular los mensajes de error.
+   * Mensajes de error visibles, recalculados en respuesta al estado y eventos del control actual.
+   * `switchMap` cambia de flujo de eventos automáticamente cuando cambia el control, sin gestionar
+   * suscripciones manualmente.
    */
-  constructor() {
-    effect((onCleanup) => {
-      const control = this.control();
-      const subs = new Subscription();
+  protected readonly errorMessages = toSignal(
+    this.control$.pipe(
+      switchMap((control) => {
+        if (!control) {
+          throw new Error('No control provided');
+        }
 
-      if (!control) {
-        throw new Error('No control provided');
-      }
-
-      subs.add(
-        control.statusChanges.subscribe(() =>
-          this.errorMessages.set(this.buildErrorMessages(control)),
-        ),
-      );
-
-      subs.add(
-        control.events
-          .pipe(
+        return merge(
+          control.statusChanges,
+          control.events.pipe(
             filter(
               (event) =>
                 event instanceof TouchedChangeEvent || event instanceof PristineChangeEvent,
             ),
-          )
-          .subscribe(() => this.errorMessages.set(this.buildErrorMessages(control))),
-      );
-
-      onCleanup(() => subs.unsubscribe());
-    });
-  }
+          ),
+        ).pipe(
+          map(() => this.buildErrorMessages(control)),
+          startWith(this.buildErrorMessages(control)),
+        );
+      }),
+    ),
+    { initialValue: [] },
+  );
 
   /**
    * Construye la lista de mensajes de error visibles según los errores activos del control.
