@@ -28,6 +28,12 @@ export function buildProductTableColumns(): ColumnDef<AppTableFeatures, ProductR
       cell: (info) => info.getValue<string>(),
     },
     {
+      accessorKey: 'slug',
+      header: 'Slug',
+      enableSorting: true,
+      cell: (info) => info.getValue<string>(),
+    },
+    {
       id: 'category',
       header: 'Category',
       enableSorting: false,
