@@ -24,7 +24,7 @@ export class CategoryTableButtons {
   /**
    * Invoca el callback de eliminación con la categoría de la fila actual.
    */
-  protected onDeleteClicked(): void {
+  protected onDelete(): void {
     const meta = this.context.table.options.meta as CategoryTableMeta | undefined;
     const category = this.context.row.original;
     meta?.onDelete?.(category);

@@ -24,7 +24,7 @@ export class ProductTableButtons {
   /**
    * Invoca el callback de eliminación con el producto de la fila actual.
    */
-  protected onDeleteClicked(): void {
+  protected onDelete(): void {
     const meta = this.context.table.options.meta as ProductTableMeta | undefined;
     const product = this.context.row.original;
     meta?.onDelete?.(product);

@@ -26,7 +26,7 @@ export class UserTableButtons {
   /**
    * Invoca el callback de edición con el usuario de la fila actual.
    */
-  protected onEditClicked() {
+  protected onEdit() {
     const meta = this.context.table.options.meta as UserTableMeta | undefined;
     const user = this.context.row.original;
     meta?.onEdit?.(user);
@@ -35,7 +35,7 @@ export class UserTableButtons {
   /**
    * Invoca el callback de eliminación con el usuario de la fila actual.
    */
-  protected onDeleteClicked() {
+  protected onDelete() {
     const meta = this.context.table.options.meta as UserTableMeta | undefined;
     const user = this.context.row.original;
     meta?.onDelete?.(user);
@@ -44,7 +44,7 @@ export class UserTableButtons {
   /**
    * Invoca el callback de restauración con el usuario de la fila actual.
    */
-  protected onRestoreClicked() {
+  protected onRestore() {
     const meta = this.context.table.options.meta as UserTableMeta | undefined;
     const user = this.context.row.original;
     meta?.onRestore?.(user);

@@ -28,7 +28,7 @@ export class OrderTableButtons {
   /**
    * Invoca el callback de cancelación con la orden de la fila actual.
    */
-  protected onCancelClicked(): void {
+  protected onCancel(): void {
     const meta = this.context.table.options.meta as OrderTableMeta | undefined;
     const order = this.context.row.original;
     meta?.onCancel?.(order);

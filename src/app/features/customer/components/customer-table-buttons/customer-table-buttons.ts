@@ -26,7 +26,7 @@ export class CustomerTableButtons {
   /**
    * Invoca el callback de edición con el cliente de la fila actual.
    */
-  protected onEditClicked(): void {
+  protected onEdit(): void {
     const meta = this.context.table.options.meta as CustomerTableMeta | undefined;
     const customer = this.context.row.original;
     meta?.onEdit?.(customer);
@@ -35,7 +35,7 @@ export class CustomerTableButtons {
   /**
    * Invoca el callback de eliminación con el cliente de la fila actual.
    */
-  protected onDeleteClicked(): void {
+  protected onDelete(): void {
     const meta = this.context.table.options.meta as CustomerTableMeta | undefined;
     const customer = this.context.row.original;
     meta?.onDelete?.(customer);
@@ -44,7 +44,7 @@ export class CustomerTableButtons {
   /**
    * Invoca el callback de restauración con el cliente de la fila actual.
    */
-  protected onRestoreClicked(): void {
+  protected onRestore(): void {
     const meta = this.context.table.options.meta as CustomerTableMeta | undefined;
     const customer = this.context.row.original;
     meta?.onRestore?.(customer);
