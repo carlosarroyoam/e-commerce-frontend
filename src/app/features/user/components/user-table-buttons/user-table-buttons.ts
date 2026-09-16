@@ -21,6 +21,8 @@ export class UserTableButtons {
   private readonly context =
     injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
 
+  protected readonly isDeleted = this.context.row.original.deleted_at !== null;
+
   /**
    * Invoca el callback de edición con el usuario de la fila actual.
    */

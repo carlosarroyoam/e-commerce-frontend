@@ -3,7 +3,7 @@
   <svg lucidePencil class="size-3.5"></svg>
 </button>
 
-@if (user.deleted_at) {
+@if (isDeleted) {
   <button appButton variant="outline" size="icon" (click)="onRestoreClicked()">
     <span class="sr-only">Restore user</span>
     <svg lucideRotateCcw class="size-3.5"></svg>
