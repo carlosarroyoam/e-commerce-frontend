@@ -49,9 +49,15 @@ export class CategoryListPage {
 
   protected readonly form = this.fb.group({});
 
+  private readonly tableColumns = buildCategoryTableColumns();
+  private readonly tableMeta: CategoryTableMeta = {
+    onDelete: (category) => this.onDeleteCategory(category),
+  };
+
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildCategoryTableColumns(),
+    columns: this.tableColumns,
+    meta: this.tableMeta,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -61,9 +67,6 @@ export class CategoryListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
-    meta: {
-      onDelete: (category) => this.onDeleteCategory(category),
-    } satisfies CategoryTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<CategoryQueryParams>(this.form, {

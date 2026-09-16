@@ -67,9 +67,11 @@ export class CustomerListPage {
     { validators: dateRangeValidator },
   );
 
+  private readonly tableColumns = buildCustomerTableColumns();
+
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildCustomerTableColumns(),
+    columns: this.tableColumns,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,

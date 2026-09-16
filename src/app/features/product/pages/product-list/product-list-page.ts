@@ -79,9 +79,15 @@ export class ProductListPage {
     { validators: dateRangeValidator },
   );
 
+  private readonly tableColumns = buildProductTableColumns();
+  private readonly tableMeta: ProductTableMeta = {
+    onDelete: (product) => this.onDeleteProduct(product),
+  };
+
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildProductTableColumns(),
+    columns: this.tableColumns,
+    meta: this.tableMeta,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -91,9 +97,6 @@ export class ProductListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
-    meta: {
-      onDelete: (product) => this.onDeleteProduct(product),
-    } satisfies ProductTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<ProductQueryParams>(this.form, {

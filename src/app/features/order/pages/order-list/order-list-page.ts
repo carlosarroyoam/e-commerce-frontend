@@ -49,9 +49,15 @@ export class OrderListPage {
 
   protected readonly form = this.fb.group({});
 
+  private readonly tableColumns = buildOrderTableColumns();
+  private readonly tableMeta: OrderTableMeta = {
+    onCancel: (order) => this.onCancelOrder(order),
+  };
+
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildOrderTableColumns(),
+    columns: this.tableColumns,
+    meta: this.tableMeta,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -61,9 +67,6 @@ export class OrderListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
-    meta: {
-      onCancel: (order) => this.onCancelOrder(order),
-    } satisfies OrderTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<OrderQueryParams>(this.form, {

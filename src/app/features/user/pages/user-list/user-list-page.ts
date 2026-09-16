@@ -75,9 +75,17 @@ export class UserListPage {
     { validators: dateRangeValidator },
   );
 
+  private readonly tableColumns = buildUserTableColumns();
+  private readonly tableMeta: UserTableMeta = {
+    onEdit: (user) => this.onEditUser(user),
+    onDelete: (user) => this.onDeleteUser(user),
+    onRestore: (user) => this.onRestoreUser(user),
+  };
+
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
-    columns: buildUserTableColumns(),
+    columns: this.tableColumns,
+    meta: this.tableMeta,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -87,11 +95,6 @@ export class UserListPage {
     state: { sorting: this.sorting(), pagination: this.pagination() },
     onSortingChange: (updater) => this.onSortingChange(updater),
     onPaginationChange: (updater) => this.onPaginationChange(updater),
-    meta: {
-      onEdit: (user) => this.onEditUser(user),
-      onDelete: (user) => this.onDeleteUser(user),
-      onRestore: (user) => this.onRestoreUser(user),
-    } satisfies UserTableMeta,
   }));
 
   private readonly queryParamsSync = createQueryParamsSync<UserQueryParams>(this.form, {
