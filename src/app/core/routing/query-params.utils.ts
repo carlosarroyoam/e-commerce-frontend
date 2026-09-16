@@ -68,7 +68,7 @@ export const createQueryParamsSync = <TParams extends object, TFormValue extends
     .pipe(
       debounceTime(debounceMs),
       filter(() => form.valid),
-      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      distinctUntilChanged((a, b) => isShallowEqual(a, b)),
       takeUntilDestroyed(destroyRef),
     )
     .subscribe((value) => navigate({ ...serialize(value), page: DEFAULT_FIRST_PAGE }, true));
@@ -88,6 +88,22 @@ export const createQueryParamsSync = <TParams extends object, TFormValue extends
     },
     params,
   };
+};
+
+/**
+ * Compara dos valores de formulario campo a campo, evitando la serialización completa que hace
+ * `JSON.stringify` en cada emisión.
+ *
+ * @param a Primer valor a comparar.
+ * @param b Segundo valor a comparar.
+ * @returns `true` si ambos objetos tienen las mismas claves con los mismos valores primitivos.
+ */
+const isShallowEqual = <TFormValue extends object>(a: TFormValue, b: TFormValue): boolean => {
+  const aEntries = Object.entries(a);
+
+  if (aEntries.length !== Object.keys(b).length) return false;
+
+  return aEntries.every(([key, value]) => (b as Record<string, unknown>)[key] === value);
 };
 
 /**
