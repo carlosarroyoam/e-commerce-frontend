@@ -1,6 +1,8 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LucideChevronDown } from '@lucide/angular';
+import { debounceTime, Subject } from 'rxjs';
 
 import { normalize } from '@/core/utils/string.utils';
 import {
@@ -26,10 +28,20 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
   public readonly emptyMessage = input('No options found.');
   public readonly options = input.required<SelectableOption[]>();
   public readonly optionCallback = input<((query: string) => void) | undefined>();
+  public readonly debounceMs = input(0);
 
   protected readonly triggerId = computed(() => `${this.id()}-trigger`);
   protected readonly dropdownId = computed(() => `${this.id()}-dropdown`);
   protected readonly query = signal('');
+
+  private readonly querySearch$ = new Subject<string>();
+
+  constructor() {
+    super();
+    this.querySearch$
+      .pipe(debounceTime(this.debounceMs()), takeUntilDestroyed())
+      .subscribe((value) => this.optionCallback()?.(value));
+  }
 
   protected readonly filteredOptions = computed(() => {
     const query = normalize(this.query());
@@ -92,7 +104,7 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
     if (this.isDisabled()) return;
 
     this.query.set(value);
-    this.optionCallback()?.(value);
+    this.emitOptionSearch(value);
     this.open();
 
     if (this.selected()?.label !== value) {
@@ -108,5 +120,20 @@ export class Autocomplete extends BaseOptionSelector implements OnInit {
    */
   private syncQueryWithSelection(): void {
     this.query.set(this.selected()?.label ?? '');
+  }
+
+  /**
+   * Notifica `optionCallback` con el texto de búsqueda, aplicando `debounceMs` si se configuró
+   * (por defecto invoca de forma síncrona, sin retraso).
+   *
+   * @param value Texto de búsqueda actual.
+   */
+  private emitOptionSearch(value: string): void {
+    if (this.debounceMs() > 0) {
+      this.querySearch$.next(value);
+      return;
+    }
+
+    this.optionCallback()?.(value);
   }
 }
