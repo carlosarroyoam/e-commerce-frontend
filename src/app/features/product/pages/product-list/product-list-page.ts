@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   injectTable,
@@ -7,7 +7,7 @@ import {
   type SortingState,
 } from '@tanstack/angular-table';
 import { filter, map, switchMap, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
@@ -60,6 +60,7 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 })
 export class ProductListPage {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly alertDialogService = inject(AlertDialogService);
@@ -205,6 +206,7 @@ export class ProductListPage {
             title: `The product ${product.title} was deleted successfully`,
           }),
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.store.findAll(this.queryParams()));
   }

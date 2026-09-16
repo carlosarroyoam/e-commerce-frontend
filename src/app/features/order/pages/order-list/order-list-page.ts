@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 import {
   injectTable,
@@ -42,6 +43,7 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
 })
 export class OrderListPage {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly orderService = inject(OrderService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
@@ -142,6 +144,7 @@ export class OrderListPage {
             title: `The order ${order.order_number} was cancelled successfully`,
           }),
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.store.findAll(this.queryParams()));
   }

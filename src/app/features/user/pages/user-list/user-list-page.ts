@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   injectTable,
@@ -55,6 +56,7 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 })
 export class UserListPage {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly userService = inject(UserService);
   private readonly alertDialogService = inject(AlertDialogService);
   private readonly toastService = inject(ToastService);
@@ -198,6 +200,7 @@ export class UserListPage {
             title: `The user ${user.first_name} ${user.last_name} was deleted successfully`,
           }),
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.store.findAll(this.queryParams()));
   }
@@ -225,6 +228,7 @@ export class UserListPage {
             title: `The user ${user.first_name} ${user.last_name} was restored successfully`,
           }),
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.store.findAll(this.queryParams()));
   }
