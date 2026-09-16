@@ -47,4 +47,24 @@ export class CustomerService {
       params,
     });
   }
+
+  /**
+   * Elimina un cliente por su identificador.
+   *
+   * @param customerId Identificador del cliente a eliminar.
+   * @returns Observable que se completa al finalizar la eliminación.
+   */
+  public deleteById(customerId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.apiUrl}/customers/${customerId}`);
+  }
+
+  /**
+   * Restaura un cliente previamente eliminado.
+   *
+   * @param customerId Identificador del cliente a restaurar.
+   * @returns Observable que se completa al finalizar la restauración.
+   */
+  public restoreById(customerId: number): Observable<void> {
+    return this.httpClient.put<void>(`${environment.apiUrl}/customers/${customerId}/restore`, null);
+  }
 }

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   injectTable,
   Updater,
@@ -55,6 +56,8 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly userService = inject(UserService);
@@ -174,7 +177,7 @@ export class UserListPage {
    * @param user Usuario a editar.
    */
   protected onEditUser(user: UserResponse): void {
-    console.log('Edit user:', user.id);
+    this.router.navigate([user.id, 'edit'], { relativeTo: this.route });
   }
 
   /**

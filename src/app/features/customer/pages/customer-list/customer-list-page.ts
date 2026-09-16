@@ -1,18 +1,28 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   injectTable,
   type PaginationState,
   type SortingState,
   type Updater,
 } from '@tanstack/angular-table';
+import { filter, switchMap, tap } from 'rxjs';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
-import { CustomerStatus } from '@/features/customer/data-access/interfaces/customer-response';
+import {
+  CustomerResponse,
+  CustomerStatus,
+} from '@/features/customer/data-access/interfaces/customer-response';
+import { CustomerService } from '@/features/customer/data-access/services/customer-service';
 import { CustomerStore } from '@/features/customer/data-access/stores/customer.store';
-import { buildCustomerTableColumns } from '@/features/customer/pages/customer-list/customer-table';
+import {
+  buildCustomerTableColumns,
+  CustomerTableMeta,
+} from '@/features/customer/pages/customer-list/customer-table';
 import { customerQueryParamsDeserializer } from '@/features/customer/routing/customer-query-params.deserializer';
 import { Paginator } from '@/shared/components/paginator/paginator';
 import { TableComponent } from '@/shared/components/table/table';
@@ -28,6 +38,8 @@ import { InputLabel } from '@/shared/components/ui/input-label/input-label';
 import { AppInput } from '@/shared/components/ui/input/input';
 import { SelectableOption } from '@/shared/components/ui/option-selectors/base-option-selector';
 import { Select } from '@/shared/components/ui/option-selectors/select/select';
+import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
+import { ToastService } from '@/shared/services/toast-service/toast-service';
 import { dateRangeValidator } from '@/shared/validators/date-range.validator';
 
 /**
@@ -50,7 +62,13 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerListPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly customerService = inject(CustomerService);
+  private readonly alertDialogService = inject(AlertDialogService);
+  private readonly toastService = inject(ToastService);
   protected readonly store = inject(CustomerStore);
 
   protected readonly form = this.fb.group(
@@ -68,10 +86,16 @@ export class CustomerListPage {
   );
 
   private readonly tableColumns = buildCustomerTableColumns();
+  private readonly tableMeta: CustomerTableMeta = {
+    onEdit: (customer) => this.onEditCustomer(customer),
+    onDelete: (customer) => this.onDeleteCustomer(customer),
+    onRestore: (customer) => this.onRestoreCustomer(customer),
+  };
 
   protected readonly table = injectTable(() => ({
     features: appTableFeatures,
     columns: this.tableColumns,
+    meta: this.tableMeta,
     data: this.store.items(),
     rowCount: this.store.pagination()?.total_items ?? 0,
     manualSorting: true,
@@ -145,5 +169,70 @@ export class CustomerListPage {
    */
   protected reset(): void {
     this.queryParamsSync.reset();
+  }
+
+  /**
+   * Punto de entrada para editar el cliente indicado.
+   *
+   * @param user Cliente a editar.
+   */
+  protected onEditCustomer(customer: CustomerResponse): void {
+    this.router.navigate([customer.id, 'edit'], { relativeTo: this.route });
+  }
+
+  /**
+   * Solicita confirmación y elimina el cliente indicado, refrescando el listado al finalizar.
+   *
+   * @param customer Cliente a eliminar.
+   */
+  protected onDeleteCustomer(customer: CustomerResponse): void {
+    this.alertDialogService
+      .open({
+        data: {
+          title: 'Delete customer',
+          description: `Are you sure you want to delete the customer ${customer.first_name} ${customer.last_name}?`,
+          primaryButtonLabel: 'Delete',
+          showSecondaryButton: true,
+        },
+      })
+      .closed.pipe(
+        filter((result) => result?.accepted || false),
+        switchMap(() => this.customerService.deleteById(customer.id)),
+        tap(() =>
+          this.toastService.success({
+            title: `The customer ${customer.first_name} ${customer.last_name} was deleted successfully`,
+          }),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.store.findAll(this.queryParams()));
+  }
+
+  /**
+   * Solicita confirmación y restaura el cliente indicado, refrescando el listado al finalizar.
+   *
+   * @param customer Cliente a restaurar.
+   */
+  protected onRestoreCustomer(customer: CustomerResponse): void {
+    this.alertDialogService
+      .open({
+        data: {
+          title: 'Restore customer',
+          description: `Are you sure you want to restore the customer ${customer.first_name} ${customer.last_name}?`,
+          primaryButtonLabel: 'Restore',
+          showSecondaryButton: true,
+        },
+      })
+      .closed.pipe(
+        filter((result) => result?.accepted || false),
+        switchMap(() => this.customerService.restoreById(customer.id)),
+        tap(() =>
+          this.toastService.success({
+            title: `The customer ${customer.first_name} ${customer.last_name} was restored successfully`,
+          }),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.store.findAll(this.queryParams()));
   }
 }
