@@ -1,3 +1,6 @@
+/**
+ * Estados posibles de un pedido a lo largo de su ciclo de vida.
+ */
 export const ORDER_STATUSES = [
   'PENDING',
   'CONFIRMED',
@@ -8,8 +11,14 @@ export const ORDER_STATUSES = [
   'REFUNDED',
 ] as const;
 
+/**
+ * Estado de un pedido, derivado de `ORDER_STATUSES`.
+ */
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
+/**
+ * Datos del cliente asociado a un pedido.
+ */
 export interface OrderCustomerResponse {
   id: number;
   first_name: string;
@@ -17,6 +26,9 @@ export interface OrderCustomerResponse {
   email: string;
 }
 
+/**
+ * Representa a un pedido tal como es devuelto por la API.
+ */
 export interface OrderResponse {
   id: number;
   order_number: string;

@@ -1,3 +1,6 @@
+/**
+ * Filtros, ordenamiento y paginación aceptados al consultar el listado de productos.
+ */
 export interface ProductQueryParams {
   title?: string;
   slug?: string;

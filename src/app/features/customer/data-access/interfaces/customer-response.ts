@@ -1,7 +1,16 @@
+/**
+ * Estados posibles de un cliente a lo largo de su ciclo de vida.
+ */
 export const CUSTOMER_STATUSES = ['PENDING', 'ACTIVE', 'SUSPENDED', 'DELETED'] as const;
 
+/**
+ * Estado de un cliente, derivado de `CUSTOMER_STATUSES`.
+ */
 export type CustomerStatus = (typeof CUSTOMER_STATUSES)[number];
 
+/**
+ * Dirección asociada a un cliente.
+ */
 export interface CustomerAddressResponse {
   id: number;
   street_name: string;
@@ -16,6 +25,9 @@ export interface CustomerAddressResponse {
   is_default: boolean;
 }
 
+/**
+ * Representa a un cliente tal como es devuelto por la API.
+ */
 export interface CustomerResponse {
   id: number;
   first_name: string;

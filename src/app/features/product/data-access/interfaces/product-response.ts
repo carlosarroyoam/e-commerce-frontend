@@ -1,8 +1,14 @@
+/**
+ * Categoría asociada a un producto.
+ */
 export interface ProductCategoryResponse {
   id: number;
   title: string;
 }
 
+/**
+ * Representa a un producto tal como es devuelto por la API.
+ */
 export interface ProductResponse {
   id: number;
   title: string;

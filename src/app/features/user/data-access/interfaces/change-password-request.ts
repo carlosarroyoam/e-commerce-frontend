@@ -1,3 +1,6 @@
+/**
+ * Datos enviados al endpoint de cambio de contraseña.
+ */
 export interface ChangePasswordRequest {
   current_password: string;
   new_password: string;
