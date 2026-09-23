@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { FORM_MODE_KEY } from '@/core/routing/form-mode';
+
 export const routes: Routes = [
   {
     path: '',
@@ -10,6 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'new',
+    data: { [FORM_MODE_KEY]: 'new' },
     loadComponent: () =>
       import('@/features/customer/pages/customer-form/customer-form-page').then(
         (m) => m.CustomerFormPage,
@@ -17,6 +20,7 @@ export const routes: Routes = [
   },
   {
     path: ':id/edit',
+    data: { [FORM_MODE_KEY]: 'edit' },
     loadComponent: () =>
       import('@/features/customer/pages/customer-form/customer-form-page').then(
         (m) => m.CustomerFormPage,
@@ -24,6 +28,7 @@ export const routes: Routes = [
   },
   {
     path: ':id',
+    data: { [FORM_MODE_KEY]: 'view' },
     loadComponent: () =>
       import('@/features/customer/pages/customer-form/customer-form-page').then(
         (m) => m.CustomerFormPage,

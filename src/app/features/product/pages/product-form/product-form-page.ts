@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { injectFormMode } from '@/core/routing/form-mode';
 
 /**
- * Página de creación/edición de productos. Placeholder: pendiente de implementar.
+ * Página de creación, edición y consulta de productos. Placeholder: pendiente de implementar.
  */
 @Component({
   selector: 'app-product-form',
@@ -10,7 +11,8 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductFormPage {
-  private readonly route = inject(ActivatedRoute);
-
-  protected readonly isEditMode = this.route.snapshot.paramMap.has('id');
+  /**
+   * Modo de la página (`new`, `edit` o `view`), declarado en `data` de la ruta.
+   */
+  protected readonly mode = injectFormMode();
 }

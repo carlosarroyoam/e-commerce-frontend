@@ -1,4 +1,16 @@
 <header>
-  <h1 class="heading">{{ isEditMode ? 'Edit category' : 'New category' }}</h1>
+  <h1 class="heading">
+    @switch (mode) {
+      @case ('new') {
+        New category
+      }
+      @case ('edit') {
+        Edit category
+      }
+      @case ('view') {
+        Category details
+      }
+    }
+  </h1>
   <p class="mt-1 text-sm">This page is not implemented yet.</p>
 </header>
