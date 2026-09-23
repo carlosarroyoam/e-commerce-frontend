@@ -16,4 +16,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('@/features/user/pages/user-form/user-form-page').then((m) => m.UserFormPage),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@/features/user/pages/user-form/user-form-page').then((m) => m.UserFormPage),
+  },
 ];

@@ -22,4 +22,11 @@ export const routes: Routes = [
         (m) => m.CustomerFormPage,
       ),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@/features/customer/pages/customer-form/customer-form-page').then(
+        (m) => m.CustomerFormPage,
+      ),
+  },
 ];

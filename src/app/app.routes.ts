@@ -6,8 +6,15 @@ import { guestGuard } from '@/core/guards/guest-guard';
 export const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('@/features/auth/auth.routes').then((m) => m.routes),
-    canActivate: [guestGuard],
+    loadComponent: () =>
+      import('@/shared/components/layout/auth-layout/auth-layout').then((m) => m.AuthLayout),
+    canMatch: [guestGuard],
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('@/features/auth/auth.routes').then((m) => m.routes),
+      },
+    ],
   },
   {
     path: '',
@@ -39,7 +46,15 @@ export const routes: Routes = [
         path: 'users',
         loadChildren: () => import('@/features/user/user.routes').then((m) => m.routes),
       },
-      { path: '**', redirectTo: 'dashboard' },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'dashboard',
+      },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

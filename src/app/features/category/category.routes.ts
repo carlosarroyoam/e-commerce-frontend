@@ -22,4 +22,11 @@ export const routes: Routes = [
         (m) => m.CategoryFormPage,
       ),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@/features/category/pages/category-form/category-form-page').then(
+        (m) => m.CategoryFormPage,
+      ),
+  },
 ];

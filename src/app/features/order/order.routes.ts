@@ -16,4 +16,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('@/features/order/pages/order-form/order-form-page').then((m) => m.OrderFormPage),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@/features/order/pages/order-form/order-form-page').then((m) => m.OrderFormPage),
+  },
 ];

@@ -22,4 +22,11 @@ export const routes: Routes = [
         (m) => m.ProductFormPage,
       ),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@/features/product/pages/product-form/product-form-page').then(
+        (m) => m.ProductFormPage,
+      ),
+  },
 ];
