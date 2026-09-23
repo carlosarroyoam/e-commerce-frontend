@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { injectFormMode } from '@/core/routing/form-mode';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Página de creación y edición de usuarios. Placeholder: pendiente de implementar.
@@ -11,8 +10,7 @@ import { injectFormMode } from '@/core/routing/form-mode';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormPage {
-  /**
-   * Modo de la página (`new` o `edit`), declarado en `data` de la ruta.
-   */
-  protected readonly mode = injectFormMode();
+  private readonly route = inject(ActivatedRoute);
+
+  protected readonly isEditMode = this.route.snapshot.paramMap.has('id');
 }

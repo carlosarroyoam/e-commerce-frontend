@@ -1,16 +1,6 @@
 <header>
   <h1 class="heading">
-    @switch (mode) {
-      @case ('new') {
-        New customer
-      }
-      @case ('edit') {
-        Edit customer
-      }
-      @case ('view') {
-        Customer details
-      }
-    }
+    {{ isEditMode ? 'Edit customer' : 'New customer' }}
   </h1>
   <p class="mt-1 text-sm">This page is not implemented yet.</p>
 </header>
