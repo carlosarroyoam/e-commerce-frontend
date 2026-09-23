@@ -4,21 +4,21 @@ import { UserResponse } from '@/features/user/data-access/interfaces/user-respon
 
 export interface UserState {
   items: UserResponse[];
-  pagination: PaginationResponse;
   selectedItem: UserResponse | null;
+  pagination: PaginationResponse;
   isLoading: boolean;
   error: string | null;
 }
 
 export const initialState: UserState = {
   items: [],
+  selectedItem: null,
   pagination: {
     page: DEFAULT_FIRST_PAGE,
     size: 0,
     total_items: 0,
     total_pages: 0,
   },
-  selectedItem: null,
   isLoading: false,
   error: null,
 };

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LucideArrowLeft, LucidePencil } from '@lucide/angular';
@@ -21,6 +22,7 @@ import { DateTimePipe } from '@/shared/pipes/date-time/date-time.pipe';
 })
 export class UserDetailPage {
   private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
   protected readonly store = inject(UserStore);
 
   protected readonly user = this.store.selectedItem;
@@ -30,17 +32,28 @@ export class UserDetailPage {
     return user ? USER_STATUS_CONFIG[user.status] : null;
   });
 
-  protected readonly roles = computed(
-    () =>
-      this.user()
-        ?.roles.map((role) => role.name)
-        .join(', ') ?? '-',
+  protected readonly roles = computed(() =>
+    this.user()
+      ?.roles.map((role) => role.name)
+      .join(', '),
   );
 
   /**
-   * Carga el usuario indicado en la ruta.
+   * Carga el usuario indicado en la ruta. Si el id no es un entero positivo no se consulta la API
+   * y la página muestra el estado de error.
    */
   constructor() {
-    this.store.findById(Number(this.route.snapshot.paramMap.get('id')));
+    const userId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (Number.isInteger(userId) && userId > 0) {
+      this.store.findById(userId);
+    }
+  }
+
+  /**
+   * Vuelve a la página anterior del historial (p. ej. el listado con sus filtros).
+   */
+  protected back(): void {
+    this.location.back();
   }
 }

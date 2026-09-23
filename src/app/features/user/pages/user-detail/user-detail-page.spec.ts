@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
@@ -9,6 +10,7 @@ import { UserDetailPage } from './user-detail-page';
 
 describe('UserDetailPage', () => {
   let fixture: ComponentFixture<UserDetailPage>;
+  let routeId: string;
 
   const user: UserResponse = {
     id: 1,
@@ -35,6 +37,7 @@ describe('UserDetailPage', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    routeId = '1';
 
     await TestBed.configureTestingModule({
       imports: [UserDetailPage],
@@ -42,7 +45,7 @@ describe('UserDetailPage', () => {
         provideRouter([]),
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: convertToParamMap({ id: '1' }) } },
+          useFactory: () => ({ snapshot: { paramMap: convertToParamMap({ id: routeId }) } }),
         },
         { provide: UserService, useValue: userServiceMock },
       ],
@@ -70,5 +73,37 @@ describe('UserDetailPage', () => {
     expect(alert?.textContent).toContain('Could not load the user.');
     expect(text).toContain('Back');
     expect(text).not.toContain('Edit');
+  });
+
+  it('should not request the user when the route id is invalid', () => {
+    routeId = 'abc';
+
+    const text = render();
+
+    expect(userServiceMock.findById).not.toHaveBeenCalled();
+    expect(text).toContain('Could not load the user.');
+  });
+
+  it('should render a dash when the user has no roles', () => {
+    userServiceMock.findById.mockReturnValueOnce(of({ ...user, roles: [] }));
+
+    render();
+    const rolesValue = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll('dt'),
+    ).find((dt) => dt.textContent?.trim() === 'Roles')?.nextElementSibling;
+
+    expect(rolesValue?.textContent?.trim()).toBe('-');
+  });
+
+  it('should go back in the history when clicking back', () => {
+    const back = vi.spyOn(TestBed.inject(Location), 'back').mockImplementation(() => undefined);
+
+    render();
+    const backButton = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll('button'),
+    ).find((button) => button.textContent?.trim() === 'Back');
+    backButton?.click();
+
+    expect(back).toHaveBeenCalled();
   });
 });

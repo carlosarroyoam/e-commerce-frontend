@@ -15,9 +15,10 @@ npm run build -- --configuration development   # dev build, source maps, no opti
 npm run watch                      # build --watch (development config), no tests
 
 npm test                           # run unit tests (Vitest via @angular/build:unit-test)
-npx vitest run src/app/shared/components/alert-dialog/alert-dialog.spec.ts   # single file
-npx vitest run -t "should create"  # filter by test name
-npx vitest run src/app/features/auth/                                        # single feature
+npx ng test --watch=false --include=src/app/shared/components/alert-dialog/alert-dialog.spec.ts   # single file
+npx ng test --watch=false --filter="should create"                                              # filter by test name (regex)
+npx ng test --watch=false --include=src/app/features/auth/                                        # single feature
+# Don't call `npx vitest run` directly: it bypasses the Angular builder and can't resolve the `@/` path aliases.
 
 npm run lint                       # ESLint over src/**/*.ts and src/**/*.html
 npm run lint:fix

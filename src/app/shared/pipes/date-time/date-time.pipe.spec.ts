@@ -16,4 +16,9 @@ describe('DateTimePipe', () => {
 
     expect(pipe.transform(value, options)).toBe(formatDateTime(value, options));
   });
+
+  it('should return null for null or undefined', () => {
+    expect(pipe.transform(null)).toBeNull();
+    expect(pipe.transform(undefined)).toBeNull();
+  });
 });

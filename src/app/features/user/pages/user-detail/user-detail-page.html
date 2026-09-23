@@ -28,34 +28,36 @@
         <dd class="mt-1 text-sm break-all">{{ user.email }}</dd>
       </div>
 
-      <div>
-        <dt class="text-sm font-medium">Roles</dt>
-        <dd class="mt-1 text-sm">{{ roles() }}</dd>
-      </div>
+      @if (roles(); as roles) {
+        <div>
+          <dt class="text-sm font-medium">Roles</dt>
+          <dd class="mt-1 text-sm">{{ roles }}</dd>
+        </div>
+      }
 
       <div>
         <dt class="text-sm font-medium">Created at</dt>
-        <dd class="mt-1 text-sm">{{ user.created_at | dateTime }}</dd>
+        <dd class="mt-1 text-sm">{{ user.created_at | appDateTime }}</dd>
       </div>
 
       <div>
         <dt class="text-sm font-medium">Updated at</dt>
-        <dd class="mt-1 text-sm">{{ user.updated_at | dateTime }}</dd>
+        <dd class="mt-1 text-sm">{{ user.updated_at | appDateTime }}</dd>
       </div>
 
       @if (user.deleted_at; as deletedAt) {
         <div>
           <dt class="text-sm font-medium">Deleted at</dt>
-          <dd class="mt-1 text-sm">{{ deletedAt | dateTime }}</dd>
+          <dd class="mt-1 text-sm">{{ deletedAt | appDateTime }}</dd>
         </div>
       }
     </dl>
 
     <div class="mt-8 flex justify-end gap-2">
-      <a appButton variant="outline" routerLink="..">
+      <button appButton type="button" variant="outline" (click)="back()">
         <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
         Back
-      </a>
+      </button>
 
       <a appButton routerLink="edit">
         <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
@@ -71,10 +73,10 @@
 
   <section class="py-8">
     <div class="flex justify-end gap-2">
-      <a appButton variant="outline" routerLink="..">
+      <button appButton type="button" variant="outline" (click)="back()">
         <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
         Back
-      </a>
+      </button>
     </div>
   </section>
 }
