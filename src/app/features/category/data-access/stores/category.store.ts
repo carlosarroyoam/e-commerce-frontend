@@ -37,5 +37,25 @@ export const CategoryStore = signalStore(
         ),
       ),
     ),
+
+    /**
+     * Obtiene una categoría por su identificador.
+     *
+     * @param categoryId Identificador de la categoría a consultar.
+     */
+    findById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((categoryId) =>
+          categoryService.findById(categoryId).pipe(
+            tapResponse({
+              next: (selectedItem) => patchState(store, { selectedItem }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
+            }),
+          ),
+        ),
+      ),
+    ),
   })),
 );

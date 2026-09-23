@@ -1,4 +1,62 @@
-<header>
-  <h1 class="heading">Category details</h1>
-  <p class="mt-1 text-sm">This page is not implemented yet.</p>
-</header>
+@if (store.isLoading()) {
+  <section class="flex min-h-full items-center justify-center">
+    <app-spinner size="lg" />
+  </section>
+} @else if (category(); as category) {
+  <header class="flex flex-wrap items-center gap-4">
+    <h1 class="heading">Category details</h1>
+
+    <app-chip
+      class="ml-auto"
+      [variant]="category.deleted_at ? 'danger' : 'success'"
+      [label]="category.deleted_at ? 'Deleted' : 'Active'"
+    />
+  </header>
+
+  <section class="my-8">
+    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <dt class="text-sm font-medium">Title</dt>
+        <dd class="mt-1 text-sm">{{ category.title }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Slug</dt>
+        <dd class="mt-1 text-sm">{{ category.slug }}</dd>
+      </div>
+
+      @if (category.deleted_at; as deletedAt) {
+        <div>
+          <dt class="text-sm font-medium">Deleted at</dt>
+          <dd class="mt-1 text-sm">{{ deletedAt | appDateTime }}</dd>
+        </div>
+      }
+    </dl>
+
+    <div class="mt-8 flex justify-end gap-2">
+      <button appButton type="button" variant="outline" (click)="back()">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </button>
+
+      <a appButton routerLink="edit">
+        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
+        Edit
+      </a>
+    </div>
+  </section>
+} @else {
+  <header>
+    <h1 class="heading">Category details</h1>
+    <p role="alert" class="mt-1 text-sm">Could not load the category.</p>
+  </header>
+
+  <section class="py-8">
+    <div class="flex justify-end gap-2">
+      <button appButton type="button" variant="outline" (click)="back()">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </button>
+    </div>
+  </section>
+}

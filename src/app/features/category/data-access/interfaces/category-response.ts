@@ -4,5 +4,6 @@
 export interface CategoryResponse {
   id: number;
   title: string;
+  slug: string;
   deleted_at: string | null;
 }

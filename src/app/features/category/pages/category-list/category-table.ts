@@ -9,11 +9,12 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
  * Meta de la tabla de categorías: callbacks de acciones disponibles vía `table.options.meta`.
  */
 export interface CategoryTableMeta {
+  onView?: (category: CategoryResponse) => void;
   onDelete?: (category: CategoryResponse) => void;
 }
 
 /**
- * Construye las columnas de la tabla de categorías: título, estado y acciones.
+ * Construye las columnas de la tabla de categorías: título, slug, estado y acciones.
  *
  * @returns Definición de columnas para TanStack Table.
  */
@@ -22,6 +23,12 @@ export function buildCategoryTableColumns(): ColumnDef<AppTableFeatures, Categor
     {
       accessorKey: 'title',
       header: 'Title',
+      enableSorting: true,
+      cell: (info) => info.getValue<string>(),
+    },
+    {
+      accessorKey: 'slug',
+      header: 'Slug',
       enableSorting: true,
       cell: (info) => info.getValue<string>(),
     },

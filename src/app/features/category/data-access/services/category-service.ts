@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { CategoryQueryParams } from '@/features/category/data-access/interfaces/category-query-params';
+import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { PagedCategoriesResponse } from '@/features/category/data-access/interfaces/paged-categories-response';
 
 /**
@@ -34,6 +35,16 @@ export class CategoryService {
     return this.httpClient.get<PagedCategoriesResponse>(`${environment.apiUrl}/categories`, {
       params,
     });
+  }
+
+  /**
+   * Obtiene una categoría por su identificador.
+   *
+   * @param categoryId Identificador de la categoría a consultar.
+   * @returns Observable con la categoría encontrada.
+   */
+  public findById(categoryId: number): Observable<CategoryResponse> {
+    return this.httpClient.get<CategoryResponse>(`${environment.apiUrl}/categories/${categoryId}`);
   }
 
   /**

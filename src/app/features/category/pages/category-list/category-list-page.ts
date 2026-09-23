@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   injectTable,
   Updater,
@@ -42,6 +43,8 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryListPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly categoryService = inject(CategoryService);
@@ -53,6 +56,7 @@ export class CategoryListPage {
 
   private readonly tableColumns = buildCategoryTableColumns();
   private readonly tableMeta: CategoryTableMeta = {
+    onView: (category) => this.onViewCategory(category),
     onDelete: (category) => this.onDeleteCategory(category),
   };
 
@@ -119,6 +123,15 @@ export class CategoryListPage {
       page: DEFAULT_FIRST_PAGE,
       sort: sortingStateToParam(nextSorting),
     });
+  }
+
+  /**
+   * Navega al detalle de la categoría indicada.
+   *
+   * @param category Categoría a consultar.
+   */
+  protected onViewCategory(category: CategoryResponse): void {
+    this.router.navigate([category.id], { relativeTo: this.route });
   }
 
   /**

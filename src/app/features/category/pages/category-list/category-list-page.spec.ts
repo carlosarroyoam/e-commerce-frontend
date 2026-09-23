@@ -3,6 +3,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
+import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
 import { CategoryService } from '@/features/category/data-access/services/category-service';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { CategoryListPage } from './category-list-page';
@@ -71,6 +72,12 @@ describe('CategoryListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to the category details when viewing a category', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    component['onViewCategory']({ id: 7 } as CategoryResponse);
+    expect(routerMock.navigate).toHaveBeenCalledWith([7], { relativeTo: route });
   });
 
   it('should map route query params before loading categories', () => {

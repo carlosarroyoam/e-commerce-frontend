@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LucideTrash2 } from '@lucide/angular';
+import { LucideEye, LucideTrash2 } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { CategoryResponse } from '@/features/category/data-access/interfaces/category-response';
@@ -8,11 +8,11 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
 import { Button } from '@/shared/components/ui/button/button';
 
 /**
- * Botones de acción de una fila de la tabla de categorías: elimina la categoría de la fila.
+ * Botones de acción de una fila de la tabla de categorías: ver y eliminar la categoría de la fila.
  */
 @Component({
   selector: 'app-category-table-buttons',
-  imports: [Button, LucideTrash2],
+  imports: [Button, LucideEye, LucideTrash2],
   templateUrl: './category-table-buttons.html',
   host: { class: 'flex gap-2' },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +20,15 @@ import { Button } from '@/shared/components/ui/button/button';
 export class CategoryTableButtons {
   private readonly context =
     injectFlexRenderContext<CellContext<AppTableFeatures, CategoryResponse, unknown>>();
+
+  /**
+   * Invoca el callback de visualización con la categoría de la fila actual.
+   */
+  protected onView(): void {
+    const meta = this.context.table.options.meta as CategoryTableMeta | undefined;
+    const category = this.context.row.original;
+    meta?.onView?.(category);
+  }
 
   /**
    * Invoca el callback de eliminación con la categoría de la fila actual.

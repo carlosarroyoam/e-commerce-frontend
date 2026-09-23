@@ -4,6 +4,7 @@ import { CategoryResponse } from '@/features/category/data-access/interfaces/cat
 
 export interface CategoryState {
   items: CategoryResponse[];
+  selectedItem: CategoryResponse | null;
   pagination: PaginationResponse;
   isLoading: boolean;
   error: string | null;
@@ -11,6 +12,7 @@ export interface CategoryState {
 
 export const initialState: CategoryState = {
   items: [],
+  selectedItem: null,
   pagination: {
     page: DEFAULT_FIRST_PAGE,
     size: 0,
