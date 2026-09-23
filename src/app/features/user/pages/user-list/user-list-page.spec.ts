@@ -3,6 +3,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
+import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
 import { UserService } from '@/features/user/data-access/services/user-service';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { UserListPage } from './user-list-page';
@@ -72,6 +73,14 @@ describe('UserListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to the user details when viewing a user', () => {
+    const route = TestBed.inject(ActivatedRoute);
+
+    component['onViewUser']({ id: 7 } as UserResponse);
+
+    expect(routerMock.navigate).toHaveBeenCalledWith([7], { relativeTo: route });
   });
 
   it('should map route query params before loading users', () => {

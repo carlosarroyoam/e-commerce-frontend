@@ -82,6 +82,7 @@ export class UserListPage {
 
   private readonly tableColumns = buildUserTableColumns();
   private readonly tableMeta: UserTableMeta = {
+    onView: (user) => this.onViewUser(user),
     onEdit: (user) => this.onEditUser(user),
     onDelete: (user) => this.onDeleteUser(user),
     onRestore: (user) => this.onRestoreUser(user),
@@ -169,6 +170,15 @@ export class UserListPage {
    */
   protected reset(): void {
     this.queryParamsSync.reset();
+  }
+
+  /**
+   * Punto de entrada para consultar el usuario indicado.
+   *
+   * @param user Usuario a consultar.
+   */
+  protected onViewUser(user: UserResponse): void {
+    this.router.navigate([user.id], { relativeTo: this.route });
   }
 
   /**

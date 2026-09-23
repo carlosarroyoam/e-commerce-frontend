@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LucidePencil, LucideRotateCcw, LucideTrash2 } from '@lucide/angular';
+import { LucideEye, LucidePencil, LucideRotateCcw, LucideTrash2 } from '@lucide/angular';
 import { CellContext, injectFlexRenderContext } from '@tanstack/angular-table';
 
 import { UserResponse } from '@/features/user/data-access/interfaces/user-response';
@@ -8,11 +8,11 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
 import { Button } from '@/shared/components/ui/button/button';
 
 /**
- * Botones de acción de una fila de la tabla de usuarios: editar, eliminar y restaurar el usuario.
+ * Botones de acción de una fila de la tabla de usuarios: consultar, editar, eliminar y restaurar el usuario.
  */
 @Component({
   selector: 'app-user-table-buttons',
-  imports: [Button, LucidePencil, LucideRotateCcw, LucideTrash2],
+  imports: [Button, LucideEye, LucidePencil, LucideRotateCcw, LucideTrash2],
   templateUrl: './user-table-buttons.html',
   host: { class: 'flex gap-2' },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +22,15 @@ export class UserTableButtons {
     injectFlexRenderContext<CellContext<AppTableFeatures, UserResponse, unknown>>();
 
   protected readonly isDeleted = this.context.row.original.deleted_at !== null;
+
+  /**
+   * Invoca el callback de consulta con el usuario de la fila actual.
+   */
+  protected onView() {
+    const meta = this.context.table.options.meta as UserTableMeta | undefined;
+    const user = this.context.row.original;
+    meta?.onView?.(user);
+  }
 
   /**
    * Invoca el callback de edición con el usuario de la fila actual.

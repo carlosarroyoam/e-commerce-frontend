@@ -5,6 +5,7 @@ import { UserResponse } from '@/features/user/data-access/interfaces/user-respon
 export interface UserState {
   items: UserResponse[];
   pagination: PaginationResponse;
+  selectedItem: UserResponse | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -17,6 +18,7 @@ export const initialState: UserState = {
     total_items: 0,
     total_pages: 0,
   },
+  selectedItem: null,
   isLoading: false,
   error: null,
 };

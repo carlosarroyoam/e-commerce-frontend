@@ -7,23 +7,16 @@ import {
   UserResponse,
   UserStatus,
 } from '@/features/user/data-access/interfaces/user-response';
+import { USER_STATUS_CONFIG } from '@/features/user/utils/user-status';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
-import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
-
-const USER_STATUS_CONFIG: Record<
-  UserStatus,
-  { label: string; variant: NonNullable<ChipVariants['variant']> }
-> = {
-  ACTIVE: { label: 'Active', variant: 'success' },
-  INACTIVE: { label: 'Inactive', variant: 'warning' },
-  DELETED: { label: 'Deleted', variant: 'danger' },
-};
+import { Chip } from '@/shared/components/ui/chip/chip';
 
 /**
  * Meta de la tabla de usuarios: callbacks de acciones disponibles vía `table.options.meta`.
  */
 export interface UserTableMeta {
+  onView?: (user: UserResponse) => void;
   onEdit?: (user: UserResponse) => void;
   onDelete?: (user: UserResponse) => void;
   onRestore?: (user: UserResponse) => void;

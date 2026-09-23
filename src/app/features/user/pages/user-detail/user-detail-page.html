@@ -1,0 +1,80 @@
+@if (store.isLoading()) {
+  <section class="flex min-h-full items-center justify-center">
+    <app-spinner size="lg" />
+  </section>
+} @else if (user(); as user) {
+  <header class="flex flex-wrap items-center gap-4">
+    <h1 class="heading">User details</h1>
+
+    @if (status(); as status) {
+      <app-chip class="ml-auto" [variant]="status.variant" [label]="status.label" />
+    }
+  </header>
+
+  <section class="my-8">
+    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <dt class="text-sm font-medium">First name</dt>
+        <dd class="mt-1 text-sm">{{ user.first_name }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Last name</dt>
+        <dd class="mt-1 text-sm">{{ user.last_name }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Email</dt>
+        <dd class="mt-1 text-sm break-all">{{ user.email }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Roles</dt>
+        <dd class="mt-1 text-sm">{{ roles() }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Created at</dt>
+        <dd class="mt-1 text-sm">{{ user.created_at | dateTime }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Updated at</dt>
+        <dd class="mt-1 text-sm">{{ user.updated_at | dateTime }}</dd>
+      </div>
+
+      @if (user.deleted_at; as deletedAt) {
+        <div>
+          <dt class="text-sm font-medium">Deleted at</dt>
+          <dd class="mt-1 text-sm">{{ deletedAt | dateTime }}</dd>
+        </div>
+      }
+    </dl>
+
+    <div class="mt-8 flex justify-end gap-2">
+      <a appButton variant="outline" routerLink="..">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </a>
+
+      <a appButton routerLink="edit">
+        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
+        Edit
+      </a>
+    </div>
+  </section>
+} @else {
+  <header>
+    <h1 class="heading">User details</h1>
+    <p role="alert" class="mt-1 text-sm">Could not load the user.</p>
+  </header>
+
+  <section class="py-8">
+    <div class="flex justify-end gap-2">
+      <a appButton variant="outline" routerLink="..">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </a>
+    </div>
+  </section>
+}

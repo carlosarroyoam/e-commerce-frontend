@@ -10,7 +10,7 @@ import { UserService } from '@/features/user/data-access/services/user-service';
 import { initialState } from '@/features/user/data-access/stores/user.state';
 
 /**
- * Gestiona el estado de usuarios: listado paginado, carga y errores.
+ * Gestiona el estado de usuarios: listado paginado, usuario seleccionado, carga y errores.
  */
 export const UserStore = signalStore(
   { providedIn: undefined },
@@ -30,6 +30,26 @@ export const UserStore = signalStore(
           userService.findAll(queryParams).pipe(
             tapResponse({
               next: ({ items, pagination }) => patchState(store, { items, pagination }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
+            }),
+          ),
+        ),
+      ),
+    ),
+
+    /**
+     * Obtiene un usuario por su identificador y lo guarda como usuario seleccionado.
+     *
+     * @param userId Identificador del usuario a buscar.
+     */
+    findById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((userId) =>
+          userService.findById(userId).pipe(
+            tapResponse({
+              next: (selectedItem) => patchState(store, { selectedItem }),
               error: (error) => patchState(store, { error: extractErrorMessage(error) }),
               finalize: () => patchState(store, { isLoading: false }),
             }),

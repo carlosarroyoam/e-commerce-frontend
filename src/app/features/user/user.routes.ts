@@ -22,8 +22,7 @@ export const routes: Routes = [
   },
   {
     path: ':id',
-    data: { [FORM_MODE_KEY]: 'view' },
     loadComponent: () =>
-      import('@/features/user/pages/user-form/user-form-page').then((m) => m.UserFormPage),
+      import('@/features/user/pages/user-detail/user-detail-page').then((m) => m.UserDetailPage),
   },
 ];

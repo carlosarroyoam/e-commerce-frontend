@@ -29,5 +29,5 @@ export interface UserResponse {
   roles: RoleResponse[];
   created_at: string;
   updated_at: string;
-  deleted_at: boolean | null;
+  deleted_at: string | null;
 }
