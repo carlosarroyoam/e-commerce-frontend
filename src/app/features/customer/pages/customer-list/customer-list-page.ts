@@ -87,6 +87,7 @@ export class CustomerListPage {
 
   private readonly tableColumns = buildCustomerTableColumns();
   private readonly tableMeta: CustomerTableMeta = {
+    onView: (customer) => this.onViewCustomer(customer),
     onEdit: (customer) => this.onEditCustomer(customer),
     onDelete: (customer) => this.onDeleteCustomer(customer),
     onRestore: (customer) => this.onRestoreCustomer(customer),
@@ -169,6 +170,15 @@ export class CustomerListPage {
    */
   protected reset(): void {
     this.queryParamsSync.reset();
+  }
+
+  /**
+   * Navega al detalle del cliente indicado.
+   *
+   * @param customer Cliente a consultar.
+   */
+  protected onViewCustomer(customer: CustomerResponse): void {
+    this.router.navigate([customer.id], { relativeTo: this.route });
   }
 
   /**

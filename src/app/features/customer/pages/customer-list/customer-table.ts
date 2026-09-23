@@ -1,29 +1,22 @@
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 
 import { formatDateTime } from '@/core/utils/date.utils';
+import { formatPhoneNumber } from '@/core/utils/phone.utils';
 import { CustomerTableButtons } from '@/features/customer/components/customer-table-buttons/customer-table-buttons';
 import {
   CustomerResponse,
   CustomerStatus,
 } from '@/features/customer/data-access/interfaces/customer-response';
+import { CUSTOMER_STATUS_CONFIG } from '@/features/customer/utils/customer-status';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
 import { Avatar } from '@/shared/components/ui/avatar/avatar';
-import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
-
-const CUSTOMER_STATUS_CONFIG: Record<
-  CustomerStatus,
-  { label: string; variant: NonNullable<ChipVariants['variant']> }
-> = {
-  PENDING: { label: 'Pending', variant: 'warning' },
-  ACTIVE: { label: 'Active', variant: 'success' },
-  SUSPENDED: { label: 'Suspended', variant: 'warning' },
-  DELETED: { label: 'Deleted', variant: 'danger' },
-};
+import { Chip } from '@/shared/components/ui/chip/chip';
 
 /**
  * Meta de la tabla de clientes: callbacks de acciones disponibles vía `table.options.meta`.
  */
 export interface CustomerTableMeta {
+  onView?: (customer: CustomerResponse) => void;
   onEdit?: (customer: CustomerResponse) => void;
   onDelete?: (customer: CustomerResponse) => void;
   onRestore?: (customer: CustomerResponse) => void;
@@ -68,7 +61,7 @@ export function buildCustomerTableColumns(): ColumnDef<AppTableFeatures, Custome
       accessorKey: 'phone_number',
       header: 'Phone number',
       enableSorting: false,
-      cell: (info) => info.getValue<string>(),
+      cell: (info) => formatPhoneNumber(info.getValue<string>()),
     },
     {
       accessorKey: 'created_at',

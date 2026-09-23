@@ -3,6 +3,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
+import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';
 import { CustomerService } from '@/features/customer/data-access/services/customer-service';
 import { CustomerListPage } from './customer-list-page';
 
@@ -20,6 +21,8 @@ describe('CustomerListPage', () => {
     ),
   };
 
+  const routerMock = { navigate: vi.fn(() => Promise.resolve(true)) };
+
   beforeEach(async () => {
     queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
     vi.clearAllMocks();
@@ -34,10 +37,7 @@ describe('CustomerListPage', () => {
             snapshot: { queryParamMap: queryParamMap$.value },
           },
         },
-        {
-          provide: Router,
-          useValue: { navigate: vi.fn(() => Promise.resolve(true)) },
-        },
+        { provide: Router, useValue: routerMock },
         { provide: CustomerService, useValue: customerServiceMock },
       ],
     }).compileComponents();
@@ -49,5 +49,11 @@ describe('CustomerListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to the customer details when viewing a customer', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    component['onViewCustomer']({ id: 7 } as CustomerResponse);
+    expect(routerMock.navigate).toHaveBeenCalledWith([7], { relativeTo: route });
   });
 });

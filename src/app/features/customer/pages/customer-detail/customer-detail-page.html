@@ -1,4 +1,112 @@
-<header>
-  <h1 class="heading">Customer details</h1>
-  <p class="mt-1 text-sm">This page is not implemented yet.</p>
-</header>
+@if (store.isLoading()) {
+  <section class="flex min-h-full items-center justify-center">
+    <app-spinner size="lg" />
+  </section>
+} @else if (customer(); as customer) {
+  <header class="flex flex-wrap items-center gap-4">
+    <h1 class="heading">Customer details</h1>
+
+    @if (status(); as status) {
+      <app-chip class="ml-auto" [variant]="status.variant" [label]="status.label" />
+    }
+  </header>
+
+  <section class="my-8">
+    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <dt class="text-sm font-medium">First name</dt>
+        <dd class="mt-1 text-sm">{{ customer.first_name }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Last name</dt>
+        <dd class="mt-1 text-sm">{{ customer.last_name }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Email</dt>
+        <dd class="mt-1 text-sm break-all">{{ customer.email }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Phone number</dt>
+        <dd class="mt-1 text-sm">{{ customer.phone_number | appPhoneNumber }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Created at</dt>
+        <dd class="mt-1 text-sm">{{ customer.created_at | appDateTime }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Updated at</dt>
+        <dd class="mt-1 text-sm">{{ customer.updated_at | appDateTime }}</dd>
+      </div>
+
+      @if (customer.deleted_at; as deletedAt) {
+        <div>
+          <dt class="text-sm font-medium">Deleted at</dt>
+          <dd class="mt-1 text-sm">{{ deletedAt | appDateTime }}</dd>
+        </div>
+      }
+    </dl>
+
+    <div class="mt-8">
+      <h2 class="text-sm font-medium">Addresses</h2>
+
+      @if (customer.addresses.length === 0) {
+        <p class="mt-2 text-sm">No addresses registered.</p>
+      } @else {
+        <ul class="mt-2 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          @for (address of customer.addresses; track address.id) {
+            <li class="rounded-md border border-zinc-200 p-4">
+              <div class="flex items-start justify-between gap-2">
+                <p class="text-sm font-medium">
+                  {{ address.street_name }} #{{ address.street_number
+                  }}{{ address.apartment_number ? ', ' + address.apartment_number : '' }}
+                </p>
+
+                @if (address.is_default) {
+                  <app-chip variant="default" label="Default" />
+                }
+              </div>
+
+              <p class="mt-1 text-sm">
+                {{ address.sublocality }}, {{ address.locality }}, {{ address.state }}
+                {{ address.postal_code }}
+                {{ address.country }}
+              </p>
+              <p class="mt-1 text-sm">{{ address.phone_number | appPhoneNumber }}</p>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <div class="mt-8 flex justify-end gap-2">
+      <button appButton type="button" variant="outline" (click)="back()">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </button>
+
+      <a appButton routerLink="edit">
+        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
+        Edit
+      </a>
+    </div>
+  </section>
+} @else {
+  <header>
+    <h1 class="heading">Customer details</h1>
+    <p role="alert" class="mt-1 text-sm">Could not load the customer.</p>
+  </header>
+
+  <section class="py-8">
+    <div class="flex justify-end gap-2">
+      <button appButton type="button" variant="outline" (click)="back()">
+        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+        Back
+      </button>
+    </div>
+  </section>
+}

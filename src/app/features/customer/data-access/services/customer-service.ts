@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { CustomerQueryParams } from '@/features/customer/data-access/interfaces/customer-query-params';
+import { CustomerResponse } from '@/features/customer/data-access/interfaces/customer-response';
 import { PagedCustomersResponse } from '@/features/customer/data-access/interfaces/paged-customers-response';
 
 /**
@@ -46,6 +47,16 @@ export class CustomerService {
     return this.httpClient.get<PagedCustomersResponse>(`${environment.apiUrl}/customers`, {
       params,
     });
+  }
+
+  /**
+   * Obtiene un cliente por su identificador.
+   *
+   * @param customerId Identificador del cliente a consultar.
+   * @returns Observable con el cliente encontrado.
+   */
+  public findById(customerId: number): Observable<CustomerResponse> {
+    return this.httpClient.get<CustomerResponse>(`${environment.apiUrl}/customers/${customerId}`);
   }
 
   /**

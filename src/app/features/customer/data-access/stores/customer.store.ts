@@ -37,5 +37,25 @@ export const CustomerStore = signalStore(
         ),
       ),
     ),
+
+    /**
+     * Obtiene un cliente por su identificador.
+     *
+     * @param customerId Identificador del cliente a consultar.
+     */
+    findById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((customerId) =>
+          customerService.findById(customerId).pipe(
+            tapResponse({
+              next: (selectedItem) => patchState(store, { selectedItem }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
+            }),
+          ),
+        ),
+      ),
+    ),
   })),
 );

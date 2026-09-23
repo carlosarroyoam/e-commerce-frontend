@@ -4,6 +4,7 @@ import { CustomerResponse } from '@/features/customer/data-access/interfaces/cus
 
 export interface CustomerState {
   items: CustomerResponse[];
+  selectedItem: CustomerResponse | null;
   pagination: PaginationResponse;
   isLoading: boolean;
   error: string | null;
@@ -11,6 +12,7 @@ export interface CustomerState {
 
 export const initialState: CustomerState = {
   items: [],
+  selectedItem: null,
   pagination: {
     page: DEFAULT_FIRST_PAGE,
     size: 0,
