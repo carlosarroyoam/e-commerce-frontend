@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { PagedProductsResponse } from '@/features/product/data-access/interfaces/paged-products-response';
+import { ProductDetailResponse } from '@/features/product/data-access/interfaces/product-detail-response';
 import { ProductQueryParams } from '@/features/product/data-access/interfaces/product-query-params';
 
 /**
@@ -48,6 +49,18 @@ export class ProductService {
     return this.httpClient.get<PagedProductsResponse>(`${environment.apiUrl}/products`, {
       params,
     });
+  }
+
+  /**
+   * Obtiene un producto por su identificador.
+   *
+   * @param productId Identificador del producto a consultar.
+   * @returns Observable con el detalle del producto encontrado.
+   */
+  public findById(productId: number): Observable<ProductDetailResponse> {
+    return this.httpClient.get<ProductDetailResponse>(
+      `${environment.apiUrl}/products/${productId}`,
+    );
   }
 
   /**

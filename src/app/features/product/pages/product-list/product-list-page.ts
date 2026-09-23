@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   injectTable,
   Updater,
@@ -7,7 +9,6 @@ import {
   type SortingState,
 } from '@tanstack/angular-table';
 import { filter, map, switchMap, tap } from 'rxjs';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 import { DEFAULT_FIRST_PAGE, DEFAULT_PAGE_SIZE } from '@/core/constants/pagination.constants';
 import { createQueryParamsSync } from '@/core/routing/query-params.utils';
@@ -59,6 +60,8 @@ import { dateRangeValidator } from '@/shared/validators/date-range.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly productService = inject(ProductService);
@@ -82,6 +85,7 @@ export class ProductListPage {
 
   private readonly tableColumns = buildProductTableColumns();
   private readonly tableMeta: ProductTableMeta = {
+    onView: (product) => this.onViewProduct(product),
     onDelete: (product) => this.onDeleteProduct(product),
   };
 
@@ -181,6 +185,15 @@ export class ProductListPage {
    */
   protected reset(): void {
     this.queryParamsSync.reset();
+  }
+
+  /**
+   * Navega al detalle del producto indicado.
+   *
+   * @param product Producto a consultar.
+   */
+  protected onViewProduct(product: ProductResponse): void {
+    this.router.navigate([product.id], { relativeTo: this.route });
   }
 
   /**

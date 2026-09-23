@@ -37,5 +37,25 @@ export const ProductStore = signalStore(
         ),
       ),
     ),
+
+    /**
+     * Obtiene un producto por su identificador.
+     *
+     * @param productId Identificador del producto a consultar.
+     */
+    findById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((productId) =>
+          productService.findById(productId).pipe(
+            tapResponse({
+              next: (selectedItem) => patchState(store, { selectedItem }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
+            }),
+          ),
+        ),
+      ),
+    ),
   })),
 );

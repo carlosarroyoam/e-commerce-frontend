@@ -10,6 +10,7 @@ import { AppTableFeatures } from '@/shared/components/table/tanstack/table-featu
  * Meta de la tabla de productos: callbacks de acciones disponibles vía `table.options.meta`.
  */
 export interface ProductTableMeta {
+  onView?: (product: ProductResponse) => void;
   onDelete?: (product: ProductResponse) => void;
 }
 

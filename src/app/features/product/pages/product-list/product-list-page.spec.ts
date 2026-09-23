@@ -4,6 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { CategoryService } from '@/features/category/data-access/services/category-service';
+import { ProductResponse } from '@/features/product/data-access/interfaces/product-response';
 import { ProductService } from '@/features/product/data-access/services/product-service';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { ProductListPage } from './product-list-page';
@@ -90,6 +91,12 @@ describe('ProductListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to the product details when viewing a product', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    component['onViewProduct']({ id: 7 } as ProductResponse);
+    expect(routerMock.navigate).toHaveBeenCalledWith([7], { relativeTo: route });
   });
 
   it('should map route query params before loading products', () => {
