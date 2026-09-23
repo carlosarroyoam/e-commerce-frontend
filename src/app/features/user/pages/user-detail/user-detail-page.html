@@ -4,7 +4,10 @@
   </section>
 } @else if (user(); as user) {
   <header class="flex flex-wrap items-center gap-4">
-    <h1 class="heading">User details</h1>
+    <div>
+      <h1 class="heading">User details</h1>
+      <p class="mt-1 text-sm">{{ user.email }}</p>
+    </div>
 
     @if (status(); as status) {
       <app-chip class="ml-auto" [variant]="status.variant" [label]="status.label" />

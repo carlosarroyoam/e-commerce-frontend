@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '@/environments/environment';
+import { OrderDetailResponse } from '@/features/order/data-access/interfaces/order-detail-response';
 import { OrderQueryParams } from '@/features/order/data-access/interfaces/order-query-params';
 import { PagedOrdersResponse } from '@/features/order/data-access/interfaces/paged-orders-response';
 
@@ -28,6 +29,16 @@ export class OrderService {
     if (sort) params = params.append('sort', sort);
 
     return this.httpClient.get<PagedOrdersResponse>(`${environment.apiUrl}/orders`, { params });
+  }
+
+  /**
+   * Obtiene una orden por su identificador.
+   *
+   * @param orderId Identificador de la orden a consultar.
+   * @returns Observable con el detalle de la orden encontrada.
+   */
+  public findById(orderId: number): Observable<OrderDetailResponse> {
+    return this.httpClient.get<OrderDetailResponse>(`${environment.apiUrl}/orders/${orderId}`);
   }
 
   /**

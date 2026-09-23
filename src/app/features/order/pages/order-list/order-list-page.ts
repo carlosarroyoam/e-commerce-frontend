@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   injectTable,
   Updater,
@@ -42,6 +43,8 @@ import { ToastService } from '@/shared/services/toast-service/toast-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderListPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly orderService = inject(OrderService);
@@ -53,6 +56,7 @@ export class OrderListPage {
 
   private readonly tableColumns = buildOrderTableColumns();
   private readonly tableMeta: OrderTableMeta = {
+    onView: (order) => this.onViewOrder(order),
     onCancel: (order) => this.onCancelOrder(order),
   };
 
@@ -119,6 +123,15 @@ export class OrderListPage {
       page: DEFAULT_FIRST_PAGE,
       sort: sortingStateToParam(nextSorting),
     });
+  }
+
+  /**
+   * Navega al detalle de la orden indicada.
+   *
+   * @param order Orden a consultar.
+   */
+  protected onViewOrder(order: OrderResponse): void {
+    this.router.navigate([order.id], { relativeTo: this.route });
   }
 
   /**

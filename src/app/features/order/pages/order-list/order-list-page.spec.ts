@@ -3,6 +3,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/ro
 import { BehaviorSubject, of } from 'rxjs';
 import { vi } from 'vitest';
 
+import { OrderResponse } from '@/features/order/data-access/interfaces/order-response';
 import { OrderService } from '@/features/order/data-access/services/order-service';
 import { AlertDialogService } from '@/shared/services/alert-dialog-service/alert-dialog-service';
 import { OrderListPage } from './order-list-page';
@@ -71,6 +72,12 @@ describe('OrderListPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to the order details when viewing an order', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    component['onViewOrder']({ id: 7 } as OrderResponse);
+    expect(routerMock.navigate).toHaveBeenCalledWith([7], { relativeTo: route });
   });
 
   it('should map route query params before loading orders', () => {

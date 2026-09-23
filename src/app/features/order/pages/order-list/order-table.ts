@@ -4,26 +4,15 @@ import { formatDateTime } from '@/core/utils/date.utils';
 import { formatCurrency } from '@/core/utils/number.utils';
 import { OrderTableButtons } from '@/features/order/components/order-table-buttons/order-table-buttons';
 import { OrderResponse, OrderStatus } from '@/features/order/data-access/interfaces/order-response';
-import { Chip, ChipVariants } from '@/shared/components/ui/chip/chip';
+import { ORDER_STATUS_CONFIG } from '@/features/order/utils/order-status';
 import { AppTableFeatures } from '@/shared/components/table/tanstack/table-features';
-
-const ORDER_STATUS_CONFIG: Record<
-  OrderStatus,
-  { label: string; variant: NonNullable<ChipVariants['variant']> }
-> = {
-  PENDING: { label: 'Pending', variant: 'warning' },
-  CONFIRMED: { label: 'Confirmed', variant: 'warning' },
-  PROCESSING: { label: 'Processing', variant: 'warning' },
-  SHIPPED: { label: 'Shipped', variant: 'success' },
-  DELIVERED: { label: 'Delivered', variant: 'success' },
-  CANCELLED: { label: 'Cancelled', variant: 'danger' },
-  REFUNDED: { label: 'Refunded', variant: 'danger' },
-};
+import { Chip } from '@/shared/components/ui/chip/chip';
 
 /**
  * Meta de la tabla de órdenes: callbacks de acciones disponibles vía `table.options.meta`.
  */
 export interface OrderTableMeta {
+  onView?: (order: OrderResponse) => void;
   onCancel?: (order: OrderResponse) => void;
 }
 

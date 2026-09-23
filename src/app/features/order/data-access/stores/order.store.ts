@@ -37,5 +37,25 @@ export const OrderStore = signalStore(
         ),
       ),
     ),
+
+    /**
+     * Obtiene una orden por su identificador.
+     *
+     * @param orderId Identificador de la orden a consultar.
+     */
+    findById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((orderId) =>
+          orderService.findById(orderId).pipe(
+            tapResponse({
+              next: (selectedItem) => patchState(store, { selectedItem }),
+              error: (error) => patchState(store, { error: extractErrorMessage(error) }),
+              finalize: () => patchState(store, { isLoading: false }),
+            }),
+          ),
+        ),
+      ),
+    ),
   })),
 );
