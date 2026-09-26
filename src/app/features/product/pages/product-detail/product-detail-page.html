@@ -2,7 +2,9 @@
   <section class="flex min-h-full items-center justify-center">
     <app-spinner size="lg" />
   </section>
-} @else if (product(); as product) {
+}
+
+@if (product(); as product) {
   <header class="flex flex-wrap items-center gap-4">
     <div>
       <h1 class="heading">Product details</h1>
@@ -22,7 +24,7 @@
   </header>
 
   <section class="my-8">
-    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       <div>
         <dt class="text-sm font-medium">Title</dt>
         <dd class="mt-1 text-sm">{{ product.title }}</dd>
@@ -81,67 +83,62 @@
     <div class="mt-8">
       <h2 class="text-sm font-medium">Variants</h2>
 
-      @if (product.variants.length === 0) {
-        <p class="mt-2 text-sm">No variants registered.</p>
-      } @else {
-        <div class="relative mt-2 overflow-x-auto rounded-md border border-zinc-200">
-          <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
-            <thead class="bg-zinc-50">
+      <div class="relative mt-2 overflow-x-auto rounded-md border border-zinc-200">
+        <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
+          <thead class="bg-zinc-50">
+            <tr>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                SKU
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Attributes
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Price
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Compared at price
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-zinc-200">
+            @for (variant of product.variants; track variant.id) {
               <tr>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  SKU
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Attributes
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Price
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Compared at price
-                </th>
+                <td class="px-4 py-2 text-sm">{{ variant.sku }}</td>
+                <td class="px-4 py-2 text-sm">{{ variantAttributesLabel(variant) }}</td>
+                <td class="px-4 py-2 text-sm">{{ variant.price | appCurrency }}</td>
+                <td class="px-4 py-2 text-sm">{{ variant.compared_at_price | appCurrency }}</td>
               </tr>
-            </thead>
-
-            <tbody class="divide-y divide-zinc-200">
-              @for (variant of product.variants; track variant.id) {
-                <tr>
-                  <td class="px-4 py-2 text-sm">{{ variant.sku }}</td>
-                  <td class="px-4 py-2 text-sm">{{ variantAttributesLabel(variant) }}</td>
-                  <td class="px-4 py-2 text-sm">{{ variant.price | appCurrency }}</td>
-                  <td class="px-4 py-2 text-sm">{{ variant.compared_at_price | appCurrency }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
-    </div>
-
-    <div class="mt-8 flex justify-end gap-2">
-      <button appButton type="button" variant="outline" (click)="back()">
-        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
-        Back
-      </button>
-
-      <a appButton routerLink="edit">
-        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
-        Edit
-      </a>
+            } @empty {
+              <tr>
+                <td [attr.colspan]="5" class="h-12 text-center text-sm">No variants registered.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 } @else {
   <header>
     <h1 class="heading">Product details</h1>
-    <p role="alert" class="mt-1 text-sm">Could not load the product.</p>
+    <p role="alert" class="mt-1 text-sm">Could not load product details.</p>
   </header>
-
-  <section class="py-8">
-    <div class="flex justify-end gap-2">
-      <button appButton type="button" variant="outline" (click)="back()">
-        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
-        Back
-      </button>
-    </div>
-  </section>
 }
+
+<section class="py-8">
+  <div class="mt-8 flex justify-end gap-2">
+    <button appButton type="button" variant="outline" (click)="back()">
+      <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+      Back
+    </button>
+
+    @if (product()) {
+      <a appButton routerLink="edit">
+        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
+        Edit
+      </a>
+    }
+  </div>
+</section>

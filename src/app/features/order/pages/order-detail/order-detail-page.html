@@ -2,7 +2,9 @@
   <section class="flex min-h-full items-center justify-center">
     <app-spinner size="lg" />
   </section>
-} @else if (order(); as order) {
+}
+
+@if (order(); as order) {
   <header class="flex flex-wrap items-center gap-4">
     <div>
       <h1 class="heading">Order details</h1>
@@ -15,7 +17,7 @@
   </header>
 
   <section class="my-8">
-    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+    <dl class="grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       <div>
         <dt class="text-sm font-medium">Customer</dt>
         <dd class="mt-1 text-sm">
@@ -36,8 +38,13 @@
       </div>
 
       <div>
-        <dt class="text-sm font-medium">Total</dt>
-        <dd class="mt-1 text-sm">{{ order.total | appCurrency }}</dd>
+        <dt class="text-sm font-medium">Tax</dt>
+        <dd class="mt-1 text-sm">{{ order.tax_total | appCurrency }}</dd>
+      </div>
+
+      <div>
+        <dt class="text-sm font-medium">Shipping</dt>
+        <dd class="mt-1 text-sm">{{ order.shipping_total | appCurrency }}</dd>
       </div>
 
       <div>
@@ -46,13 +53,8 @@
       </div>
 
       <div>
-        <dt class="text-sm font-medium">Tax</dt>
-        <dd class="mt-1 text-sm">{{ order.tax_total | appCurrency }}</dd>
-      </div>
-
-      <div>
-        <dt class="text-sm font-medium">Shipping</dt>
-        <dd class="mt-1 text-sm">{{ order.shipping_total | appCurrency }}</dd>
+        <dt class="text-sm font-medium">Total</dt>
+        <dd class="mt-1 text-sm">{{ order.total | appCurrency }}</dd>
       </div>
 
       @if (order.notes; as notes) {
@@ -76,45 +78,45 @@
     <div class="mt-8">
       <h2 class="text-sm font-medium">Items</h2>
 
-      @if (order.items.length === 0) {
-        <p class="mt-2 text-sm">No items registered.</p>
-      } @else {
-        <div class="relative mt-2 overflow-x-auto rounded-md border border-zinc-200">
-          <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
-            <thead class="bg-zinc-50">
-              <tr>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Product
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  SKU
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Quantity
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Unit price
-                </th>
-                <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
-                  Total
-                </th>
-              </tr>
-            </thead>
+      <div class="relative mt-2 overflow-x-auto rounded-md border border-zinc-200">
+        <table class="table w-full min-w-max table-auto divide-y divide-zinc-200">
+          <thead class="bg-zinc-50">
+            <tr>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Product
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                SKU
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Quantity
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Unit price
+              </th>
+              <th scope="col" class="px-4 py-2 text-start text-sm font-medium tracking-tight">
+                Total
+              </th>
+            </tr>
+          </thead>
 
-            <tbody class="divide-y divide-zinc-200">
-              @for (item of order.items; track item.id) {
-                <tr>
-                  <td class="px-4 py-2 text-sm">{{ item.product.title }}</td>
-                  <td class="px-4 py-2 text-sm">{{ item.variant.sku }}</td>
-                  <td class="px-4 py-2 text-sm">{{ item.quantity }}</td>
-                  <td class="px-4 py-2 text-sm">{{ item.unit_price | appCurrency }}</td>
-                  <td class="px-4 py-2 text-sm">{{ item.total | appCurrency }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
+          <tbody class="divide-y divide-zinc-200">
+            @for (item of order.items; track item.id) {
+              <tr>
+                <td class="px-4 py-2 text-sm">{{ item.product.title }}</td>
+                <td class="px-4 py-2 text-sm">{{ item.variant.sku }}</td>
+                <td class="px-4 py-2 text-sm">{{ item.quantity }}</td>
+                <td class="px-4 py-2 text-sm">{{ item.unit_price | appCurrency }}</td>
+                <td class="px-4 py-2 text-sm">{{ item.total | appCurrency }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td [attr.colspan]="5" class="h-12 text-center text-sm">No items registered.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="mt-8">
@@ -224,31 +226,26 @@
         </ul>
       }
     </div>
-
-    <div class="mt-8 flex justify-end gap-2">
-      <button appButton type="button" variant="outline" (click)="back()">
-        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
-        Back
-      </button>
-
-      <a appButton routerLink="edit">
-        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
-        Edit
-      </a>
-    </div>
   </section>
 } @else {
   <header>
     <h1 class="heading">Order details</h1>
-    <p role="alert" class="mt-1 text-sm">Could not load the order.</p>
+    <p role="alert" class="mt-1 text-sm">Could not load order details.</p>
   </header>
-
-  <section class="py-8">
-    <div class="flex justify-end gap-2">
-      <button appButton type="button" variant="outline" (click)="back()">
-        <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
-        Back
-      </button>
-    </div>
-  </section>
 }
+
+<section class="py-8">
+  <div class="mt-8 flex justify-end gap-2">
+    <button appButton type="button" variant="outline" (click)="back()">
+      <svg lucideArrowLeft class="mr-2 size-3" aria-hidden="true"></svg>
+      Back
+    </button>
+
+    @if (order()) {
+      <a appButton routerLink="edit">
+        <svg lucidePencil class="mr-2 size-3" aria-hidden="true"></svg>
+        Edit
+      </a>
+    }
+  </div>
+</section>
