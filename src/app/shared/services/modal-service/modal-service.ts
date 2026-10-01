@@ -23,6 +23,8 @@ export class ModalService {
   ): DialogRef<TResult, TComponent> {
     return this.dialog.open<TResult, TData, TComponent>(component, {
       ariaModal: true,
+      autoFocus: 'dialog',
+      restoreFocus: true,
       ...config,
     });
   }

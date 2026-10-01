@@ -18,12 +18,12 @@
   <div class="absolute top-5 right-5 hidden sm:block">
     <span class="sr-only">Close dialog</span>
     <button (click)="closeDialog()">
-      <svg lucideX aria-hidden="true" class="size-6 hover:cursor-pointer"></svg>
+      <svg lucideX aria-hidden="true" class="size-5 hover:cursor-pointer"></svg>
     </button>
   </div>
 
   <!-- Dialog footer -->
-  <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+  <div class="mt-8 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
     @if (data.showSecondaryButton) {
       <button appButton type="button" [variant]="'secondary'" (click)="cancel()">
         {{ data.secondaryButtonLabel ?? 'Cancel' }}

@@ -27,6 +27,8 @@ export class AlertDialogService {
   ): DialogRef<AlertDialogResult, AlertDialog> {
     return this.dialog.open<AlertDialogResult, AlertDialogData, AlertDialog>(AlertDialog, {
       ariaModal: true,
+      autoFocus: 'dialog',
+      restoreFocus: true,
       ariaLabelledBy: 'dialog-title',
       ariaDescribedBy: 'dialog-description',
       ...config,
