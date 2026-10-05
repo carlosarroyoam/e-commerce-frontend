@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { AuthStore } from '@/core/data-access/stores/auth-store/auth.store';
@@ -21,14 +21,14 @@ import { Spinner } from '@/shared/components/ui/spinner/spinner';
 export class LoginPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
+  private readonly fb = inject(NonNullableFormBuilder);
   protected readonly authStore = inject(AuthStore);
 
   protected readonly form = this.fb.group({
-    email: this.fb.control<string | null>(null, {
+    email: this.fb.control<string>('', {
       validators: [Validators.required, Validators.email],
     }),
-    password: this.fb.control<string | null>(null, {
+    password: this.fb.control<string>('', {
       validators: [Validators.required, Validators.minLength(8)],
     }),
   });
@@ -54,13 +54,9 @@ export class LoginPage {
   protected login(): void {
     const rawValue = this.form.getRawValue();
 
-    if (this.form.invalid) {
+    if (this.form.invalid || this.form.pending) {
       this.form.markAllAsTouched();
       throw new Error('Form fields are invalid');
-    }
-
-    if (!rawValue.email || !rawValue.password) {
-      throw new Error('Email and Password fields are required');
     }
 
     this.authStore.login({

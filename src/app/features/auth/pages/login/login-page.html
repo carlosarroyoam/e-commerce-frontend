@@ -35,7 +35,7 @@
       appButton
       type="submit"
       class="mt-2 w-full"
-      [disabled]="form.invalid || authStore.isLoggingIn()"
+      [disabled]="form.invalid || form.pending || authStore.isLoggingIn()"
     >
       @if (authStore.isLoggingIn()) {
         <app-spinner size="sm" class="mr-2" />
