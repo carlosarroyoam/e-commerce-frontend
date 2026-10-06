@@ -104,12 +104,12 @@ Use the shared null-safe pipes in `shared/pipes` (`appCurrency`, `appDateTime`, 
 
 ## Code conventions
 
-Full rules live in `AGENTS.md` — read it before structural changes. Key points:
+Read these before structural changes:
 
-- Standalone components only, no NgModules. Do **not** set `standalone: true` explicitly (it's the default). Every component in the codebase sets `changeDetection: ChangeDetectionStrategy.OnPush` explicitly (e.g. `category-list-page.ts`) — do the same in new components.
+- Standalone components only, no NgModules. Do **not** set `standalone: true` explicitly (it's the default). Set `changeDetection: ChangeDetectionStrategy.OnPush` explicitly in new components (e.g. `category-list-page.ts`).
 - Use `input()`/`output()` functions, not decorators; `inject()`, not constructor injection.
 - Use native control flow (`@if`/`@for`/`@switch`) in templates, not `*ngIf`/`*ngFor`; `class`/`style` bindings, not `ngClass`/`ngStyle`.
-- Prefer Reactive Forms; use Signal Forms (`@angular/forms/signals`) for new forms where applicable.
+- Use typed Reactive Forms via `NonNullableFormBuilder`, including for new forms (this overrides the angular-developer skill's Signal Forms default).
 - Do not use `@HostBinding`/`@HostListener` — use the `host` object in the decorator instead.
 - Signals: use `update()`/`set()`, never `mutate()`.
 - `NgOptimizedImage` for static images (not inline base64).
