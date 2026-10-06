@@ -74,7 +74,7 @@ npm run build
 Creates a production build in `dist/e-commerce-frontend`.
 
 ```bash
-npm run build -- --configuration development
+npm run build --configuration development
 ```
 
 Creates a development build with source maps and reduced optimization.
