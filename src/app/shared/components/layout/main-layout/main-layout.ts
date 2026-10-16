@@ -11,7 +11,7 @@ import { Sidebar } from '@/shared/components/sidebar/sidebar';
 @Component({
   imports: [RouterOutlet, Header, Sidebar],
   templateUrl: './main-layout.html',
-  host: { class: 'grid min-h-dvh grid-cols-1 lg:grid-cols-[18rem_minmax(0,1fr)]' },
+  host: { class: 'grid min-h-dvh grid-cols-1 lg:grid-cols-[16rem_minmax(0,1fr)]' },
 })
 export class MainLayout {
   private readonly router = inject(Router);

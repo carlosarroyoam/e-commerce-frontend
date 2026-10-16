@@ -1,5 +1,5 @@
 ﻿<aside
-  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-6 lg:flex"
+  class="sticky top-0 hidden h-dvh flex-col border-r border-zinc-100 bg-zinc-50 px-2 py-6 lg:flex"
 >
   <ng-container [ngTemplateOutlet]="header" />
   <ng-container [ngTemplateOutlet]="navigation" />
@@ -21,7 +21,7 @@
     aria-modal="true"
     aria-label="Primary navigation"
     (keydown.escape)="closeSidebar()"
-    class="fixed inset-y-0 left-0 z-50 flex w-80 flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
+    class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-zinc-100 bg-zinc-50 px-4 py-5 shadow-xl lg:hidden"
   >
     <ng-container [ngTemplateOutlet]="header" />
     <ng-container [ngTemplateOutlet]="navigation" />
@@ -52,7 +52,7 @@
 
 <ng-template #navigation>
   <nav aria-label="Primary navigation" class="flex-1">
-    <ul class="space-y-1">
+    <ul class="flex flex-col gap-1">
       @for (item of navigationItems; track item.id) {
         <li>
           <a
@@ -80,18 +80,18 @@
 <ng-template #footer>
   @if (authSession()) {
     <footer class="mt-6 border-t border-zinc-200" aria-label="Signed-in user">
-      <div class="mt-5 flex items-center gap-3 px-3">
+      <div class="mt-6 flex items-center gap-3 px-3">
         <img
+          width="32"
+          height="32"
+          priority
           [ngSrc]="avatarSrc()"
           [alt]="avatarAlt()"
-          width="40"
-          height="40"
-          priority
-          class="size-10 rounded-full bg-zinc-200"
+          class="size-8 rounded-full bg-zinc-200"
         />
         <div class="min-w-0">
           <p class="truncate text-sm font-semibold text-zinc-950">{{ authSession()?.full_name }}</p>
-          <p class="truncate text-sm text-zinc-600">{{ authSession()?.email }}</p>
+          <p class="truncate text-xs text-zinc-600">{{ authSession()?.email }}</p>
         </div>
       </div>
 

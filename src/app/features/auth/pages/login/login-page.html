@@ -4,8 +4,8 @@
 </header>
 
 <section class="mx-auto mt-6 max-w-md">
-  <form novalidate [formGroup]="form" (ngSubmit)="login()" class="space-y-4">
-    <div class="space-y-1">
+  <form novalidate [formGroup]="form" (ngSubmit)="login()" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
       <label appInputLabel for="email">Email</label>
       <input
         appInput
@@ -18,7 +18,7 @@
       <app-input-error [control]="form.get('email')" />
     </div>
 
-    <div class="space-y-1">
+    <div class="flex flex-col gap-1">
       <label appInputLabel for="password">Password</label>
       <input
         appInput

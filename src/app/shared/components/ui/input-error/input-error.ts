@@ -11,9 +11,7 @@ import { ERROR_MESSAGES } from '@/shared/components/ui/input-error/error-message
 @Component({
   selector: 'app-input-error',
   templateUrl: './input-error.html',
-  host: {
-    class: 'block text-sm text-red-500',
-  },
+  host: { class: 'block text-sm text-red-500' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputError {
