@@ -1,6 +1,7 @@
 import { computed, Directive, input } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 export const buttonVariants = cva(
   'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-semibold focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-90',
@@ -41,6 +42,6 @@ export class Button {
   public readonly size = input<ButtonVariants['size']>();
 
   protected readonly hostClass = computed(() => {
-    return twMerge(buttonVariants({ variant: this.variant(), size: this.size() }));
+    return cn(buttonVariants({ variant: this.variant(), size: this.size() }));
   });
 }

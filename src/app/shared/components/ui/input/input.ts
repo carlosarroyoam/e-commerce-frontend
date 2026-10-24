@@ -15,7 +15,8 @@ import {
   TouchedChangeEvent,
 } from '@angular/forms';
 import { filter } from 'rxjs';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 /**
  * Directiva de estilos para inputs nativos. Aplica clases de error cuando el control asociado es inválido y fue tocado o modificado.
@@ -74,11 +75,9 @@ export class AppInput implements OnInit, AfterViewInit {
   }
 
   protected readonly hostClass = computed(() => {
-    const invalid = this.invalid() && 'border-red-500 focus:border-red-500';
-
-    return twMerge(
+    return cn(
       'w-full rounded-md border border-zinc-200 text-sm text-zinc-700 placeholder:text-zinc-600 focus:border-blue-500 focus:ring-0 focus:outline-none disabled:cursor-not-allowed disabled:border-zinc-100 disabled:bg-zinc-50 disabled:text-zinc-500 disabled:placeholder:text-zinc-500',
-      invalid,
+      { 'border-red-500 focus:border-red-500': this.invalid() },
     );
   });
 }

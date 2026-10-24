@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 export const spinnerVariants = cva('inline-block animate-spin', {
   variants: {
@@ -35,6 +36,6 @@ export class Spinner {
   public readonly size = input<SpinnerVariants['size']>();
 
   protected readonly hostClass = computed(() => {
-    return twMerge(spinnerVariants({ size: this.size() }));
+    return cn(spinnerVariants({ size: this.size() }));
   });
 }

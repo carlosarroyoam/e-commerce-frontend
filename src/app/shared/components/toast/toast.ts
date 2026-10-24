@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { LucideX } from '@lucide/angular';
 import { cva, VariantProps } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
 
+import { cn } from '@/core/utils/class.utils';
 import { ToastData } from '@/shared/components/toast/interfaces/toast.interfaces';
 
 export const toastVariants = cva(
@@ -50,7 +50,7 @@ export class Toast implements OnDestroy, OnInit {
   private start = 0;
 
   protected readonly hostClass = computed(() => {
-    return twMerge(toastVariants({ variant: this.data().type }));
+    return cn(toastVariants({ variant: this.data().type }));
   });
 
   /** Inicia el temporizador de cierre automático si el toast tiene duración. */

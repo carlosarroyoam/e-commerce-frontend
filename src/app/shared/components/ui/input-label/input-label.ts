@@ -1,6 +1,7 @@
 import { Directive, ElementRef, inject, input, OnInit } from '@angular/core';
 import { FormGroupDirective, Validators } from '@angular/forms';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 /**
  * Directiva para etiquetas de formulario. Añade un asterisco visual cuando el control asociado es obligatorio.
@@ -28,5 +29,5 @@ export class InputLabel implements OnInit {
     }
   }
 
-  protected hostClass = twMerge('block text-sm leading-6 font-medium text-zinc-900');
+  protected hostClass = cn('block text-sm leading-6 font-medium text-zinc-900');
 }

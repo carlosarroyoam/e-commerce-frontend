@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { cva, VariantProps } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 export const chipVariants = cva('rounded-md bg-zinc-200 px-2.5 py-1 text-xs font-semibold', {
   variants: {
@@ -48,10 +49,10 @@ export class Chip {
   public readonly label = input.required<string>();
 
   protected readonly chipBadgeClass = computed(() => {
-    return twMerge(chipBadgeVariants({ variant: this.variant() }));
+    return cn(chipBadgeVariants({ variant: this.variant() }));
   });
 
   protected readonly hostClass = computed(() => {
-    return twMerge('inline-flex items-center', chipVariants({ variant: this.variant() }));
+    return cn('inline-flex items-center', chipVariants({ variant: this.variant() }));
   });
 }

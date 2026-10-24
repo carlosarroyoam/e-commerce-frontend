@@ -10,7 +10,8 @@ import {
   output,
 } from '@angular/core';
 import { cva } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
+
+import { cn } from '@/core/utils/class.utils';
 
 import { StepPanel } from './step-panel';
 
@@ -101,15 +102,15 @@ export class Stepper implements AfterContentChecked {
   });
 
   protected readonly containerClass = computed(() => {
-    return twMerge(stepperContainerVariants({ orientation: this.orientation() }));
+    return cn(stepperContainerVariants({ orientation: this.orientation() }));
   });
 
   protected readonly headerClass = computed(() => {
-    return twMerge(stepperHeaderVariants({ orientation: this.orientation() }));
+    return cn(stepperHeaderVariants({ orientation: this.orientation() }));
   });
 
   protected readonly panelClass = computed(() => {
-    return twMerge(stepperPanelVariants({ orientation: this.orientation() }));
+    return cn(stepperPanelVariants({ orientation: this.orientation() }));
   });
 
   /**
@@ -183,7 +184,7 @@ export class Stepper implements AfterContentChecked {
       error: 'border-red-200 bg-red-50 text-red-700',
     };
 
-    return twMerge(shared, variants[step.resolvedStatus]);
+    return cn(shared, variants[step.resolvedStatus]);
   }
 
   /**
@@ -193,14 +194,15 @@ export class Stepper implements AfterContentChecked {
    * @returns Clases CSS del conector.
    */
   protected connectorClass(step: ResolvedStepperStep): string {
-    const shared = 'hidden rounded-full md:block';
-    const statusClass = step.resolvedStatus === 'completed' ? 'bg-blue-200' : 'bg-zinc-200';
+    const vertical = this.orientation() === 'vertical';
+    const completed = step.resolvedStatus === 'completed';
 
-    if (this.orientation() === 'vertical') {
-      return twMerge(shared, 'ml-4 h-10 w-px self-start');
-    }
-
-    return twMerge(shared, statusClass, 'mt-4 h-px flex-1');
+    return cn('hidden rounded-full md:block', {
+      'ml-4 h-10 w-px self-start': vertical,
+      'mt-4 h-px flex-1': !vertical,
+      'bg-blue-200': !vertical && completed,
+      'bg-zinc-200': !vertical && !completed,
+    });
   }
 
   /**

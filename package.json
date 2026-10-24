@@ -28,6 +28,7 @@
     "@ngrx/signals": "^22.0.0",
     "@tanstack/angular-table": "^9.2.4",
     "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "rxjs": "~7.5.0",
     "tailwind-merge": "^2.5.4",
     "tslib": "^2.3.0",
