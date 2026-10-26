@@ -209,7 +209,7 @@ Then open `http://localhost:8080`.
 
 ## Code Style
 
-This repository follows the conventions documented in [AGENTS.md](./AGENTS.md), including:
+This repository follows the conventions documented in [CLAUDE.md](./CLAUDE.md), including:
 
 - file naming such as `name.ts` for components
 - standalone Angular component structure
@@ -217,10 +217,10 @@ This repository follows the conventions documented in [AGENTS.md](./AGENTS.md), 
 - Tailwind + `class-variance-authority` usage patterns
 - Vitest testing conventions
 
-If you are contributing, read `AGENTS.md` before making structural changes.
+If you are contributing, read `CLAUDE.md` before making structural changes.
 
 ## Useful References
 
-- [AGENTS.md](./AGENTS.md) for repository-specific coding rules
+- [CLAUDE.md](./CLAUDE.md) for repository-specific coding rules
 - [angular.json](./angular.json) for build, serve, test, and localization configuration
 - [Dockerfile](./Dockerfile) for deployment packaging details
